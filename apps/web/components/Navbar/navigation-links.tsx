@@ -3,7 +3,6 @@ import { AiOutlineProduct } from "react-icons/ai";
 import { CiShop } from "react-icons/ci";
 import { FaWhatsapp } from "react-icons/fa6";
 import { IoHomeOutline } from "react-icons/io5";
-import { SlArrowDown } from "react-icons/sl";
 import Container from "../ui/container";
 import NavCategory from "./nav-category";
 const navLinks = [
@@ -19,12 +18,9 @@ const NavigationLinks = () => {
         <NavCategory />
         <nav className="flex gap-5">
           {navLinks.map(({ label, href, Icon }, index) => (
-            <Link href={href} className="flex items-center gap-3 group" key={index}>
-              <span className="flex items-center gap-1">
-                <Icon />
-                {label}
-              </span>
-              <SlArrowDown className="text-sm group-hover:rotate-90" />
+            <Link href={href} className="flex items-center gap-1" key={index}>
+              <Icon />
+              {label}
             </Link>
           ))}
         </nav>
