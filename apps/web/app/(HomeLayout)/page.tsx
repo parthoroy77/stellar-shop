@@ -1,9 +1,11 @@
 import HeroSection from "../../components/Home/hero-section";
+import TrendingCategory from "../../components/Home/trending-category";
 
 export default function Home() {
   return (
-    <main>
+    <main className="space-y-10 py-8">
       <HeroSection />
+      <TrendingCategory />
     </main>
   );
 }

@@ -4,7 +4,7 @@ const HeroBanner = () => {
   return (
     <div className="w-[58%] h-full relative">
       <img
-        className="h-full w-full rounded-md object-cover object-cover"
+        className="h-full w-full rounded-md object-cover"
         src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/08/blog-post-5.png"
         alt="Banner Image"
       />

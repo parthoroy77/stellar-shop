@@ -4,7 +4,7 @@ import HeroSlider from "./hero-slider";
 
 const HeroSection = () => {
   return (
-    <div className="flex h-[600px] py-8 gap-8">
+    <div className="flex h-[550px] gap-8">
       <HeroSlider />
       <HeroBanner />
       <HeroFeatureProducts />
