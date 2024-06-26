@@ -10,13 +10,13 @@ import { CiShoppingCart } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
 
 const categories = [
-  {  label: "All Products", },
-  {  label: "Brakes", },
-  {  label: "Electrical", },
-  {  label: "Engine", },
-  {  label: "Steering", },
-  {  label: "Suspension", },
-  {  label: "Wheels", },
+  { label: "All Products" },
+  { label: "Brakes" },
+  { label: "Electrical" },
+  { label: "Engine" },
+  { label: "Steering" },
+  { label: "Suspension" },
+  { label: "Wheels" },
 ];
 
 const NavCategory = () => {
@@ -30,8 +30,11 @@ const NavCategory = () => {
               All Categories
             </NavigationMenuTrigger>
             <NavigationMenuContent className="min-w-[250px] h-fit flex flex-col divide-y">
-              {categories.map((x,index) => (
-                <NavigationMenuLink key={index} className="py-3 px-4 flex items-center gap-2 font-semibold text-sm text-muted-foreground">
+              {categories.map((x, index) => (
+                <NavigationMenuLink
+                  key={index}
+                  className="py-3 px-4 flex items-center gap-2 font-semibold text-sm text-muted-foreground"
+                >
                   <CiShoppingCart className="text-xl" />
                   {x.label}
                 </NavigationMenuLink>

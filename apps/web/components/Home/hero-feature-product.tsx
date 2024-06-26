@@ -11,7 +11,7 @@ const HeroFeatureProducts = () => {
         <p className="text-xs">Special price only valid today! Visit every day, win!</p>
         <div className="grid grid-cols-4 gap-3">
           {Array.from({ length: 4 }).map((x) => (
-            <div className="bg-red-600 size-10 rounded-md text-white flex justify-center items-center">05</div>
+            <div className="bg-red-600  size-10 rounded-md text-white flex justify-center items-center">05</div>
           ))}
         </div>
         <div className="space-y-2">

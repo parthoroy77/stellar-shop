@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -21,11 +21,11 @@
     --secondary-foreground: 245 100% 95%;
 
     --accent: 349 91% 95%;
-    --accent-foreground: 37 100% 96%;
-
+    --accent-foreground: 0 15% 43%;
+    
     --muted: 168, 87%, 43%;
-    --muted-foreground: 0 15% 43%;
-
+    --muted-foreground: 37 100% 96%;
+    
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 

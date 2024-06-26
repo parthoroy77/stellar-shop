@@ -10,9 +10,7 @@ async function main() {
   try {
     await prisma.$connect();
     server = app.listen(config.port, () => {
-      console.log(
-        colors.green.bold(`Server listening on port ${config.port} ✔️`)
-      );
+      console.log(colors.green.bold(`Server listening on port ${config.port} ✔️`));
     });
   } catch (error) {
     console.error(colors.red.bold("Error connecting to database:"), error);
