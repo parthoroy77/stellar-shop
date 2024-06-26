@@ -1,5 +1,5 @@
 {
-  "name": "vite-next-shadcn-prisma-turborepo",
+  "name": "stellar-shop",
   "private": true,
   "scripts": {
     "build": "turbo build",

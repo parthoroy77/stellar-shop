@@ -1,5 +1,6 @@
 import DiscountPanel from "../../components/Home/discount-panel";
 import HeroSection from "../../components/Home/hero-section";
+import TodayHotDeals from "../../components/Home/today-hot-deals";
 import TrendingCategory from "../../components/Home/trending-category";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
       <HeroSection />
       <TrendingCategory />
       <DiscountPanel />
+      <TodayHotDeals />
     </main>
   );
 }
