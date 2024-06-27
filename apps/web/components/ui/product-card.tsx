@@ -12,7 +12,7 @@ const ProductCard = () => {
           alt="Product Image"
         />
       </div>
-      <div className="flex flex-col gap-3 justify-between p-3">
+      <div className="flex flex-col justify-between gap-3 p-3">
         <div className="space-y-2">
           <h5 className="text-sm font-medium">DNA Motoring TOOLS-00266 Green</h5>
           <span className="text-sm font-medium">$9.99 - $9.99</span>

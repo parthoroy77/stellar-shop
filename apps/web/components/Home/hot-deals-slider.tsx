@@ -17,7 +17,6 @@ const HotDealsSlider = () => {
         delay: 2500,
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
-
       }}
       spaceBetween={14}
       slidesPerView={4}
