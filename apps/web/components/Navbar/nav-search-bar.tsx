@@ -3,12 +3,12 @@ import { CgSearch } from "react-icons/cg";
 
 const NavSearchBar = () => {
   return (
-    <div className="flex items-center h-[45px]">
+    <div className="flex h-[45px] items-center">
       <Input
         placeholder="Search For Products"
-        className="min-w-[500px] px-5 bg-accent/40 rounded-r-none h-[97%] outline-none focus:border-primary right-0"
+        className="bg-accent/40 focus:border-primary right-0 h-[97%] min-w-[500px] rounded-r-none px-5 outline-none"
       />
-      <span className=" h-full border rounded-l-none flex items-center text-xl bg-primary text-white px-5 rounded-sm">
+      <span className="bg-primary flex h-full items-center rounded-sm rounded-l-none border px-5 text-xl text-white">
         <CgSearch />
       </span>
     </div>

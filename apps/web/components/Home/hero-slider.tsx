@@ -10,9 +10,9 @@ const sliderImg = [
 const HeroSlider = () => {
   return (
     <div className="h-full w-[24%]">
-      <Swiper modules={[Navigation]} navigation={true} className="w-full h-full" slidesPerView={1}>
+      <Swiper modules={[Navigation]} navigation={true} className="h-full w-full" slidesPerView={1}>
         {sliderImg.map(({ image, id }) => (
-          <SwiperSlide key={id} className="w-full h-full">
+          <SwiperSlide key={id} className="h-full w-full">
             <img className="h-full w-full rounded-md" src={image} alt="Slider Image" />
           </SwiperSlide>
         ))}

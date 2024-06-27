@@ -13,7 +13,7 @@ const navLinks = [
 
 const NavigationLinks = () => {
   return (
-    <Container className="py-3 flex justify-between items-center">
+    <Container className="flex items-center justify-between py-3">
       <div className="flex items-center gap-5">
         <NavCategory />
         <nav className="flex gap-5">
@@ -25,9 +25,9 @@ const NavigationLinks = () => {
           ))}
         </nav>
       </div>
-      <div className="flex  items-center gap-2">
-        <FaWhatsapp className="text-4xl text-secondary" />
-        <div className="uppercase font-semibold text-center text-sm ">
+      <div className="flex items-center gap-2">
+        <FaWhatsapp className="text-secondary text-4xl" />
+        <div className="text-center text-sm font-semibold uppercase">
           <p>Call Anytime</p>
           <p className="text-secondary">0468543345</p>
         </div>

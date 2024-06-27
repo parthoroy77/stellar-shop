@@ -25,15 +25,15 @@ const NavCategory = () => {
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
-            <NavigationMenuTrigger className="bg-primary text-white w-[250px] flex justify-between uppercase font-semibold">
+            <NavigationMenuTrigger className="bg-primary flex w-[250px] justify-between font-semibold uppercase text-white">
               <RxHamburgerMenu className="text-xl" />
               All Categories
             </NavigationMenuTrigger>
-            <NavigationMenuContent className="min-w-[250px] h-fit flex flex-col divide-y">
+            <NavigationMenuContent className="flex h-fit min-w-[250px] flex-col divide-y">
               {categories.map((x, index) => (
                 <NavigationMenuLink
                   key={index}
-                  className="py-3 px-4 flex items-center gap-2 font-semibold text-sm text-muted-foreground"
+                  className="text-muted-foreground flex items-center gap-2 px-4 py-3 text-sm font-semibold"
                 >
                   <CiShoppingCart className="text-xl" />
                   {x.label}

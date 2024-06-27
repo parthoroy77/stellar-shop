@@ -6,15 +6,15 @@ const QuickAccessBar = () => {
   return (
     <div className="border">
       <Container>
-        <div className="py-2 flex gap-5">
-          <div className="flex items-center gap-5 cursor-pointer">
+        <div className="flex gap-5 py-2">
+          <div className="flex cursor-pointer items-center gap-5">
             <RxHamburgerMenu className="text-2xl" />
             <FaFacebook />
             <FaInstagram />
             <FaTwitter />
             <FaWhatsapp />
           </div>
-          <Badge className="text-white hover:bg-primary bg-secondary rounded-sm">
+          <Badge className="hover:bg-primary bg-secondary rounded-sm text-white">
             FREE SHIPPING FOR ALL ORDERS OF $340
           </Badge>
         </div>

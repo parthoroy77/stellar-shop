@@ -2,7 +2,7 @@ import { Badge } from "@ui/index";
 
 const App = () => {
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex h-screen items-center justify-center">
       <Badge>hi there</Badge>
     </div>
   );

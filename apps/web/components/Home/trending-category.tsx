@@ -23,9 +23,9 @@ const sliderImg = [
 const TrendingCategory = () => {
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         <h3 className="text-xl font-semibold tracking-wide">Trending Categories</h3>
-        <Button className="w-[200px] flex items-center gap-3 rounded-3xl border-primary" variant={"outline"}>
+        <Button className="border-primary flex w-[200px] items-center gap-3 rounded-3xl" variant={"outline"}>
           All Categories
           <FaArrowRight />
         </Button>
@@ -38,9 +38,9 @@ const TrendingCategory = () => {
         slidesPerView={9}
       >
         {sliderImg.map(({ image, id }) => (
-          <SwiperSlide key={id} className="space-y-2 group cursor-pointer">
+          <SwiperSlide key={id} className="group cursor-pointer space-y-2">
             <img
-              className="border size-[130px] p-3 rounded-md group-hover:border-primary duration-300"
+              className="group-hover:border-primary size-[130px] rounded-md border p-3 duration-300"
               src={image}
               alt="Slider Image"
             />

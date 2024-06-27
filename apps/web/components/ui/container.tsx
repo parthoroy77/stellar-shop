@@ -8,7 +8,7 @@ type TContainer = {
 
 const Container: React.FC<TContainer> = ({ className, children }) => {
   return (
-    <div className={cn("max-w-[2520px] mx-auto xl:px-24 md:px-10 sm:px-2 px-4 w-full h-full", className)}>
+    <div className={cn("mx-auto h-full w-full max-w-[2520px] px-4 sm:px-2 md:px-10 xl:px-24", className)}>
       {children}
     </div>
   );

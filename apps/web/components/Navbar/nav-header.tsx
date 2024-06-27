@@ -6,7 +6,7 @@ import NavSearchBar from "./nav-search-bar";
 const NavHeader = () => {
   return (
     <Container>
-      <div className="flex justify-between items-center py-7">
+      <div className="flex items-center justify-between py-7">
         <Logo />
         <NavSearchBar />
         <NavIcons />

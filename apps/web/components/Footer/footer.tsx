@@ -1,7 +1,7 @@
 import React from "react";
 
 const Footer = () => {
-  return <div className="py-10 bg-accent/55"></div>;
+  return <div className="bg-accent/55 py-10"></div>;
 };
 
 export default Footer;
