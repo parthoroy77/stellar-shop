@@ -4,7 +4,7 @@ import { Button } from "@repo/ui";
 import { FaArrowRight } from "react-icons/fa6";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation } from "swiper/modules";
+import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 const sliderImg = [
   { id: 1, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/product2-300x300.jpg" },
@@ -31,11 +31,17 @@ const TrendingCategory = () => {
         </Button>
       </div>
       <Swiper
-        modules={[Navigation]}
-        navigation={true}
-        // className="w-full h-full"
+        className="mySwiper h-full w-full"
         spaceBetween={10}
         slidesPerView={9}
+        modules={[Navigation, Autoplay]}
+        navigation={true}
+        loop={true}
+        autoplay={{
+          delay: 2700,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
       >
         {sliderImg.map(({ image, id }) => (
           <SwiperSlide key={id} className="group cursor-pointer space-y-2">
