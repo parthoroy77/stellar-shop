@@ -10,7 +10,7 @@ const HeroBanner = () => {
       />
       <div className="absolute top-0 h-full w-full bg-gradient-to-r from-gray-900 to-black opacity-40" />
       <div className="absolute top-0 flex h-full w-full flex-col justify-center gap-6 p-8 text-white">
-        <Button className="bg-accent w-fit px-8 uppercase tracking-wide" size={"sm"}>
+        <Button variant={"outline"} className="text-primary w-fit px-8 uppercase tracking-wide" size={"sm"}>
           From $320
         </Button>
         <h1 className="text-4xl font-semibold">Trends Car Rims</h1>

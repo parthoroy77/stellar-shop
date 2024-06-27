@@ -8,18 +8,18 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 const CampaignSlider = () => {
   return (
-    <div className="h-full w-full space-y-5">
+    <div className="h-[500px] w-full space-y-5">
       <div className="flex items-center justify-between">
         <h4 className="text-xl font-medium">Campaigns</h4>
         <Button variant={"outline"} className="flex gap-3 text-xs" size={"sm"}>
           Check All <BsArrowUpRight />
         </Button>
       </div>
-      <Swiper modules={[Navigation]} navigation={true} className="h-full w-full" slidesPerView={1}>
-        <SwiperSlide className="group relative">
-          <div className="relative overflow-hidden rounded-md">
+      <Swiper modules={[Navigation]} navigation={true} className="h-[400px] w-full" slidesPerView={1}>
+        <SwiperSlide className="group relative h-full">
+          <div className="relative h-full overflow-hidden rounded-md">
             <img
-              className="duration-200 group-hover:scale-110"
+              className="h-full duration-200 group-hover:scale-110"
               src="https://ninetheme.com/themes/fitment/wp-content/uploads/2024/01/vertical-banner-450-lux-2.jpg"
               alt="Campaign Banner"
             />
