@@ -4,11 +4,11 @@ import HotDealsSlider from "./hot-deals-slider";
 
 const TodayHotDeals = () => {
   return (
-    <div className="flex h-[500px] gap-8">
+    <div className="flex gap-5">
       <div className="w-[20%]">
         <CampaignSlider />
       </div>
-      <div className="w-[80%] space-y-4">
+      <div className="w-[80%] space-y-4 overflow-hidden">
         <div className="flex items-center justify-between">
           <div className="flex gap-2">
             <h3 className="text-xl font-medium">Deals of The Day</h3>

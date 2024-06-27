@@ -21,8 +21,8 @@ const HotDealsSlider = () => {
       spaceBetween={14}
       slidesPerView={4}
     >
-      {Array.from({ length: 6 }).map((_x) => (
-        <SwiperSlide>
+      {Array.from({ length: 6 }).map((_x, index) => (
+        <SwiperSlide key={index}>
           <ProductCard />
         </SwiperSlide>
       ))}

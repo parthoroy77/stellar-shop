@@ -9,7 +9,7 @@ import "../../styles/slider.css";
 
 const CampaignSlider = () => {
   return (
-    <div className="h-[500px] w-full space-y-5">
+    <div className="w-full space-y-5">
       <div className="flex items-center justify-between">
         <h4 className="text-xl font-medium">Campaigns</h4>
         <Button variant={"outline"} className="flex gap-3 text-xs" size={"sm"}>
@@ -29,10 +29,10 @@ const CampaignSlider = () => {
         }}
         slidesPerView={1}
       >
-        <SwiperSlide className="group relative h-full">
+        <SwiperSlide className="group relative h-[400px]">
           <div className="relative h-full overflow-hidden rounded-md">
             <img
-              className="h-full duration-200 group-hover:scale-110"
+              className="h-[400px] duration-200 group-hover:scale-110"
               src="https://ninetheme.com/themes/fitment/wp-content/uploads/2024/01/vertical-banner-450-lux-2.jpg"
               alt="Campaign Banner"
             />
@@ -42,10 +42,10 @@ const CampaignSlider = () => {
             </div>
           </div>
         </SwiperSlide>
-        <SwiperSlide className="group relative h-full">
+        <SwiperSlide className="group relative h-[400px]">
           <div className="relative h-full overflow-hidden rounded-md">
             <img
-              className="h-full duration-200 group-hover:scale-110"
+              className="h-[400px] duration-200 group-hover:scale-110"
               src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/08/blog-post-6.png"
               alt="Campaign Banner"
             />
