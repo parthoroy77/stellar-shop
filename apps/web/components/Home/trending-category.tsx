@@ -44,7 +44,7 @@ const TrendingCategory = () => {
         }}
       >
         {sliderImg.map(({ image, id }) => (
-          <SwiperSlide key={id} className="group cursor-pointer space-y-2">
+          <SwiperSlide key={id} className="group relative cursor-pointer space-y-2">
             <img
               className="group-hover:border-primary size-[130px] rounded-md border p-3 duration-300"
               src={image}
