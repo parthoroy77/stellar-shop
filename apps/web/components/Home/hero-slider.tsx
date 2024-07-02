@@ -10,7 +10,7 @@ const sliderImg = [
 ];
 const HeroSlider = () => {
   return (
-    <div className="h-full w-[24%]">
+    <div className="h-full w-full lg:w-[24%]">
       <Swiper
         className="mySwiper h-full w-full"
         modules={[Navigation, Autoplay]}

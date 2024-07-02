@@ -24,16 +24,17 @@ const TrendingCategory = () => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-semibold tracking-wide">Trending Categories</h3>
-        <Button className="border-primary flex w-[200px] items-center gap-3 rounded-3xl" variant={"outline"}>
+        <h3 className="text-sm font-semibold tracking-wide lg:text-xl">Trending Categories</h3>
+        <Button
+          className="border-primary flex items-center gap-3 rounded-3xl px-8 text-xs lg:w-[200px] lg:text-base"
+          variant={"outline"}
+        >
           All Categories
           <FaArrowRight />
         </Button>
       </div>
       <Swiper
         className="mySwiper h-full w-full"
-        spaceBetween={10}
-        slidesPerView={9}
         modules={[Navigation, Autoplay]}
         navigation={true}
         loop={true}
@@ -42,11 +43,23 @@ const TrendingCategory = () => {
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
+        slidesPerView={2}
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+          },
+          768: {
+            slidesPerView: 4,
+          },
+          1024: {
+            slidesPerView: 9,
+          },
+        }}
       >
-        {sliderImg.map(({ image, id }) => (
-          <SwiperSlide key={id} className="group relative cursor-pointer space-y-2">
+        {sliderImg.map(({ image }, index) => (
+          <SwiperSlide key={index} className="group relative cursor-pointer space-y-2">
             <img
-              className="group-hover:border-primary size-[130px] rounded-md border p-3 duration-300"
+              className="group-hover:border-primary mx-auto size-[150px] rounded-md border p-3 duration-300 lg:size-[130px]"
               src={image}
               alt="Slider Image"
             />

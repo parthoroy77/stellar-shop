@@ -5,7 +5,7 @@ import { SlHeart } from "react-icons/sl";
 
 const HeroFeatureProducts = () => {
   return (
-    <div className="border-primary flex h-full w-[18%] flex-col items-center justify-evenly rounded-lg border px-6">
+    <div className="border-primary flex h-full w-full flex-col items-center justify-evenly rounded-lg border px-6 py-5 lg:w-[18%]">
       <div className="space-y-3">
         <h4 className="font-semibold">Product of The Day</h4>
         <p className="text-xs">Special price only valid today! Visit every day, win!</p>

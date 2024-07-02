@@ -14,12 +14,24 @@ const HotDealsSlider = () => {
       navigation={true}
       loop={true}
       autoplay={{
-        delay: 2500,
+        delay: 3500,
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
       }}
-      spaceBetween={14}
-      slidesPerView={4}
+      breakpoints={{
+        640: {
+          slidesPerView: 1,
+          spaceBetween: 0,
+        },
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 14,
+        },
+        1024: {
+          slidesPerView: 4,
+          spaceBetween: 14,
+        },
+      }}
     >
       {Array.from({ length: 6 }).map((_x, index) => (
         <SwiperSlide key={index}>

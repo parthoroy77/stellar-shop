@@ -8,7 +8,7 @@ const QuickAccessBar = () => {
       <Container>
         <div className="flex gap-5 py-2">
           <div className="flex cursor-pointer items-center gap-5">
-            <RxHamburgerMenu className="text-2xl hidden md:block" />
+            <RxHamburgerMenu className="hidden text-2xl md:block" />
             <FaFacebook />
             <FaInstagram />
             <FaTwitter />

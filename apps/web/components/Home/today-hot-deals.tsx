@@ -4,26 +4,26 @@ import HotDealsSlider from "./hot-deals-slider";
 
 const TodayHotDeals = () => {
   return (
-    <div className="flex gap-5">
-      <div className="w-[20%]">
+    <div className="flex flex-col gap-5 lg:flex-row">
+      <div className="w-full lg:w-[20%]">
         <CampaignSlider />
       </div>
-      <div className="w-[80%] space-y-4 overflow-hidden">
-        <div className="flex items-center justify-between">
-          <div className="flex gap-2">
+      <div className="w-full space-y-4 overflow-hidden lg:w-[80%]">
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col lg:flex-row lg:gap-2">
             <h3 className="text-xl font-medium">Deals of The Day</h3>
-            <span>
+            <span className="hidden lg:block">
               <Separator orientation="vertical" />
             </span>
             <span className="flex items-center text-xs text-gray-400">Sale up to 30% off on selected items.</span>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium">Hurry up to take advantage of offer</span>
+          <div className="flex items-center justify-between gap-3">
+            <span className="text-xs font-medium lg:text-sm">Hurry up to take advantage of offer</span>
             <div className="flex gap-2">
               {Array.from({ length: 4 }).map((_x, index) => (
                 <div
                   key={index}
-                  className="border-primary text-primary flex size-10 items-center justify-center rounded-md border"
+                  className="border-primary text-primary flex size-6 items-center justify-center rounded-sm border text-xs lg:size-10 lg:rounded-md"
                 >
                   05
                 </div>

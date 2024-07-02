@@ -12,7 +12,7 @@ const HomeLayout: FC<{ children: ReactNode }> = ({ children }) => {
       <QuickAccessBar />
       <Navbar />
       <Container>{children}</Container>
-      {/* <Footer /> */}
+      <Footer />
     </main>
   );
 };

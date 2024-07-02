@@ -2,7 +2,7 @@ import { Button } from "@repo/ui";
 
 const HeroBanner = () => {
   return (
-    <div className="relative h-full w-[58%]">
+    <div className="relative h-[550px] w-full overflow-hidden rounded-md lg:w-[58%]">
       <img
         className="h-full w-full rounded-md object-cover"
         src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/08/blog-post-5.png"
@@ -13,8 +13,8 @@ const HeroBanner = () => {
         <Button variant={"outline"} className="text-primary w-fit px-8 uppercase tracking-wide" size={"sm"}>
           From $320
         </Button>
-        <h1 className="text-4xl font-semibold">Trends Car Rims</h1>
-        <p className="w-[80%] text-lg">
+        <h1 className="text-3xl font-semibold lg:text-4xl">Trends Car Rims</h1>
+        <p className="text-sm lg:w-[80%] lg:text-lg">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam, tempora voluptates dicta incidunt commodi
           magni maxime nobis debitis nesciunt obcaecati dolorem a
         </p>

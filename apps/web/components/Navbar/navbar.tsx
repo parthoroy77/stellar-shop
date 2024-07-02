@@ -8,7 +8,7 @@ const Navbar = () => {
         <NavHeader />
         <NavigationLinks />
       </div>
-      <div className="lg:hidden border-b-2 shadow-sm">
+      <div className="border-b-2 shadow-sm lg:hidden">
         <MobileNav />
       </div>
     </>
