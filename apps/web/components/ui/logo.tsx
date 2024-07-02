@@ -1,7 +1,5 @@
-import Image from "next/image";
-
 const Logo = () => {
-  return <Image src={"/logo.svg"} alt="Website Logo" width={200} height={80} />;
+  return <img src={"/logo.svg"} alt="Website Logo" className="w-[150px] lg:w-[200px]" />;
 };
 
 export default Logo;

@@ -149,7 +149,7 @@ const NavCategory = () => {
         All Categories
         <BiChevronDown />
       </div>
-      <div className="absolute top-11 z-20 hidden h-fit w-full divide-y rounded-md border bg-white shadow-md group-hover/parent:block">
+      <div className="invisible absolute top-11 z-20 h-fit w-full divide-y rounded-md border bg-white opacity-0 shadow-md duration-300 group-hover/parent:visible group-hover/parent:opacity-100">
         {collections.map(({ label, categories }, index) => (
           <div key={index} className="group/collection relative">
             <div className="flex cursor-pointer justify-between px-4 py-3 text-sm font-medium text-gray-600">
@@ -160,7 +160,7 @@ const NavCategory = () => {
               {categories && <BiChevronRight className="duration-300 group-hover/collection:rotate-90" />}
             </div>
             {categories && (
-              <div className="absolute left-[251px] top-0 hidden min-w-[250px] divide-y rounded-md border bg-white shadow-md group-hover/collection:block">
+              <div className="invisible absolute left-[251px] top-0 min-w-[250px] divide-y rounded-md border bg-white opacity-0 shadow-md duration-300 group-hover/collection:visible group-hover/collection:opacity-100">
                 {categories &&
                   categories.map(({ label: categoryLabel, subcategories }, index) => (
                     <div key={index} className="group/category relative">
@@ -173,10 +173,10 @@ const NavCategory = () => {
                       </div>
                       {subcategories && (
                         <div
-                          className={`absolute left-[251px] top-0 hidden min-w-[600px] rounded-md border bg-white p-4 shadow-md group-hover/category:block ${subcategories && "space-y-3"}`}
+                          className={`invisible absolute left-[251px] top-0 min-w-[600px] rounded-md border bg-white p-4 opacity-0 shadow-md duration-300 group-hover/category:visible group-hover/category:opacity-100 ${subcategories && "space-y-3"}`}
                         >
                           <span>{categoryLabel}</span>
-                          <div className="grid grid-cols-5 gap-3">
+                          <div className="grid grid-cols-5 gap-3 divide-x">
                             {subcategories &&
                               subcategories.map(({ label }, index) => (
                                 <div key={index} className="flex flex-col items-center justify-center">
@@ -185,7 +185,7 @@ const NavCategory = () => {
                                     src="https://img.alicdn.com/imgextra/i1/O1CN01qAJb8h20ZJ5HJQ3S2_!!6000000006863-0-tps-240-240.jpg"
                                     alt="Sub Category Images"
                                   />
-                                  <span className="text-gray-500 text-xs text-center">{label}</span>
+                                  <span className="text-center text-xs text-gray-500">{label}</span>
                                 </div>
                               ))}
                           </div>

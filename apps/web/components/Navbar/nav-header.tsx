@@ -5,12 +5,10 @@ import NavSearchBar from "./nav-search-bar";
 
 const NavHeader = () => {
   return (
-    <Container>
-      <div className="flex items-center justify-between py-7">
-        <Logo />
-        <NavSearchBar />
-        <NavIcons />
-      </div>
+    <Container className="flex items-center justify-between py-7">
+      <Logo />
+      <NavSearchBar />
+      <NavIcons />
     </Container>
   );
 };

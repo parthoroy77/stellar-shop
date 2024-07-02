@@ -7,13 +7,13 @@ import TopBar from "../../components/ui/top-bar";
 
 const HomeLayout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
-    <div>
+    <main>
       <TopBar />
       <QuickAccessBar />
       <Navbar />
       <Container>{children}</Container>
       {/* <Footer /> */}
-    </div>
+    </main>
   );
 };
 
