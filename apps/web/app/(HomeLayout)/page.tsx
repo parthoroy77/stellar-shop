@@ -6,10 +6,10 @@ import TrendingCategory from "../../components/Home/trending-category";
 export default function Home() {
   return (
     <main className="space-y-10 py-8">
-      <HeroSection />
+      {/* <HeroSection />
       <TrendingCategory />
       <DiscountPanel />
-      <TodayHotDeals />
+      <TodayHotDeals /> */}
     </main>
   );
 }
