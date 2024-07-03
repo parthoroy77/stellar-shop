@@ -16,8 +16,6 @@ export type Collection = {
   categories?: Subcategory[];
 };
 const MobileAllCategoryMenu = () => {
-
-
   return (
     <div className="w-full divide-y rounded-md border bg-white duration-300">
       {collections.map((collection: Collection, index: number) => (
