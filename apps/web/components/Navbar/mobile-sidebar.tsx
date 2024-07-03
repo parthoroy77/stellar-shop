@@ -1,6 +1,7 @@
-import { Button } from "@repo/ui";
+import { Button, Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 import { FC } from "react";
 import { HiXMark } from "react-icons/hi2";
+import MobileAllCategoryMenu from "./mobile-allcategory-menu";
 
 interface Props {
   isOpen: boolean;
@@ -19,23 +20,27 @@ const MobileSidebar: FC<Props> = ({ isOpen, setIsOpen }) => {
       )}
       {/* Sidebar */}
       <div
-        className={`absolute inset-0 z-30 divide-y overflow-hidden border bg-white shadow-lg duration-200 ${isOpen ? "w-[80%]" : "w-0"}`}
+        className={`absolute inset-0 z-30 overflow-hidden border bg-white shadow-lg duration-200 ${isOpen ? "w-[85%]" : "w-0"}`}
       >
-        <div className="flex items-center divide-x text-center *:w-full">
-          <div className="px-5 py-3 font-medium uppercase">
-            <span>Category</span>
-          </div>
-          <div className="px-5 py-3 font-medium uppercase">
-            <span>Menu</span>
-          </div>
-        </div>
+        <Tabs defaultValue="category" className="w-full">
+          <TabsList className="flex h-fit rounded-none bg-white p-0 *:m-0 *:w-full *:rounded-none *:border-b *:border-r *:bg-white *:text-black *:ring-0">
+            <TabsTrigger value="category">Account</TabsTrigger>
+            <TabsTrigger value="menu">Password</TabsTrigger>
+          </TabsList>
+          <TabsContent className="mt-0" value="category">
+            <MobileAllCategoryMenu />
+          </TabsContent>
+          <TabsContent className="mt-0" value="menu">
+            Change your password here.
+          </TabsContent>
+        </Tabs>
         <div></div>
       </div>
       {/* Close button */}
       {isOpen && (
         <Button
           onClick={() => setIsOpen(false)}
-          className="absolute left-[80%] top-0 z-40 w-fit rounded-none text-xl duration-500"
+          className={`invisible absolute left-0 top-0 z-40 w-fit rounded-none text-xl duration-500 ${isOpen && "visible left-[85%]"}`}
         >
           <HiXMark />
         </Button>

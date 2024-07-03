@@ -8,7 +8,7 @@ import NavIcons from "./nav-icons";
 import NavSearchBar from "./nav-search-bar";
 
 const MobileNav = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   return (
     <>
       <Container className={`flex flex-col gap-5 py-5`}>
