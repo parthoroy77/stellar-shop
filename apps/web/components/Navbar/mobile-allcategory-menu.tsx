@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { collections } from "../../dummyData/nav-categories";
 import MobileCollectionMenu from "./mobile-collection-menu";
 export type Product = {
@@ -16,23 +16,12 @@ export type Collection = {
   categories?: Subcategory[];
 };
 const MobileAllCategoryMenu = () => {
-  const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({});
 
-  const toggleOpen = (key: string) => {
-    setOpenItems((prev) => ({ ...prev, [key]: !prev[key] }));
-  };
 
   return (
     <div className="w-full divide-y rounded-md border bg-white duration-300">
       {collections.map((collection: Collection, index: number) => (
-        <MobileCollectionMenu
-          key={index}
-          collection={collection}
-          isOpen={!!openItems[collection.label]}
-          toggleOpen={() => toggleOpen(collection.label)}
-          openItems={openItems}
-          toggleItemOpen={toggleOpen}
-        />
+        <MobileCollectionMenu key={index} collection={collection} />
       ))}
     </div>
   );
