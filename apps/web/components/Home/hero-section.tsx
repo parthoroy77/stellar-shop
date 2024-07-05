@@ -4,10 +4,10 @@ import HeroSlider from "./hero-slider";
 
 const HeroSection = () => {
   return (
-    <div className="flex flex-col-reverse gap-8 lg:h-[550px] lg:flex-row">
-      <HeroSlider />
-      <HeroBanner />
+    <div className="flex flex-col gap-8 lg:h-[550px] lg:flex-row-reverse">
       <HeroFeatureProducts />
+      <HeroBanner />
+      <HeroSlider />
     </div>
   );
 };

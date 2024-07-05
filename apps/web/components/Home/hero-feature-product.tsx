@@ -19,7 +19,7 @@ const HeroFeatureProducts = () => {
         <div className="space-y-2">
           <div className="relative">
             <img
-              className="rounded-md border-2 p-2"
+              className="h-full w-full rounded-md border-2 p-2"
               src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/g1-300x300.jpg"
               alt="Product Of The Day"
             />
@@ -32,14 +32,14 @@ const HeroFeatureProducts = () => {
               </div>
             </div>
           </div>
-          <h4 className="text-sm font-semibold">DNA Motoring TOOLS-00266 Green</h4>
+          <h5 className="text-sm font-semibold">DNA Motoring TOOLS-00266 Green</h5>
           <p className="text-sm font-semibold">
             <del className="text-primary">$54.99</del> $51.99
           </p>
         </div>
       </div>
       <div className="w-full space-y-2">
-        <Progress className="h-2" value={40} />
+        <Progress content="Total Sold" className="h-2" value={40} />
         <p className="text-xs">Sold: 20</p>
       </div>
     </div>

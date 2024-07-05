@@ -11,7 +11,7 @@ const CampaignSlider = () => {
   return (
     <div className="w-full space-y-5">
       <div className="flex items-center justify-between">
-        <h4 className="text-xl font-medium">Campaigns</h4>
+        <h3 className="text-xl font-medium">Campaigns</h3>
         <Button variant={"outline"} className="flex gap-3 text-xs" size={"sm"}>
           Check All <BsArrowUpRight />
         </Button>

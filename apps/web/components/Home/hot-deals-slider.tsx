@@ -5,7 +5,6 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "../../styles/slider.css";
 import ProductCard from "../ui/product-card";
-
 const HotDealsSlider = () => {
   return (
     <Swiper
@@ -18,13 +17,15 @@ const HotDealsSlider = () => {
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
       }}
+      slidesPerView={2}
+      spaceBetween={5}
       breakpoints={{
         640: {
-          slidesPerView: 1,
-          spaceBetween: 0,
+          slidesPerView: 2,
+          spaceBetween: 5,
         },
         768: {
-          slidesPerView: 2,
+          slidesPerView: 3,
           spaceBetween: 14,
         },
         1024: {

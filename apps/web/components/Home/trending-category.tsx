@@ -24,7 +24,7 @@ const TrendingCategory = () => {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold tracking-wide lg:text-xl">Trending Categories</h3>
+        <h5 className="text-sm font-semibold tracking-wide lg:text-xl">Trending Categories</h5>
         <Button
           className="border-primary flex items-center gap-3 rounded-3xl px-8 text-xs lg:w-[200px] lg:text-base"
           variant={"outline"}
@@ -63,7 +63,7 @@ const TrendingCategory = () => {
               src={image}
               alt="Slider Image"
             />
-            <h4 className="text-center text-sm uppercase tracking-wide">Brake</h4>
+            <h5 className="text-center text-sm uppercase tracking-wide">Brake</h5>
           </SwiperSlide>
         ))}
       </Swiper>

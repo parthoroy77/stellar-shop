@@ -9,9 +9,9 @@ const DiscountPanel = () => {
           <Badge>Trend Products</Badge>
           <Badge variant={"secondary"}>Promotion Prices</Badge>
         </span>
-        <h2 className="text-base font-medium text-black/80">
+        <h4 className="text-base font-medium text-black/80">
           New generation Headphones are at Stellar Shop with limited stocks!
-        </h2>
+        </h4>
       </div>
       <Button variant={"outline"} className="border-primary text-primary flex gap-5 rounded-full border px-10 py-4">
         Check Products <BsArrowUpRight />{" "}
