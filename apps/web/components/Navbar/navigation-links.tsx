@@ -7,6 +7,7 @@ import Container from "../ui/container";
 import NavCategory from "./nav-category";
 const navLinks = [
   { id: 1, label: "Featured Products", href: "/", Icon: CiShop },
+  { id: 1, label: "Popular Brands", href: "/", Icon: CiShop },
   { id: 1, label: "Today's Deals", href: "/", Icon: AiOutlineProduct },
   { id: 1, label: "Best Sellers", href: "/", Icon: IoHomeOutline },
 ];

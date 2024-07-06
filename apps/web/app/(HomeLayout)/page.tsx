@@ -1,5 +1,8 @@
+import BestSellers from "../../components/Home/best-sellers";
 import DiscountPanel from "../../components/Home/discount-panel";
 import HeroSection from "../../components/Home/hero-section";
+import PopularBrands from "../../components/Home/popular-brands";
+import PromotionBanner from "../../components/Home/promotion-banner";
 import TodayHotDeals from "../../components/Home/today-hot-deals";
 import TrendingCategory from "../../components/Home/trending-category";
 
@@ -10,6 +13,10 @@ export default function Home() {
       <TrendingCategory />
       <DiscountPanel />
       <TodayHotDeals />
+      <DiscountPanel />
+      <PromotionBanner />
+      <BestSellers />
+      <PopularBrands />
     </div>
   );
 }
