@@ -39,7 +39,7 @@ const HeroFeatureProducts = () => {
         </div>
       </div>
       <div className="w-full space-y-2">
-        <Progress content="Total Sold" className="h-2" value={40} />
+        <Progress title="Total Sold Progress Bar" className="h-2" value={40} />
         <p className="text-xs">Sold: 20</p>
       </div>
     </div>

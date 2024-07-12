@@ -21,7 +21,7 @@ const BestSellers = () => {
         </Button>
       </div>
       <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-5">
-        {Array.from({ length: 5 }).map((_x, index) => (
+        {Array.from({ length: 10 }).map((_x, index) => (
           <ProductCard key={index} />
         ))}
       </div>
@@ -32,13 +32,15 @@ const BestSellers = () => {
               <PaginationPrevious />
             </PaginationItem>
             <PaginationItem>
-              <PaginationLink>1</PaginationLink>
+              <PaginationLink href="/">1</PaginationLink>
             </PaginationItem>
             <PaginationItem>
-              <PaginationLink isActive>2</PaginationLink>
+              <PaginationLink href="/" isActive>
+                2
+              </PaginationLink>
             </PaginationItem>
             <PaginationItem>
-              <PaginationLink>3</PaginationLink>
+              <PaginationLink href="/">3</PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationEllipsis />

@@ -1,5 +1,5 @@
 const Logo = () => {
-  return <img src={"/logo.svg"} alt="Website Logo" className="w-[150px] lg:w-[200px]" />;
+  return <img src={"/logo2.svg"} alt="Website Logo" className="w-[150px] lg:w-[200px]" />;
 };
 
 export default Logo;
