@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { AiOutlineProduct } from "react-icons/ai";
 import { CiShop } from "react-icons/ci";
-import { FaWhatsapp } from "react-icons/fa6";
 import { IoHomeOutline } from "react-icons/io5";
 import Container from "../ui/container";
 import NavCategory from "./nav-category";
+import NavContactOption from "./nav-contact-option";
 const navLinks = [
   { id: 1, label: "Featured Products", href: "/", Icon: CiShop },
   { id: 1, label: "Popular Brands", href: "/", Icon: CiShop },
@@ -26,13 +26,7 @@ const NavigationLinks = () => {
           ))}
         </nav>
       </div>
-      <div className="flex items-center gap-2">
-        <FaWhatsapp className="text-secondary text-4xl" />
-        <div className="text-center text-sm font-semibold uppercase">
-          <p>Call Anytime</p>
-          <p className="text-secondary">0468543345</p>
-        </div>
-      </div>
+      <NavContactOption />
     </Container>
   );
 };

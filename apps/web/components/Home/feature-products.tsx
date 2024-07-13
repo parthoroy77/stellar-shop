@@ -6,7 +6,7 @@ const FeatureProducts = () => {
     <div className="flex flex-col gap-5 lg:flex-row">
       <div className="w-full lg:w-[20%]">
         <SideBanner
-          heading="Featured Products!!!"
+          heading="Featured Products"
           subHeading="Grab Before Stock Out"
           image="https://ninetheme.com/themes/fitment/wp-content/uploads/2024/01/2-300x300.png"
         />

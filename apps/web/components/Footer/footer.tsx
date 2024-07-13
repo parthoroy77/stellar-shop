@@ -70,7 +70,7 @@ const FooterInfo = () => (
 
 const FooterLinks = ({ title, items }: { title: string; items: { id: number; label: string; href: string }[] }) => (
   <div>
-    <h3 className="text-lg font-medium">{title}</h3>
+    <h4 className="text-lg font-medium">{title}</h4>
     <Separator className="bg-gray-300" />
     <ul className="space-y-2">
       {items.map((item) => (

@@ -49,7 +49,7 @@ const PopularBrands = () => {
           <SwiperSlide key={index}>
             <div className="flex w-fit flex-col items-center justify-center gap-2">
               <img className="h-[80px] w-[180px] rounded-md border object-contain p-3" src={img} alt="Brand Image" />
-              <h5>Basundhara</h5>
+              <h6 className="text-sm">Basundhara</h6>
             </div>
           </SwiperSlide>
         ))}

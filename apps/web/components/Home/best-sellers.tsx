@@ -21,7 +21,7 @@ const BestSellers = () => {
         </Button>
       </div>
       <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-5">
-        {Array.from({ length: 10 }).map((_x, index) => (
+        {Array.from({ length: 5 }).map((_x, index) => (
           <ProductCard key={index} />
         ))}
       </div>

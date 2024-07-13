@@ -63,7 +63,7 @@ const TrendingCategory = () => {
               src={image}
               alt="Slider Image"
             />
-            <h5 className="text-center text-sm uppercase tracking-wide">Brake</h5>
+            <h6 className="text-center text-sm uppercase tracking-wide">Brake</h6>
           </SwiperSlide>
         ))}
       </Swiper>
