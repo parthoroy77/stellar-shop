@@ -1,12 +1,16 @@
 import { Separator } from "@repo/ui";
-import CampaignSlider from "./campaign-slider";
 import HotDealsSlider from "./hot-deals-slider";
+import SideBanner from "./side-banner";
 
 const TodayHotDeals = () => {
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
       <div className="w-full lg:w-[20%]">
-        <CampaignSlider />
+        <SideBanner
+          heading="Grab Up Exciting Deals"
+          subHeading="Free Shipping Over $50"
+          className="bg-[url('https://ninetheme.com/themes/fitment/wp-content/uploads/2024/01/vertical-banner-2.png')] text-white"
+        />
       </div>
       <div className="w-full space-y-4 overflow-hidden lg:w-[80%]">
         <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">

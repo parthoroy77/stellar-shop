@@ -1,87 +1,60 @@
-import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@repo/ui";
+import { Button } from "@repo/ui";
 import { GoStarFill } from "react-icons/go";
 import { HiArrowPath, HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoEyeOutline } from "react-icons/io5";
 import { SlHeart } from "react-icons/sl";
+import TooltipComponent from "./tooltip-component";
 
 const ProductCard = () => {
   return (
-    <div className="hover:border-primary group relative flex flex-col justify-between divide-y rounded-md border duration-300 lg:min-h-[400px]">
-      <div className="relative flex justify-center p-3">
+    <div className="hover:border-primary group relative flex flex-col justify-between divide-y rounded-md border duration-300 *:p-3">
+      <div className="relative flex justify-center">
         <img
-          className="size-[130px] lg:size-[175px]"
+          className="size-[130px] lg:size-[150px]"
           src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/product1-300x300.jpeg"
           alt="Product Image"
         />
-        {/* <div className="absolute bottom-2 hidden w-[130px] justify-center gap-5 rounded-md border bg-white py-2 text-lg shadow-md *:cursor-pointer group-hover:flex">
-          <SlHeart title="Add To Wishlist" />
-          <HiArrowPath title="Add To Compare" />
-          <IoEyeOutline title="Quick Overview" />
-        </div> */}
       </div>
-      <div className="flex items-center justify-center gap-5 bg-white py-2 text-lg *:cursor-pointer">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <SlHeart />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Add To Wishlist</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <HiArrowPath />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Add To Compare</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <IoEyeOutline />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Quick Overview</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+      <div className="flex items-center justify-center gap-5 text-lg *:cursor-pointer">
+        <TooltipComponent tooltipContent="Add To Wishlist">
+          <SlHeart />
+        </TooltipComponent>
+        <TooltipComponent tooltipContent="Add To Compare">
+          <HiArrowPath />
+        </TooltipComponent>
+        <TooltipComponent tooltipContent="Quick Overview">
+          <IoEyeOutline />
+        </TooltipComponent>
       </div>
-      <div className="flex h-full flex-col justify-between gap-3 p-3">
-        <div className="space-y-2">
-          <h5 className="text-xs font-medium lg:text-sm">DNA Motoring TOOLS-00266 Green</h5>
-          <div className="flex items-center gap-2 text-xs font-medium text-gray-600">
+      <div className="space-y-3">
+        <h5 className="text-xs font-medium lg:text-sm">DNA Motoring TOOLS-00266 Green</h5>
+        <span className="block text-xs font-semibold uppercase text-green-700">IN STOCK</span>
+        <div className="flex items-center gap-2 text-xs font-medium text-gray-600">
+          <div className="flex items-center gap-1">
             <GoStarFill className="text-yellow-500" />
-            <span>4.3/5 (100)</span>|<span>200 Sold</span>
+            <span>4.3 / (100)</span>
           </div>
-          <p className="text-sm font-medium">
-            <strike>$9.99</strike> - $9.99
-          </p>
-          {/* <ul>
-            <li className="flex items-center gap-1 text-[10px]">
-              <IoCheckmarkSharp />5 YEARS GUARANTEE
-            </li>
-            <li className="flex items-center gap-1 text-[10px]">
-              <IoCheckmarkSharp />5 YEARS GUARANTEE
-            </li>
-            <li className="flex items-center gap-1 text-[10px]">
-              <IoCheckmarkSharp />5 YEARS GUARANTEE
-            </li>
-          </ul> */}
+          <span>|</span>
+          <span className="text-primary">200 Sold</span>
         </div>
       </div>
-      <div className="p-3">
-        <Button className="group/button flex w-full items-center justify-center gap-3 text-xs font-normal transition-all duration-300">
-          <span className="group-hover/button:hidden">Add To Cart</span>
-          <HiOutlineShoppingBag className="hidden text-xl opacity-0 group-hover/button:block group-hover/button:opacity-100" />
+      <div className="flex flex-row items-center justify-between gap-2">
+        <p className="flex items-end gap-2 text-xs font-medium lg:text-sm">
+          <span className="text-primary text-sm font-semibold lg:text-xl">$9.99</span>
+          <strike className="text-gray-400">$9.99</strike>
+        </p>
+        <Button
+          size={"sm"}
+          className="group/button flex h-fit w-fit items-center justify-center gap-2 rounded-full p-1 font-normal transition-all duration-300 lg:rounded-md lg:p-2"
+        >
+          <HiOutlineShoppingBag className="text-sm lg:text-lg" />
+          <span className="hidden lg:block">Add To Cart</span>
         </Button>
       </div>
       {/* Absolute Elements */}
-      <h6 className="bg-accent absolute left-1 top-1 rounded-md p-2 text-[9px] font-semibold uppercase">7% Off</h6>
+      <span className="bg-primary absolute left-1 top-1 rounded-md !px-2 !py-1 text-xs font-semibold uppercase text-white">
+        7% Off
+      </span>
     </div>
   );
 };

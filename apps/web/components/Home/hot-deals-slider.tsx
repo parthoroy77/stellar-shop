@@ -18,6 +18,7 @@ const HotDealsSlider = () => {
         pauseOnMouseEnter: true,
       }}
       slidesPerView={2}
+      pagination={{ clickable: true }}
       spaceBetween={5}
       breakpoints={{
         640: {
