@@ -4,13 +4,14 @@ import colors from "colors";
 import { Server } from "http";
 import app from "./app";
 import config from "./app/config";
+import logger from "./app/logger";
 let server: Server;
 
 async function main() {
   try {
     await prisma.$connect();
     server = app.listen(config.port, () => {
-      console.log(colors.green.bold(`Server listening on port ${config.port} ✔️`));
+      logger.info(colors.green.bold(`Server listening on port ${config.port} ✔️`));
     });
   } catch (error) {
     console.error(colors.red.bold("Error connecting to database:"), error);
@@ -22,7 +23,7 @@ main();
 
 // Handle unhandledRejection
 process.on("unhandledRejection", (error) => {
-  console.error(colors.red.bold("Unhandled Rejection Error:"), error);
+  logger.error(colors.red.bold("Unhandled Rejection Error:"), error);
   if (server) {
     server.close(() => {
       prisma.$disconnect();

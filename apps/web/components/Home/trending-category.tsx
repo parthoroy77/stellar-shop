@@ -26,7 +26,8 @@ const TrendingCategory = () => {
       <div className="flex items-center justify-between">
         <h5 className="text-sm font-semibold tracking-wide lg:text-xl">Trending Categories</h5>
         <Button
-          className="border-primary flex items-center gap-3 rounded-3xl px-8 text-xs lg:w-[200px] lg:text-base"
+          size={"sm"}
+          className="border-primary flex items-center gap-3 rounded-3xl text-xs lg:w-[200px] lg:text-sm"
           variant={"outline"}
         >
           All Categories
