@@ -5,10 +5,10 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "../../styles/slider.css";
 import ProductCard from "../ui/product-card";
-const HotDealsSlider = () => {
+const ProductsSlider = () => {
   return (
     <Swiper
-      className="mySwiper bg-gray-100"
+      className="mySwiper"
       modules={[Navigation, Autoplay]}
       navigation={true}
       loop={true}
@@ -44,4 +44,4 @@ const HotDealsSlider = () => {
   );
 };
 
-export default HotDealsSlider;
+export default ProductsSlider;

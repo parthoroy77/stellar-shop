@@ -1,5 +1,5 @@
 import { Separator } from "@repo/ui";
-import HotDealsSlider from "./hot-deals-slider";
+import ProductsSlider from "./products-slider";
 import SideBanner from "./side-banner";
 
 const TodayHotDeals = () => {
@@ -35,7 +35,7 @@ const TodayHotDeals = () => {
             </div>
           </div>
         </div>
-        <HotDealsSlider />
+        <ProductsSlider />
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import HotDealsSlider from "./hot-deals-slider";
+import ProductsSlider from "./products-slider";
 import SideBanner from "./side-banner";
 
 const FeatureProducts = () => {
@@ -12,7 +12,7 @@ const FeatureProducts = () => {
         />
       </div>
       <div className="w-full space-y-5 lg:w-[80%]">
-        <HotDealsSlider />
+        <ProductsSlider />
       </div>
     </div>
   );

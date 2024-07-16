@@ -4,6 +4,7 @@ import FeatureProducts from "../../components/Home/feature-products";
 import HeroSection from "../../components/Home/hero-section";
 import NewArrivals from "../../components/Home/new-arrivals";
 import PopularBrands from "../../components/Home/popular-brands";
+import PopularProducts from "../../components/Home/popular-products";
 import PromotionBanner from "../../components/Home/promotion-banner";
 import TodayHotDeals from "../../components/Home/today-hot-deals";
 import TrendingCategory from "../../components/Home/trending-category";
@@ -16,6 +17,7 @@ export default function Home() {
       <DiscountPanel />
       <FeatureProducts />
       <TrendingCategory />
+      <PopularProducts />
       <PromotionBanner />
       <NewArrivals />
       <DiscountPanel />
