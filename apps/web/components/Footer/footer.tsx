@@ -10,7 +10,7 @@ import Logo from "../ui/logo";
 
 const Footer = () => {
   return (
-    <div className="bg-accent/55 lg:mt-20">
+    <div className="bg-accent/55 lg:mt-10">
       <Container>
         <div className="relative flex h-full flex-col justify-between">
           <NewsletterSection />
