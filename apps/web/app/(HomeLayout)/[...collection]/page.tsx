@@ -25,7 +25,9 @@ const ProductSearchPage: FC<ProductSearchPageProps> = ({ params }) => {
               <SelectContent>
                 <SelectGroup>
                   {productsPerViewOptions.map((op) => (
-                    <SelectItem value={op.value.toString()}>{op.label}</SelectItem>
+                    <SelectItem key={op.value} value={op.value.toString()}>
+                      {op.label}
+                    </SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>
@@ -37,7 +39,9 @@ const ProductSearchPage: FC<ProductSearchPageProps> = ({ params }) => {
               <SelectContent>
                 <SelectGroup>
                   {sortOptions.map((op) => (
-                    <SelectItem value={op.value}>{op.label}</SelectItem>
+                    <SelectItem key={op.value} value={op.value}>
+                      {op.label}
+                    </SelectItem>
                   ))}
                 </SelectGroup>
               </SelectContent>
