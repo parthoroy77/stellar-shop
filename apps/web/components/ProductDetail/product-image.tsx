@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -37,7 +36,6 @@ const sliderImages = [
 
 const ProductImage = () => {
   const [activeThumb, setActiveThumb] = useState<SwiperType | null>(null);
-
   return (
     <div className="h-full space-y-5 rounded-md p-4">
       <Swiper
@@ -58,7 +56,7 @@ const ProductImage = () => {
             <div>
               <img
                 src={image.image}
-                className="h-[400px] w-full rounded-md object-fill"
+                className="h-[400px] w-full transform rounded-md object-fill transition-transform duration-500 ease-in-out hover:scale-110"
                 alt={`Product image ${index + 1}`}
               />
             </div>
@@ -68,23 +66,21 @@ const ProductImage = () => {
 
       <Swiper
         onSwiper={setActiveThumb}
-        loop={true}
         spaceBetween={10}
         slidesPerView={4}
-        modules={[Navigation, Thumbs, Autoplay]}
-        navigation={true}
+        modules={[Thumbs, Autoplay]}
         autoplay={{
-          delay: 500,
+          delay: 3500,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
       >
         {sliderImages.map((image, index) => (
           <SwiperSlide key={image.id}>
-            <div>
+            <div className="border-primary flex size-[90px] items-center justify-center rounded-md border-2 border-none p-1">
               <img
                 src={image.image}
-                className="size-[100px] rounded-sm object-fill object-center"
+                className="h-full w-full rounded-sm object-fill object-center"
                 alt={`Thumbnail image ${index + 1}`}
               />
             </div>
