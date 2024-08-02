@@ -1,8 +1,29 @@
+import ProductImage from "../../../../components/ProductDetail/product-image";
+
 const ProductDetailPage = () => {
   return (
     <div className="py-5 lg:py-10">
       {/* Web Layout */}
-      
+      <div className="hidden grid-cols-12 gap-4 lg:grid">
+        <div className="col-span-9 grid grid-cols-12 gap-4">
+          <div className="col-span-6 flex flex-col gap-5 *:border *:p-4">
+            <ProductImage />
+            <OptionalInfo />
+          </div>
+          <div className="col-span-6 flex flex-col gap-5 *:border *:p-4">
+            <ProductMainInfo />
+            <PriceRatingBadgeOptions />
+            <PreferenceOptions />
+            <div>
+              <button>Buy Now</button>
+            </div>
+          </div>
+        </div>
+        <div className="col-span-3 flex flex-col gap-5 *:border *:p-4">
+          <DeliveryPaymentInfo />
+          <SellerInfo />
+        </div>
+      </div>
       {/* Mobile Layout */}
       <div className="space-y-5 *:border *:p-4 lg:hidden">
         <ProductImageSlider />
