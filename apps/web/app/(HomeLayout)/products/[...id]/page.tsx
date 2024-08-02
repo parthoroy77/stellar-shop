@@ -1,4 +1,5 @@
-import ProductImage from "../../../../components/ProductDetail/product-image";
+import ProductImageSlider from "../../../../components/ProductDetail/product-image-slider";
+import ProductInfoPanel from "../../../../components/ProductDetail/product-info-panel";
 
 const ProductDetailPage = () => {
   return (
@@ -6,17 +7,12 @@ const ProductDetailPage = () => {
       {/* Web Layout */}
       <div className="hidden grid-cols-12 gap-4 lg:grid">
         <div className="col-span-9 grid grid-cols-12 gap-4">
-          <div className="col-span-6 flex flex-col gap-5 *:border *:p-4">
-            <ProductImage />
+          <div className="col-span-6 flex flex-col *:border *:p-4">
+            <ProductImageSlider />
             <OptionalInfo />
           </div>
-          <div className="col-span-6 flex flex-col gap-5 *:border *:p-4">
-            <ProductMainInfo />
-            <PriceRatingBadgeOptions />
-            <PreferenceOptions />
-            <div>
-              <button>Buy Now</button>
-            </div>
+          <div className="col-span-6 flex flex-col gap-5">
+            <ProductInfoPanel />
           </div>
         </div>
         <div className="col-span-3 flex flex-col gap-5 *:border *:p-4">
@@ -45,7 +41,6 @@ const ProductDetailPage = () => {
   );
 };
 
-const ProductImageSlider = () => <div>Product Image Slider with magnification effect</div>;
 const ProductMainInfo = () => <div>Product main infos</div>;
 const PriceRatingBadgeOptions = () => <div>Price & Ratings & Badges & Options</div>;
 const DeliveryPaymentInfo = () => <div>Delivery Infos & Payment Infos</div>;

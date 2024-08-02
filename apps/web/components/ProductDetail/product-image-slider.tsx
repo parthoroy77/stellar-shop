@@ -34,10 +34,10 @@ const sliderImages = [
   },
 ];
 
-const ProductImage = () => {
+const ProductImageSlider = () => {
   const [activeThumb, setActiveThumb] = useState<SwiperType | null>(null);
   return (
-    <div className="h-full space-y-5 rounded-md p-4">
+    <div className="bg-muted-foreground/15 h-full space-y-5 rounded-md p-4">
       <Swiper
         loop={true}
         spaceBetween={10}
@@ -63,7 +63,6 @@ const ProductImage = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-
       <Swiper
         onSwiper={setActiveThumb}
         spaceBetween={10}
@@ -91,4 +90,4 @@ const ProductImage = () => {
   );
 };
 
-export default ProductImage;
+export default ProductImageSlider;
