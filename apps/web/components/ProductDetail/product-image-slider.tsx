@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { CSSProperties, MouseEvent, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
@@ -7,6 +7,7 @@ import { Autoplay, Navigation, Thumbs } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Swiper as SwiperType } from "swiper/types";
 import "../../styles/slider.css";
+
 const sliderImages = [
   {
     id: 1,
@@ -34,16 +35,47 @@ const sliderImages = [
   },
 ];
 
+type ZoomStyles = {
+  display: string;
+  zoomX: string;
+  zoomY: string;
+};
+
 const ProductImageSlider = () => {
   const [activeThumb, setActiveThumb] = useState<SwiperType | null>(null);
+  const [zoomStyles, setZoomStyles] = useState<ZoomStyles>({
+    display: "none",
+    zoomX: "0%",
+    zoomY: "0%",
+  });
+  const handleMouseMove = (event: MouseEvent<HTMLDivElement>, image: string) => {
+    const target = event.target as HTMLDivElement;
+    const { offsetX, offsetY } = event.nativeEvent;
+    const { offsetWidth, offsetHeight } = target;
+
+    const pointer = {
+      x: (offsetX * 100) / offsetWidth,
+      y: (offsetY * 100) / offsetHeight,
+    };
+
+    setZoomStyles({
+      display: "block",
+      zoomX: `${pointer.x}%`,
+      zoomY: `${pointer.y}%`,
+    });
+  };
+
+  const handleMouseOut = () => {
+    setZoomStyles({ ...zoomStyles, display: "none" });
+  };
+
   return (
     <div className="bg-muted-foreground/15 h-full space-y-5 rounded-md p-4">
       <Swiper
-        loop={true}
+        loop
         spaceBetween={10}
-        navigation={true}
+        navigation
         modules={[Navigation, Thumbs]}
-        grabCursor={true}
         thumbs={{ swiper: activeThumb }}
         autoplay={{
           delay: 3500,
@@ -53,11 +85,35 @@ const ProductImageSlider = () => {
       >
         {sliderImages.map((image, index) => (
           <SwiperSlide key={image.id}>
-            <div>
+            <div
+              className="relative h-[400px] w-full cursor-zoom-in overflow-hidden rounded-md"
+              style={
+                {
+                  "--display": zoomStyles.display,
+                  "--zoom-x": zoomStyles.zoomX,
+                  "--zoom-y": zoomStyles.zoomY,
+                  "--url": `url(${image.image})`,
+                } as CSSProperties
+              }
+              onMouseMove={(event) => handleMouseMove(event, image.image)}
+              onMouseOut={handleMouseOut}
+            >
               <img
                 src={image.image}
-                className="h-[400px] w-full transform rounded-md object-fill transition-transform duration-500 ease-in-out hover:scale-110"
+                className="h-full w-full object-cover object-top"
                 alt={`Product image ${index + 1}`}
+              />
+              <div
+                className="absolute inset-0"
+                style={
+                  {
+                    display: zoomStyles.display,
+                    backgroundColor: "black",
+                    backgroundImage: `url(${image.image})`,
+                    backgroundSize: "200%",
+                    backgroundPosition: `${zoomStyles.zoomX} ${zoomStyles.zoomY}`,
+                  } as CSSProperties
+                }
               />
             </div>
           </SwiperSlide>
@@ -65,7 +121,7 @@ const ProductImageSlider = () => {
       </Swiper>
       <Swiper
         onSwiper={setActiveThumb}
-        spaceBetween={10}
+        spaceBetween={5}
         slidesPerView={4}
         modules={[Thumbs, Autoplay]}
         autoplay={{
@@ -76,7 +132,7 @@ const ProductImageSlider = () => {
       >
         {sliderImages.map((image, index) => (
           <SwiperSlide key={image.id}>
-            <div className="border-primary flex size-[90px] items-center justify-center rounded-md border-2 border-none p-1">
+            <div className="border-primary flex size-[90px] cursor-pointer items-center justify-center rounded-md border-2 border-none p-1">
               <img
                 src={image.image}
                 className="h-full w-full rounded-sm object-fill object-center"
