@@ -1,4 +1,5 @@
 import { Button, Checkbox, Input, Label, Separator } from "@repo/ui";
+import Link from "next/link";
 import { FaFacebook, FaGoogle } from "react-icons/fa6";
 import OrDivider from "../ui/or-divider";
 
@@ -33,9 +34,9 @@ const LoginForm = () => {
         </Button>
       </div>
       <Separator />
-      <span className="text-accent-foreground block cursor-pointer text-center text-lg hover:underline">
+      <Link href={"/register"} className="text-accent-foreground block cursor-pointer text-center hover:underline">
         Don't have an account? Register Now
-      </span>
+      </Link>
     </form>
   );
 };
