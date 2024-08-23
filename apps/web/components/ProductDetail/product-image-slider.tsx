@@ -70,7 +70,7 @@ const ProductImageSlider = () => {
   };
 
   return (
-    <div className="bg-muted-foreground/15 h-full space-y-5 rounded-md p-4">
+    <div className="bg-muted-foreground/15 h-fit space-y-5 rounded-md">
       <Swiper
         loop
         spaceBetween={10}
@@ -86,7 +86,7 @@ const ProductImageSlider = () => {
         {sliderImages.map((image, index) => (
           <SwiperSlide key={image.id}>
             <div
-              className="relative h-[400px] w-full cursor-zoom-in overflow-hidden rounded-md"
+              className="relative w-full cursor-zoom-in overflow-hidden rounded-sm"
               style={
                 {
                   "--display": zoomStyles.display,
@@ -100,7 +100,7 @@ const ProductImageSlider = () => {
             >
               <img
                 src={image.image}
-                className="h-full w-full object-cover object-top"
+                className="aspect-auto h-[300px] w-full rounded-sm object-cover object-top lg:h-[400px]"
                 alt={`Product image ${index + 1}`}
               />
               <div
@@ -121,13 +121,27 @@ const ProductImageSlider = () => {
       </Swiper>
       <Swiper
         onSwiper={setActiveThumb}
-        spaceBetween={5}
-        slidesPerView={4}
         modules={[Thumbs, Autoplay]}
         autoplay={{
           delay: 3500,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
+        }}
+        slidesPerView={3}
+        spaceBetween={5}
+        breakpoints={{
+          640: {
+            slidesPerView: 3,
+            spaceBetween: 5,
+          },
+          768: {
+            slidesPerView: 4,
+            spaceBetween: 5,
+          },
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 5,
+          },
         }}
       >
         {sliderImages.map((image, index) => (

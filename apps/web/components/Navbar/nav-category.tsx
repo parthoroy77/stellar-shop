@@ -86,7 +86,7 @@ const NavCategory = () => {
         All Categories
         <BiChevronDown />
       </div>
-      <div className="invisible absolute top-11 z-20 h-fit w-full divide-y rounded-md border bg-white opacity-0 shadow-md duration-300 group-hover/parent:visible group-hover/parent:opacity-100">
+      <div className="invisible absolute top-12 z-20 h-fit w-full divide-y rounded-md border bg-white opacity-0 shadow-md duration-300 group-hover/parent:visible group-hover/parent:opacity-100">
         {collections.map((collection, index) => (
           <CollectionItem key={index} collection={collection} />
         ))}

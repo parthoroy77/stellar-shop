@@ -28,15 +28,14 @@ const ProductCard = () => {
             <IoEyeOutline />
           </TooltipComponent>
         </div>
-        <div className="space-y-3">
+        <div className="space-y-2">
           <h5 className="text-xs font-medium lg:text-sm">DNA Motoring TOOLS-00266 Green</h5>
           <span className="block text-xs font-semibold uppercase text-green-700">IN STOCK</span>
-          <div className="flex items-center gap-2 text-xs font-medium text-gray-600">
+          <div className="flex flex-col gap-2 text-xs font-medium text-gray-600 md:flex-row md:items-center">
             <div className="flex items-center gap-1">
               <GoStarFill className="text-yellow-500" />
               <span>4.3 / (100)</span>
             </div>
-            <span>|</span>
             <span className="text-primary">200 Sold</span>
           </div>
         </div>
