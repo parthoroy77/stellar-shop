@@ -7,7 +7,7 @@ const ProductDetailPage = () => {
       {/* Web Layout */}
       <div className="hidden grid-cols-12 gap-4 lg:grid">
         <div className="col-span-9 grid grid-cols-12 gap-4">
-          <div className="col-span-6 flex flex-col *:border *:p-4">
+          <div className="col-span-6 flex flex-col space-y-5 *:border *:p-4">
             <ProductImageSlider />
             <OptionalInfo />
           </div>

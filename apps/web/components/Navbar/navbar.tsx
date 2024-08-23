@@ -8,9 +8,7 @@ const Navbar = () => {
         <NavHeader />
         <NavigationLinks />
       </div>
-      <div className="border-b-2 shadow-sm lg:hidden">
-        <MobileNav />
-      </div>
+      <MobileNav />
     </>
   );
 };
