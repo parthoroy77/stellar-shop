@@ -5,10 +5,10 @@ const NavSearchBar = () => {
   return (
     <div className="flex h-[45px] items-center">
       <Input
-        placeholder="Search For Products"
-        className="bg-accent/40 focus:border-primary peer right-0 h-full rounded-r-none border-r-0 px-5 text-xs text-black outline-none placeholder:text-gray-600 md:text-base lg:h-[97%] lg:min-w-[550px]"
+        placeholder="Search everything at your stellar shop..."
+        className="bg-accent/40 focus:border-primary peer right-0 h-full rounded-r-none border-r-0 px-5 text-xs text-black outline-none placeholder:text-xs placeholder:text-gray-400 lg:h-[97%] lg:min-w-[550px]"
       />
-      <span className="bg-accent/40 text-primary peer-focus:border-primary flex h-full items-center rounded-sm rounded-l-none border px-4 text-xl peer-focus:border lg:px-5">
+      <span className="text-primary border-primary bg-primary flex h-full items-center rounded-md rounded-l-none border px-4 text-2xl text-white lg:px-3">
         <CgSearch />
       </span>
     </div>

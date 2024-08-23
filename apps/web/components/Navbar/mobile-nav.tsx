@@ -14,7 +14,7 @@ const MobileNav = () => {
       <Container className={`flex flex-col gap-5 py-5`}>
         <NavSearchBar />
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-2">
             <RxHamburgerMenu onClick={() => setIsOpen((prev) => !prev)} className="text-2xl" />
             <Logo />
           </div>

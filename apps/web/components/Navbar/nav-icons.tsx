@@ -5,7 +5,7 @@ import TooltipComponent from "../ui/tooltip-component";
 
 const NavIcons = () => {
   return (
-    <div className="flex gap-5 text-xl">
+    <div className="flex gap-3 text-lg lg:text-xl">
       <TooltipComponent tooltipContent="View Shopping Cart">
         <PiShoppingCartSimple />
       </TooltipComponent>
