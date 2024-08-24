@@ -8,10 +8,24 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "../../styles/slider.css";
 
 const banners = [
-  { img: "https://klbtheme.com/bevesi/wp-content/uploads/2024/04/slider-01.jpg" },
-  { img: "https://klbtheme.com/bevesi/wp-content/uploads/2024/04/slider-02.jpg" },
-  { img: "https://klbtheme.com/bevesi/wp-content/uploads/2024/04/slider-03.jpg" },
-  { img: "https://klbtheme.com/bevesi/wp-content/uploads/2024/04/slider-01.jpg" },
+  {
+    heading: "Everyday Essentials, Exceptional Prices.",
+    subHeading:
+      "We have prepared the most special discounts for you on the most popular products you need. Don't miss these opportunities...",
+    img: "https://klbtheme.com/bevesi/wp-content/uploads/2024/04/slider-01.jpg",
+  },
+  {
+    heading: "The most ingenious pet products on the planet!",
+    subHeading:
+      "We have prepared the most special discounts for you on the most popular products you need. Don't miss these opportunities...",
+    img: "https://klbtheme.com/bevesi/wp-content/uploads/2024/04/slider-02.jpg",
+  },
+  {
+    heading: "Have your groceries delivered at any time.",
+    subHeading:
+      "We have prepared the most special discounts for you on the most popular products you need. Don't miss these opportunities...",
+    img: "https://klbtheme.com/bevesi/wp-content/uploads/2024/04/slider-03.jpg",
+  },
 ];
 
 const HeroBanner = () => {
@@ -28,7 +42,7 @@ const HeroBanner = () => {
         modules={[Navigation, Autoplay]}
         className="h-full w-full"
       >
-        {banners.map(({ img }, index) => (
+        {banners.map(({ img, heading, subHeading }, index) => (
           <SwiperSlide key={index}>
             <div className="relative h-full w-full">
               <img
@@ -38,12 +52,9 @@ const HeroBanner = () => {
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-gray-900 to-black opacity-50" />
-              <div className="absolute inset-0 flex flex-col justify-center gap-6 p-8 text-white">
-                <h1 className="text-3xl font-semibold lg:text-4xl">Trends Car Rims</h1>
-                <p className="text-sm lg:w-[80%] lg:text-lg">
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam, tempora voluptates dicta incidunt
-                  commodi magni maxime nobis debitis nesciunt obcaecati dolorem a.
-                </p>
+              <div className="absolute inset-0 flex flex-col justify-center gap-6 p-12 text-white">
+                <h1 className="w-full text-3xl font-semibold lg:w-[60%] lg:text-4xl">{heading}</h1>
+                <p className="text-sm lg:w-[80%] lg:text-base">{subHeading}</p>
                 <div className="space-x-3">
                   <Button className="px-8 text-sm text-white" size="sm">
                     Shop Now!!

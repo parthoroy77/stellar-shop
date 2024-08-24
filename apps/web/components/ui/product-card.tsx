@@ -1,4 +1,4 @@
-import { Button } from "@repo/ui";
+import { Badge, Button } from "@repo/ui";
 import Link from "next/link";
 import { GoStarFill } from "react-icons/go";
 import { HiArrowPath, HiOutlineShoppingBag } from "react-icons/hi2";
@@ -30,13 +30,15 @@ const ProductCard = () => {
         </div>
         <div className="space-y-2">
           <h5 className="text-xs font-medium lg:text-sm">DNA Motoring TOOLS-00266 Green</h5>
-          <span className="block text-xs font-semibold uppercase text-green-700">IN STOCK</span>
-          <div className="flex flex-col gap-2 text-xs font-medium text-gray-600 md:flex-row md:items-center">
-            <div className="flex items-center gap-1">
+          <div className="flex flex-wrap justify-between gap-2">
+            <Badge variant={"success"} className="rounded-md uppercase">
+              In Stock
+            </Badge>
+            <Badge className="text-primary-foreground flex w-fit items-center justify-center gap-2 rounded-md border-yellow-500 bg-yellow-100 uppercase">
               <GoStarFill className="text-yellow-500" />
               <span>4.3 / (100)</span>
-            </div>
-            <span className="text-primary">200 Sold</span>
+            </Badge>
+            <Badge className="rounded-md uppercase">200 Sold</Badge>
           </div>
         </div>
         <div className="flex flex-row items-center justify-between gap-2">
@@ -53,7 +55,7 @@ const ProductCard = () => {
           </Button>
         </div>
         {/* Absolute Elements */}
-        <span className="bg-primary absolute left-1 top-1 rounded-md !px-2 !py-1 text-xs font-semibold uppercase text-white">
+        <span className="text-muted-foreground absolute left-1 top-1 rounded-md bg-green-800 !px-2 !py-1 text-xs font-semibold uppercase">
           7% Off
         </span>
       </div>

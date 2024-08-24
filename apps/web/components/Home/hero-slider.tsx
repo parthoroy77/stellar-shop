@@ -17,7 +17,7 @@ const HeroSlider = () => {
         navigation={true}
         loop={true}
         autoplay={{
-          delay: 2500,
+          delay: 4500,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
