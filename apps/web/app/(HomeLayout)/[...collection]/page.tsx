@@ -1,8 +1,8 @@
+import SideFilters from "@/components/ProductSearchPage/side-filters";
+import ProductCard from "@/components/ui/product-card";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { productsPerViewOptions, sortOptions } from "@repo/utils/constants";
 import { FC } from "react";
-import SideFilters from "../../../components/ProductSearchPage/side-filters";
-import ProductCard from "../../../components/ui/product-card";
 interface ProductSearchPageProps {
   params: {
     collections: string[];

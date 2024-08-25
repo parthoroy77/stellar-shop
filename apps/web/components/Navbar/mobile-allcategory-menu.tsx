@@ -1,5 +1,4 @@
-import { useCallback, useState } from "react";
-import { collections } from "../../dummyData/nav-categories";
+import { collections } from "@/dummyData/nav-categories";
 import MobileCollectionMenu from "./mobile-collection-menu";
 export type Product = {
   label: string;

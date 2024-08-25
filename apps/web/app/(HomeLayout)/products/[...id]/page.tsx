@@ -1,7 +1,6 @@
-import ProductImageSlider from "@root/components/ProductDetail/product-image-slider";
-import ProductInfoPanel from "@root/components/ProductDetail/product-info-panel";
-import products from "@root/dummyData/products.json";
-
+import ProductImageSlider from "@/components/ProductDetail/product-image-slider";
+import ProductInfoPanel from "@/components/ProductDetail/product-info-panel";
+import products from "@/dummyData/products.json";
 const ProductDetailPage = () => {
   console.log(products[0]);
   return (

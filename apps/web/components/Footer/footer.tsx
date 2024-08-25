@@ -4,9 +4,9 @@ import { BsShop } from "react-icons/bs";
 import { FaFacebook, FaInstagram, FaPinterest, FaTwitter } from "react-icons/fa6";
 import { MdOutlineEmail } from "react-icons/md";
 import { PiTelegramLogo } from "react-icons/pi";
-import { aboutItems, corporateLinks, quickLinks, usefulLinks } from "../../constants/footer-data";
 import Container from "../ui/container";
 import Logo from "../ui/logo";
+import { aboutItems, corporateLinks, quickLinks, usefulLinks } from "@/constants/footer-data";
 
 const Footer = () => {
   return (

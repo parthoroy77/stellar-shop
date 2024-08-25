@@ -1,7 +1,7 @@
+import { collections } from "@/dummyData/nav-categories";
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { CiShoppingCart } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { collections } from "../../dummyData/nav-categories";
 
 type Product = {
   label: string;
