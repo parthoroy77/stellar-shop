@@ -70,7 +70,7 @@ const ProductImageSlider = () => {
   };
 
   return (
-    <div className="bg-muted-foreground/15 h-fit space-y-5 rounded-md">
+    <div className="bg-muted-foreground/15 h-fit space-y-5 rounded-md border p-4">
       <Swiper
         loop
         spaceBetween={10}
