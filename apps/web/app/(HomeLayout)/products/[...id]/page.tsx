@@ -1,6 +1,5 @@
 import ProductImageSlider from "../../../../components/ProductDetail/product-image-slider";
 import ProductInfoPanel from "../../../../components/ProductDetail/product-info-panel";
-
 const ProductDetailPage = () => {
   return (
     <div className="py-5 lg:py-10">
