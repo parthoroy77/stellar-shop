@@ -1,6 +1,9 @@
-import ProductImageSlider from "../../../../components/ProductDetail/product-image-slider";
-import ProductInfoPanel from "../../../../components/ProductDetail/product-info-panel";
+import ProductImageSlider from "@root/components/ProductDetail/product-image-slider";
+import ProductInfoPanel from "@root/components/ProductDetail/product-info-panel";
+import products from "@root/dummyData/products.json";
+
 const ProductDetailPage = () => {
+  console.log(products[0]);
   return (
     <div className="py-5 lg:py-10">
       {/* Web Layout */}

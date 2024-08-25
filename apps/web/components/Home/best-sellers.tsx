@@ -1,13 +1,4 @@
-import {
-  Button,
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@repo/ui";
+import { Button } from "@repo/ui";
 import { BsArrowRight } from "react-icons/bs";
 import ProductCard from "../ui/product-card";
 
@@ -24,32 +15,6 @@ const BestSellers = () => {
         {Array.from({ length: 5 }).map((_x, index) => (
           <ProductCard key={index} />
         ))}
-      </div>
-      <div>
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="/">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="/" isActive>
-                2
-              </PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="/">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
       </div>
     </div>
   );
