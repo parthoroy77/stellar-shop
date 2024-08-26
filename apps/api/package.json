@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
-    "build": "tsc",
+    "build": "npx esbuild ./src/server.ts --bundle --platform=node --outfile=dist/server.js",
     "start": "node ./dist/server.js",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts",
     "lint:fix": "npx eslint src --fix",
@@ -38,6 +38,7 @@
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
+    "esbuild": "^0.23.1",
     "eslint": "^9.5.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.5.2"
