@@ -1,53 +1,43 @@
 import { collections } from "@/dummyData/nav-categories";
+import { ICategory } from "@repo/utils/types";
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { CiShoppingCart } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
 
-type Product = {
-  label: string;
+type TCategory = ICategory & {
+  subCategories: TCategory[];
 };
 
-type Subcategory = {
-  label: string;
-  subcategories?: Subcategory[];
-  products?: Product[];
-};
-
-type Collection = {
-  label: string;
-  categories?: Subcategory[];
-};
-
-const SubcategoryItem = ({ subcategory }: { subcategory: Subcategory }) => {
+const SubcategoryItem = ({ subcategory }: { subcategory: ICategory }) => {
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center rounded-md border p-1">
       <img
         className="size-12 rounded-full"
         src="https://img.alicdn.com/imgextra/i1/O1CN01qAJb8h20ZJ5HJQ3S2_!!6000000006863-0-tps-240-240.jpg"
         alt="Sub Category Images"
       />
-      <span className="text-center text-xs text-gray-500">{subcategory.label}</span>
+      <span className="text-center text-xs text-gray-500">{subcategory?.categoryName}</span>
     </div>
   );
 };
 
-const CategoryItem = ({ category }: { category: Subcategory }) => {
+const CategoryItem = ({ category }: { category: TCategory }) => {
   return (
     <div className="group/category relative">
       <div className="flex cursor-pointer justify-between px-4 py-3 text-sm font-medium text-gray-600">
         <span className="flex items-center gap-2">
           <CiShoppingCart className="text-xl" />
-          {category.label}
+          {category.categoryName}
         </span>
-        {category.subcategories && <BiChevronRight className="duration-300 group-hover/category:rotate-90" />}
+        {category?.subCategories && <BiChevronRight className="duration-300 group-hover/category:rotate-90" />}
       </div>
-      {category.subcategories && (
+      {category.subCategories && (
         <div
-          className={`invisible absolute left-[251px] top-0 min-w-[600px] rounded-md border bg-white p-4 opacity-0 shadow-md duration-300 group-hover/category:visible group-hover/category:opacity-100 ${category.subcategories && "space-y-3"}`}
+          className={`invisible absolute left-[251px] top-0 min-w-[600px] rounded-md border bg-white p-4 opacity-0 shadow-md duration-300 group-hover/category:visible group-hover/category:opacity-100 ${category.subCategories && "space-y-3"}`}
         >
-          <span>{category.label}</span>
-          <div className="grid grid-cols-5 gap-3 divide-x">
-            {category.subcategories.map((subcategory, index) => (
+          <span>{category.categoryName}</span>
+          <div className="grid grid-cols-5 gap-3">
+            {category.subCategories.map((subcategory, index) => (
               <SubcategoryItem key={index} subcategory={subcategory} />
             ))}
           </div>
@@ -57,20 +47,20 @@ const CategoryItem = ({ category }: { category: Subcategory }) => {
   );
 };
 
-const CollectionItem = ({ collection }: { collection: Collection }) => {
+const CollectionItem = ({ collection }: { collection: TCategory }) => {
   return (
     <div className="group/collection relative">
       <div className="flex cursor-pointer justify-between px-4 py-3 text-sm font-medium text-gray-600">
         <span className="flex items-center gap-2">
           <CiShoppingCart className="text-xl" />
-          {collection.label}
+          {collection.categoryName}
         </span>
-        {collection.categories && <BiChevronRight className="duration-300 group-hover/collection:rotate-90" />}
+        {collection.subCategories && <BiChevronRight className="duration-300 group-hover/collection:rotate-90" />}
       </div>
-      {collection.categories && (
+      {collection.subCategories && (
         <div className="invisible absolute left-[251px] top-0 min-w-[250px] divide-y rounded-md border bg-white opacity-0 shadow-md duration-300 group-hover/collection:visible group-hover/collection:opacity-100">
-          {collection.categories.map((category, index) => (
-            <CategoryItem key={index} category={category} />
+          {collection.subCategories.map((category, i) => (
+            <CategoryItem key={i} category={category} />
           ))}
         </div>
       )}
@@ -87,8 +77,8 @@ const NavCategory = () => {
         <BiChevronDown />
       </div>
       <div className="invisible absolute top-12 z-20 h-fit w-full divide-y rounded-md border bg-white opacity-0 shadow-md duration-300 group-hover/parent:visible group-hover/parent:opacity-100">
-        {collections.map((collection, index) => (
-          <CollectionItem key={index} collection={collection} />
+        {collections.map((collection, i) => (
+          <CollectionItem key={i} collection={collection as TCategory} />
         ))}
       </div>
     </div>
