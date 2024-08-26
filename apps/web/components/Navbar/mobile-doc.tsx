@@ -1,35 +1,55 @@
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
-import { BiCategoryAlt } from "react-icons/bi";
-import { HiOutlineHome } from "react-icons/hi2";
-import { PiShoppingCartSimple } from "react-icons/pi";
-import { SlHeart } from "react-icons/sl";
-const MobileDoc = ({ setIsOpen }: { setIsOpen: React.Dispatch<React.SetStateAction<boolean>> }) => {
+import { BiCategoryAlt, BiSolidCategoryAlt } from "react-icons/bi";
+import { HiMiniHome, HiOutlineHome } from "react-icons/hi2";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
+import { PiShoppingCartSimple, PiShoppingCartSimpleFill } from "react-icons/pi";
+
+const mobileDocItems = [
+  { label: "Home", ActiveIcon: HiMiniHome, InActiveIcon: HiOutlineHome, href: "/" },
+  { label: "Category", ActiveIcon: BiSolidCategoryAlt, InActiveIcon: BiCategoryAlt, href: null },
+  { label: "Wishlist", ActiveIcon: IoMdHeart, InActiveIcon: IoMdHeartEmpty, href: "/wishlist" },
+  { label: "Cart", ActiveIcon: PiShoppingCartSimpleFill, InActiveIcon: PiShoppingCartSimple, href: "/cart" },
+];
+
+interface MobileDocProps {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+// Memoize the MobileDoc component for performance optimization
+const MobileDoc: React.FC<MobileDocProps> = React.memo(({ setIsOpen, isOpen }) => {
+  const pathname = usePathname();
+
   return (
-    <div className="text-primary-foreground fixed bottom-0 z-50 flex w-full items-center justify-evenly gap-4 border-t-2 bg-white px-4 py-3 text-xs md:hidden">
-      {/* <div className="bg-primary text-background fixed -bottom-1 z-50 flex w-full items-center justify-center gap-5 py-3 md:hidden"> */}
-      {/* home */}
-      <Link href={"/"} className="flex flex-col items-center justify-center">
-        <HiOutlineHome size={20} />
-        <span>Home</span>
-      </Link>
-      {/* category */}
-      <p onClick={() => setIsOpen((prev) => !prev)} className="flex flex-col items-center justify-center">
-        <BiCategoryAlt size={20} />
-        <span>Category</span>
-      </p>
-      {/* wishlist */}
-      <Link href={"/"} className="flex flex-col items-center justify-center">
-        <SlHeart size={20} />
-        <span>Wishlist</span>
-      </Link>
-      {/* cart */}
-      <Link href={"/"} className="flex flex-col items-center justify-center">
-        <PiShoppingCartSimple size={20} />
-        <span>Cart</span>
-      </Link>
+    <div className="text-primary-foreground fixed bottom-0 z-50 flex w-full items-center justify-evenly gap-4 border-t-2 bg-white p-3 text-xs md:hidden">
+      {mobileDocItems.map(({ href, label, ActiveIcon, InActiveIcon }, i) =>
+        href ? (
+          <Link
+            key={i}
+            href={href}
+            onClick={() => setIsOpen(false)}
+            className={`flex flex-col items-center justify-center ${pathname === href && !isOpen ? "font-semibold" : ""}`}
+            aria-label={label}
+          >
+            {pathname === href && !isOpen ? <ActiveIcon size={20} /> : <InActiveIcon size={20} />}
+            <span>{label}</span>
+          </Link>
+        ) : (
+          <button
+            key={i}
+            onClick={() => setIsOpen((prev) => !prev)}
+            className={`flex flex-col items-center justify-center ${isOpen ? "font-semibold" : ""}`}
+            aria-label="Toggle Category"
+          >
+            {isOpen ? <ActiveIcon size={20} /> : <InActiveIcon size={20} />}
+            <span>{label}</span>
+          </button>
+        )
+      )}
     </div>
   );
-};
+});
 
 export default MobileDoc;

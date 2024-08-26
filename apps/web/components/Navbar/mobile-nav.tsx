@@ -22,7 +22,7 @@ const MobileNav = () => {
         </div>
       </Container>
       <MobileSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-      <MobileDoc setIsOpen={setIsOpen} />
+      <MobileDoc isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 };
