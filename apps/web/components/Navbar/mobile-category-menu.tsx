@@ -1,52 +1,50 @@
-import { useState } from "react";
+import { collections } from "@/dummyData/nav-categories";
+import { ICategory } from "@repo/utils/types";
+import { memo, useState } from "react";
 import { BiChevronRight } from "react-icons/bi";
 import { CiShoppingCart } from "react-icons/ci";
-export type Product = {
-  label: string;
+
+type TCategory = ICategory & {
+  subCategories: TCategory[];
 };
 
-export type Subcategory = {
-  label: string;
-  subcategories?: Subcategory[];
-  products?: Product[];
-};
+const MobileCollectionMenu = memo(({ collection }: { collection: TCategory }) => {
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
 
-export type Collection = {
-  label: string;
-  categories?: Subcategory[];
-};
-const MobileCategoryMenu = ({ category }: { category: Subcategory }) => {
-  const [isSubCategoryOpen, setIsSubCategoryOpen] = useState(false);
+  const toggleCategory = () => setIsCategoryOpen((prev) => !prev);
 
   return (
     <div>
       <div
-        onClick={() => setIsSubCategoryOpen((prev) => !prev)}
+        onClick={toggleCategory}
         className="flex cursor-pointer justify-between px-4 py-3 text-xs font-medium text-gray-600"
       >
         <span className="flex items-center gap-2">
           <CiShoppingCart className="text-xl" />
-          {category.label}
+          {collection.categoryName}
         </span>
-        {category.subcategories && (
-          <BiChevronRight className={`text-xl duration-300 ${isSubCategoryOpen && "rotate-90"}`} />
+        {collection.subCategories && collection.subCategories.length > 0 && (
+          <BiChevronRight className={`text-xl duration-300 ${isCategoryOpen ? "rotate-90" : ""}`} />
         )}
       </div>
-      {isSubCategoryOpen && (
+      {isCategoryOpen && collection.subCategories.length > 0 && (
         <div className="inset-0 divide-y overflow-hidden bg-gray-50 pl-3 transition-all duration-300">
-          {category.subcategories?.map((subCategory, index) => (
-            <div
-              key={index}
-              className="flex cursor-pointer justify-between px-4 py-3 text-xs font-medium text-gray-600"
-            >
-              <span className="flex items-center gap-2">
-                <CiShoppingCart className="text-xl" />
-                {subCategory.label}
-              </span>
-            </div>
+          {collection.subCategories.map((subCategory, index) => (
+            <MobileCollectionMenu key={index} collection={subCategory} />
           ))}
         </div>
       )}
+    </div>
+  );
+});
+
+// Avoid unnecessary re-renders of the entire list by memoizing
+const MobileCategoryMenu = () => {
+  return (
+    <div className="w-full divide-y rounded-md border bg-white duration-300">
+      {collections.map((collection, i) => (
+        <MobileCollectionMenu key={i} collection={collection as TCategory} />
+      ))}
     </div>
   );
 };

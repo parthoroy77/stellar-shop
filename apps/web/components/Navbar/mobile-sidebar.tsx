@@ -1,47 +1,47 @@
 import { Button, Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
-import { FC } from "react";
+import React from "react";
 import { HiXMark } from "react-icons/hi2";
-import MobileAllCategoryMenu from "./mobile-allcategory-menu";
+import MobileNavMenu from "./mobile-nav-menu";
+import MobileCategoryMenu from "./mobile-category-menu";
 
-interface Props {
+interface MobileSidebarProps {
   isOpen: boolean;
-  setIsOpen: (value: boolean) => void;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MobileSidebar: FC<Props> = ({ isOpen, setIsOpen }) => {
+const MobileSidebar: React.FC<MobileSidebarProps> = ({ isOpen, setIsOpen }) => {
+  const overlayClasses = "absolute inset-0 z-20 h-full w-full bg-black bg-opacity-50";
+  const sidebarClasses = `absolute inset-0 z-30 overflow-hidden border bg-white shadow-lg duration-200 ${
+    isOpen ? "w-[85%]" : "w-0"
+  }`;
+  const closeButtonClasses = `invisible absolute left-0 top-0 z-40 w-fit rounded-none text-xl duration-500 ${
+    isOpen && "visible left-[85%]"
+  }`;
+
   return (
-    <div className={`${isOpen ? "fixed inset-0 z-10 h-screen w-full" : ""} lg:hidden`}>
+    <div className={`lg:hidden ${isOpen ? "fixed inset-0 z-10 h-screen w-full" : ""}`}>
       {/* Overlay that closes the sidebar when clicked */}
-      {isOpen && (
-        <div
-          className="absolute inset-0 z-20 h-full w-full bg-black bg-opacity-50"
-          onClick={() => setIsOpen(false)}
-        ></div>
-      )}
+      {isOpen && <div className={overlayClasses} onClick={() => setIsOpen(false)} />}
+
       {/* Sidebar */}
-      <div
-        className={`absolute inset-0 z-30 overflow-hidden border bg-white shadow-lg duration-200 ${isOpen ? "w-[85%]" : "w-0"}`}
-      >
+      <div className={sidebarClasses}>
         <Tabs defaultValue="category" className="w-full">
-          <TabsList className="flex h-fit rounded-none bg-white p-0 *:m-0 *:w-full *:rounded-none *:border-b *:border-r *:bg-white *:text-black *:ring-0">
-            <TabsTrigger value="category">Account</TabsTrigger>
-            <TabsTrigger value="menu">Password</TabsTrigger>
+          <TabsList className="text-primary-foreground flex h-fit rounded-none border-b bg-white p-0 font-normal *:w-full *:py-2 *:ring-0">
+            <TabsTrigger value="category">Categories</TabsTrigger>
+            <TabsTrigger value="menu">Menu</TabsTrigger>
           </TabsList>
           <TabsContent className="mt-0" value="category">
-            <MobileAllCategoryMenu />
+            <MobileCategoryMenu />
           </TabsContent>
           <TabsContent className="mt-0" value="menu">
-            Change your password here.
+            <MobileNavMenu />
           </TabsContent>
         </Tabs>
-        <div></div>
       </div>
+
       {/* Close button */}
       {isOpen && (
-        <Button
-          onClick={() => setIsOpen(false)}
-          className={`invisible absolute left-0 top-0 z-40 w-fit rounded-none text-xl duration-500 ${isOpen && "visible left-[85%]"}`}
-        >
+        <Button onClick={() => setIsOpen(false)} className={closeButtonClasses}>
           <HiXMark />
         </Button>
       )}
