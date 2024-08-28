@@ -26,3 +26,7 @@ export interface IAttributeValue {
   createdAt: Date;
   updatedAt?: Date;
 }
+
+export type TAttribute = IAttribute & {
+  attributeValues?: IAttributeValue[];
+};

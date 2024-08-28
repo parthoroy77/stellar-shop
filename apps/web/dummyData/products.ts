@@ -1,12 +1,13 @@
 export const products = [
   {
     id: 1,
-    productName: "Men's T-Shirt",
-    urlSlug: "mens-t-shirt",
+    productName: "Comfortable and Fashionable Exclusive T-shirt",
+    urlSlug: "comfortable-and-fashionable-exclusive-t-shirt",
     categoryId: 3,
     brandId: 1,
     description: "A comfortable and stylish men's t-shirt.",
     price: 19.99,
+    comparePrice: 21.25,
     stockQuantity: 100,
     lowStockThreshold: 10,
     status: "active",
@@ -110,7 +111,7 @@ export const products = [
       {
         id: 1,
         name: "Color",
-        attributeValue: [
+        attributeValues: [
           {
             id: 1,
             attributeId: 1,
@@ -141,7 +142,7 @@ export const products = [
       {
         id: 2,
         name: "Size",
-        attributeValue: [
+        attributeValues: [
           {
             id: 1,
             attributeId: 2,
@@ -205,7 +206,7 @@ export const products = [
             name: "Color",
             createdAt: "2024-08-22T10:00:00Z",
             updatedAt: "2024-08-22T12:00:00Z",
-            attributeValue: [
+            attributeValues: [
               {
                 id: 1,
                 attributeId: 1,
@@ -220,7 +221,7 @@ export const products = [
             name: "Size",
             createdAt: "2024-08-22T10:00:00Z",
             updatedAt: "2024-08-22T12:00:00Z",
-            attributeValue: [
+            attributeValues: [
               {
                 id: 1,
                 attributeId: 1,
@@ -274,7 +275,7 @@ export const products = [
         ],
       },
     ],
-    ratingAverages: {
+    ratingAverage: {
       id: 701,
       productId: 101,
       averageRating: 5.0,
@@ -342,6 +343,7 @@ export const products = [
     brandId: 2,
     description: "A stylish and durable women's leather jacket.",
     price: 149.99,
+    comparePrice: 170.25,
     stockQuantity: 50,
     lowStockThreshold: 5,
     status: "active",
@@ -403,7 +405,7 @@ export const products = [
       {
         id: 3,
         name: "Color",
-        attributeValue: [
+        attributeValues: [
           {
             id: 6,
             attributeId: 3,
@@ -419,7 +421,7 @@ export const products = [
       {
         id: 4,
         name: "Size",
-        attributeValue: [
+        attributeValues: [
           {
             id: 6,
             attributeId: 4,
@@ -471,7 +473,7 @@ export const products = [
           {
             id: 3,
             name: "Color",
-            attributeValue: [
+            attributeValues: [
               {
                 id: 6,
                 attributeId: 3,
@@ -482,7 +484,7 @@ export const products = [
           {
             id: 4,
             name: "Size",
-            attributeValue: [
+            attributeValues: [
               {
                 id: 7,
                 attributeId: 4,
@@ -493,7 +495,7 @@ export const products = [
         ],
       },
     ],
-    ratingAverages: {
+    ratingAverage: {
       id: 702,
       productId: 102,
       averageRating: 4.7,
@@ -554,6 +556,7 @@ export const products = [
     brandId: 3,
     description: "High-quality wireless earbuds with noise-cancelling features.",
     price: 89.99,
+    comparePrice: 95.25,
     stockQuantity: 200,
     lowStockThreshold: 20,
     status: "active",
@@ -614,7 +617,7 @@ export const products = [
       {
         id: 5,
         name: "Color",
-        attributeValue: [
+        attributeValues: [
           {
             id: 8,
             attributeId: 5,
@@ -660,7 +663,7 @@ export const products = [
           {
             id: 5,
             name: "Color",
-            attributeValue: [
+            attributeValues: [
               {
                 id: 8,
                 attributeId: 5,
@@ -671,7 +674,7 @@ export const products = [
         ],
       },
     ],
-    ratingAverages: {
+    ratingAverage: {
       id: 703,
       productId: 103,
       averageRating: 4.8,
@@ -739,6 +742,7 @@ export const products = [
     brandId: 4,
     description: "Feature-rich smart watch with health tracking capabilities.",
     price: 199.99,
+    comparePrice: 210.25,
     stockQuantity: 75,
     lowStockThreshold: 10,
     status: "active",
@@ -799,7 +803,7 @@ export const products = [
       {
         id: 6,
         name: "Color",
-        attributeValue: [
+        attributeValues: [
           {
             id: 10,
             attributeId: 6,
@@ -845,7 +849,7 @@ export const products = [
           {
             id: 6,
             name: "Color",
-            attributeValue: [
+            attributeValues: [
               {
                 id: 10,
                 attributeId: 6,
@@ -856,7 +860,7 @@ export const products = [
         ],
       },
     ],
-    ratingAverages: {
+    ratingAverage: {
       id: 704,
       productId: 104,
       averageRating: 4.9,
@@ -924,6 +928,7 @@ export const products = [
     brandId: 5,
     description: "A non-toxic, eco-friendly yoga mat made from natural rubber.",
     price: 39.99,
+    comparePrice: 45.0,
     stockQuantity: 120,
     lowStockThreshold: 15,
     status: "active",
@@ -985,7 +990,7 @@ export const products = [
       {
         id: 7,
         name: "Color",
-        attributeValue: [
+        attributeValues: [
           {
             id: 12,
             attributeId: 7,
@@ -1032,7 +1037,7 @@ export const products = [
           {
             id: 7,
             name: "Color",
-            attributeValue: [
+            attributeValues: [
               {
                 id: 12,
                 attributeId: 7,
@@ -1043,7 +1048,7 @@ export const products = [
         ],
       },
     ],
-    ratingAverages: {
+    ratingAverage: {
       id: 705,
       productId: 105,
       averageRating: 4.7,

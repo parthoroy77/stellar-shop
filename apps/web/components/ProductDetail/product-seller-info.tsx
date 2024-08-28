@@ -28,7 +28,7 @@ const ProductSellerInfo = () => {
         />
       </div>
       <p className="text-accent-foreground text-sm">{seller.storeDescription}</p>
-      <div className="text-accent-foreground grid gap-2 text-center lg:grid-cols-3">
+      <div className="text-accent-foreground grid grid-cols-2 gap-2 text-center lg:grid-cols-3">
         <div className="flex flex-col items-center justify-between gap-2">
           <span className="block text-xs">Order Completion</span>
           <span className="text-primary block text-2xl">90 %</span>

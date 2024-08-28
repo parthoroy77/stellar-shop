@@ -4,8 +4,9 @@ import ProductImageSlider from "@/components/ProductDetail/product-image-slider"
 import ProductInfoPanel from "@/components/ProductDetail/product-info-panel";
 import ProductSellerInfo from "@/components/ProductDetail/product-seller-info";
 import { products } from "@/dummyData/products";
+import { TProduct } from "@repo/utils/types";
 const ProductDetailPage = () => {
-  const product = products[0] || {};
+  const product = products[0];
   return (
     <div className="py-5 lg:py-10">
       {/* Web Layout */}
@@ -16,7 +17,7 @@ const ProductDetailPage = () => {
             <OptionalInfo />
           </div>
           <div className="col-span-6 flex flex-col gap-5">
-            <ProductInfoPanel />
+            <ProductInfoPanel product={product as unknown as TProduct} />
           </div>
         </div>
         <div className="col-span-3 flex flex-col gap-5">
@@ -28,14 +29,7 @@ const ProductDetailPage = () => {
       {/* Mobile Layout */}
       <div className="space-y-5 lg:hidden">
         <ProductImageSlider />
-        <ProductMainInfo />
-        <PriceRatingBadgeOptions />
-        <PreferenceOptions />
-        <ProductDeliveryInfo />
-        <PaymentInfo />
-        <div>
-          <button>Buy Now</button>
-        </div>
+        <ProductInfoPanel product={product as unknown as TProduct} />
         <Reviews />
         <ProductSellerInfo />
         <ProductSuggestions />

@@ -1,3 +1,11 @@
+import { IAttribute, IAttributeValue, TAttribute } from "./attribute";
+import { IBrand } from "./brand";
+import { TCategory } from "./category";
+import { IFile } from "./file";
+import { IProductRatingAverage, IProductReview } from "./productReviewRatings";
+import { ISellerProfile } from "./seller";
+import { ITag } from "./tag";
+
 export const ProductActivationStatus = {
   PENDING: "PENDING",
   ACTIVE: "ACTIVE",
@@ -12,20 +20,6 @@ export const VariantActivationStatus = {
 } as const;
 
 export type TVariantActivationStatus = (typeof VariantActivationStatus)[keyof typeof VariantActivationStatus];
-
-// Product Variants
-export interface IProductVariant {
-  id: number;
-  productId: number; // Foreign key referencing Product
-  variantName: string;
-  description?: string;
-  price: number;
-  stockQuantity: number;
-  sku?: string;
-  status: TVariantActivationStatus;
-  createdAt: Date;
-  updatedAt?: Date;
-}
 
 // Product Variant Attributes
 export interface IProductVariantAttribute {
@@ -47,6 +41,29 @@ export interface IProductAttribute {
   updatedAt?: Date;
 }
 
+// Product Variants main interface
+export interface IProductVariant {
+  id: number;
+  productId: number; // Foreign key referencing Product
+  variantName: string;
+  description?: string;
+  price: number;
+  stockQuantity: number;
+  sku?: string;
+  status: TVariantActivationStatus;
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
+export type TProductVariant = IProductVariant & {
+  // relations
+  images: IFile[];
+  attributes: IAttribute &
+    {
+      value: IAttributeValue;
+    }[];
+};
+
 // Products
 export interface IProduct {
   id: number;
@@ -56,6 +73,7 @@ export interface IProduct {
   brandId: number; // Foreign key referencing Brand
   description: string;
   price: number;
+  comparePrice: number;
   stockQuantity: number;
   lowStockThreshold: number;
   status: TProductActivationStatus;
@@ -63,3 +81,16 @@ export interface IProduct {
   createdAt: Date;
   updatedAt?: Date;
 }
+
+export type TProduct = IProduct & {
+  // relations
+  images: IFile[];
+  brand?: IBrand;
+  tags?: ITag[];
+  categories: TCategory[];
+  attributes: TAttribute[];
+  variants: TProductVariant[];
+  ratingAverage?: IProductRatingAverage;
+  reviews?: IProductReview[];
+  seller: ISellerProfile;
+};

@@ -25,3 +25,7 @@ export interface ICategory {
   createdAt: string;
   updatedAt?: string | null;
 }
+
+export type TCategory = ICategory & {
+  subCategories?: TCategory[];
+};
