@@ -70,7 +70,7 @@ const ProductImageSlider = () => {
   };
 
   return (
-    <div className="bg-muted-foreground/15 h-fit space-y-5 rounded-md border p-4">
+    <div className="bg-muted-foreground/15 h-fit space-y-5 rounded-md lg:border lg:p-4">
       <Swiper
         loop
         spaceBetween={10}
@@ -110,7 +110,7 @@ const ProductImageSlider = () => {
                     display: zoomStyles.display,
                     backgroundColor: "black",
                     backgroundImage: `url(${image.image})`,
-                    backgroundSize: "200%",
+                    backgroundSize: "250%",
                     backgroundPosition: `${zoomStyles.zoomX} ${zoomStyles.zoomY}`,
                   } as CSSProperties
                 }

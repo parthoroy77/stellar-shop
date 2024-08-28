@@ -18,6 +18,14 @@ const ProductAttributeSelection: FC<Props> = ({ attributes }) => {
 
 const ProductAttributeCard = ({ attribute }: { attribute: TAttribute }) => {
   const [selectedAttribute, setSelectedAttribute] = useState<null | number>(null);
+
+  const handleAttributeSelection = (id: number) => {
+    if (id === selectedAttribute) {
+      setSelectedAttribute(null);
+    } else {
+      setSelectedAttribute(id);
+    }
+  };
   return (
     <div className="space-y-2">
       <h5 className="font-medium">{attribute.name}</h5>
@@ -25,7 +33,7 @@ const ProductAttributeCard = ({ attribute }: { attribute: TAttribute }) => {
         {attribute.attributeValues?.map((value) => (
           <Button
             key={value.id}
-            onClick={() => setSelectedAttribute(value.id)}
+            onClick={() => handleAttributeSelection(value.id)}
             size={"sm"}
             variant={selectedAttribute === value.id ? "default" : "accent"}
             className="h-7 px-4 py-0"
