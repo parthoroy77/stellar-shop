@@ -29,7 +29,7 @@ const ProductCard = () => {
           </TooltipComponent>
         </div>
         <div className="space-y-2">
-          <h5 className="text-xs font-medium lg:text-sm">DNA Motoring TOOLS-00266 Green</h5>
+          <h5 className="text-pretty text-xs font-medium lg:text-sm">DNA Motoring TOOLS-00266 Green</h5>
           <div className="flex flex-wrap justify-between gap-2">
             <Badge variant={"success"} className="rounded-md uppercase">
               In Stock
@@ -38,7 +38,9 @@ const ProductCard = () => {
               <GoStarFill className="text-yellow-500" />
               <span>4.3 / (100)</span>
             </Badge>
-            <Badge className="rounded-md uppercase">200 Sold</Badge>
+            <Badge variant={"accent"} className="rounded-sm">
+              Sold: 200
+            </Badge>
           </div>
         </div>
         <div className="flex flex-row items-center justify-between gap-2">
