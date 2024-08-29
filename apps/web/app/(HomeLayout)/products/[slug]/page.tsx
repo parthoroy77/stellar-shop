@@ -2,6 +2,7 @@ import PaymentInfo from "@/components/ProductDetail/payment-info";
 import ProductDeliveryInfo from "@/components/ProductDetail/product-delivery-info";
 import ProductImageSlider from "@/components/ProductDetail/product-image-slider";
 import ProductInfoPanel from "@/components/ProductDetail/product-info-panel";
+import ProductReviewContainer from "@/components/ProductDetail/product-review-container";
 import ProductSellerInfo from "@/components/ProductDetail/product-seller-info";
 import ProductSuggestion from "@/components/ProductDetail/product-suggestions";
 import ProductTabNavigation from "@/components/ProductDetail/product-tab-navigation";
@@ -24,7 +25,7 @@ const ProductDetailPage = () => {
             </div>
           </div>
           <div className="col-span-12">
-            <ProductTabNavigation />
+            <ProductTabNavigation product={product as unknown as TProduct} />
           </div>
         </section>
         {/* Right Section */}
@@ -41,7 +42,7 @@ const ProductDetailPage = () => {
       <div className="space-y-5 lg:hidden">
         <ProductImageSlider />
         <ProductInfoPanel product={product as unknown as TProduct} />
-        <Reviews />
+        <ProductReviewContainer product={product as unknown as TProduct} />
         <ProductSellerInfo />
         <FAQ />
         <Specification />

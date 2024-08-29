@@ -5,7 +5,8 @@ export const products = [
     urlSlug: "comfortable-and-fashionable-exclusive-t-shirt",
     categoryId: 3,
     brandId: 1,
-    description: "A comfortable and stylish men's t-shirt.",
+    description:
+      "This T-shirt is a perfect blend of comfort and style, crafted from premium, soft cotton that feels great against your skin. With its modern fit and vibrant colors, it's ideal for both casual wear and layering. Durable stitching ensures long-lasting wear, while the breathable fabric keeps you cool throughout the day. Elevate your wardrobe with this versatile T-shirt, perfect for any occasion.",
     price: 19.99,
     comparePrice: 21.25,
     stockQuantity: 100,

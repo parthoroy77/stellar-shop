@@ -1,15 +1,16 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
+import { TProduct } from "@repo/utils/types";
 import ProductDescription from "./product-description";
 import ProductFAQ from "./product-faq";
-import ProductReview from "./product-reviews";
-import ProductSpecification from "./product-specification";
+import ProductReviewContainer from "./product-review-container";
 
-const ProductTabNavigation = () => {
+const ProductTabNavigation = ({ product }: { product: TProduct }) => {
   const tabItems = [
-    { label: "Review", value: "review", Component: <ProductReview /> },
-    { label: "Description", value: "description", Component: <ProductDescription /> },
-    { label: "Specification", value: "specification", Component: <ProductSpecification /> },
+    { label: "Review", value: "review", Component: <ProductReviewContainer product={product} /> },
+    { label: "Description", value: "description", Component: <ProductDescription description={product.description} /> },
+    // Specification not required In future if needed then will add
+    // { label: "Specification", value: "specification", Component: <ProductSpecification /> },
     { label: "FAQ", value: "faq", Component: <ProductFAQ /> },
   ];
   return (
