@@ -20,12 +20,13 @@ const ProductQuantitySelection = ({ stock, initialQuantity = 0 }: ProductQuantit
 
   return (
     <div>
-      <div className="bg-accent/40 flex w-[35%] items-center justify-between rounded-md p-1">
+      <div className="bg-accent/40 flex w-[60%] items-center justify-between rounded-md p-1 lg:w-[35%]">
         <Button
           disabled={quantity === stock}
           onClick={incrementQuantity}
           variant="outline"
-          className="text-primary h-fit w-fit p-2 text-xl"
+          size={"sm"}
+          className="text-primary h-fit w-fit p-2 text-sm lg:text-xl"
           aria-label="Increase Quantity"
         >
           <AiOutlinePlus />
@@ -35,7 +36,8 @@ const ProductQuantitySelection = ({ stock, initialQuantity = 0 }: ProductQuantit
           disabled={quantity === 0}
           onClick={decrementQuantity}
           variant="outline"
-          className="text-primary h-fit w-fit p-2 text-xl"
+          size={"sm"}
+          className="text-primary h-fit w-fit p-2 text-sm lg:text-xl"
           aria-label="Decrease Quantity"
         >
           <AiOutlineMinus />

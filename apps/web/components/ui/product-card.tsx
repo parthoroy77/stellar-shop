@@ -9,7 +9,7 @@ import TooltipComponent from "./tooltip-component";
 const ProductCard = () => {
   return (
     <Link href={"/products/item"}>
-      <div className="hover:border-primary group relative flex flex-col justify-between divide-y rounded-md border duration-300 *:p-3">
+      <div className="hover:border-primary group relative flex flex-col justify-between divide-y rounded-md border duration-300 *:p-2 md:*:p-3">
         <div className="relative flex justify-center">
           <img
             className="size-[130px] lg:size-[150px]"
@@ -17,7 +17,7 @@ const ProductCard = () => {
             alt="Product Image"
           />
         </div>
-        <div className="flex items-center justify-center gap-5 text-lg *:cursor-pointer">
+        <div className="hidden items-center justify-center gap-5 text-lg *:cursor-pointer lg:flex">
           <TooltipComponent tooltipContent="Add To Wishlist">
             <SlHeart />
           </TooltipComponent>
@@ -31,14 +31,14 @@ const ProductCard = () => {
         <div className="space-y-2">
           <h5 className="text-pretty text-xs font-medium lg:text-sm">DNA Motoring TOOLS-00266 Green</h5>
           <div className="flex flex-wrap justify-between gap-2">
-            <Badge variant={"success"} className="rounded-md uppercase">
+            <Badge variant={"success"} className="rounded-md text-xs uppercase">
               In Stock
             </Badge>
             <Badge className="text-primary-foreground flex w-fit items-center justify-center gap-2 rounded-md border-yellow-500 bg-yellow-100 uppercase">
               <GoStarFill className="text-yellow-500" />
               <span>4.3 / (100)</span>
             </Badge>
-            <Badge variant={"accent"} className="rounded-sm">
+            <Badge variant={"accent"} className="hidden rounded-sm lg:block">
               Sold: 200
             </Badge>
           </div>
