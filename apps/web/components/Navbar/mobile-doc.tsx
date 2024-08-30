@@ -23,7 +23,7 @@ const MobileDoc: React.FC<MobileDocProps> = React.memo(({ setIsOpen, isOpen }) =
   const pathname = usePathname();
 
   return (
-    <div className="text-primary-foreground fixed bottom-0 z-50 flex w-full items-center justify-evenly gap-4 border-t-2 bg-white p-3 text-xs md:hidden">
+    <div className="text-primary-foreground fixed bottom-0 z-50 flex h-[55px] w-full items-center justify-evenly gap-4 border-t-2 bg-white p-3 text-xs md:hidden">
       {mobileDocItems.map(({ href, label, ActiveIcon, InActiveIcon }, i) =>
         href ? (
           <Link
@@ -33,7 +33,7 @@ const MobileDoc: React.FC<MobileDocProps> = React.memo(({ setIsOpen, isOpen }) =
             className={`flex flex-col items-center justify-center ${pathname === href && !isOpen ? "font-semibold" : ""}`}
             aria-label={label}
           >
-            {pathname === href && !isOpen ? <ActiveIcon size={20} /> : <InActiveIcon size={20} />}
+            {pathname === href && !isOpen ? <ActiveIcon size={18} /> : <InActiveIcon size={18} />}
             <span>{label}</span>
           </Link>
         ) : (
@@ -43,7 +43,7 @@ const MobileDoc: React.FC<MobileDocProps> = React.memo(({ setIsOpen, isOpen }) =
             className={`flex flex-col items-center justify-center ${isOpen ? "font-semibold" : ""}`}
             aria-label="Toggle Category"
           >
-            {isOpen ? <ActiveIcon size={20} /> : <InActiveIcon size={20} />}
+            {isOpen ? <ActiveIcon size={18} /> : <InActiveIcon size={18} />}
             <span>{label}</span>
           </button>
         )

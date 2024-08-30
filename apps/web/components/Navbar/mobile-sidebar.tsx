@@ -1,8 +1,8 @@
 import { Button, Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 import React from "react";
 import { HiXMark } from "react-icons/hi2";
-import MobileNavMenu from "./mobile-nav-menu";
 import MobileCategoryMenu from "./mobile-category-menu";
+import MobileNavMenu from "./mobile-nav-menu";
 
 interface MobileSidebarProps {
   isOpen: boolean;
@@ -25,7 +25,10 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ isOpen, setIsOpen }) => {
 
       {/* Sidebar */}
       <div className={sidebarClasses}>
-        <Tabs defaultValue="category" className="w-full">
+        <Tabs
+          defaultValue="category"
+          className="custom-scrollbar h-full w-full overflow-hidden overflow-y-scroll pb-[55px]"
+        >
           <TabsList className="text-primary-foreground flex h-fit rounded-none border-b bg-white p-0 font-normal *:w-full *:py-2 *:ring-0">
             <TabsTrigger value="category">Categories</TabsTrigger>
             <TabsTrigger value="menu">Menu</TabsTrigger>
