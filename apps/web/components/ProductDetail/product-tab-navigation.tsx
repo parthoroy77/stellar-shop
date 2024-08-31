@@ -2,7 +2,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 import { TProduct } from "@repo/utils/types";
 import ProductDescription from "./product-description";
-import ProductFAQ from "./product-faq";
+import ProductQAndA from "./product-q-and-a";
 import ProductReviewContainer from "./product-review-container";
 
 const ProductTabNavigation = ({ product }: { product: TProduct }) => {
@@ -11,7 +11,7 @@ const ProductTabNavigation = ({ product }: { product: TProduct }) => {
     { label: "Description", value: "description", Component: <ProductDescription description={product.description} /> },
     // Specification not required In future if needed then will add
     // { label: "Specification", value: "specification", Component: <ProductSpecification /> },
-    { label: "FAQ", value: "faq", Component: <ProductFAQ /> },
+    { label: "Q & A", value: "q-and-a", Component: <ProductQAndA /> },
   ];
   return (
     <div>
