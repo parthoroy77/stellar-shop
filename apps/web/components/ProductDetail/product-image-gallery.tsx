@@ -41,7 +41,7 @@ type ZoomStyles = {
   zoomY: string;
 };
 
-const ProductImageSlider = () => {
+const ProductImageGallery = () => {
   const [activeThumb, setActiveThumb] = useState<SwiperType | null>(null);
   const [zoomStyles, setZoomStyles] = useState<ZoomStyles>({
     display: "none",
@@ -160,4 +160,4 @@ const ProductImageSlider = () => {
   );
 };
 
-export default ProductImageSlider;
+export default ProductImageGallery;
