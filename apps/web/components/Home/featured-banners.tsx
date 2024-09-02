@@ -1,4 +1,5 @@
 import { Button } from "@repo/ui";
+import Image from "next/image";
 
 const banners = [
   {
@@ -31,7 +32,7 @@ const FeaturedBanners = () => {
     <div className="grid w-full gap-5 md:grid-cols-2 lg:grid-cols-4">
       {banners.map((b, i) => (
         <div key={i} className="relative h-[500px] w-full overflow-hidden rounded-md">
-          <img src={b.img} alt="" className="absolute h-full w-full" />
+          <Image height={500} width={300} src={b.img} alt="" className="absolute h-full w-full" />
           <div className="absolute h-full w-full space-y-4 p-8 font-medium">
             <span className="block text-xs">{b.tagLine}</span>
             <h1 className="text-2xl">{b.heading}</h1>

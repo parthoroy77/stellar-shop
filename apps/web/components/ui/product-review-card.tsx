@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { GoStarFill } from "react-icons/go";
 
 const ProductReviewCard = () => {
@@ -20,7 +21,9 @@ const ProductReviewCard = () => {
       </p>
       <div className="flex gap-3">
         {Array.from({ length: 3 }).map((_x, i) => (
-          <img
+          <Image
+            height={80}
+            width={80}
             key={i}
             className="size-20 object-contain"
             src="https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg"

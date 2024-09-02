@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
@@ -24,7 +25,7 @@ const HeroSlider = () => {
       >
         {sliderImg.map(({ image, id }) => (
           <SwiperSlide key={id} className="h-full w-full">
-            <img className="h-full w-full rounded-md" src={image} alt="Slider Image" />
+            <Image width={300} height={550} className="h-full w-full rounded-md" src={image} alt="Slider Image" />
           </SwiperSlide>
         ))}
       </Swiper>

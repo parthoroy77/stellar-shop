@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@repo/ui";
+import Image from "next/image";
 import { FaArrowRight } from "react-icons/fa6";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -59,7 +60,9 @@ const TrendingCategory = () => {
       >
         {sliderImg.map(({ image }, index) => (
           <SwiperSlide key={index} className="group relative cursor-pointer space-y-2">
-            <img
+            <Image
+              width={100}
+              height={100}
               className="group-hover:border-primary mx-auto size-[150px] rounded-md border p-3 duration-300 lg:size-[130px]"
               src={image}
               alt="Slider Image"

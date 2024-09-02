@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { CSSProperties, MouseEvent, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -98,7 +99,9 @@ const ProductImageGallery = () => {
               onMouseMove={(event) => handleMouseMove(event, image.image)}
               onMouseOut={handleMouseOut}
             >
-              <img
+              <Image
+                height={400}
+                width={400}
                 src={image.image}
                 className="aspect-auto h-[300px] w-full rounded-sm object-cover object-top lg:h-[400px]"
                 alt={`Product image ${index + 1}`}
@@ -147,7 +150,9 @@ const ProductImageGallery = () => {
         {sliderImages.map((image, index) => (
           <SwiperSlide key={image.id}>
             <div className="border-primary flex size-[90px] cursor-pointer items-center justify-center rounded-md border-2 border-none p-1">
-              <img
+              <Image
+                width={90}
+                height={90}
                 src={image.image}
                 className="h-full w-full rounded-sm object-fill object-center"
                 alt={`Thumbnail image ${index + 1}`}

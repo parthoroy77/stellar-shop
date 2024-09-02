@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
@@ -48,7 +49,13 @@ const PopularBrands = () => {
         {brands.map(({ img }, index) => (
           <SwiperSlide key={index}>
             <div className="flex w-fit cursor-pointer flex-col items-center justify-center gap-2">
-              <img className="h-[80px] w-[180px] rounded-md border object-contain p-3" src={img} alt="Brand Image" />
+              <Image
+                width={180}
+                height={100}
+                className="h-[80px] w-[180px] rounded-md border object-contain p-3"
+                src={img}
+                alt="Brand Image"
+              />
               <h6 className="text-sm">Basundhara</h6>
             </div>
           </SwiperSlide>

@@ -1,4 +1,6 @@
+import { aboutItems, corporateLinks, quickLinks, usefulLinks } from "@/constants/footer-data";
 import { Button, Input, Separator } from "@repo/ui";
+import Image from "next/image";
 import Link from "next/link";
 import { BsShop } from "react-icons/bs";
 import { FaFacebook, FaInstagram, FaPinterest, FaTwitter } from "react-icons/fa6";
@@ -6,7 +8,6 @@ import { MdOutlineEmail } from "react-icons/md";
 import { PiTelegramLogo } from "react-icons/pi";
 import Container from "../ui/container";
 import Logo from "../ui/logo";
-import { aboutItems, corporateLinks, quickLinks, usefulLinks } from "@/constants/footer-data";
 
 const Footer = () => {
   return (
@@ -89,7 +90,9 @@ const ListItem = ({ label, href }: { label: string; href: string }) => (
 const FooterBottom = () => (
   <div className="flex flex-col items-center justify-between gap-5 py-5 text-sm font-medium lg:flex-row">
     <span>All Right Reserved. Copyright 2024</span>
-    <img
+    <Image
+      width={300}
+      height={300}
       src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/08/payment-300x26.webp"
       alt="Payment Methods"
     />

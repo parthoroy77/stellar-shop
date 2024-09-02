@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@repo/ui";
+import Image from "next/image";
 import { BsArrowUpRight } from "react-icons/bs";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -31,7 +32,7 @@ const CampaignSlider = () => {
       >
         <SwiperSlide className="group relative h-[400px]">
           <div className="relative h-full overflow-hidden rounded-md">
-            <img
+            <Image
               className="h-[400px] w-full duration-200 group-hover:scale-110"
               src="https://ninetheme.com/themes/fitment/wp-content/uploads/2024/01/vertical-banner-450-lux-2.jpg"
               alt="Campaign Banner"
@@ -44,7 +45,7 @@ const CampaignSlider = () => {
         </SwiperSlide>
         <SwiperSlide className="group relative h-[400px]">
           <div className="relative h-full overflow-hidden rounded-md">
-            <img
+            <Image
               className="h-[400px] duration-200 group-hover:scale-110"
               src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/08/blog-post-6.png"
               alt="Campaign Banner"

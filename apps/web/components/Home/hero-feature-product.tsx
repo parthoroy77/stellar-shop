@@ -1,4 +1,5 @@
 import { Badge, Progress } from "@repo/ui";
+import Image from "next/image";
 import { IoEyeOutline } from "react-icons/io5";
 import { PiShoppingCartSimple } from "react-icons/pi";
 import { SlHeart } from "react-icons/sl";
@@ -18,7 +19,9 @@ const HeroFeatureProducts = () => {
         </div>
         <div className="space-y-2">
           <div className="relative">
-            <img
+            <Image
+              width={400}
+              height={400}
               className="h-full w-full rounded-md border-2 p-2"
               src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/g1-300x300.jpg"
               alt="Product Of The Day"

@@ -1,4 +1,5 @@
 import { Badge, Button } from "@repo/ui";
+import Image from "next/image";
 import Link from "next/link";
 import { GoStarFill } from "react-icons/go";
 import { HiArrowPath, HiOutlineShoppingBag } from "react-icons/hi2";
@@ -11,7 +12,9 @@ const ProductCard = () => {
     <Link href={"/products/item"}>
       <div className="hover:border-primary group relative flex flex-col justify-between divide-y rounded-md border duration-300 *:p-2 md:*:p-3">
         <div className="relative flex justify-center">
-          <img
+          <Image
+            width={100}
+            height={100}
             className="size-[130px] lg:size-[150px]"
             src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/product1-300x300.jpeg"
             alt="Product Image"

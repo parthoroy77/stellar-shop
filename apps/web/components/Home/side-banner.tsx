@@ -1,4 +1,5 @@
 import { cn } from "@repo/ui/lib/utils";
+import Image from "next/image";
 import { FC } from "react";
 
 interface SideBannerProps {
@@ -21,7 +22,7 @@ const SideBanner: FC<SideBannerProps> = ({ image, heading, className, subHeading
         <h5 className="">{subHeading}</h5>
         <h5 className="text-xs">Check All Products</h5>
       </div>
-      {image && <img src={image} className="lg:max-w-[180px]" alt={`${heading} Image`} />}
+      {image && <Image height={400} width={300} src={image} className="lg:max-w-[180px]" alt={`${heading} Image`} />}
     </div>
   );
 };

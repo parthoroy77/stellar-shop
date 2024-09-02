@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@repo/ui";
+import Image from "next/image";
 import React from "react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -45,7 +46,9 @@ const HeroBanner = () => {
         {banners.map(({ img, heading, subHeading }, index) => (
           <SwiperSlide key={index}>
             <div className="relative h-full w-full">
-              <img
+              <Image
+                width={1000}
+                height={550}
                 className="h-full w-full rounded-md object-fill object-center"
                 src={img}
                 alt={`Banner ${index + 1}`}

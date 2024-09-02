@@ -1,5 +1,6 @@
 import { collections } from "@/dummyData/nav-categories";
 import { ICategory } from "@repo/utils/types";
+import Image from "next/image";
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { CiShoppingCart } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -11,7 +12,9 @@ type TCategory = ICategory & {
 const SubcategoryItem = ({ subcategory }: { subcategory: ICategory }) => {
   return (
     <div className="flex flex-col items-center justify-center rounded-md border p-1">
-      <img
+      <Image
+        width={50}
+        height={50}
         className="size-12 rounded-full"
         src="https://img.alicdn.com/imgextra/i1/O1CN01qAJb8h20ZJ5HJQ3S2_!!6000000006863-0-tps-240-240.jpg"
         alt="Sub Category Images"

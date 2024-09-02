@@ -1,4 +1,5 @@
 import { Badge } from "@repo/ui";
+import Image from "next/image";
 
 const PromotionBanner = () => {
   return (
@@ -10,7 +11,9 @@ const PromotionBanner = () => {
           <span>Up to 40% off Accessories</span>
           <span>Check Details</span>
         </div>
-        <img
+        <Image
+          height={300}
+          width={300}
           className="h-[300px] object-cover object-center"
           src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/10/A0006.jpg"
           alt="Promoted Product Banner Image"
@@ -23,7 +26,9 @@ const PromotionBanner = () => {
           <span>Up to 40% off Accessories</span>
           <span>Check Details</span>
         </div>
-        <img
+        <Image
+          height={300}
+          width={300}
           className="h-[300px] object-cover object-center"
           src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/08/blog-post-6.png"
           alt="Promoted Product Banner Image"

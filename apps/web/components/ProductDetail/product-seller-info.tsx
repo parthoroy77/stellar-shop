@@ -1,4 +1,5 @@
 import { Button } from "@ui/index";
+import Image from "next/image";
 
 const seller = {
   id: 402,
@@ -21,7 +22,9 @@ const ProductSellerInfo = () => {
           <h6 className="text-xs">Sold By</h6>
           <h5 className="font-semibold">{seller.storeName}</h5>
         </div>
-        <img
+        <Image
+          height={100}
+          width={100}
           src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsDnx4-DWajzu4pdSlpxFMepqvfdgXhqqAhw&s"}
           className="size-16 rounded-full object-cover object-center"
           alt={`${seller.storeName} Store Logo`}
