@@ -1,6 +1,6 @@
 import PaymentInfo from "@/components/ProductDetail/payment-info";
 import ProductDeliveryInfo from "@/components/ProductDetail/product-delivery-info";
-import ProductImageSlider from "@/components/ProductDetail/product-image-slider";
+import ProductImageGallery from "@/components/ProductDetail/product-image-gallery";
 import ProductInfoPanel from "@/components/ProductDetail/product-info-panel";
 import ProductReviewContainer from "@/components/ProductDetail/product-review-container";
 import ProductSellerInfo from "@/components/ProductDetail/product-seller-info";
@@ -18,7 +18,7 @@ const ProductDetailPage = () => {
         <section className="col-span-9 grid h-fit grid-cols-12 gap-5">
           <div className="col-span-12 grid h-fit grid-cols-12 gap-4">
             <div className="col-span-6 flex h-fit flex-col space-y-5">
-              <ProductImageSlider />
+              <ProductImageGallery />
             </div>
             <div className="col-span-6 flex h-fit flex-col gap-5">
               <ProductInfoPanel product={product as unknown as TProduct} />
@@ -40,7 +40,7 @@ const ProductDetailPage = () => {
 
       {/* Mobile Layout */}
       <div className="space-y-5 lg:hidden">
-        <ProductImageSlider />
+        <ProductImageGallery />
         <ProductInfoPanel product={product as unknown as TProduct} />
         <ProductReviewContainer product={product as unknown as TProduct} />
         <ProductSellerInfo />

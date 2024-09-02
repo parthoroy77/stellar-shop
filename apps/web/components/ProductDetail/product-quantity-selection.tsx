@@ -31,7 +31,7 @@ const ProductQuantitySelection = ({ stock, initialQuantity = 0 }: ProductQuantit
         >
           <AiOutlinePlus />
         </Button>
-        <span className="text-accent-foreground block text-lg font-medium">{quantity}</span>
+        <span className="text-accent-foreground block text-base font-medium">{quantity || "Add"}</span>
         <Button
           disabled={quantity === 0}
           onClick={decrementQuantity}
