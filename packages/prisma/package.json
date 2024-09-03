@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "db-migrate": "yarn prisma migrate dev",
+    "db-generate": "yarn prisma generate",
+    "db-studio": "yarn prisma studio"
+  },
   "devDependencies": {
     "@types/node": "^20.14.10",
     "prisma": "^5.16.2",
