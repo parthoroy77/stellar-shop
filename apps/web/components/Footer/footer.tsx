@@ -3,7 +3,7 @@ import { Button, Input, Separator } from "@repo/ui";
 import Image from "next/image";
 import Link from "next/link";
 import { BsShop } from "react-icons/bs";
-import { FaFacebook, FaInstagram, FaPinterest, FaTwitter } from "react-icons/fa6";
+import { FaFacebook, FaInstagram, FaTwitter, FaWhatsapp } from "react-icons/fa6";
 import { MdOutlineEmail } from "react-icons/md";
 import { PiTelegramLogo } from "react-icons/pi";
 import Container from "../ui/container";
@@ -98,10 +98,10 @@ const FooterBottom = () => (
     />
     <div className="flex items-center gap-2">
       <span>Stay Connected:</span>
-      <FaFacebook />
-      <FaInstagram />
-      <FaTwitter />
-      <FaPinterest />
+      <FaFacebook aria-label="Facebook" />
+      <FaInstagram aria-label="Instagram" />
+      <FaTwitter aria-label="Twitter" />
+      <FaWhatsapp aria-label="Whatsapp" />
     </div>
   </div>
 );

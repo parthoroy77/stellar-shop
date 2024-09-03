@@ -37,8 +37,8 @@ const ProductRatingTags: FC<Props> = ({ tags, totalReview, averageRating }) => {
         ))}
       </div>
       <div className="flex justify-end gap-5 pt-1 text-lg *:cursor-pointer">
-        <BiShareAlt />
-        <SlHeart />
+        <BiShareAlt aria-label="Share" />
+        <SlHeart aria-label="Wishlist" />
       </div>
     </div>
   );

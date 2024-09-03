@@ -22,13 +22,13 @@ const ProductCard = () => {
         </div>
         <div className="hidden items-center justify-center gap-5 text-lg *:cursor-pointer lg:flex">
           <TooltipComponent tooltipContent="Add To Wishlist">
-            <SlHeart />
+            <SlHeart aria-label="Wishlist" />
           </TooltipComponent>
           <TooltipComponent tooltipContent="Add To Compare">
-            <HiArrowPath />
+            <HiArrowPath aria-label="Compare"/>
           </TooltipComponent>
           <TooltipComponent tooltipContent="Quick Overview">
-            <IoEyeOutline />
+            <IoEyeOutline aria-label="Quick Overview"/>
           </TooltipComponent>
         </div>
         <div className="space-y-2">
