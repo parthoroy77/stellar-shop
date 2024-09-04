@@ -36,7 +36,7 @@ const ProductAttributeCard = ({ attribute }: { attribute: TAttribute }) => {
             onClick={() => handleAttributeSelection(value.id)}
             size={"sm"}
             variant={selectedAttribute === value.id ? "default" : "accent"}
-            className="h-7 px-4 py-0"
+            className="h-7 border px-4 py-0"
           >
             {value.value}
           </Button>

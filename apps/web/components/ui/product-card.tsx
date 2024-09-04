@@ -25,10 +25,10 @@ const ProductCard = () => {
             <SlHeart aria-label="Wishlist" />
           </TooltipComponent>
           <TooltipComponent tooltipContent="Add To Compare">
-            <HiArrowPath aria-label="Compare"/>
+            <HiArrowPath aria-label="Compare" />
           </TooltipComponent>
           <TooltipComponent tooltipContent="Quick Overview">
-            <IoEyeOutline aria-label="Quick Overview"/>
+            <IoEyeOutline aria-label="Quick Overview" />
           </TooltipComponent>
         </div>
         <div className="space-y-2">

@@ -1,3 +1,4 @@
+"use client";
 import ProductListing from "@/components/SearchAndCategoryPage/product-listing";
 import SideFilters from "@/components/SearchAndCategoryPage/side-filters";
 

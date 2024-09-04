@@ -103,7 +103,7 @@ const ProductImageGallery = () => {
                 height={400}
                 width={400}
                 src={image.image}
-                className="aspect-auto h-[300px] w-full rounded-sm object-cover object-top lg:h-[400px]"
+                className="aspect-auto h-[400px] w-full rounded-sm object-cover object-top"
                 alt={`Product image ${index + 1}`}
               />
               <div
