@@ -1,6 +1,7 @@
 import { collections } from "@/dummyData/nav-categories";
 import { ICategory } from "@repo/utils/types";
 import Image from "next/image";
+import Link from "next/link";
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { CiShoppingCart } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -11,29 +12,33 @@ type TCategory = ICategory & {
 
 const SubcategoryItem = ({ subcategory }: { subcategory: ICategory }) => {
   return (
-    <div className="flex flex-col items-center justify-center rounded-md border p-1">
-      <Image
-        width={50}
-        height={50}
-        className="size-12 rounded-full"
-        src="https://img.alicdn.com/imgextra/i1/O1CN01qAJb8h20ZJ5HJQ3S2_!!6000000006863-0-tps-240-240.jpg"
-        alt="Sub Category Images"
-      />
-      <span className="text-center text-xs text-gray-500">{subcategory?.categoryName}</span>
-    </div>
+    <Link href={`/categories/${subcategory.urlSlug}`}>
+      <div className="flex flex-col items-center justify-center rounded-md border p-1">
+        <Image
+          width={50}
+          height={50}
+          className="size-12 rounded-full"
+          src="https://img.alicdn.com/imgextra/i1/O1CN01qAJb8h20ZJ5HJQ3S2_!!6000000006863-0-tps-240-240.jpg"
+          alt="Sub Category Images"
+        />
+        <span className="text-center text-xs text-gray-500">{subcategory?.categoryName}</span>
+      </div>
+    </Link>
   );
 };
 
 const CategoryItem = ({ category }: { category: TCategory }) => {
   return (
     <div className="group/category relative">
-      <div className="flex cursor-pointer justify-between px-4 py-3 text-sm font-medium text-gray-600">
-        <span className="flex items-center gap-2">
-          <CiShoppingCart className="text-xl" />
-          {category.categoryName}
-        </span>
-        {category?.subCategories && <BiChevronRight className="duration-300 group-hover/category:rotate-90" />}
-      </div>
+      <Link href={`/categories/${category.urlSlug}`}>
+        <div className="flex cursor-pointer justify-between px-4 py-3 text-sm font-medium text-gray-600">
+          <span className="flex items-center gap-2">
+            <CiShoppingCart className="text-xl" />
+            {category.categoryName}
+          </span>
+          {category?.subCategories && <BiChevronRight className="duration-300 group-hover/category:rotate-90" />}
+        </div>
+      </Link>
       {category.subCategories && (
         <div
           className={`invisible absolute left-[251px] top-0 min-w-[600px] rounded-md border bg-white p-4 opacity-0 shadow-md duration-300 group-hover/category:visible group-hover/category:opacity-100 ${category.subCategories && "space-y-3"}`}
@@ -53,13 +58,15 @@ const CategoryItem = ({ category }: { category: TCategory }) => {
 const CollectionItem = ({ collection }: { collection: TCategory }) => {
   return (
     <div className="group/collection relative">
-      <div className="flex cursor-pointer justify-between px-4 py-3 text-sm font-medium text-gray-600">
-        <span className="flex items-center gap-2">
-          <CiShoppingCart className="text-xl" />
-          {collection.categoryName}
-        </span>
-        {collection.subCategories && <BiChevronRight className="duration-300 group-hover/collection:rotate-90" />}
-      </div>
+      <Link href={`/categories/${collection.urlSlug}`}>
+        <div className="flex cursor-pointer justify-between px-4 py-3 text-sm font-medium text-gray-600">
+          <span className="flex items-center gap-2">
+            <CiShoppingCart className="text-xl" />
+            {collection.categoryName}
+          </span>
+          {collection.subCategories && <BiChevronRight className="duration-300 group-hover/collection:rotate-90" />}
+        </div>
+      </Link>
       {collection.subCategories && (
         <div className="invisible absolute left-[251px] top-0 min-w-[250px] divide-y rounded-md border bg-white opacity-0 shadow-md duration-300 group-hover/collection:visible group-hover/collection:opacity-100">
           {collection.subCategories.map((category, i) => (

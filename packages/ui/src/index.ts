@@ -10,3 +10,4 @@ export * from "./components/ui/select";
 export * from "./components/ui/separator";
 export * from "./components/ui/tabs";
 export * from "./components/ui/tooltip";
+export * from "./components/ui/breadcrumb";
