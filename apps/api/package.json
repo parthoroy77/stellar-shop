@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
+    "postinstall": "cd .. && cd .. && yarn db:generate",
     "build": "npx esbuild ./src/server.ts --bundle --platform=node --outfile=dist/server.js",
     "start": "node ./dist/server.js",
     "lint": "eslint --ignore-path .eslintignore --ext .js,.ts",
