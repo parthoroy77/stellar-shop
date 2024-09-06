@@ -32,7 +32,7 @@ app.use(
 );
 
 app.get("/ping", (_, res) => {
-  res.send("Server is active and pinged");
+  res.send(true);
 });
 
 app.get("/api/v1", (_, res) => {

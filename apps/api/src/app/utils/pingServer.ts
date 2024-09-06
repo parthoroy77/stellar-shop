@@ -7,7 +7,10 @@ const pingServer = async () => {
     // Ping your own server's public URL to prevent shutdown
     console.log("Pinging Domain:" + config.domain_url);
     const response = await fetch(`${config.domain_url}/ping`);
-    console.log("Ping successful to keep server alive:", await response.text());
+    const data = await response.json();
+    if (data) {
+      console.log("Ping successful Server Running!");
+    }
   } catch (error) {
     throw new ApiError(400, "Something went wrong while pinging server");
   }
@@ -15,6 +18,6 @@ const pingServer = async () => {
 
 const randomMinutes = Math.floor(Math.random() * 3) + 12; // Random between 12 and 14
 const randomInterval = randomMinutes * 60 * 1000; // Convert to milliseconds
-setInterval(pingServer, randomInterval);
+setInterval(pingServer, 1000);
 
 export default pingServer;
