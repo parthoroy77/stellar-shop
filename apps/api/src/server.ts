@@ -5,6 +5,7 @@ import { Server } from "http";
 import app from "./app";
 import config from "./app/config";
 import logger from "./app/logger";
+import pingServer from "./app/utils/pingServer";
 let server: Server;
 
 async function main() {
@@ -13,6 +14,7 @@ async function main() {
     server = app.listen(config.port, () => {
       logger.info(colors.green.bold(`Server listening on port ${config.port} ✔️`));
     });
+    pingServer();
   } catch (error) {
     console.error(colors.red.bold("Error connecting to database:"), error);
     process.exit(1);

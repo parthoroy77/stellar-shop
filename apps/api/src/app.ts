@@ -31,6 +31,10 @@ app.use(
   })
 );
 
+app.get("/ping", (_, res) => {
+  res.send("Server is active and pinged");
+});
+
 app.get("/api/v1", (_, res) => {
   res.status(200).send("Server Running");
 });
