@@ -1,15 +1,18 @@
-class ApiResponse<T> {
+import { Response } from "express";
+
+type ApiResponseParams<T> = {
   statusCode: number;
   data: T;
   message: string;
   success: boolean;
+};
 
-  constructor(statusCode: number, data: T, message: string, success: boolean) {
-    this.statusCode = statusCode;
-    this.data = data;
-    this.message = message;
-    this.success = success;
-  }
-}
+const ApiResponse = <T>(res: Response, { statusCode, data, message, success }: ApiResponseParams<T>) => {
+  return res.status(statusCode).json({
+    success,
+    message,
+    data,
+  });
+};
 
 export { ApiResponse };

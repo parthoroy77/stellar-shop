@@ -2,6 +2,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application } from "express";
 import morgan from "morgan";
+import { ApiResponse } from "./app/handlers/ApiResponse";
 import globalErrorHandler from "./app/handlers/globalErrorHandler";
 import notFoundHandler from "./app/handlers/notFounderHandler";
 import logger from "./app/logger";
@@ -32,7 +33,7 @@ app.use(
 );
 
 app.get("/ping", (_, res) => {
-  res.send(true);
+  ApiResponse(res, { message: "OK", success: true, statusCode: 200, data: {} });
 });
 
 app.get("/api/v1", (_, res) => {
