@@ -6,7 +6,7 @@
   },
   "exports": {
     "./constants": "./src/constants/index.constant.ts",
-    "./validations": "./src/validations/index.constant.ts",
+    "./validations": "./src/validations/index.validation.ts",
     "./functions": "./src/functions/index.constant.ts",
     "./types": "./src/types/index.ts"
   }
