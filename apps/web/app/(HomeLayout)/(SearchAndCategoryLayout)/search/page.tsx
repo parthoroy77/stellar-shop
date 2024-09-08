@@ -1,4 +1,3 @@
-"use client";
 import ProductListing from "@/components/SearchAndCategoryPage/product-listing";
 import SideFilters from "@/components/SearchAndCategoryPage/side-filters";
 import BreadcrumbMenu from "@/components/ui/breamcrumb-menu";
@@ -9,7 +8,7 @@ const items = [
   { href: "#", label: "Kids Accessories" },
 ];
 
-const SearchPage = () => {
+const SearchPage = async () => {
   return (
     <section className="space-y-5">
       <BreadcrumbMenu items={items} />
