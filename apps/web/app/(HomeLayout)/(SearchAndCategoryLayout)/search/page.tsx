@@ -1,5 +1,6 @@
 import ProductListing from "@/components/SearchAndCategoryPage/product-listing";
 import SideFilters from "@/components/SearchAndCategoryPage/side-filters";
+import SideFiltersSkeleton from "@/components/SearchAndCategoryPage/side-filters-skeleton";
 import BreadcrumbMenu from "@/components/ui/breamcrumb-menu";
 const items = [
   { href: "#", label: "Categories" },
@@ -13,7 +14,8 @@ const SearchPage = async () => {
     <section className="space-y-5">
       <BreadcrumbMenu items={items} />
       <div className="flex gap-5">
-        <SideFilters />
+        <SideFiltersSkeleton />
+        {/* <SideFilters /> */}
         <ProductListing />
       </div>
     </section>
