@@ -1,0 +1,22 @@
+model OAuthAccount {
+  id               Int           @id @default(autoincrement())
+  userId           Int
+  provider         OAuthProvider
+  providerClientId String        @unique
+  providerEmail    String        @unique
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, providerEmail])
+  @@map("OAuthAccounts")
+}
+
+enum OAuthProvider {
+  GOOGLE
+  FACEBOOK
+}

@@ -1,31 +1,71 @@
 model UserRole {
-  id       Int      @id @default(autoincrement())
-  roleName RoleName
+  id       Int    @id @default(autoincrement())
+  roleName Role
   users    User[]
+
+  @@map("UserRoles")
 }
 
 model User {
-  id              Int        @id @default(autoincrement())
+  id              Int           @id @default(autoincrement())
   roleId          Int
   fullName        String
-  email           String     @unique
-  password        String
-  phonePrefixCode String     @db.VarChar(10)
-  phoneNumber     String     @db.VarChar(20)
-  emailVerified   Boolean    @default(false)
-  phoneVerified   Boolean    @default(false)
-  profilePhoto    String     @db.VarChar(255)
-  status          UserStatus @default(INACTIVE)
+  email           String        @unique
+  password        UserPassword?
+  phonePrefixCode String        @db.VarChar(10)
+  phoneNumber     String        @unique @db.VarChar(20)
+  emailVerified   Boolean       @default(false)
+  phoneVerified   Boolean       @default(false)
+  profilePhoto    String        @db.VarChar(255)
+  status          UserStatus    @default(INACTIVE)
 
   // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // referrences
-  role UserRole @relation(fields: [roleId], references: [id])
+  role         UserRole       @relation(fields: [roleId], references: [id])
+  oAuthAccount OAuthAccount[]
+  Session      Session[]
+  address      Address[]
+
+  @@index([email, phoneNumber])
+  @@map("Users")
 }
 
-enum RoleName {
+model UserPassword {
+  id           Int    @id @default(autoincrement())
+  hashPassword String @db.VarChar(255)
+  userId       Int    @unique
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("UserPasswords")
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  sessionToken String   @unique
+  expiresAt    DateTime
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references 
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("Sessions")
+}
+
+enum Role {
   BUYER
   SELLER
   ADMIN
