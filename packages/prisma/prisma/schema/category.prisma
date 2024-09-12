@@ -1,0 +1,43 @@
+model Category {
+  id               Int            @id @default(autoincrement())
+  categoryName     String
+  urlSlug          String         @unique
+  parentCategoryId Int
+  categoryImageUrl String
+  level            CategoryLevel
+  status           CategoryStatus
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  parentCategory Category?  @relation("CategoryToParent", fields: [parentCategoryId], references: [id])
+  subCategories  Category[] @relation("CategoryToParent")
+
+  @@index([urlSlug, categoryName])
+  @@map("Categories")
+}
+
+model ProductCategory {
+  id         Int @id @default(autoincrement())
+  productId  Int
+  categoryId Int
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("ProductCategories")
+}
+
+enum CategoryStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum CategoryLevel {
+  COLLECTION
+  CATEGORY
+  SUB_CATEGORY
+}

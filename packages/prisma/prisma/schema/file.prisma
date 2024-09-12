@@ -1,0 +1,32 @@
+model File {
+  id                 Int        @id @default(autoincrement())
+  fileName           String
+  description        String?    @db.Text
+  fileSize           Int
+  filePublicId       String // for cloudinary fields
+  fileUrl            String // for cloudinary fields
+  fileSecureUrl      String // for cloudinary fields
+  uploadedBy         Int
+  associatedEntityId Int?
+  fileType           FileType
+  status             FileStatus
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references 
+  uploader User @relation(fields: [uploadedBy], references: [id])
+}
+
+enum FileType {
+  IMAGE
+  PDF
+  VIDEO
+}
+
+enum FileStatus {
+  ACTIVE
+  ARCHIVED
+  DELETED
+}

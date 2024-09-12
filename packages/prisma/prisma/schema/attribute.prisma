@@ -1,0 +1,38 @@
+model Attribute {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String? @db.Text
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  attributeValue AttributeValue[]
+
+  @@index([name])
+  @@map("Attributes")
+}
+
+model AttributeValue {
+  id          Int    @id @default(autoincrement())
+  name        String
+  attributeId Int
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  attribute Attribute @relation(fields: [attributeId], references: [id])
+
+  @@index([name, attributeId])
+  @@map("AttributeValues")
+}
+
+model ProductVariantAttribute {
+  id          Int     @id @default(autoincrement())
+  productId   Int
+  variantName String
+  description String? @db.Text
+}

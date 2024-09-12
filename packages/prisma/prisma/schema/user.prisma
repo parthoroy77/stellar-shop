@@ -28,6 +28,7 @@ model User {
   oAuthAccount OAuthAccount[]
   Session      Session[]
   address      Address[]
+  file         File[]
 
   @@index([email, phoneNumber])
   @@map("Users")
