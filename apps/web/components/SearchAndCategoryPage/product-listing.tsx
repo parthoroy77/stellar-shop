@@ -1,6 +1,5 @@
 import ProductCard from "@/components/ui/product-card";
 import ProductSortOptions from "./product-sort-options";
-import ProductCardSkeleton from "../ui/product-card-skeleton";
 
 const ProductListing = () => {
   return (
@@ -8,7 +7,7 @@ const ProductListing = () => {
       <ProductSortOptions productsCount={8} />
       <div className="grid grid-cols-4 gap-5">
         {Array.from({ length: 8 }).map((_x, index) => (
-          <ProductCardSkeleton key={index} />
+          <ProductCard key={index} />
         ))}
       </div>
     </div>
