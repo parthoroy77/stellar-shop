@@ -24,11 +24,14 @@ model User {
   updatedAt DateTime @updatedAt
 
   // referrences
-  role         UserRole       @relation(fields: [roleId], references: [id])
-  oAuthAccount OAuthAccount[]
-  Session      Session[]
-  address      Address[]
-  file         File[]
+  role          UserRole       @relation(fields: [roleId], references: [id])
+  oAuthAccounts OAuthAccount[]
+  sessions      Session[]
+  addresses     Address[]
+  files         File[]
+  sellerProfile Seller?
+  cart          Cart?
+  wishlist      Wishlist?
 
   @@index([email, phoneNumber])
   @@map("Users")

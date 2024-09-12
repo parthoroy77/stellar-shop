@@ -1,0 +1,57 @@
+model ProductVariant {
+  id            Int                  @id @default(autoincrement())
+  productId     Int
+  variantName   String
+  description   String?              @db.Text
+  price         Float
+  stockQuantity Int
+  sku           String?
+  status        ProductVariantStatus
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  attributes ProductVariantAttribute[]
+
+  @@index([productId])
+  @@map("ProductVariants")
+}
+
+model Product {
+  id                Int           @id @default(autoincrement())
+  productName       String
+  urlSlug           String        @unique @db.Text
+  description       String        @db.Text
+  price             Float
+  comparePrice      Float
+  stockQuantity     Int
+  lowStockThreshold Int?
+  sellerId          Int
+  brandId           Int
+  status            ProductStatus
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  seller Seller @relation(fields: [sellerId], references: [id])
+  tags   Tag[]
+  brand  Brand  @relation(fields: [brandId], references: [id])
+
+  @@index([urlSlug, productName])
+  @@map("Products")
+}
+
+enum ProductVariantStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ProductStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+}

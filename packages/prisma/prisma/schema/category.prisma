@@ -3,7 +3,7 @@ model Category {
   categoryName     String
   urlSlug          String         @unique
   parentCategoryId Int
-  categoryImageUrl String
+  categoryImageUrl String?
   level            CategoryLevel
   status           CategoryStatus
 

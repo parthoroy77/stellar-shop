@@ -17,6 +17,8 @@ model File {
 
   // references 
   uploader User @relation(fields: [uploadedBy], references: [id])
+
+  @@map("Files")
 }
 
 enum FileType {

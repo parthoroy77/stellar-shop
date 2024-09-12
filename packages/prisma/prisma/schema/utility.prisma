@@ -1,0 +1,26 @@
+model Tag {
+  id        Int    @id @default(autoincrement())
+  name      String
+  productId Int
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references 
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model Brand {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String   @db.Text
+  logo        String
+  // timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // references 
+
+  products Product[]
+}

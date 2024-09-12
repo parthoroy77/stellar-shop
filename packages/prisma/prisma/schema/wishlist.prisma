@@ -1,0 +1,31 @@
+model Wishlist {
+  id     Int @id @default(autoincrement())
+  userId Int @unique
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  user      User           @relation(fields: [userId], references: [id])
+  cartItems WishlistItem[]
+
+  @@map("Wishlists")
+}
+
+model WishlistItem {
+  id               Int  @id @default(autoincrement())
+  userId           Int
+  wishlistId       Int
+  productId        Int
+  productVariantId Int?
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  wishlist Wishlist @relation(fields: [wishlistId], references: [id])
+
+  @@map("WishlistItems")
+}

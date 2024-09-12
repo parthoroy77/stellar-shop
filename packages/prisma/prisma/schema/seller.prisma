@@ -1,0 +1,25 @@
+model Seller {
+  id              Int          @id @default(autoincrement())
+  userId          Int          @unique
+  shopName        String
+  shopDescription String       @db.Text
+  logoUrl         String
+  contactNumber   String
+  status          SellerStatus
+
+  // timestapms
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  user     User      @relation(fields: [userId], references: [id])
+  products Product[]
+
+  @@index([shopName])
+  @@map("Sellers")
+}
+
+enum SellerStatus {
+  ACTIVE
+  INACTIVE
+}

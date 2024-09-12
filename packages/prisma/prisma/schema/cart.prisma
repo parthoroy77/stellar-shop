@@ -1,0 +1,32 @@
+model Cart {
+  id     Int @id @default(autoincrement())
+  userId Int @unique
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  user      User       @relation(fields: [userId], references: [id])
+  cartItems CartItem[]
+
+  @@map("Carts")
+}
+
+model CartItem {
+  id               Int  @id @default(autoincrement())
+  userId           Int
+  cartId           Int
+  productId        Int
+  productVariantId Int?
+  quantity         Int
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  cart Cart @relation(fields: [cartId], references: [id])
+
+  @@map("CartItems")
+}

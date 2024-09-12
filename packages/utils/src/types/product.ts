@@ -69,7 +69,6 @@ export interface IProduct {
   id: number;
   productName: string;
   urlSlug: string;
-  categoryId: number; // Foreign key referencing Category
   brandId: number; // Foreign key referencing Brand
   description: string;
   price: number;

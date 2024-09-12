@@ -8,7 +8,7 @@ model Attribute {
   updatedAt DateTime @updatedAt
 
   // references
-  attributeValue AttributeValue[]
+  attributeValues AttributeValue[]
 
   @@index([name])
   @@map("Attributes")
@@ -16,7 +16,7 @@ model Attribute {
 
 model AttributeValue {
   id          Int    @id @default(autoincrement())
-  name        String
+  value       String
   attributeId Int
 
   // timestamps
@@ -24,15 +24,41 @@ model AttributeValue {
   updatedAt DateTime @updatedAt
 
   // references
-  attribute Attribute @relation(fields: [attributeId], references: [id])
+  attribute                Attribute                 @relation(fields: [attributeId], references: [id])
+  productVariantAttributes ProductVariantAttribute[]
+  productAttributes        ProductAttribute[]
 
-  @@index([name, attributeId])
+  @@index([value, attributeId])
   @@map("AttributeValues")
 }
 
+model ProductAttribute {
+  id               Int @id @default(autoincrement())
+  productId        Int
+  attributeValueId Int
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  attributeValue AttributeValue @relation(fields: [attributeValueId], references: [id])
+
+  @@map("ProductAttribues")
+}
+
 model ProductVariantAttribute {
-  id          Int     @id @default(autoincrement())
-  productId   Int
-  variantName String
-  description String? @db.Text
+  id               Int @id @default(autoincrement())
+  variantId        Int
+  attributeValueId Int
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  attributeValue AttributeValue @relation(fields: [attributeValueId], references: [id])
+  productVariant ProductVariant @relation(fields: [variantId], references: [id])
+
+  @@map("ProductVariantAttributes")
 }

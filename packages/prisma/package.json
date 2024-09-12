@@ -10,12 +10,12 @@
   },
   "devDependencies": {
     "@types/node": "^20.14.10",
-    "prisma": "^5.16.2",
+    "prisma": "^5.19.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "@prisma/client": "^5.16.2"
+    "@prisma/client": "^5.19.1"
   },
   "exports": {
     "./client": "./src/index.ts"
