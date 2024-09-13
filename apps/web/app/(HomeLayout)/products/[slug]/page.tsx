@@ -6,7 +6,7 @@ import ProductReviewContainer from "@/components/ProductDetail/product-review-co
 import ProductSellerInfo from "@/components/ProductDetail/product-seller-info";
 import ProductSuggestion from "@/components/ProductDetail/product-suggestions";
 import ProductTabNavigation from "@/components/ProductDetail/product-tab-navigation";
-import BreadcrumbMenu from "@/components/ui/breamcrumb-menu";
+import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 import { products } from "@/dummyData/products";
 import { TProduct } from "@repo/utils/types";
 const items = [

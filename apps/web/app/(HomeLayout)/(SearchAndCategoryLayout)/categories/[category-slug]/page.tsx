@@ -1,6 +1,6 @@
 import ProductListing from "@/components/SearchAndCategoryPage/product-listing";
 import SideFilters from "@/components/SearchAndCategoryPage/side-filters";
-import BreadcrumbMenu from "@/components/ui/breamcrumb-menu";
+import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 const items = [
   { href: "#", label: "Categories" },
   { href: "#", label: "Fashion" },

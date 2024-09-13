@@ -6,7 +6,7 @@ import PriceRange from "./price-range";
 
 const SideFilters = () => {
   return (
-    <aside className="h-fit w-[20%] divide-y rounded-md border *:px-6 *:py-4">
+    <aside className="hidden h-fit w-[20%] divide-y rounded-md border *:px-6 *:py-4 lg:block">
       <PriceRange />
       {filters.map((item, i) => (
         <FilterItem key={i} label={item.label} options={item.options} />
