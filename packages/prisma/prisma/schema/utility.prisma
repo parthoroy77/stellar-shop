@@ -9,6 +9,8 @@ model Tag {
 
   // references 
   product Product @relation(fields: [productId], references: [id])
+
+  @@map("Tags")
 }
 
 model Brand {
@@ -21,6 +23,7 @@ model Brand {
   updatedAt   DateTime @updatedAt
 
   // references 
-
   products Product[]
+
+  @@map("Brands")
 }

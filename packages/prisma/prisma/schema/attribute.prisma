@@ -43,6 +43,7 @@ model ProductAttribute {
 
   // references
   attributeValue AttributeValue @relation(fields: [attributeValueId], references: [id])
+  product        Product        @relation(fields: [productId], references: [id])
 
   @@map("ProductAttribues")
 }

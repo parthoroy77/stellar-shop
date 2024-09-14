@@ -12,7 +12,7 @@ model User {
   fullName        String
   email           String        @unique
   password        UserPassword?
-  phonePrefixCode String        @db.VarChar(10)
+  phonePrefixCode String        @default("880") @db.VarChar(10)
   phoneNumber     String        @unique @db.VarChar(20)
   emailVerified   Boolean       @default(false)
   phoneVerified   Boolean       @default(false)

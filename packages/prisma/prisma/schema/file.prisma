@@ -7,7 +7,7 @@ model File {
   fileUrl            String // for cloudinary fields
   fileSecureUrl      String // for cloudinary fields
   uploadedBy         Int
-  associatedEntityId Int?
+  associatedEntityId Int
   fileType           FileType
   status             FileStatus
 
