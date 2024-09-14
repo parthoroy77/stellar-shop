@@ -8,7 +8,7 @@ const SearchPage = async () => {
     <section className="space-y-5">
       <BreadcrumbMenu items={items} />
       <div className="flex gap-5">
-        <SideFilters />
+        <SideFilters mobileView={false} />
         <ProductListing />
       </div>
     </section>

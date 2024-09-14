@@ -4,9 +4,14 @@ import { Checkbox, Label } from "@repo/ui";
 import { HiOutlinePlus } from "react-icons/hi2";
 import PriceRange from "./price-range";
 
-const SideFilters = () => {
+const SideFilters = ({ mobileView }: { mobileView: boolean }) => {
+  // if mobile view then class will be different from web
+  const sidebarClasses = mobileView
+    ? `h-fit divide-y rounded-md border *:px-6 *:py-4`
+    : `hidden h-fit w-[20%] divide-y rounded-md border *:px-6 *:py-4 lg:block`;
+
   return (
-    <aside className="hidden h-fit w-[20%] divide-y rounded-md border *:px-6 *:py-4 lg:block">
+    <aside className={sidebarClasses}>
       <PriceRange />
       {filters.map((item, i) => (
         <FilterItem key={i} label={item.label} options={item.options} />
