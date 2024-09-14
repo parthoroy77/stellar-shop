@@ -11,11 +11,11 @@ interface MobileFilterMenuProps {
 const MobileFilterMenu: FC<MobileFilterMenuProps> = ({ isOpen, setIsOpen }) => {
   const overlayClasses = "absolute inset-0 z-20 h-full w-full bg-black bg-opacity-50";
 
-  const sidebarClasses = `absolute right-0  z-30 overflow-hidden border bg-white shadow-lg duration-200 ${
+  const sidebarClasses = `absolute inset-0 z-30 overflow-hidden border bg-white shadow-lg duration-200 ${
     isOpen ? "w-[90%]" : "w-0"
   }`;
 
-  const closeButtonClasses = `invisible absolute left-0 top-0 z-40 w-[10%] rounded-none p-0 duration-500 ${
+  const closeButtonClasses = `invisible absolute right-0 top-0 z-40 w-[10%] rounded-none p-0 duration-500 ${
     isOpen && "visible"
   }`;
 
