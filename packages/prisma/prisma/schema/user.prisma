@@ -1,14 +1,6 @@
-model UserRole {
-  id       Int    @id @default(autoincrement())
-  roleName Role
-  users    User[]
-
-  @@map("UserRoles")
-}
-
 model User {
   id              Int           @id @default(autoincrement())
-  roleId          Int
+  role            UserRole      @default(BUYER)
   fullName        String
   email           String        @unique
   password        UserPassword?
@@ -24,7 +16,6 @@ model User {
   updatedAt DateTime @updatedAt
 
   // referrences
-  role          UserRole       @relation(fields: [roleId], references: [id])
   oAuthAccounts OAuthAccount[]
   sessions      Session[]
   addresses     Address[]
@@ -69,7 +60,7 @@ model Session {
   @@map("Sessions")
 }
 
-enum Role {
+enum UserRole {
   BUYER
   SELLER
   ADMIN

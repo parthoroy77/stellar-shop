@@ -9,6 +9,7 @@
     "db:migrate": "yarn workspace @repo/prisma db-migrate",
     "db:generate": "yarn workspace @repo/prisma db-generate",
     "db:studio": "yarn workspace @repo/prisma db-studio",
+    "db:seed": "yarn workspace @repo/prisma db-seed",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {

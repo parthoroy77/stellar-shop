@@ -6,7 +6,8 @@
   "scripts": {
     "db-migrate": "yarn prisma migrate dev",
     "db-generate": "yarn prisma generate",
-    "db-studio": "yarn prisma studio"
+    "db-studio": "yarn prisma studio",
+    "db-seed": "ts-node prisma/seed.ts"
   },
   "devDependencies": {
     "@types/node": "^20.14.10",
