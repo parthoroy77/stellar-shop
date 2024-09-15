@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Users" ALTER COLUMN "phonePrefixCode" DROP NOT NULL,
+ALTER COLUMN "phoneNumber" DROP NOT NULL,
+ALTER COLUMN "profilePhoto" DROP NOT NULL;
