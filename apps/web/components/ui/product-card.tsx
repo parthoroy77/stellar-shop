@@ -11,7 +11,7 @@ const ProductCard = () => {
   return (
     // Link to the product page
     <Link href={"/products/item"}>
-      <div className="hover:border-primary group relative flex flex-col justify-between divide-y rounded-md border duration-300 *:p-2 md:*:p-3">
+      <div className="group relative flex flex-col justify-between divide-y rounded-md border duration-300 *:p-2 md:*:p-3">
         {/* Product Image */}
         <div className="relative flex justify-center">
           <Image
@@ -77,6 +77,7 @@ const ProductCard = () => {
           {/* Add to Cart Button */}
           <Button
             size={"sm"}
+            variant={"accent"}
             className="group/button flex h-fit w-fit items-center justify-center gap-2 rounded-full p-[5px] font-normal transition-all duration-300 lg:rounded-md lg:p-2"
           >
             <HiOutlineShoppingBag className="text-base lg:text-lg" />

@@ -1,4 +1,5 @@
-import ProductsSlider from "./products-slider";
+import CustomPagination from "../ui/custom-pagination";
+import ProductShowcase from "./product-showcase";
 import SideBanner from "./side-banner";
 
 const NewArrivals = () => {
@@ -12,7 +13,8 @@ const NewArrivals = () => {
         />
       </div>
       <div className="w-full space-y-5 lg:w-[80%]">
-        <ProductsSlider />
+        <ProductShowcase />
+        <CustomPagination />
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const ProductListing = () => {
         <MobileFilterTrigger />
       </div>
       {/* Product Cards */}
-      <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-3 md:gap-3 lg:grid-cols-4 lg:gap-5">
         {Array.from({ length: 8 }).map((_x, index) => (
           <ProductCard key={index} />
         ))}

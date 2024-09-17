@@ -1,5 +1,6 @@
 import { Button } from "@repo/ui";
 import { BsArrowRight } from "react-icons/bs";
+import CustomPagination from "../ui/custom-pagination";
 import ProductCard from "../ui/product-card";
 
 const BestSellers = () => {
@@ -15,6 +16,9 @@ const BestSellers = () => {
         {Array.from({ length: 5 }).map((_x, index) => (
           <ProductCard key={index} />
         ))}
+      </div>
+      <div className="flex justify-center">
+        <CustomPagination />
       </div>
     </div>
   );

@@ -2,6 +2,8 @@ import { Button } from "@repo/ui";
 import { BsArrowRight } from "react-icons/bs";
 import ProductsSlider from "./products-slider";
 import SideBanner from "./side-banner";
+import ProductShowcase from "./product-showcase";
+import CustomPagination from "../ui/custom-pagination";
 
 const PopularProducts = () => {
   return (
@@ -20,7 +22,8 @@ const PopularProducts = () => {
             Check All Products <BsArrowRight />
           </Button>
         </div>
-        <ProductsSlider />
+        <ProductShowcase />
+        <CustomPagination />
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ const QuickAccessBar = () => {
             <FaTwitter aria-label="Twitter" />
             <FaWhatsapp aria-label="Whatsapp" />
           </div>
-          <Badge className="hover:bg-primary bg-secondary rounded-sm text-white">
+          <Badge variant={"accent"} className="rounded-sm">
             FREE SHIPPING FOR ALL ORDERS OF $340
           </Badge>
         </div>

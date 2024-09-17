@@ -1,6 +1,8 @@
 import { Separator } from "@repo/ui";
 import ProductsSlider from "./products-slider";
 import SideBanner from "./side-banner";
+import ProductShowcase from "./product-showcase";
+import CustomPagination from "../ui/custom-pagination";
 
 const TodayHotDeals = () => {
   return (
@@ -35,7 +37,10 @@ const TodayHotDeals = () => {
             </div>
           </div>
         </div>
-        <ProductsSlider />
+        <div className="w-full space-y-5">
+          <ProductShowcase />
+          <CustomPagination />
+        </div>
       </div>
     </div>
   );

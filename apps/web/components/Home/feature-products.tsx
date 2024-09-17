@@ -1,3 +1,5 @@
+import CustomPagination from "../ui/custom-pagination";
+import ProductShowcase from "./product-showcase";
 import ProductsSlider from "./products-slider";
 import SideBanner from "./side-banner";
 
@@ -12,7 +14,8 @@ const FeatureProducts = () => {
         />
       </div>
       <div className="w-full space-y-5 lg:w-[80%]">
-        <ProductsSlider />
+        <ProductShowcase />
+        <CustomPagination />
       </div>
     </div>
   );
