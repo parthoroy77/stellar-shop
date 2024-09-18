@@ -1,5 +1,6 @@
 import { collections } from "@/dummyData/nav-categories";
 import { ICategory } from "@repo/utils/types";
+import Link from "next/link";
 import { memo, useState } from "react";
 import { BiChevronRight } from "react-icons/bi";
 import { CiShoppingCart } from "react-icons/ci";
@@ -14,27 +15,29 @@ const MobileCollectionMenu = memo(({ collection }: { collection: TCategory }) =>
   const toggleCategory = () => setIsCategoryOpen((prev) => !prev);
 
   return (
-    <div>
+    <>
       <div
         onClick={toggleCategory}
         className="flex cursor-pointer justify-between px-4 py-3 text-xs font-medium text-gray-600"
       >
-        <span className="flex items-center gap-2">
-          <CiShoppingCart className="text-xl" />
-          {collection.categoryName}
-        </span>
-        {collection.subCategories && collection.subCategories.length > 0 && (
+        <Link href={`/categories/${collection.urlSlug}`}>
+          <div className="flex items-center gap-2">
+            <CiShoppingCart className="text-xl" />
+            <span>{collection.categoryName}</span>
+          </div>
+        </Link>
+        {collection.subCategories && collection?.subCategories?.length > 0 && (
           <BiChevronRight className={`text-xl duration-300 ${isCategoryOpen ? "rotate-90" : ""}`} />
         )}
       </div>
-      {isCategoryOpen && collection.subCategories.length > 0 && (
+      {isCategoryOpen && collection?.subCategories?.length > 0 && (
         <div className="inset-0 divide-y overflow-hidden bg-gray-50 pl-3 transition-all duration-300">
           {collection.subCategories.map((subCategory, index) => (
             <MobileCollectionMenu key={index} collection={subCategory} />
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 });
 
