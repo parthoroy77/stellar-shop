@@ -13,3 +13,4 @@ export * from "./components/ui/tooltip";
 export * from "./components/ui/breadcrumb";
 export * from "./components/ui/skeleton";
 export * from "./components/ui/slider";
+export * from "./components/ui/dropdown-menu";
