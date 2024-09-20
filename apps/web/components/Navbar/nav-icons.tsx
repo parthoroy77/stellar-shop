@@ -9,15 +9,15 @@ const NavIcons = () => {
       <CartHoverMenu />
       <div className="relative cursor-pointer">
         <HiArrowPath size={23} aria-label="Compare Product" />
-        <span className="bg-primary absolute -right-3 -top-2 size-4 rounded-full text-center text-[10px] text-xs text-white">
-          4
-        </span>
+        <div className="bg-primary absolute -right-3 -top-2 flex size-[14px] items-center justify-center rounded-full text-center text-[9px] text-xs text-white">
+          <span>0</span>
+        </div>
       </div>
       <div className="relative cursor-pointer">
         <SlHeart size={23} aria-label="Wishlists" />
-        <span className="bg-primary absolute -right-3 -top-2 size-4 rounded-full text-center text-[10px] text-xs text-white">
-          4
-        </span>
+        <div className="bg-primary absolute -right-3 -top-2 flex size-[14px] items-center justify-center rounded-full text-center text-[9px] text-xs text-white">
+          <span>0</span>
+        </div>
       </div>
       <div className="flex items-center gap-1">
         <PiUserCircleLight size={26} aria-label="User" />

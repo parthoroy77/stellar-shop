@@ -10,10 +10,10 @@ interface BreadcrumbMenuProps {
 const BreadcrumbMenu = ({ items }: { items: BreadcrumbMenuProps[] }) => {
   return (
     <Breadcrumb>
-      <BreadcrumbList>
+      <BreadcrumbList className="text-xs sm:gap-1">
         <BreadcrumbItem>
-          <BreadcrumbLink href="/" className="flex items-center gap-2">
-            <HiMiniHome />
+          <BreadcrumbLink href="/" className="flex items-center gap-1">
+            <HiMiniHome className="mb-[0.7px]" />
             Home
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -21,7 +21,7 @@ const BreadcrumbMenu = ({ items }: { items: BreadcrumbMenuProps[] }) => {
         {items.length > 0 &&
           items.map(({ label, href }, i) => (
             <React.Fragment key={i}>
-              <BreadcrumbItem>
+              <BreadcrumbItem className={`${i + 1 === items.length ? "font-medium text-black" : "font-normal"}`}>
                 <BreadcrumbLink href={href}>{label}</BreadcrumbLink>
               </BreadcrumbItem>
               {i + 1 < items.length && <BreadcrumbSeparator />}
