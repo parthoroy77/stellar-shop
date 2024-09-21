@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@ui/index";
 import { useCallback, useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
