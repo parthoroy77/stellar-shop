@@ -7,7 +7,7 @@ model Cart {
   updatedAt DateTime @updatedAt
 
   // references
-  user      User       @relation(fields: [userId], references: [id])
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   cartItems CartItem[]
 
   @@map("Carts")
@@ -26,7 +26,7 @@ model CartItem {
   updatedAt DateTime @updatedAt
 
   // references
-  cart Cart @relation(fields: [cartId], references: [id])
+  cart Cart @relation(fields: [cartId], references: [id], onDelete: Cascade)
 
   @@map("CartItems")
 }

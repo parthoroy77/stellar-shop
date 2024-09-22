@@ -10,7 +10,7 @@ model OAuthAccount {
   updatedAt DateTime @updatedAt
 
   // references
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, providerEmail])
   @@map("OAuthAccounts")

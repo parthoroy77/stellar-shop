@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt";
+import { compare, hash } from "bcryptjs";
 import { StatusCodes } from "http-status-codes";
 import { importJWK, JWTPayload, jwtVerify, SignJWT } from "jose";
 import config from "../../config";
@@ -6,7 +6,7 @@ import { ApiError } from "../../handlers/ApiError";
 
 const hashPassword = async (password: string) => {
   try {
-    return await bcrypt.hash(password, Number(config.salt_rounds));
+    return await hash(password, Number(config.salt_rounds));
   } catch (error) {
     throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Failed to hash password");
   }
@@ -14,7 +14,7 @@ const hashPassword = async (password: string) => {
 
 const comparePassword = async (password: string, hashPassword: string) => {
   try {
-    return await bcrypt.compare(password, hashPassword);
+    return await compare(password, hashPassword);
   } catch (error) {
     throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Failed to compare password");
   }

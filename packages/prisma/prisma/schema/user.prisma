@@ -24,7 +24,7 @@ model User {
   cart          Cart?
   wishlist      Wishlist?
 
-  @@index([email, phoneNumber])
+  @@index([email, phoneNumber, fullName])
   @@map("Users")
 }
 
@@ -38,7 +38,7 @@ model UserPassword {
   updatedAt DateTime @updatedAt
 
   // references
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("UserPasswords")
 }
@@ -54,7 +54,7 @@ model Session {
   updatedAt DateTime @updatedAt
 
   // references 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@map("Sessions")
