@@ -25,7 +25,6 @@ const RegistrationForm = () => {
   const onSubmit = async (data: TRegistrationForm) => {
     setLoading(true);
     const response = await registerUser(data);
-    console.log(response);
     if (response.success) {
       toast.success(response.message);
       form.reset({ email: "", fullName: "", password: "" });
