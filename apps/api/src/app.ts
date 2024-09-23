@@ -7,6 +7,7 @@ import globalErrorHandler from "./app/handlers/globalErrorHandler";
 import notFoundHandler from "./app/handlers/notFounderHandler";
 import logger from "./app/logger";
 import router from "./app/routes/index.route";
+import emailService from "./app/services/emailService";
 const app: Application = express();
 
 // parser

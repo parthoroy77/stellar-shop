@@ -1,7 +1,9 @@
+import { defaultTemplate } from "@repo/email-service";
 import prisma from "@repo/prisma/client";
 import { StatusCodes } from "http-status-codes";
 import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
+import emailService from "../../services/emailService";
 import { TAuth } from "./auth.interface";
 import { generateToken, hashPassword } from "./auth.utils";
 
@@ -36,9 +38,14 @@ const register = async (payload: TAuth) => {
   }
 
   // generate verification link
-  const verificationToken = generateToken({ userId: newUser.id }, config.jwt_access_secret as string, "1h");
+  const verificationToken = await generateToken({ userId: newUser.id }, config.jwt_access_secret as string, "1h");
 
   // TODO: send verification email
+
+  const html = defaultTemplate(verificationToken);
+  await emailService.sendEmail({ to: email, subject: "Verify Account", html });
+
+  return;
 };
 
 export const AuthServices = {

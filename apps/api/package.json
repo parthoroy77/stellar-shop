@@ -17,6 +17,7 @@
   "dependencies": {
     "@repo/prisma": "*",
     "@repo/utils": "*",
+    "@repo/email-service": "*",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.6",

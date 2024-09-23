@@ -12,4 +12,7 @@ export default {
   jwt_access_token_expires_in: process.env.JWT_ACCESS_TOKEN_EXPIRES_IN,
   jwt_refresh_token_expires_in: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN,
   domain_url: process.env.DOMAIN_URL,
+  nodemailer_host: process.env.NODEMAILER_HOST,
+  nodemailer_user: process.env.NODEMAILER_USER,
+  nodemailer_password: process.env.NODEMAILER_PASS,
 };
