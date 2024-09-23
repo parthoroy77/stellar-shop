@@ -5,8 +5,8 @@ import asyncHandler from "./asyncHandler";
 const zodSafeParse = (schema: AnyZodObject) => {
   return asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
     await schema.parseAsync({
-      body: req.body,
-      cookies: req.cookies,
+      ...req.body,
+      ...req.cookies,
     });
     next();
   });

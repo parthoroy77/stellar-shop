@@ -2,7 +2,8 @@ import { TErrorSource, TGenericErrorResponse } from "../interface/error";
 import { ApiError } from "./ApiError";
 
 const handleApiError = (error: ApiError): TGenericErrorResponse => {
-  const message = "Api Error";
+  let message: string;
+  message = error.message || "Something went wrong";
   const statusCode = error.statusCode;
   const errorSources: TErrorSource[] = [
     {

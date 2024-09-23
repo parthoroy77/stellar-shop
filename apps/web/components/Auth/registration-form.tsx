@@ -1,22 +1,110 @@
-import { Button, Input, Label, Separator } from "@repo/ui";
+"use client";
+import { registerUser } from "@/actions/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Separator } from "@repo/ui";
+import { registrationSchema, z } from "@repo/utils/validations";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm, UseFormReturn } from "react-hook-form";
+import { toast } from "sonner";
+
+type TRegistrationForm = z.infer<typeof registrationSchema>;
+
 const RegistrationForm = () => {
+  const [loading, setLoading] = useState(false);
+  const form: UseFormReturn<TRegistrationForm> = useForm<TRegistrationForm>({
+    resolver: zodResolver(registrationSchema),
+    defaultValues: {
+      fullName: "Partho Roy",
+      email: "",
+      password: "password123",
+    },
+  });
+  const router = useRouter();
+  const onSubmit = async (data: TRegistrationForm) => {
+    setLoading(true);
+    const response = await registerUser(data);
+    console.log(response);
+    if (response.success) {
+      toast.success(response.message);
+      form.reset({ email: "", fullName: "", password: "" });
+      router.push("/");
+    } else {
+      toast.error(response.message);
+    }
+    setLoading(false);
+  };
+
   return (
-    <form className="space-y-5">
-      <span className="block space-y-2">
-        <Label>Your Email *</Label>
-        <Input placeholder="example@gmail.com" className="border-primary h-[45px] w-full border px-5" />
-      </span>
-      <span className="block space-y-2">
-        <Label>Your Password *</Label>
-        <Input placeholder="example@gmail.com" className="border-primary h-[45px] w-full border px-5" />
-      </span>
-      <Button className="w-full">Register</Button>
-      <Separator />
-      <Link href={"/login"} className="text-accent-foreground block cursor-pointer text-center hover:underline">
-        Already have an account? Login Now
-      </Link>
-    </form>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+        <FormField
+          control={form.control}
+          name="fullName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Your Full Name *</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  name="fullName"
+                  type="text"
+                  placeholder="e.g. John Doe"
+                  className="border-primary h-[45px] w-full border px-5"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Your Email *</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  name="email"
+                  placeholder="example@gmail.com"
+                  type="email"
+                  className="border-primary h-[45px] w-full border px-5"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Your Password *</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  name="password"
+                  type="password"
+                  placeholder="You Password"
+                  className="border-primary h-[45px] w-full border px-5"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Button disabled={loading} type="submit" className="w-full">
+          Register
+        </Button>
+        <Separator />
+        <Link href={"/login"} className="text-accent-foreground block cursor-pointer text-center hover:underline">
+          Already have an account? Login Now
+        </Link>
+      </form>
+    </Form>
   );
 };
 

@@ -11,7 +11,7 @@ const CartHoverMenu = () => {
         <div className="relative cursor-pointer">
           <PiShoppingCartSimple size={23} aria-label="Shopping Cart" />
           <div className="bg-primary absolute -right-3 -top-2 flex size-[14px] items-center justify-center rounded-full text-center text-[9px] text-xs text-white">
-            <span>0</span>
+            <span>6</span>
           </div>
         </div>
       </DropdownMenuTrigger>
