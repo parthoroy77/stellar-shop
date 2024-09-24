@@ -11,4 +11,8 @@ const emailService = new EmailService({
   address: config.nodemailer_user as string,
 });
 
+export const sendEmail = async (to: string, subject: string, template: string) => {
+  await emailService.sendEmail({ to, subject, html: template });
+};
+
 export default emailService;

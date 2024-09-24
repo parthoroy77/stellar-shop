@@ -7,7 +7,7 @@ import { AuthServices } from "./auth.services";
 const userRegistration = asyncHandler(async (req: Request, res: Response) => {
   const payload = req.body;
 
-  const response = await AuthServices.register(payload);
+  await AuthServices.register(payload);
 
   ApiResponse(res, {
     data: {},
@@ -17,6 +17,29 @@ const userRegistration = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+const resendUserVerificationEmail = asyncHandler(async (req: Request, res: Response) => {
+  const { email } = req.body;
+  await AuthServices.resendVerificationEmail(email);
+  ApiResponse(res, {
+    data: {},
+    message: "New verification email has been sent. Check your email.",
+    success: true,
+    statusCode: StatusCodes.OK,
+  });
+});
+const verifyUserEmail = asyncHandler(async (req: Request, res: Response) => {
+  const { token } = req.body;
+  await AuthServices.verifyEmail(token);
+  ApiResponse(res, {
+    data: {},
+    message: "Your account has been verified.",
+    success: true,
+    statusCode: StatusCodes.OK,
+  });
+});
+
 export const AuthControllers = {
   userRegistration,
+  resendUserVerificationEmail,
+  verifyUserEmail,
 };

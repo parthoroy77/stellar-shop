@@ -1,8 +1,10 @@
+import { defaultTemplate } from "@repo/email-service";
 import { compare, hash } from "bcryptjs";
 import { StatusCodes } from "http-status-codes";
 import { importJWK, JWTPayload, jwtVerify, SignJWT } from "jose";
 import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
+import { sendEmail } from "../../services/emailService";
 
 const hashPassword = async (password: string) => {
   try {
@@ -49,4 +51,14 @@ const verifyToken = async (token: string, secret: string): Promise<JWTPayload | 
   }
 };
 
-export { comparePassword, generateToken, hashPassword, verifyToken };
+const sendVerificationEmail = async (email: string, userId: number) => {
+  // generate verification token
+  const token = await generateToken({ userId }, config.jwt_access_secret as string, "1h");
+  // Verification email template
+  const link = `${config.client_url}/verify?token=${token}`;
+  const html = defaultTemplate(link);
+  // send mail
+  await sendEmail(email, "Account Verification Request", html);
+};
+
+export { comparePassword, generateToken, hashPassword, sendVerificationEmail, verifyToken };

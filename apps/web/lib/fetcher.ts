@@ -24,7 +24,7 @@ export async function fetcher<T>(endpoint: string, options: FetcherOptions = {})
   const { method = "GET", headers = {}, body, cache = "force-cache", next = { revalidate: false } } = options;
 
   try {
-    const response = await fetch(`${baseUrl}/${endpoint}`, {
+    const response = await fetch(`${baseUrl}/api/v1${endpoint}`, {
       method,
       headers: {
         "Content-Type": "application/json",

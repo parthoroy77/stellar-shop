@@ -1,19 +1,38 @@
 import cookieParser from "cookie-parser";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 import express, { Application } from "express";
 import morgan from "morgan";
+import config from "./app/config";
 import { ApiResponse } from "./app/handlers/ApiResponse";
 import globalErrorHandler from "./app/handlers/globalErrorHandler";
 import notFoundHandler from "./app/handlers/notFounderHandler";
 import logger from "./app/logger";
 import router from "./app/routes/index.route";
-import emailService from "./app/services/emailService";
 const app: Application = express();
 
 // parser
 app.use(express.json());
-app.use(cors());
 app.use(cookieParser());
+
+// List of allowed origins
+const allowedOrigins: string[] = [config.origin_url_1 as string];
+
+// Configure CORS
+const corsOptions: CorsOptions = {
+  origin: (origin, callback) => {
+    const sanitizedOrigin = origin?.replace(/\/$/, "");
+    if (!sanitizedOrigin || allowedOrigins.indexOf(sanitizedOrigin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  allowedHeaders: "Content-Type,Authorization",
+};
+
+app.use(cors(corsOptions));
 
 const morganFormat = ":method :url :status :response-time ms";
 

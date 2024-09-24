@@ -27,8 +27,8 @@ const RegistrationForm = () => {
     const response = await registerUser(data);
     if (response.success) {
       toast.success(response.message);
+      router.push(`/verification-request?email=${data.email}`);
       form.reset({ email: "", fullName: "", password: "" });
-      router.push("/");
     } else {
       toast.error(response.message);
     }
