@@ -22,7 +22,7 @@ const userLogin = asyncHandler(async (req: Request, res: Response) => {
   const payload = req.body;
   const response = await AuthServices.login(payload);
 
-  res.cookie("session-token", response.sessionToken, {
+  res.cookie("session_token", response.sessionToken, {
     httpOnly: config.NODE_ENV === "production",
     secure: config.NODE_ENV === "production",
     sameSite: config.NODE_ENV === "production" ? "strict" : "lax",
@@ -33,6 +33,21 @@ const userLogin = asyncHandler(async (req: Request, res: Response) => {
   ApiResponse(res, {
     data: response,
     message: "User logged in successfully",
+    success: true,
+    statusCode: StatusCodes.OK,
+  });
+});
+
+const userLogout = asyncHandler(async (req: Request, res: Response) => {
+  const { session_token } = req.cookies;
+  console.log(req.user);
+  const response = await AuthServices.logout({ userId: req.user.id, sessionToken: session_token });
+
+  res.clearCookie("session_token");
+
+  ApiResponse(res, {
+    data: response,
+    message: "User logged out successfully",
     success: true,
     statusCode: StatusCodes.OK,
   });
@@ -63,6 +78,7 @@ const verifyUserEmail = asyncHandler(async (req: Request, res: Response) => {
 export const AuthControllers = {
   userRegistration,
   userLogin,
+  userLogout,
   resendUserVerificationEmail,
   verifyUserEmail,
 };

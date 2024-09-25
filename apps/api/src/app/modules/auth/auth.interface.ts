@@ -8,3 +8,8 @@ export type TLoginPayload = {
   email: string;
   password: string;
 };
+
+export type TLogoutPayload = {
+  sessionToken: string;
+  userId: number;
+};

@@ -3,7 +3,7 @@ import { parseTimeToDate } from "@repo/utils/functions";
 import { StatusCodes } from "http-status-codes";
 import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
-import { TLoginPayload, TRegistrationPayload } from "./auth.interface";
+import { TLoginPayload, TLogoutPayload, TRegistrationPayload } from "./auth.interface";
 import { comparePassword, generateToken, hashPassword, sendVerificationEmail, verifyToken } from "./auth.utils";
 
 // registration
@@ -78,7 +78,7 @@ const login = async (payload: TLoginPayload) => {
 
   // generate session token
   const token = await generateToken(
-    { id: isUserExists.id, role: isUserExists.role },
+    { userId: isUserExists.id, role: isUserExists.role },
     config.jwt_access_secret as string,
     config.jwt_access_token_expires_in as string
   );
@@ -97,6 +97,15 @@ const login = async (payload: TLoginPayload) => {
   }
 
   return session;
+};
+
+const logout = async (payload: TLogoutPayload) => {
+  await prisma.session.deleteMany({
+    where: {
+      userId: payload.userId,
+      sessionToken: payload.sessionToken,
+    },
+  });
 };
 
 // request new account verification email
@@ -144,6 +153,7 @@ const verifyEmail = async (payload: string) => {
 export const AuthServices = {
   register,
   login,
+  logout,
   resendVerificationEmail,
   verifyEmail,
 };
