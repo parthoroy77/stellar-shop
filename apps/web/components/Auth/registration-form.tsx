@@ -1,13 +1,14 @@
 "use client";
 import { registerUser } from "@/actions/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Separator } from "@repo/ui";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Separator } from "@repo/ui";
 import { registrationSchema, z } from "@repo/utils/validations";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
+import AppButton from "../ui/app-button";
 
 type TRegistrationForm = z.infer<typeof registrationSchema>;
 
@@ -95,9 +96,9 @@ const RegistrationForm = () => {
             </FormItem>
           )}
         />
-        <Button disabled={loading} type="submit" className="w-full">
+        <AppButton disabled={loading} loading={loading} type="submit" className="w-full">
           Register
-        </Button>
+        </AppButton>
         <Separator />
         <Link href={"/login"} className="text-accent-foreground block cursor-pointer text-center hover:underline">
           Already have an account? Login Now

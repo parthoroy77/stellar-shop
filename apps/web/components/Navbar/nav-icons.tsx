@@ -19,7 +19,7 @@ const NavIcons = () => {
           <span>4</span>
         </div>
       </div>
-      <div className="flex items-center gap-1">
+      <div>
         <PiUserCircleLight size={26} aria-label="User" />
       </div>
     </div>

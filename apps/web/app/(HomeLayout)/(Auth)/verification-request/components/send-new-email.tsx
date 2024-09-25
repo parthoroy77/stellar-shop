@@ -1,6 +1,6 @@
 "use client";
+import AppButton from "@/components/ui/app-button";
 import { fetcher } from "@/lib/fetcher";
-import { Button } from "@ui/index";
 import { useTransition } from "react";
 import { toast } from "sonner";
 
@@ -18,9 +18,16 @@ const SendNewEmail = ({ email }: { email: string }) => {
   };
   return (
     <div>
-      <Button onClick={handleRequestNewEmail} disabled={isPending} variant={"outline"} size={"sm"} className="px-6">
+      <AppButton
+        onClick={handleRequestNewEmail}
+        loading={isPending}
+        disabled={isPending}
+        variant={"outline"}
+        size={"sm"}
+        className="px-6"
+      >
         Request a new verification email
-      </Button>
+      </AppButton>
     </div>
   );
 };

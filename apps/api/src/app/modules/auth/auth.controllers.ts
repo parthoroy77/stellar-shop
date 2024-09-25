@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
+import config from "../../config";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
 import { AuthServices } from "./auth.services";
@@ -17,6 +18,26 @@ const userRegistration = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+const userLogin = asyncHandler(async (req: Request, res: Response) => {
+  const payload = req.body;
+  const response = await AuthServices.login(payload);
+
+  res.cookie("session-token", response.sessionToken, {
+    httpOnly: config.NODE_ENV === "production",
+    secure: config.NODE_ENV === "production",
+    sameSite: config.NODE_ENV === "production" ? "strict" : "lax",
+    path: "/",
+    maxAge: Number(response.expiresAt),
+  });
+
+  ApiResponse(res, {
+    data: response,
+    message: "User logged in successfully",
+    success: true,
+    statusCode: StatusCodes.OK,
+  });
+});
+
 const resendUserVerificationEmail = asyncHandler(async (req: Request, res: Response) => {
   const { email } = req.body;
   await AuthServices.resendVerificationEmail(email);
@@ -27,6 +48,7 @@ const resendUserVerificationEmail = asyncHandler(async (req: Request, res: Respo
     statusCode: StatusCodes.OK,
   });
 });
+
 const verifyUserEmail = asyncHandler(async (req: Request, res: Response) => {
   const { token } = req.body;
   await AuthServices.verifyEmail(token);
@@ -40,6 +62,7 @@ const verifyUserEmail = asyncHandler(async (req: Request, res: Response) => {
 
 export const AuthControllers = {
   userRegistration,
+  userLogin,
   resendUserVerificationEmail,
   verifyUserEmail,
 };

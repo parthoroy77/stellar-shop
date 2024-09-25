@@ -1,11 +1,13 @@
 import prisma from "@repo/prisma/client";
+import { parseTimeToDate } from "@repo/utils/functions";
 import { StatusCodes } from "http-status-codes";
 import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
-import { TAuth } from "./auth.interface";
-import { hashPassword, sendVerificationEmail, verifyToken } from "./auth.utils";
+import { TLoginPayload, TRegistrationPayload } from "./auth.interface";
+import { comparePassword, generateToken, hashPassword, sendVerificationEmail, verifyToken } from "./auth.utils";
 
-const register = async (payload: TAuth) => {
+// registration
+const register = async (payload: TRegistrationPayload) => {
   const { email, password, fullName } = payload;
 
   // check user exists
@@ -43,12 +45,70 @@ const register = async (payload: TAuth) => {
   return;
 };
 
+// login
+const login = async (payload: TLoginPayload) => {
+  // check if user exists
+  const isUserExists = await prisma.user.findUnique({
+    where: {
+      email: payload.email,
+    },
+    include: {
+      password: {
+        select: { hashPassword: true },
+      },
+    },
+  });
+
+  // if not exist return error
+  if (!isUserExists) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid email or password.");
+  }
+
+  // if not verified account then verify first
+  if (isUserExists.status !== "ACTIVE" && !isUserExists.email) {
+    throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "Please verify your account first.");
+  }
+
+  // check password valid or not
+  const isPasswordValid = comparePassword(payload.password, isUserExists?.password?.hashPassword as string);
+
+  if (!isPasswordValid) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid email or password");
+  }
+
+  // generate session token
+  const token = await generateToken(
+    { id: isUserExists.id, role: isUserExists.role },
+    config.jwt_access_secret as string,
+    config.jwt_access_token_expires_in as string
+  );
+
+  // create session for that user
+  const session = await prisma.session.create({
+    data: {
+      sessionToken: token,
+      expiresAt: parseTimeToDate(config.jwt_access_token_expires_in as string),
+      userId: isUserExists.id,
+    },
+  });
+
+  if (!session) {
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Something went wrong please try again");
+  }
+
+  return session;
+};
+
+// request new account verification email
 const resendVerificationEmail = async (payload: string) => {
   const isUserExists = await prisma.user.findUnique({
     where: {
       email: payload,
       status: "INACTIVE",
       emailVerified: false,
+    },
+    select: {
+      id: true,
     },
   });
   if (!isUserExists) {
@@ -60,6 +120,7 @@ const resendVerificationEmail = async (payload: string) => {
   return;
 };
 
+// account verification
 const verifyEmail = async (payload: string) => {
   // TODO: enable throttling
   const decoded = await verifyToken(payload, config.jwt_access_secret as string);
@@ -82,6 +143,7 @@ const verifyEmail = async (payload: string) => {
 
 export const AuthServices = {
   register,
+  login,
   resendVerificationEmail,
   verifyEmail,
 };
