@@ -57,7 +57,7 @@ app.get("/ping", (_, res) => {
 });
 
 app.get("/api/v1", (_, res) => {
-  res.status(200).send("Server Running");
+  ApiResponse(res, { message: "Server Running", success: true, statusCode: 200, data: {} });
 });
 
 // routes
