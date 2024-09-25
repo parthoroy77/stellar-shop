@@ -1,6 +1,7 @@
-import { Button, Separator } from "@ui/index";
+import { Separator } from "@ui/index";
 import { redirect } from "next/navigation";
 import { CiInboxOut } from "react-icons/ci";
+import SendNewEmail from "./components/send-new-email";
 
 const VerificationRequestPage = ({ searchParams }: { searchParams: { email: string } }) => {
   const email = searchParams.email;
@@ -18,9 +19,7 @@ const VerificationRequestPage = ({ searchParams }: { searchParams: { email: stri
         </p>
         <Separator className="mx-auto lg:w-[70%]" />
         <h6 className="text-xs">You didn't receive an email or your link expired</h6>
-        <Button variant={"outline"} size={"sm"} className="px-6">
-          Request a new verification email
-        </Button>
+        <SendNewEmail email={email} />
       </div>
     </section>
   );

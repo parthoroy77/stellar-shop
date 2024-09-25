@@ -1,6 +1,7 @@
 "use client";
 import { useVerification } from "@/hooks/useVerification";
 import { Button } from "@ui/index";
+import Link from "next/link";
 import { AiOutlineLoading } from "react-icons/ai";
 import { MdError, MdVerified } from "react-icons/md";
 
@@ -37,9 +38,11 @@ const VerifiedState = () => (
     <MdVerified className="bg-muted-foreground size-[100px] rounded-full border p-4" />
     <h3 className="text-xl font-medium">Your Account Now Verified!!</h3>
     <span className="text-accent-foreground text-sm">Now you can fully access our platform</span>
-    <Button variant={"outline"} size={"sm"} className="px-6">
-      Go To Login
-    </Button>
+    <Link href={"/login"}>
+      <Button variant={"outline"} size={"sm"} className="px-6">
+        Go To Login
+      </Button>
+    </Link>
   </div>
 );
 
