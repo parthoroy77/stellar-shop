@@ -1,30 +1,38 @@
 import { getErrorMessage } from "@repo/utils/functions";
 
-type FetcherOptions = {
-  method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+interface FetcherOptions<TBody = unknown> {
+  method?: HttpMethod;
   headers?: HeadersInit;
-  body?: any;
+  body?: TBody;
   cache?: RequestCache;
   next?: {
     revalidate?: number | false;
     tags?: string[];
   };
-};
+}
 
-export type ApiResponse<T> = {
-  data?: T;
+export interface ApiResponse<T> {
+  data: T | null;
   success: boolean;
   message: string;
   error?: unknown;
-};
+  statusCode: number;
+}
 
-const baseUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL;
+const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
-export async function fetcher<T>(endpoint: string, options: FetcherOptions = {}): Promise<ApiResponse<T>> {
-  const { method = "GET", headers = {}, body, cache = "force-cache", next = { revalidate: false } } = options;
+export async function fetcher<TResponse, TBody = unknown>(
+  endpoint: string,
+  options: FetcherOptions<TBody> = {}
+): Promise<ApiResponse<TResponse>> {
+  const { method = "GET", headers = {}, body, cache = "no-store", next = { revalidate: 0 } } = options;
+
+  const url = `${baseUrl}${endpoint}`;
 
   try {
-    const response = await fetch(`${baseUrl}${endpoint}`, {
+    const response = await fetch(url, {
       method,
       headers: {
         "Content-Type": "application/json",
@@ -33,10 +41,33 @@ export async function fetcher<T>(endpoint: string, options: FetcherOptions = {})
       body: body ? JSON.stringify(body) : undefined,
       cache,
       next,
+      credentials: "include",
     });
-    const result: ApiResponse<T> = await response.json();
-    return result;
+
+    const result = await response.json();
+
+    if (response.ok) {
+      return {
+        data: result.data,
+        success: true,
+        message: result.message || "Request successful",
+        statusCode: response.status,
+      };
+    } else {
+      return {
+        data: null,
+        success: false,
+        message: result.message || "Request failed",
+        statusCode: response.status,
+      };
+    }
   } catch (error: unknown) {
-    return { error: error, success: false, message: getErrorMessage(error) };
+    return {
+      data: null,
+      success: false,
+      message: getErrorMessage(error),
+      error,
+      statusCode: 500,
+    };
   }
 }

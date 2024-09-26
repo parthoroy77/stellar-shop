@@ -1,5 +1,5 @@
 "use client";
-import { useVerification } from "@/hooks/useVerification";
+import { useVerification } from "@/hooks/use-verification";
 import { Button } from "@ui/index";
 import Link from "next/link";
 import { AiOutlineLoading } from "react-icons/ai";

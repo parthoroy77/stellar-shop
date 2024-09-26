@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import config from "../../config";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
 import { AuthServices } from "./auth.services";
@@ -23,11 +22,11 @@ const userLogin = asyncHandler(async (req: Request, res: Response) => {
   const response = await AuthServices.login(payload);
 
   res.cookie("session_token", response.sessionToken, {
-    httpOnly: config.NODE_ENV === "production",
-    secure: config.NODE_ENV === "production",
-    sameSite: config.NODE_ENV === "production" ? "strict" : "lax",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
     path: "/",
-    maxAge: Number(response.expiresAt),
+    maxAge: 24 * 60 * 60 * 1000,
   });
 
   ApiResponse(res, {

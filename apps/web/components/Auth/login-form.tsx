@@ -32,21 +32,25 @@ const LoginForm = () => {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       password: "password123",
+      email: "partho@gmail.com",
     },
   });
 
   const router = useRouter();
   const onSubmit = async (data: TLoginForm) => {
     setLoading(true);
-    const response = await loginUser(data);
-    console.log(response);
-    // if (response.success) {
-    //   toast.success(response.message);
-    //   router.push(`/verification-request?email=${data.email}`);
-    //   form.reset({ email: "", password: "" });
-    // } else {
-    //   toast.error(response.message);
-    // }
+    const result = await loginUser(data);
+    console.log(result);
+    if (!result.success && result.statusCode === 406) {
+      toast.info(result.message);
+      router.push(`/verification-request?email=${data.email}`);
+    }
+
+    if (result.success) {
+      toast.success(result.message);
+      router.push(`/`);
+      form.reset({ email: "", password: "" });
+    }
     setLoading(false);
   };
 

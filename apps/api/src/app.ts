@@ -1,12 +1,11 @@
 import cookieParser from "cookie-parser";
-import cors, { CorsOptions } from "cors";
 import express, { Application } from "express";
 import morgan from "morgan";
-import config from "./app/config";
 import { ApiResponse } from "./app/handlers/ApiResponse";
 import globalErrorHandler from "./app/handlers/globalErrorHandler";
 import notFoundHandler from "./app/handlers/notFounderHandler";
 import logger from "./app/logger";
+import { applyCors } from "./app/middleware/cors.middleware";
 import router from "./app/routes/index.route";
 const app: Application = express();
 
@@ -14,25 +13,8 @@ const app: Application = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// List of allowed origins
-const allowedOrigins: string[] = [config.origin_url_1 as string];
-
-// Configure CORS
-const corsOptions: CorsOptions = {
-  origin: (origin, callback) => {
-    const sanitizedOrigin = origin?.replace(/\/$/, "");
-    if (!sanitizedOrigin || allowedOrigins.indexOf(sanitizedOrigin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  credentials: true,
-  allowedHeaders: "Content-Type,Authorization",
-};
-
-app.use(cors(corsOptions));
+// cors middleware
+applyCors(app);
 
 const morganFormat = ":method :url :status :response-time ms";
 
@@ -52,7 +34,14 @@ app.use(
   })
 );
 
-app.get("/ping", (_, res) => {
+app.post("/ping", (_, res) => {
+  res.cookie("session-token", "response.sessionToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/",
+    maxAge: 24 * 60 * 60 * 1000,
+  });
   ApiResponse(res, { message: "OK", success: true, statusCode: 200, data: {} });
 });
 
