@@ -12,6 +12,7 @@ const ApiResponse = <T>(res: Response, { statusCode, data, message, success }: A
     success,
     message,
     data,
+    statusCode,
   });
 };
 

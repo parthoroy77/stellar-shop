@@ -65,7 +65,7 @@ const login = async (payload: TLoginPayload) => {
   }
 
   // if not verified account then verify first
-  if (isUserExists.status !== "ACTIVE" && !isUserExists.email) {
+  if (isUserExists.status !== "ACTIVE" && !isUserExists.emailVerified) {
     throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "Please verify your account first.");
   }
 

@@ -34,7 +34,6 @@ export async function fetcher<T>(endpoint: string, options: FetcherOptions = {})
       cache,
       next,
     });
-
     const result: ApiResponse<T> = await response.json();
     return result;
   } catch (error: unknown) {
