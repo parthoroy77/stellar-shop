@@ -12,10 +12,10 @@ type SliderProps = {
   onValueChange?: (values: number[]) => void;
 };
 
-const AppSlider = React.forwardRef(
-  ({ className, min, max, step, formatLabel, value, onValueChange, ...props }: SliderProps, ref) => {
+const AppSlider = React.forwardRef<HTMLDivElement, SliderProps>(
+  ({ className, min, max, step, formatLabel, value, onValueChange, ...props }, ref) => {
     const initialValue = Array.isArray(value) ? value : [min, max];
-    const [localValues, setLocalValues] = useState(initialValue);
+    const [localValues, setLocalValues] = useState<number[]>(initialValue);
 
     const handleValueChange = (newValues: number[]) => {
       setLocalValues(newValues);
@@ -26,7 +26,7 @@ const AppSlider = React.forwardRef(
 
     return (
       <SliderPrimitive.Root
-        ref={ref as React.RefObject<HTMLDivElement>}
+        ref={ref}
         min={min}
         max={max}
         step={step}

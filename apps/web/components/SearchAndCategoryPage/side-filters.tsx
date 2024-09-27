@@ -1,66 +1,83 @@
 "use client";
-import { filters } from "@/dummyData/filters";
-import { Checkbox, Label } from "@repo/ui";
-import { useState } from "react";
-import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi2";
+
+import { filtersData } from "@/dummyData/filters";
+import { useRouter } from "next/navigation";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import FilterClearMenu from "./filter-clear-menu";
+import FilterItem from "./filter-item";
 import PriceRange from "./price-range";
 
-const SideFilters = ({ mobileView }: { mobileView: boolean }) => {
-  // if mobile view then class will be different from web
-  const sidebarClasses = mobileView
-    ? `h-fit divide-y *:border *:rounded-md space-y-3`
-    : `hidden h-fit w-[20%] rounded-md *:border *:rounded-md space-y-3 lg:block`;
+// Define types for filter options and items
+type TFilterOption = {
+  label: string;
+  value: string;
+  productCount?: number;
+};
+
+type TFilterItem = {
+  label: string;
+  options: TFilterOption[];
+};
+
+// Props for the SideFilters component
+interface SideFiltersProps {
+  mobileView: boolean;
+  filterItems: TFilterItem[];
+}
+
+const SideFilters: FC<SideFiltersProps> = ({ mobileView }) => {
+  const [filters, setFilters] = useState<Record<string, string[] | string>>({});
+  const router = useRouter();
+
+  // Memoized function to update the URL query based on filters
+  const updatedQuery = useCallback(
+    (state: Record<string, string[] | string>) => {
+      const query = new URLSearchParams();
+
+      Object.entries(state).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          if (value.length > 0) {
+            query.set(key.toLowerCase(), value.join(","));
+          }
+        } else {
+          query.set(key.toLowerCase(), value);
+        }
+      });
+
+      router.push(`?${query.toString()}`, {
+        scroll: false, // Prevent scrolling when updating the URL
+      });
+    },
+    [router]
+  );
+
+  // Update URL query when filters change
+  useEffect(() => {
+    updatedQuery(filters);
+  }, [filters, updatedQuery]);
+
+  // Memoize the sidebar class to prevent recalculation on each render
+  const sidebarClasses = useMemo(
+    () =>
+      mobileView
+        ? `h-fit divide-y *:border *:rounded-md space-y-3`
+        : `hidden h-fit w-[20%] rounded-md *:border *:rounded-md space-y-3 lg:block`,
+    [mobileView]
+  );
 
   return (
     <aside className={sidebarClasses}>
-      <FilterClearMenu />
-      <PriceRange />
-      {filters.map((item, i) => (
-        <FilterItem key={i} label={item.label} options={item.options} />
+      {/* Clear all filters */}
+      <FilterClearMenu setFilters={setFilters} />
+
+      {/* Price range filter */}
+      <PriceRange max={1000} filters={filters} setFilters={setFilters} />
+
+      {/* Render filter items */}
+      {filtersData?.map((item, i) => (
+        <FilterItem filters={filters} setFilters={setFilters} key={i} label={item.label} options={item.options} />
       ))}
     </aside>
-  );
-};
-
-type FilterItemProps = {
-  label: string;
-  options: { label: string; value: string }[];
-};
-
-const FilterClearMenu = () => {
-  return (
-    <div className="hover:bg-accent/30 flex w-full items-center justify-between px-4 py-3 text-sm duration-300">
-      <span className="font-medium capitalize">Filters</span>
-      <button>Clear</button>
-    </div>
-  );
-};
-
-const FilterItem = ({ label, options }: FilterItemProps) => {
-  const [open, setOpen] = useState(true);
-  const handleOpen = () => {
-    setOpen((prev) => !prev);
-  };
-  return (
-    <div className="divide-y border">
-      <button
-        onClick={handleOpen}
-        className="hover:bg-accent/30 flex w-full items-center justify-between px-4 py-3 text-sm duration-300"
-      >
-        <span className="font-medium capitalize">{label}</span>
-        {open ? <HiOutlineMinus /> : <HiOutlinePlus />}
-      </button>
-      {open && (
-        <div className={`space-y-2 overflow-hidden px-4 py-3 transition-all duration-300 ${open ? "h-fit" : "h-0"}`}>
-          {options.map((option, i) => (
-            <span key={i} className="flex items-center gap-3">
-              <Checkbox />
-              <Label className="text-xs text-black">{option.label} (1)</Label>
-            </span>
-          ))}
-        </div>
-      )}
-    </div>
   );
 };
 

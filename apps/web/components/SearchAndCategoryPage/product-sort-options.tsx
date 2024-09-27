@@ -1,6 +1,6 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { productsPerViewOptions, sortOptions } from "@repo/utils/constants";
-const ProductSortOptions = ({ productsCount }: { productsCount: number }) => {
+const ProductSortOptions = () => {
   return (
     <div className="hidden gap-5 lg:flex">
       <div className="flex items-center gap-2">
