@@ -22,7 +22,6 @@ type TFilterItem = {
 // Props for the SideFilters component
 interface SideFiltersProps {
   mobileView: boolean;
-  filterItems: TFilterItem[];
 }
 
 const SideFilters: FC<SideFiltersProps> = ({ mobileView }) => {
