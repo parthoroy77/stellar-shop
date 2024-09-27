@@ -1,27 +1,17 @@
-const SortByOptions = Object.freeze({
-  BEST_MATCH: "best_match",
-  TOP_SALE: "top_sale",
-  HIGH: "high",
-  LOW: "low",
-  NEWEST: "newest",
-  RATING: "rating",
-  NAME: "name_az",
-});
-
 export const sortOptions = [
-  { label: "Best Match", value: SortByOptions.BEST_MATCH },
-  { label: "Top Sale", value: SortByOptions.TOP_SALE },
-  { label: "Price: High to Low", value: SortByOptions.HIGH },
-  { label: "Price: Low to High", value: SortByOptions.LOW },
-  { label: "Newest", value: SortByOptions.NEWEST },
-  { label: "Rating", value: SortByOptions.RATING },
-  { label: "Name: A to Z", value: SortByOptions.NAME },
+  { id: 1, label: "Best Match", sortBy: "popularity", order: "dsc" },
+  { id: 2, label: "Top Sale", sortBy: "sale", order: "dsc" },
+  { id: 3, label: "Price: High to Low", sortBy: "price", order: "dsc" },
+  { id: 4, label: "Price: Low to High", sortBy: "price", order: "asc" },
+  { id: 5, label: "Newest", sortBy: "date", order: "dsc" },
+  { id: 6, label: "Oldest", sortBy: "date", order: "asc" },
+  { id: 7, label: "Rating", sortBy: "rating", order: "dsc" },
+  { id: 8, label: "Name: A to Z", sortBy: "name", order: "asc" },
 ];
 
 export const productsPerViewOptions = [
   { label: "20", value: 20 },
-  { label: "24", value: 24 },
-  { label: "48", value: 48 },
-  { label: "75", value: 75 },
-  { label: "90", value: 90 },
+  { label: "40", value: 40 },
+  { label: "60", value: 60 },
+  { label: "80", value: 80 },
 ];
