@@ -34,14 +34,7 @@ app.use(
   })
 );
 
-app.post("/ping", (_, res) => {
-  res.cookie("session-token", "response.sessionToken", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    path: "/",
-    maxAge: 24 * 60 * 60 * 1000,
-  });
+app.get("/ping", (_, res) => {
   ApiResponse(res, { message: "OK", success: true, statusCode: 200, data: {} });
 });
 
