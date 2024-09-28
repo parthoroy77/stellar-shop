@@ -1,7 +1,7 @@
 "use client";
 
 import { filtersData } from "@/dummyData/filters";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import FilterClearMenu from "./filter-clear-menu";
 import FilterItem from "./filter-item";
@@ -27,11 +27,11 @@ interface SideFiltersProps {
 const SideFilters: FC<SideFiltersProps> = ({ mobileView }) => {
   const [filters, setFilters] = useState<Record<string, string[] | string>>({});
   const router = useRouter();
-
+  const searchParams = useSearchParams();
   // Memoized function to update the URL query based on filters
   const updatedQuery = useCallback(
     (state: Record<string, string[] | string>) => {
-      const query = new URLSearchParams();
+      const query = new URLSearchParams(searchParams.toString());
 
       Object.entries(state).forEach(([key, value]) => {
         if (Array.isArray(value)) {

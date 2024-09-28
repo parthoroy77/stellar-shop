@@ -1,5 +1,4 @@
 "use client";
-import { loginUser } from "@/actions/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -23,6 +22,7 @@ import { FaFacebook, FaGoogle } from "react-icons/fa6";
 import { toast } from "sonner";
 import AppButton from "../ui/app-button";
 import OrDivider from "../ui/or-divider";
+import { loginUser } from "@/actions/auth";
 
 type TLoginForm = z.infer<typeof loginSchema>;
 

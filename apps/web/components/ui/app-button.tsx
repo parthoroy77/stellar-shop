@@ -9,26 +9,27 @@ export interface AppButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
+  hideElement?: boolean;
 }
 
 const AppButton = React.forwardRef<HTMLButtonElement, AppButtonProps>(
-  ({ className, variant, size, children, loading = false, ...props }, ref) => {
+  ({ className, variant, size, children, hideElement, loading = false, ...props }, ref) => {
     const Comp = "button";
     return (
       <Comp
         className={cn(
-          "flex items-center justify-center gap-2 duration-300",
+          "flex items-center justify-center gap-4 duration-300",
           buttonVariants({ variant, size, className })
         )}
         ref={ref}
         {...props}
       >
         {loading && (
-          <span className="mr-2 block animate-spin">
+          <span className="block animate-spin">
             <AiOutlineLoading />
           </span>
         )}
-        {children}
+        {!hideElement && children}
       </Comp>
     );
   }
