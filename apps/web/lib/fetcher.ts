@@ -7,10 +7,7 @@ interface FetcherOptions<TBody = unknown> {
   headers?: HeadersInit;
   body?: TBody;
   cache?: RequestCache;
-  next?: {
-    revalidate?: number | false;
-    tags?: string[];
-  };
+  next?: NextFetchRequestConfig;
 }
 
 export interface ApiResponse<T> {
@@ -27,7 +24,7 @@ export async function fetcher<TResponse, TBody = unknown>(
   endpoint: string,
   options: FetcherOptions<TBody> = {}
 ): Promise<ApiResponse<TResponse>> {
-  const { method = "GET", headers = {}, body, cache = "no-store", next = { revalidate: 0 } } = options;
+  const { method = "GET", headers = {}, body, cache = "default", next = { revalidate: false } } = options;
 
   const url = `${baseUrl}${endpoint}`;
 

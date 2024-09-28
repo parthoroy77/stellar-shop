@@ -76,7 +76,7 @@ const NavSearchBar = () => {
         </div>
       )}
 
-      {!loading && showResult && (
+      {!loading && showResult && query.length && (
         <div className="custom-scrollbar absolute top-[50px] z-10 max-h-[350px] w-full divide-y overflow-hidden overflow-y-scroll rounded-md border bg-white *:px-5 *:py-3">
           {results.length > 0 ? results.map((_, i) => <SearchResultItem key={i} />) : <NotFoundResult query={query} />}
         </div>
@@ -86,7 +86,7 @@ const NavSearchBar = () => {
 };
 
 const NotFoundResult = ({ query }: { query: string }) => {
-  return <h5 className="text-center text-sm font-medium">No result found for "{query}"</h5>;
+  return query.length > 0 && <h5 className="text-center text-sm font-medium">No result found for "{query}"</h5>;
 };
 
 export default NavSearchBar;

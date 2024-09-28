@@ -1,19 +1,19 @@
 "use client";
+import { registerUser } from "@/actions/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Separator } from "@repo/ui";
 import { registrationSchema, z } from "@repo/utils/validations";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useTransition } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
 import AppButton from "../ui/app-button";
-import { registerUser } from "@/actions/auth";
 
 type TRegistrationForm = z.infer<typeof registrationSchema>;
 
 const RegistrationForm = () => {
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const form: UseFormReturn<TRegistrationForm> = useForm<TRegistrationForm>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
@@ -24,16 +24,17 @@ const RegistrationForm = () => {
   });
   const router = useRouter();
   const onSubmit = async (data: TRegistrationForm) => {
-    setLoading(true);
-    const response = await registerUser(data);
-    if (response.success) {
-      toast.success(response.message);
-      router.push(`/verification-request?email=${data.email}`);
-      form.reset({ email: "", fullName: "", password: "" });
-    } else {
-      toast.error(response.message);
-    }
-    setLoading(false);
+    const toastId = toast.loading("Registering your account", { duration: 2000 });
+    startTransition(async () => {
+      const response = await registerUser(data);
+      if (response.success) {
+        toast.success(response.message, { id: toastId });
+        router.push(`/verification-request?email=${data.email}`);
+        form.reset({ email: "", fullName: "", password: "" });
+      } else {
+        toast.error(response.message, { id: toastId });
+      }
+    });
   };
 
   return (
@@ -96,7 +97,7 @@ const RegistrationForm = () => {
             </FormItem>
           )}
         />
-        <AppButton disabled={loading} loading={loading} type="submit" className="w-full">
+        <AppButton disabled={isPending} loading={isPending} type="submit" className="w-full">
           Register
         </AppButton>
         <Separator />

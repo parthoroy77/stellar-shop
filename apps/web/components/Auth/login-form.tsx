@@ -1,4 +1,5 @@
 "use client";
+import { loginUser } from "@/actions/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -16,18 +17,17 @@ import {
 import { loginSchema, z } from "@repo/utils/validations";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useTransition } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { FaFacebook, FaGoogle } from "react-icons/fa6";
 import { toast } from "sonner";
 import AppButton from "../ui/app-button";
 import OrDivider from "../ui/or-divider";
-import { loginUser } from "@/actions/auth";
 
 type TLoginForm = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
-  const [loading, setLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const form: UseFormReturn<TLoginForm> = useForm<TLoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -38,20 +38,21 @@ const LoginForm = () => {
 
   const router = useRouter();
   const onSubmit = async (data: TLoginForm) => {
-    setLoading(true);
-    const result = await loginUser(data);
-    console.log(result);
-    if (!result.success && result.statusCode === 406) {
-      toast.info(result.message);
-      router.push(`/verification-request?email=${data.email}`);
-    }
+    const toastId = toast.loading("Sending request to login", { duration: 2000 });
+    startTransition(async () => {
+      const result = await loginUser(data);
+      console.log(result);
+      if (!result.success && result.statusCode === 406) {
+        toast.info(result.message, { id: toastId });
+        router.push(`/verification-request?email=${data.email}`);
+      }
 
-    if (result.success) {
-      toast.success(result.message);
-      router.push(`/`);
-      form.reset({ email: "", password: "" });
-    }
-    setLoading(false);
+      if (result.success) {
+        toast.success(result.message, { id: toastId });
+        router.push(`/`);
+        form.reset({ email: "", password: "" });
+      }
+    });
   };
 
   return (
@@ -102,7 +103,7 @@ const LoginForm = () => {
           </span>
           <span className="text-accent-foreground cursor-pointer text-xs underline">Forgot Your Password?</span>
         </div>
-        <AppButton disabled={loading} loading={loading} type="submit" className="w-full">
+        <AppButton disabled={isPending} loading={isPending} type="submit" className="w-full">
           Login
         </AppButton>
         <OrDivider />
