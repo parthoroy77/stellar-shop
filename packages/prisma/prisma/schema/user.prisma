@@ -23,6 +23,8 @@ model User {
   sellerProfile Seller?
   cart          Cart?
   wishlist      Wishlist?
+  refreshTokens RefreshToken[]
+  OTPRequest    OTPRequest[]
 
   @@index([email, phoneNumber, fullName])
   @@map("Users")
@@ -41,23 +43,6 @@ model UserPassword {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("UserPasswords")
-}
-
-model Session {
-  id           Int      @id @default(autoincrement())
-  userId       Int
-  sessionToken String   @unique
-  expiresAt    DateTime
-
-  // timestamps
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // references 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@index([userId])
-  @@map("Sessions")
 }
 
 enum UserRole {

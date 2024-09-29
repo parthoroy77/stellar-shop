@@ -56,6 +56,8 @@ const NavSearchBar = () => {
       if (selectedItem) {
         router.push(`/products/${selectedItem.id}`);
         setShowResult(false);
+        setFocusedIndex(-1);
+        searchResultRef.current = null;
       }
     }
   };

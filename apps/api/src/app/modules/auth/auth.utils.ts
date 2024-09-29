@@ -1,5 +1,7 @@
 import { defaultTemplate } from "@repo/email-service";
+import prisma from "@repo/prisma/client";
 import { compare, hash } from "bcryptjs";
+import { endOfDay, startOfDay } from "date-fns";
 import { StatusCodes } from "http-status-codes";
 import { importJWK, JWTPayload, jwtVerify, SignJWT } from "jose";
 import config from "../../config";
@@ -61,4 +63,40 @@ const sendVerificationEmail = async (email: string, userId: number) => {
   await sendEmail(email, "Account Verification Request", html);
 };
 
-export { comparePassword, generateToken, hashPassword, sendVerificationEmail, verifyToken };
+const generateOtp = () => {
+  const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+  return otpCode;
+};
+
+const checkOtpRequestLimit = async (userId: number, purpose: "LOGIN" | "RESET_PASSWORD") => {
+  const todayStart = startOfDay(new Date());
+  const todayEnd = endOfDay(new Date());
+
+  const otpCount = await prisma.oTPRequest.count({
+    where: {
+      userId: userId,
+      purpose: purpose,
+      createdAt: {
+        gte: todayStart, // Greater than or equal to start of the day
+        lte: todayEnd, // Less than or equal to end of the day
+      },
+    },
+  });
+
+  // Check if the count exceeds the limit
+  if (otpCount >= 5) {
+    return true; // User has already requested more than 5 OTPs today
+  }
+
+  return false; // User has not exceeded the limit
+};
+
+export {
+  comparePassword,
+  generateOtp,
+  generateToken,
+  hashPassword,
+  sendVerificationEmail,
+  verifyToken,
+  checkOtpRequestLimit,
+};

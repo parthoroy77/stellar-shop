@@ -19,22 +19,38 @@ const userRegistration = asyncHandler(async (req: Request, res: Response) => {
 
 const userLogin = asyncHandler(async (req: Request, res: Response) => {
   const payload = req.body;
-  const response = await AuthServices.login(payload);
+  const { session, refreshToken } = await AuthServices.login(payload);
 
-  res.cookie("session_token", response.sessionToken, {
+  res.cookie("session_token", session.sessionToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     path: "/",
-    maxAge: 24 * 60 * 60 * 1000,
+    expires: new Date(session.expiresAt),
+  });
+
+  res.cookie("refresh_token", refreshToken.token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/",
+    expires: new Date(refreshToken.expiresAt),
   });
 
   ApiResponse(res, {
-    data: response,
-    message: "User logged in successfully",
+    data: {
+      session,
+      refreshToken,
+    },
+    message: "Check you email and verify OTP",
     success: true,
     statusCode: StatusCodes.OK,
   });
+});
+
+// verify otp and login
+const userVerifyOTPLogin = asyncHandler(async (req: Request, res: Response) => {
+  // const payload
 });
 
 const userLogout = asyncHandler(async (req: Request, res: Response) => {

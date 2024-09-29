@@ -49,8 +49,8 @@ const LoginForm = () => {
 
       if (result.success) {
         toast.success(result.message, { id: toastId });
-        router.push(`/`);
-        form.reset({ email: "", password: "" });
+        // router.push(`/`);
+        // form.reset({ email: "", password: "" });
       }
     });
   };

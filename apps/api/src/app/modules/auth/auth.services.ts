@@ -3,11 +3,11 @@ import { parseTimeToDate } from "@repo/utils/functions";
 import { StatusCodes } from "http-status-codes";
 import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
-import { TLoginPayload, TLogoutPayload, TRegistrationPayload } from "./auth.interface";
+import { TLoginPayload, TLoginResponse, TLogoutPayload, TRegistrationPayload } from "./auth.interface";
 import { comparePassword, generateToken, hashPassword, sendVerificationEmail, verifyToken } from "./auth.utils";
 
 // registration
-const register = async (payload: TRegistrationPayload) => {
+const register = async (payload: TRegistrationPayload): Promise<void> => {
   const { email, password, fullName } = payload;
 
   // check user exists
@@ -45,8 +45,10 @@ const register = async (payload: TRegistrationPayload) => {
   return;
 };
 
+// TODO: Later on we will modify while integrating otp
 // login
-const login = async (payload: TLoginPayload) => {
+
+const login = async (payload: TLoginPayload): Promise<TLoginResponse> => {
   // check if user exists
   const isUserExists = await prisma.user.findUnique({
     where: {
@@ -76,40 +78,154 @@ const login = async (payload: TLoginPayload) => {
     throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid email or password");
   }
 
-  // generate session token
-  const token = await generateToken(
+  const newSessionToken = await generateToken(
     { userId: isUserExists.id, role: isUserExists.role },
     config.jwt_access_secret as string,
     config.jwt_access_token_expires_in as string
   );
+  const newRefreshToken = await generateToken(
+    { userId: isUserExists.id },
+    config.jwt_refresh_secret as string,
+    config.jwt_refresh_token_expires_in as string
+  );
 
-  // create session for that user
-  const session = await prisma.session.create({
-    data: {
-      sessionToken: token,
-      expiresAt: parseTimeToDate(config.jwt_access_token_expires_in as string),
-      userId: isUserExists.id,
-    },
-  });
+  const [session, refreshToken] = await prisma.$transaction([
+    prisma.session.create({
+      data: {
+        userId: isUserExists.id,
+        sessionToken: newSessionToken,
+        expiresAt: parseTimeToDate(config.jwt_access_token_expires_in as string),
+      },
+    }),
+    prisma.refreshToken.create({
+      data: {
+        token: newRefreshToken,
+        userId: isUserExists.id,
+        expiresAt: parseTimeToDate(config.jwt_refresh_token_expires_in as string),
+      },
+    }),
+  ]);
 
-  if (!session) {
-    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Something went wrong please try again");
-  }
+  return {
+    session,
+    refreshToken,
+  };
 
-  return session;
+  // // check this user already request many times or not
+  // const otpLimit = await checkOtpRequestLimit(isUserExists.id, "LOGIN");
+
+  // if (otpLimit) {
+  //   throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "User has already requested more than 5 OTPs today");
+  // }
+
+  // // create otp
+  // const otpCode = generateOtp();
+  // const otpExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+  // // create otp request
+  // const otpRequest = await prisma.oTPRequest.create({
+  //   data: {
+  //     code: otpCode,
+  //     userId: isUserExists.id,
+  //     expiresAt: otpExpiresAt,
+  //     purpose: "LOGIN",
+  //   },
+  // });
+
+  // if (!otpRequest) {
+  //   throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "An error occurred while executing");
+  // }
+
+  // // TODO: make an email template or utils
+  // const html = defaultTemplate(otpRequest);
+
+  // await sendEmail(isUserExists.email, "Verify OTP", html);
 };
 
-const logout = async (payload: TLogoutPayload) => {
+// After otp user should login
+// OTP verification for login
+// const verifyOTPLogin = async (payload: TOTPVerifyPayload) => {
+//   const otpRecord = await prisma.oTPRequest.findFirst({
+//     where: {
+//       userId: payload.userId,
+//       code: payload.otp,
+//       expiresAt: {
+//         gte: new Date(),
+//       },
+//       purpose: "LOGIN",
+//       verified: false,
+//     },
+//   });
+
+//   if (!otpRecord) {
+//     throw new ApiError(StatusCodes.UNAUTHORIZED, "OTP invalid or expired!");
+//   }
+
+//   const user = await prisma.user.findUnique({ where: { id: payload.userId } });
+
+//   if (!user) {
+//     throw new ApiError(StatusCodes.NOT_FOUND, "Requested user not found! ");
+//   }
+
+//   const newSessionToken = await generateToken(
+//     { userId: user.id, role: user.role },
+//     config.jwt_access_secret as string,
+//     config.jwt_access_token_expires_in as string
+//   );
+//   const newRefreshToken = await generateToken(
+//     { userId: user.id },
+//     config.jwt_refresh_secret as string,
+//     config.jwt_refresh_token_expires_in as string
+//   );
+
+//   const [session, refreshToken] = await prisma.$transaction([
+//     prisma.session.create({
+//       data: {
+//         userId: user.id,
+//         sessionToken: newSessionToken,
+//         expiresAt: parseTimeToDate(config.jwt_access_token_expires_in as string),
+//       },
+//     }),
+//     prisma.refreshToken.create({
+//       data: {
+//         token: newRefreshToken,
+//         userId: user.id,
+//         expiresAt: parseTimeToDate(config.jwt_refresh_token_expires_in as string),
+//       },
+//     }),
+//   ]);
+
+//   return {
+//     session,
+//     refreshToken,
+//   };
+// };
+
+const logout = async (payload: TLogoutPayload): Promise<void> => {
   await prisma.session.deleteMany({
     where: {
       userId: payload.userId,
       sessionToken: payload.sessionToken,
     },
   });
+  await prisma.$transaction([
+    prisma.session.deleteMany({
+      where: {
+        userId: payload.userId,
+        sessionToken: payload.sessionToken,
+      },
+    }),
+    prisma.refreshToken.deleteMany({
+      where: {
+        userId: payload.userId,
+      },
+    }),
+  ]);
+  return;
 };
 
 // request new account verification email
-const resendVerificationEmail = async (payload: string) => {
+const resendVerificationEmail = async (payload: string): Promise<void> => {
   const isUserExists = await prisma.user.findUnique({
     where: {
       email: payload,
@@ -130,7 +246,7 @@ const resendVerificationEmail = async (payload: string) => {
 };
 
 // account verification
-const verifyEmail = async (payload: string) => {
+const verifyEmail = async (payload: string): Promise<void> => {
   // TODO: enable throttling
   const decoded = await verifyToken(payload, config.jwt_access_secret as string);
   if (!decoded) {

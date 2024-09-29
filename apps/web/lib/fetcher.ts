@@ -24,10 +24,9 @@ export async function fetcher<TResponse, TBody = unknown>(
   endpoint: string,
   options: FetcherOptions<TBody> = {}
 ): Promise<ApiResponse<TResponse>> {
-  const { method = "GET", headers = {}, body, cache = "default", next = { revalidate: false } } = options;
+  const { method = "GET", headers = {}, body, cache = "no-store", ...rest } = options;
 
   const url = `${baseUrl}${endpoint}`;
-
   try {
     const response = await fetch(url, {
       method,
@@ -37,7 +36,7 @@ export async function fetcher<TResponse, TBody = unknown>(
       },
       body: body ? JSON.stringify(body) : undefined,
       cache,
-      next,
+      ...rest,
       credentials: "include",
     });
 
