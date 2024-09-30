@@ -1,18 +1,34 @@
+import { Prisma } from "@repo/prisma/client";
 import { ZodError } from "@repo/utils/validations";
 import { ErrorRequestHandler } from "express";
 import config from "../config";
 import { ApiError } from "./ApiError";
 import handleApiError from "./handleAppError";
+import { handlePrismaError } from "./handlePrismaErrors";
 import handleZodError from "./handleZodError";
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
-  console.log(error);
+  console.log(error, "kjk");
   const success = false;
   let statusCode = 500;
   let message = error.message || "Internal Server Error";
 
   let errorSources = null;
+
+  // handle prisma errors
+  if (
+    error instanceof Prisma.PrismaClientKnownRequestError ||
+    error instanceof Prisma.PrismaClientValidationError ||
+    error instanceof Prisma.PrismaClientRustPanicError ||
+    error instanceof Prisma.PrismaClientInitializationError ||
+    error instanceof Prisma.PrismaClientUnknownRequestError
+  ) {
+    const prismaError = handlePrismaError(error);
+    statusCode = prismaError.statusCode;
+    message = prismaError.message;
+    errorSources = prismaError.errorSources;
+  }
 
   // handle zod error
   if (error instanceof ZodError) {
