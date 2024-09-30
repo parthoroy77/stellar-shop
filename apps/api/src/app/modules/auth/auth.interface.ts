@@ -1,5 +1,3 @@
-import { RefreshToken, Session } from "@repo/prisma/client";
-
 export type TRegistrationPayload = {
   fullName: string;
   email: string;
@@ -9,11 +7,6 @@ export type TRegistrationPayload = {
 export type TLoginPayload = {
   email: string;
   password: string;
-};
-
-export type TLoginResponse = {
-  session: Session;
-  refreshToken: RefreshToken;
 };
 
 export type TLogoutPayload = {

@@ -89,10 +89,41 @@ const verifyUserEmail = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+const userSessionRefresh = asyncHandler(async (req: Request, res: Response) => {
+  const { refresh_token } = req.cookies;
+  const { session, refreshToken } = await AuthServices.refreshSession(refresh_token);
+  res.cookie("session_token", session.sessionToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/",
+    expires: new Date(session.expiresAt),
+  });
+
+  res.cookie("refresh_token", refreshToken.token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/",
+    expires: new Date(refreshToken.expiresAt),
+  });
+
+  ApiResponse(res, {
+    data: {
+      session,
+      refreshToken,
+    },
+    message: "New session created successfully.",
+    success: true,
+    statusCode: StatusCodes.OK,
+  });
+});
+
 export const AuthControllers = {
   userRegistration,
   userLogin,
   userLogout,
   resendUserVerificationEmail,
   verifyUserEmail,
+  userSessionRefresh,
 };

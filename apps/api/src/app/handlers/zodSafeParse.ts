@@ -12,4 +12,13 @@ const zodSafeParse = (schema: AnyZodObject) => {
   });
 };
 
+export const zodCookieParse = (schema: AnyZodObject) => {
+  return asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+    await schema.parseAsync({
+      cookies: req.cookies,
+    });
+    next();
+  });
+};
+
 export default zodSafeParse;

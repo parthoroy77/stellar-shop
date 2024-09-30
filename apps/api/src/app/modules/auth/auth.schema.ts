@@ -7,3 +7,8 @@ export const resendVerificationEmailSchema = z.object({
 export const verifyAccountSchema = z.object({
   token: z.string(),
 });
+export const sessionRefreshSchema = z.object({
+  cookies: z.object({
+    refreshToken: z.string(),
+  }),
+});

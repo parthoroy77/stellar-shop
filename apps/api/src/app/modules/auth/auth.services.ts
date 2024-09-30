@@ -1,9 +1,9 @@
-import prisma from "@repo/prisma/client";
+import prisma, { RefreshToken, Session } from "@repo/prisma/client";
 import { parseTimeToDate } from "@repo/utils/functions";
 import { StatusCodes } from "http-status-codes";
 import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
-import { TLoginPayload, TLoginResponse, TLogoutPayload, TRegistrationPayload } from "./auth.interface";
+import { TLoginPayload, TLogoutPayload, TRegistrationPayload } from "./auth.interface";
 import { comparePassword, generateToken, hashPassword, sendVerificationEmail, verifyToken } from "./auth.utils";
 
 // registration
@@ -48,7 +48,7 @@ const register = async (payload: TRegistrationPayload): Promise<void> => {
 // TODO: Later on we will modify while integrating otp
 // login
 
-const login = async (payload: TLoginPayload): Promise<TLoginResponse> => {
+const login = async (payload: TLoginPayload): Promise<{ session: Session; refreshToken: RefreshToken }> => {
   // check if user exists
   const isUserExists = await prisma.user.findUnique({
     where: {
@@ -266,10 +266,82 @@ const verifyEmail = async (payload: string): Promise<void> => {
   return;
 };
 
+const refreshSession = async (payload: string): Promise<{ session: Session; refreshToken: RefreshToken }> => {
+  if (!payload) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Session refresh credential not found.");
+  }
+
+  const decode = await verifyToken(payload, config.jwt_refresh_secret as string);
+  if (!decode) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid refresh credential.");
+  }
+
+  const tokenRecord = await prisma.refreshToken.findFirst({
+    where: {
+      userId: decode.userId!,
+      token: payload,
+      expiresAt: {
+        gte: new Date(),
+      },
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          role: true,
+        },
+      },
+    },
+  });
+
+  if (!tokenRecord) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "Refresh credential invalid or expired.");
+  }
+
+  const newRefreshToken = await generateToken(
+    { userId: tokenRecord.user.id },
+    config.jwt_refresh_secret!,
+    config.jwt_refresh_token_expires_in!
+  );
+  const newSessionToken = await generateToken(
+    { userId: tokenRecord.user.id, role: tokenRecord.user.role },
+    config.jwt_access_secret!,
+    config.jwt_access_token_expires_in!
+  );
+
+  const [refreshToken, session] = await prisma.$transaction([
+    prisma.refreshToken.create({
+      data: {
+        userId: tokenRecord.user.id,
+        token: newRefreshToken,
+        expiresAt: parseTimeToDate(config.jwt_refresh_token_expires_in!),
+      },
+    }),
+    prisma.session.create({
+      data: {
+        sessionToken: newSessionToken,
+        userId: tokenRecord.user.id,
+        expiresAt: parseTimeToDate(config.jwt_access_token_expires_in!),
+      },
+    }),
+    prisma.refreshToken.deleteMany({
+      where: {
+        userId: tokenRecord.user.id,
+      },
+    }),
+  ]);
+
+  return {
+    session,
+    refreshToken,
+  };
+};
+
 export const AuthServices = {
   register,
   login,
   logout,
   resendVerificationEmail,
   verifyEmail,
+  refreshSession,
 };

@@ -23,7 +23,7 @@ const CartItem = ({ product }: CartItemProps) => {
         <div className="flex w-full flex-col justify-between gap-2 lg:flex-row lg:items-center">
           <h5 className="text-sm font-medium lg:w-[65%]">{product.productName}</h5>
           <div className="flex flex-row-reverse justify-between gap-5 lg:flex-row lg:items-center">
-            <div className="flex md:min-w-24 items-center gap-5 rounded-md border p-2 text-xs">
+            <div className="flex items-center gap-5 rounded-md border p-2 text-xs md:min-w-24">
               <button>
                 <AiOutlineMinus size={14} />
               </button>
@@ -32,7 +32,7 @@ const CartItem = ({ product }: CartItemProps) => {
                 <AiOutlinePlus size={14} />
               </button>
             </div>
-            <div className="flex md:min-w-24 items-center justify-start text-sm font-medium text-black lg:justify-center">
+            <div className="flex items-center justify-start text-sm font-medium text-black md:min-w-24 lg:justify-center">
               <TbCurrencyTaka />
               <span>{product.price}</span>
             </div>
