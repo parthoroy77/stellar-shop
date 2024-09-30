@@ -42,7 +42,7 @@ const userLogin = asyncHandler(async (req: Request, res: Response) => {
       session,
       refreshToken,
     },
-    message: "Check you email and verify OTP",
+    message: "User logged in successfully.",
     success: true,
     statusCode: StatusCodes.OK,
   });
@@ -55,7 +55,6 @@ const userVerifyOTPLogin = asyncHandler(async (req: Request, res: Response) => {
 
 const userLogout = asyncHandler(async (req: Request, res: Response) => {
   const { session_token } = req.cookies;
-  console.log(req.user);
   const response = await AuthServices.logout({ userId: req.user.id, sessionToken: session_token });
 
   res.clearCookie("session_token");

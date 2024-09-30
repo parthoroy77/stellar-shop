@@ -15,4 +15,5 @@ export * from "./shipment";
 export * from "./tag";
 export * from "./transaction";
 export * from "./user";
+export * from "./auth";
 export * from "./wishlist";

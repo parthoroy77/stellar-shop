@@ -24,21 +24,26 @@ export async function fetcher<TResponse, TBody = unknown>(
   endpoint: string,
   options: FetcherOptions<TBody> = {}
 ): Promise<ApiResponse<TResponse>> {
-  const { method = "GET", headers = {}, body, cache = "no-store", ...rest } = options;
+  const { method = "GET", headers = {}, body, cache, next } = options;
 
   const url = `${baseUrl}${endpoint}`;
+
+  const fetchOptions: RequestInit & { next?: NextFetchRequestConfig } = {
+    method,
+    headers: {
+      "Content-Type": "application/json",
+      ...headers,
+    },
+    body: body ? JSON.stringify(body) : undefined,
+    credentials: "include",
+  };
+
+  // Only add cache or next options if they are provided
+  if (cache) fetchOptions.cache = cache;
+  if (next) fetchOptions.next = next;
+
   try {
-    const response = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        ...headers,
-      },
-      body: body ? JSON.stringify(body) : undefined,
-      cache,
-      ...rest,
-      credentials: "include",
-    });
+    const response = await fetch(url, fetchOptions);
 
     const result = await response.json();
 

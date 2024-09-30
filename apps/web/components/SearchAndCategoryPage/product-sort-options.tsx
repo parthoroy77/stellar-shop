@@ -11,7 +11,6 @@ const ProductSortOptions = () => {
   // Helper to update the query parameters
   const updateQueryParams = useCallback(
     (key: string, value: string) => {
-      console.log(key, value);
       const params = new URLSearchParams(searchParams.toString());
       params.set(key, value);
       router.push(`?${params.toString()}`); // Update URL with the new query

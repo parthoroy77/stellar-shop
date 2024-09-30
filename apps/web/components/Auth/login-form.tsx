@@ -41,16 +41,23 @@ const LoginForm = () => {
     const toastId = toast.loading("Sending request to login", { duration: 2000 });
     startTransition(async () => {
       const result = await loginUser(data);
-      console.log(result);
+
+      // if user doesn't verified
       if (!result.success && result.statusCode === 406) {
         toast.info(result.message, { id: toastId });
         router.push(`/verification-request?email=${data.email}`);
       }
 
+      // general error
+      if (!result.success) {
+        toast.error(result.message, { id: toastId });
+      }
+
+      // success
       if (result.success) {
         toast.success(result.message, { id: toastId });
-        // router.push(`/`);
-        // form.reset({ email: "", password: "" });
+        router.push(`/`);
+        form.reset({ email: "", password: "" });
       }
     });
   };
