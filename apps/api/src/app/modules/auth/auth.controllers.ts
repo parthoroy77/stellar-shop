@@ -48,7 +48,6 @@ const userLogin = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
-// verify otp and login
 const userVerifyOTPLogin = asyncHandler(async (req: Request, res: Response) => {
   // const payload
 });
@@ -119,6 +118,18 @@ const userSessionRefresh = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+const getUserSession = asyncHandler(async (req: Request, res: Response) => {
+  const { user, session } = await AuthServices.getSession(req.user.id);
+  ApiResponse(res, {
+    data: {
+      session,
+      user,
+    },
+    message: "User session retrieve successfully.",
+    success: true,
+    statusCode: StatusCodes.OK,
+  });
+});
 export const AuthControllers = {
   userRegistration,
   userLogin,
@@ -126,4 +137,5 @@ export const AuthControllers = {
   resendUserVerificationEmail,
   verifyUserEmail,
   userSessionRefresh,
+  getUserSession,
 };

@@ -1,4 +1,4 @@
-import prisma, { RefreshToken, Session } from "@repo/prisma/client";
+import prisma, { RefreshToken, Session, User } from "@repo/prisma/client";
 import { parseTimeToDate } from "@repo/utils/functions";
 import { StatusCodes } from "http-status-codes";
 import config from "../../config";
@@ -150,7 +150,7 @@ const login = async (payload: TLoginPayload): Promise<{ session: Session; refres
 //       userId: payload.userId,
 //       code: payload.otp,
 //       expiresAt: {
-//         gte: new Date(),
+//         gt: new Date(),
 //       },
 //       purpose: "LOGIN",
 //       verified: false,
@@ -266,6 +266,7 @@ const verifyEmail = async (payload: string): Promise<void> => {
   return;
 };
 
+// refresh session
 const refreshSession = async (payload: string): Promise<{ session: Session; refreshToken: RefreshToken }> => {
   if (!payload) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Session refresh credential not found.");
@@ -281,7 +282,7 @@ const refreshSession = async (payload: string): Promise<{ session: Session; refr
       userId: decode.userId!,
       token: payload,
       expiresAt: {
-        gte: new Date(),
+        gt: new Date(),
       },
     },
     include: {
@@ -337,6 +338,26 @@ const refreshSession = async (payload: string): Promise<{ session: Session; refr
   };
 };
 
+const getSession = async (payload: number): Promise<{ session: Session; user: User }> => {
+  const session = await prisma.session.findFirst({
+    where: {
+      userId: payload,
+    },
+    include: {
+      user: true,
+    },
+  });
+
+  if (!session) {
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "An internal server error occurred");
+  }
+
+  return {
+    session: session,
+    user: session.user,
+  };
+};
+
 export const AuthServices = {
   register,
   login,
@@ -344,4 +365,5 @@ export const AuthServices = {
   resendVerificationEmail,
   verifyEmail,
   refreshSession,
+  getSession,
 };

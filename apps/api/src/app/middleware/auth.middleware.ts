@@ -13,6 +13,9 @@ const verifySession = async (sessionToken: string, userId: number) => {
     where: {
       sessionToken,
       userId,
+      expiresAt: {
+        gt: new Date(),
+      },
     },
   });
 
