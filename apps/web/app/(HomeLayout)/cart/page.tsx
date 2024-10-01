@@ -4,9 +4,17 @@ import CartSummary from "@/components/Cart/cart-summary";
 import FreeShippingBanner from "@/components/Cart/free-shipping-banner";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 import { products } from "@/dummyData/products";
+import { getAuth } from "@/lib/get-auth";
 import { TProduct } from "@repo/utils/types";
+import { redirect } from "next/navigation";
+import { toast } from "sonner";
 
-const CartPage = () => {
+const CartPage = async () => {
+  const { isAuthenticated } = await getAuth();
+  console.log(isAuthenticated);
+  if (!isAuthenticated) {
+    redirect("/login");
+  }
   return (
     <section className="space-y-3 py-5">
       <BreadcrumbMenu items={[{ label: "Cart", href: "/cart" }]} />

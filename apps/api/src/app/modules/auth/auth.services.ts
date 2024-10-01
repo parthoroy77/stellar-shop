@@ -202,12 +202,6 @@ const login = async (payload: TLoginPayload): Promise<{ session: Session; refres
 // };
 
 const logout = async (payload: TLogoutPayload): Promise<void> => {
-  await prisma.session.deleteMany({
-    where: {
-      userId: payload.userId,
-      sessionToken: payload.sessionToken,
-    },
-  });
   await prisma.$transaction([
     prisma.session.deleteMany({
       where: {
