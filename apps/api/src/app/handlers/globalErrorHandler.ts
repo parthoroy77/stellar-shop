@@ -9,7 +9,6 @@ import handleZodError from "./handleZodError";
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
-  console.log(error, "kjk");
   const success = false;
   let statusCode = 500;
   let message = error.message || "Internal Server Error";

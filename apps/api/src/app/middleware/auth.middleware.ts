@@ -50,13 +50,13 @@ const authMiddleware = (...requiredRoles: TUserRoles[]) => {
 
     // Check if session token exists
     if (!session_token) {
-      throw new ApiError(StatusCodes.UNAUTHORIZED, "No session token found. Please log in.");
+      throw new ApiError(StatusCodes.FORBIDDEN, "No session credential found. Please log in.");
     }
 
     // Verify the session token
     const decode = await verifyToken(session_token!, config.jwt_access_secret as string);
     if (!decode) {
-      throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid session token. Please log in again.");
+      throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid session credential. Please log in again.");
     }
 
     // Verify session validity

@@ -7,6 +7,7 @@ import notFoundHandler from "./app/handlers/notFounderHandler";
 import logger from "./app/logger";
 import { applyCors } from "./app/middleware/cors.middleware";
 import router from "./app/routes/index.route";
+import { refreshTokenCleanup, sessionCleanup } from "./app/services/databaseCleanup";
 const app: Application = express();
 
 // parser
@@ -50,5 +51,9 @@ app.use(globalErrorHandler);
 
 // handle 404 error
 app.use(notFoundHandler);
+
+// run db cleanup functions
+sessionCleanup();
+refreshTokenCleanup();
 
 export default app;

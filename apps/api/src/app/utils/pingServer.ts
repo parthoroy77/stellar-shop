@@ -1,6 +1,7 @@
 import colors from "colors";
 import config from "../config";
 import { ApiError } from "../handlers/ApiError";
+import logger from "../logger";
 
 // Function to ping the server (using public domain)
 const pingServer = async () => {
@@ -12,8 +13,7 @@ const pingServer = async () => {
       console.log(colors.blue.bold(`Ping Successful Server Up & Running`));
     }
   } catch (error) {
-    console.log(error);
-    throw new ApiError(400, "Something went wrong while pinging server");
+    logger.error(error);
   }
 };
 
