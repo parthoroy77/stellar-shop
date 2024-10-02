@@ -14,8 +14,15 @@ export const getAuth = async (): Promise<TGetAuthResponse> => {
     headers: {
       Cookie: cookies().toString(),
     },
-    cache: "no-store",
+    next: {
+      revalidate: 300,
+    },
   });
+
+  // TODO: If session invalid try to refresh the session with a refresh token
+  // if (!result.success && result.statusCode === 401) {
+  //   await refreshSession();
+  // }
 
   if (!result.success && result.statusCode !== 200) {
     return {

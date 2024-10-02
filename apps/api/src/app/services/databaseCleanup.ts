@@ -1,4 +1,6 @@
 import prisma from "@repo/prisma/client";
+import { parseTimeToDate } from "@repo/utils/functions";
+import config from "../config";
 import logger from "../logger";
 
 const sessionCleanup = async () => {
@@ -6,7 +8,7 @@ const sessionCleanup = async () => {
     await prisma.session.deleteMany({
       where: {
         expiresAt: {
-          lte: new Date(),
+          lte: parseTimeToDate(config.jwt_access_token_expires_in!),
         },
       },
     });
@@ -21,7 +23,7 @@ const refreshTokenCleanup = async () => {
     await prisma.refreshToken.deleteMany({
       where: {
         expiresAt: {
-          lte: new Date(),
+          lte: parseTimeToDate(config.jwt_refresh_token_expires_in!),
         },
       },
     });
@@ -39,4 +41,4 @@ setInterval(() => {
   refreshTokenCleanup();
 }, 604800000);
 
-export { sessionCleanup, refreshTokenCleanup };
+export { refreshTokenCleanup, sessionCleanup };

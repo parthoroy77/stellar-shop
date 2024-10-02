@@ -319,11 +319,6 @@ const refreshSession = async (payload: string): Promise<{ session: Session; refr
         expiresAt: parseTimeToDate(config.jwt_access_token_expires_in!),
       },
     }),
-    prisma.refreshToken.deleteMany({
-      where: {
-        userId: tokenRecord.user.id,
-      },
-    }),
   ]);
 
   return {

@@ -7,11 +7,9 @@ import { products } from "@/dummyData/products";
 import { getAuth } from "@/lib/get-auth";
 import { TProduct } from "@repo/utils/types";
 import { redirect } from "next/navigation";
-import { toast } from "sonner";
 
 const CartPage = async () => {
   const { isAuthenticated } = await getAuth();
-  console.log(isAuthenticated);
   if (!isAuthenticated) {
     redirect("/login");
   }

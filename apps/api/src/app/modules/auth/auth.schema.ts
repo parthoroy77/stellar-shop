@@ -9,6 +9,6 @@ export const verifyAccountSchema = z.object({
 });
 export const sessionRefreshSchema = z.object({
   cookies: z.object({
-    refreshToken: z.string(),
+    refresh_token: z.string(),
   }),
 });
