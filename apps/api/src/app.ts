@@ -52,8 +52,8 @@ app.use(globalErrorHandler);
 // handle 404 error
 app.use(notFoundHandler);
 
-// run db cleanup functions
-sessionCleanup();
-refreshTokenCleanup();
+// // run db cleanup functions
+// sessionCleanup();
+// refreshTokenCleanup();
 
 export default app;

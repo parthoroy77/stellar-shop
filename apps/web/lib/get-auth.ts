@@ -1,6 +1,7 @@
 "use server";
 import { IUser, TSession } from "@repo/utils/types";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { fetcher } from "./fetcher";
 
 type TGetAuthResponse = {
@@ -14,15 +15,16 @@ export const getAuth = async (): Promise<TGetAuthResponse> => {
     headers: {
       Cookie: cookies().toString(),
     },
-    next: {
-      revalidate: 300,
-    },
   });
-
-  // TODO: If session invalid try to refresh the session with a refresh token
-  // if (!result.success && result.statusCode === 401) {
-  //   await refreshSession();
-  // }
+  if (!result.success && result.statusCode === 401) {
+    const response = await fetch("http://localhost:3000/api/auth/refresh-session", {
+      method: "POST",
+      cache: "no-store",
+    });
+    if (!response.ok) {
+      redirect("/login");
+    }
+  }
 
   if (!result.success && result.statusCode !== 200) {
     return {

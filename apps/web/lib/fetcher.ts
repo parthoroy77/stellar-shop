@@ -37,7 +37,6 @@ export async function fetcher<TResponse, TBody = unknown>(
     body: body ? JSON.stringify(body) : undefined,
     credentials: "include",
   };
-
   // Only add cache or next options if they are provided
   if (cache) fetchOptions.cache = cache;
   if (next) fetchOptions.next = next;
@@ -45,7 +44,7 @@ export async function fetcher<TResponse, TBody = unknown>(
   try {
     const response = await fetch(url, fetchOptions);
     const result = await response.json();
-
+    console.log(result, "fetcher");
     if (response.ok) {
       return {
         data: result.data,

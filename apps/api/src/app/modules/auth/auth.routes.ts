@@ -1,9 +1,9 @@
 import { loginSchema, registrationSchema } from "@repo/utils/validations";
 import { Router } from "express";
-import zodSafeParse, { zodCookieParse } from "../../handlers/zodSafeParse";
+import zodSafeParse from "../../handlers/zodSafeParse";
 import authMiddleware from "../../middleware/auth.middleware";
 import { AuthControllers } from "./auth.controllers";
-import { resendVerificationEmailSchema, sessionRefreshSchema, verifyAccountSchema } from "./auth.schema";
+import { resendVerificationEmailSchema, verifyAccountSchema } from "./auth.schema";
 
 const AuthRoutes = Router();
 
@@ -16,6 +16,6 @@ AuthRoutes.post(
   AuthControllers.resendUserVerificationEmail
 );
 AuthRoutes.post("/verify-account", zodSafeParse(verifyAccountSchema), AuthControllers.verifyUserEmail);
-AuthRoutes.post("/refresh-session", zodCookieParse(sessionRefreshSchema), AuthControllers.userSessionRefresh);
+AuthRoutes.post("/refresh-session", AuthControllers.userSessionRefresh);
 AuthRoutes.get("/get-session", authMiddleware(), AuthControllers.getUserSession);
 export default AuthRoutes;

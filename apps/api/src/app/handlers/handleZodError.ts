@@ -4,9 +4,9 @@ import { TErrorSource, TGenericErrorResponse } from "../interface/error";
 
 const handleZodError = (error: ZodError): TGenericErrorResponse => {
   const statusCode = StatusCodes.BAD_REQUEST;
-  const message = "Zod Validation error.";
-  console.log(error.issues);
+  let message = "Zod Validation error.";
   const errorSources: TErrorSource[] = error.issues.map((issue: ZodIssue): TErrorSource => {
+    message = `${issue.path[0]} is ${issue.message.toLowerCase()}.`;
     return {
       message: `${issue.path[0]} is ${issue.message}.`,
       path: `${issue.path[0]}`,

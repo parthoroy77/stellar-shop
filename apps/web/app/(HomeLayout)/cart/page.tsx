@@ -4,14 +4,14 @@ import CartSummary from "@/components/Cart/cart-summary";
 import FreeShippingBanner from "@/components/Cart/free-shipping-banner";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 import { products } from "@/dummyData/products";
-import { getAuth } from "@/lib/get-auth";
+import { getServerSideAuth } from "@/lib/getServerSideAuth";
 import { TProduct } from "@repo/utils/types";
-import { redirect } from "next/navigation";
 
 const CartPage = async () => {
-  const { isAuthenticated } = await getAuth();
+  const { isAuthenticated } = await getServerSideAuth();
+  console.log(isAuthenticated);
   if (!isAuthenticated) {
-    redirect("/login");
+    // redirect("/login");
   }
   return (
     <section className="space-y-3 py-5">

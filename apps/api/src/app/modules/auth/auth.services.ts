@@ -303,7 +303,6 @@ const refreshSession = async (payload: string): Promise<{ session: Session; refr
     config.jwt_access_secret!,
     config.jwt_access_token_expires_in!
   );
-
   const [refreshToken, session] = await prisma.$transaction([
     prisma.refreshToken.create({
       data: {

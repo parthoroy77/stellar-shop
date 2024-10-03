@@ -12,7 +12,6 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   const success = false;
   let statusCode = 500;
   let message = error.message || "Internal Server Error";
-
   let errorSources = null;
 
   // handle prisma errors
