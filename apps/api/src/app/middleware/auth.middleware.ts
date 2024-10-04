@@ -37,7 +37,7 @@ const fetchUser = async (userId: number) => {
   });
 
   if (!user) {
-    throw new ApiError(StatusCodes.FORBIDDEN, "User account is inactive or email is not verified.");
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "User account is inactive or email is not verified.");
   }
 
   return user;
@@ -50,7 +50,7 @@ const authMiddleware = (...requiredRoles: TUserRoles[]) => {
 
     // Check if session token exists
     if (!session_token) {
-      throw new ApiError(StatusCodes.FORBIDDEN, "No session credential found. Please log in.");
+      throw new ApiError(StatusCodes.UNAUTHORIZED, "No session credential found. Please log in.");
     }
 
     // Verify the session token

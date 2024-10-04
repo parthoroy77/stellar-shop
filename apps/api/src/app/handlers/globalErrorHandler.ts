@@ -27,6 +27,7 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     message = prismaError.message;
     errorSources = prismaError.errorSources;
   }
+  console.log(error.message);
 
   // handle zod error
   if (error instanceof ZodError) {

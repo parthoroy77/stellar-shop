@@ -61,7 +61,7 @@ export const refreshSessionAction = async () => {
       Cookie: cookieStore.toString(),
     },
   });
-  console.log(response, "Refreshing session");
+  console.log(response);
   const result = await response.json();
   if (!result.success) {
     // redirect("/login");
@@ -84,18 +84,22 @@ export const refreshSessionAction = async () => {
 export const getUserAuth = async () => {
   const cookieStore = cookies();
 
-  if (!cookieStore.get("session_token")) {
+  // maybe this check not required
+  if (!cookieStore.get("session_token") && !cookieStore.get("refresh_token")) {
     return {
       user: null,
       session: null,
       isAuthenticated: false,
     };
   }
+
+  // fetch user auth
   const result = await fetcher<{ user: IUser; session: TSession }>("/auth/get-session", {
     headers: { Cookie: cookies().toString() },
     cache: "no-store",
   });
 
+  // if user auth is invalid then and has refresh token try to refresh session
   if (!result.success && result.statusCode === 401) {
     if (!cookieStore.get("refresh_token")) {
       return {
@@ -105,11 +109,13 @@ export const getUserAuth = async () => {
       };
     }
     const refreshResult = await refreshSessionAction();
+    // after successful refresh get updated auth
     if (refreshResult.success) {
       getUserAuth();
     }
   }
 
+  // if get auth failed return
   if (!result.success) {
     return {
       user: null,
@@ -117,7 +123,8 @@ export const getUserAuth = async () => {
       isAuthenticated: false,
     };
   }
-  console.log(result);
+
+  // return auth data
   return {
     user: result.data?.user,
     session: result.data?.session,

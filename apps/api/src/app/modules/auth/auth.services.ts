@@ -4,7 +4,13 @@ import { StatusCodes } from "http-status-codes";
 import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
 import { TLoginPayload, TLogoutPayload, TRegistrationPayload } from "./auth.interface";
-import { comparePassword, generateToken, hashPassword, sendVerificationEmail, verifyToken } from "./auth.utils";
+import {
+  comparePassword,
+  generateSessionAndRefreshToken,
+  hashPassword,
+  sendVerificationEmail,
+  verifyToken,
+} from "./auth.utils";
 
 // registration
 const register = async (payload: TRegistrationPayload): Promise<void> => {
@@ -78,16 +84,8 @@ const login = async (payload: TLoginPayload): Promise<{ session: Session; refres
     throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid email or password");
   }
 
-  const newSessionToken = await generateToken(
-    { userId: isUserExists.id, role: isUserExists.role },
-    config.jwt_access_secret as string,
-    config.jwt_access_token_expires_in as string
-  );
-  const newRefreshToken = await generateToken(
-    { userId: isUserExists.id },
-    config.jwt_refresh_secret as string,
-    config.jwt_refresh_token_expires_in as string
-  );
+  // generate session and refresh tokens
+  const { newSessionToken, newRefreshToken } = await generateSessionAndRefreshToken(isUserExists.id, isUserExists.role);
 
   const [session, refreshToken] = await prisma.$transaction([
     prisma.session.create({
@@ -206,7 +204,6 @@ const logout = async (payload: TLogoutPayload): Promise<void> => {
     prisma.session.deleteMany({
       where: {
         userId: payload.userId,
-        sessionToken: payload.sessionToken,
       },
     }),
     prisma.refreshToken.deleteMany({
@@ -262,22 +259,26 @@ const verifyEmail = async (payload: string): Promise<void> => {
 
 // refresh session
 const refreshSession = async (payload: string): Promise<{ session: Session; refreshToken: RefreshToken }> => {
+  const currentTime = new Date();
   if (!payload) {
-    throw new ApiError(StatusCodes.NOT_FOUND, "Session refresh credential not found.");
+    throw new ApiError(StatusCodes.NOT_FOUND, "Session refresh credential not found!");
   }
 
-  const decode = await verifyToken(payload, config.jwt_refresh_secret as string);
-  if (!decode) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid refresh credential.");
+  // Verify the refresh token payload
+  const decodedCred = await verifyToken(payload, config.jwt_refresh_secret!);
+
+  if (!decodedCred || !decodedCred.userId) {
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid or malformed refresh credential");
   }
 
-  const tokenRecord = await prisma.refreshToken.findFirst({
+  // Find the refresh token record in the database
+  const tokenRecord = await prisma.refreshToken.findUnique({
     where: {
-      userId: decode.userId!,
       token: payload,
-      expiresAt: {
-        gt: new Date(),
-      },
+      // userId: decodedCred.userId!,
+      // expiresAt: {
+      //   gt: currentTime, // Ensure the token is still valid
+      // },
     },
     include: {
       user: {
@@ -288,42 +289,60 @@ const refreshSession = async (payload: string): Promise<{ session: Session; refr
       },
     },
   });
-
   if (!tokenRecord) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, "Refresh credential invalid or expired.");
+    throw new ApiError(StatusCodes.UNAUTHORIZED, "Refresh credential invalid or expired!");
   }
 
-  const newRefreshToken = await generateToken(
-    { userId: tokenRecord.user.id },
-    config.jwt_refresh_secret!,
-    config.jwt_refresh_token_expires_in!
+  // Generate new session and refresh token
+  const { newRefreshToken, newSessionToken } = await generateSessionAndRefreshToken(
+    tokenRecord.user.id,
+    tokenRecord.user.role
   );
-  const newSessionToken = await generateToken(
-    { userId: tokenRecord.user.id, role: tokenRecord.user.role },
-    config.jwt_access_secret!,
-    config.jwt_access_token_expires_in!
-  );
-  const [refreshToken, session] = await prisma.$transaction([
-    prisma.refreshToken.create({
+
+  // Ensure tokens are successfully generated
+  if (!newSessionToken || !newRefreshToken) {
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Failed to generate new session or refresh token.");
+  }
+
+  // Perform database updates inside a transaction
+  const { session, refreshToken } = await prisma.$transaction(async (tx) => {
+    // Delete old session
+    await tx.session.deleteMany({
+      where: {
+        userId: tokenRecord.user.id,
+      },
+    });
+
+    // Delete old refresh token
+    await tx.refreshToken.deleteMany({
+      where: {
+        userId: tokenRecord.user.id,
+        token: payload,
+      },
+    });
+
+    // Create new session
+    const session = await tx.session.create({
+      data: {
+        userId: tokenRecord.user.id,
+        sessionToken: newSessionToken,
+        expiresAt: parseTimeToDate(config.jwt_access_token_expires_in!),
+      },
+    });
+
+    // Create new refresh token
+    const refreshToken = await tx.refreshToken.create({
       data: {
         userId: tokenRecord.user.id,
         token: newRefreshToken,
         expiresAt: parseTimeToDate(config.jwt_refresh_token_expires_in!),
       },
-    }),
-    prisma.session.create({
-      data: {
-        sessionToken: newSessionToken,
-        userId: tokenRecord.user.id,
-        expiresAt: parseTimeToDate(config.jwt_access_token_expires_in!),
-      },
-    }),
-  ]);
+    });
 
-  return {
-    session,
-    refreshToken,
-  };
+    return { session, refreshToken };
+  });
+  // Return new session and refresh token
+  return { session, refreshToken };
 };
 
 const getSession = async (payload: number): Promise<{ session: Session; user: User }> => {

@@ -38,6 +38,25 @@ const generateToken = async (payload: JWTPayload, secret: string, expiry: string
   return token;
 };
 
+const generateSessionAndRefreshToken = async (id: number, role: string) => {
+  const newSessionToken = await generateToken(
+    { userId: id, role },
+    config.jwt_access_secret!,
+    config.jwt_access_token_expires_in!
+  );
+
+  const newRefreshToken = await generateToken(
+    { userId: id },
+    config.jwt_refresh_secret!,
+    config.jwt_refresh_token_expires_in!
+  );
+
+  return {
+    newSessionToken,
+    newRefreshToken,
+  };
+};
+
 const verifyToken = async (token: string, secret: string): Promise<JWTPayload | null> => {
   try {
     // Import the secret as a JWK key
@@ -68,13 +87,13 @@ const generateOtp = () => {
   return otpCode;
 };
 
-const checkOtpRequestLimit = async (userId: number, purpose: "LOGIN" | "RESET_PASSWORD") => {
+const checkOtpRequestLimit = async (email: string, purpose: "LOGIN" | "RESET_PASSWORD") => {
   const todayStart = startOfDay(new Date());
   const todayEnd = endOfDay(new Date());
 
   const otpCount = await prisma.oTPRequest.count({
     where: {
-      userId: userId,
+      userEmail: email,
       purpose: purpose,
       createdAt: {
         gte: todayStart, // Greater than or equal to start of the day
@@ -92,11 +111,12 @@ const checkOtpRequestLimit = async (userId: number, purpose: "LOGIN" | "RESET_PA
 };
 
 export {
+  checkOtpRequestLimit,
   comparePassword,
   generateOtp,
+  generateSessionAndRefreshToken,
   generateToken,
   hashPassword,
   sendVerificationEmail,
   verifyToken,
-  checkOtpRequestLimit,
 };

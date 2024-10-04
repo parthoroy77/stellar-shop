@@ -11,7 +11,7 @@ model Session {
   // references 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userId, sessionToken, expiresAt])
   @@map("Sessions")
 }
 
@@ -26,7 +26,7 @@ model RefreshToken {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userId, token, expiresAt])
   @@map("RefreshTokens")
 }
 
@@ -45,7 +45,7 @@ model OTPRequest {
   // references
   User User? @relation(fields: [userEmail], references: [email])
 
-  @@index([userEmail, code])
+  @@index([userEmail, code, expiresAt])
   @@map("OTPRequests")
 }
 

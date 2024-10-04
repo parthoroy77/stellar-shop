@@ -1,3 +1,4 @@
+import { formatDate } from "date-fns/format";
 import { createLogger, format, transports } from "winston";
 const { combine, timestamp, json, colorize } = format;
 
@@ -5,7 +6,7 @@ const { combine, timestamp, json, colorize } = format;
 const consoleLogFormat = format.combine(
   format.colorize(),
   format.printf(({ level, message, timestamp }) => {
-    return `${level}: ${message}`;
+    return `${level}: ${message}   ${formatDate(timestamp, "hh:mm:ss:ms")}`;
   })
 );
 
