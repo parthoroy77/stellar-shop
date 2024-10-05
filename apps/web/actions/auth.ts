@@ -54,27 +54,26 @@ export const resendVerificationEmail = async (email: string) => {
 
 export const refreshSessionAction = async () => {
   const cookieStore = cookies();
-  const response = await fetch(process.env.API_URL + "/auth/refresh-session", {
+  const result = await fetcher<{ session: TSession; refreshToken: TRefreshToken }>("/auth/refresh-session", {
     method: "POST",
     cache: "no-store",
     headers: {
       Cookie: cookieStore.toString(),
     },
   });
-  console.log(response);
-  const result = await response.json();
+
   if (!result.success) {
     // redirect("/login");
     // TODO: delete all cookies
   }
 
-  // if (result.data) {
-  //   const session = result.data.session;
-  //   const refreshToken = result.data.refreshToken;
-  //   if (session && refreshToken) {
-  //     setCookies(session, refreshToken);
-  //   }
-  // }
+  if (result.data) {
+    const session = result.data.session;
+    const refreshToken = result.data.refreshToken;
+    if (session && refreshToken) {
+      setCookies(session, refreshToken);
+    }
+  }
 
   return {
     success: result.success,

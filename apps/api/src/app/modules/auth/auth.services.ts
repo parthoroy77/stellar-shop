@@ -275,10 +275,10 @@ const refreshSession = async (payload: string): Promise<{ session: Session; refr
   const tokenRecord = await prisma.refreshToken.findUnique({
     where: {
       token: payload,
-      // userId: decodedCred.userId!,
-      // expiresAt: {
-      //   gt: currentTime, // Ensure the token is still valid
-      // },
+      userId: decodedCred.userId!,
+      expiresAt: {
+        gt: currentTime, // Ensure the token is still valid
+      },
     },
     include: {
       user: {
