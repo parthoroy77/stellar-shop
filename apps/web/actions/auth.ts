@@ -80,6 +80,26 @@ export const refreshSessionAction = async () => {
   };
 };
 
+export const refreshSession = async () => {
+  const response = await fetch(process.env.DOMAIN_URL + "/api/auth/refresh-session", {
+    method: "POST",
+    cache: "no-store",
+    headers: {
+      Cookie: cookies().toString(),
+    },
+  });
+  console.log(response, "from action");
+  if (!response.ok) {
+    return {
+      success: false,
+    };
+  }
+
+  return {
+    success: true,
+  };
+};
+
 export const getUserAuth = async () => {
   const cookieStore = cookies();
 
@@ -107,11 +127,11 @@ export const getUserAuth = async () => {
         isAuthenticated: false,
       };
     }
-    const refreshResult = await refreshSessionAction();
+    const refreshResult = await refreshSession();
     // after successful refresh get updated auth
-    if (refreshResult.success) {
-      getUserAuth();
-    }
+    // if (refreshResult.success) {
+    //   getUserAuth();
+    // }
   }
 
   // if get auth failed return
