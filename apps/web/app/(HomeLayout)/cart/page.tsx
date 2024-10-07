@@ -9,7 +9,6 @@ import { TProduct } from "@repo/utils/types";
 
 const CartPage = async () => {
   const { isAuthenticated } = await getServerSideAuth();
-  console.log(isAuthenticated);
   if (!isAuthenticated) {
     // redirect("/login");
   }
