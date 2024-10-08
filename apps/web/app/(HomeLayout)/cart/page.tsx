@@ -4,14 +4,9 @@ import CartSummary from "@/components/Cart/cart-summary";
 import FreeShippingBanner from "@/components/Cart/free-shipping-banner";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 import { products } from "@/dummyData/products";
-import { getServerSideAuth } from "@/lib/getServerSideAuth";
 import { TProduct } from "@repo/utils/types";
 
 const CartPage = async () => {
-  const { isAuthenticated } = await getServerSideAuth();
-  if (!isAuthenticated) {
-    // redirect("/login");
-  }
   return (
     <section className="space-y-3 py-5">
       <BreadcrumbMenu items={[{ label: "Cart", href: "/cart" }]} />

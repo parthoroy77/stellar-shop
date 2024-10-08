@@ -1,5 +1,4 @@
 "use client";
-import { loginUser } from "@/actions/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -15,6 +14,7 @@ import {
   Separator,
 } from "@repo/ui";
 import { loginSchema, z } from "@repo/utils/validations";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
@@ -37,31 +37,31 @@ const LoginForm = () => {
   });
 
   const router = useRouter();
+
   const onSubmit = async (data: TLoginForm) => {
     const toastId = toast.loading("Sending request to login", { duration: 2000 });
     startTransition(async () => {
-      const result = await loginUser(data);
-
-      // if user doesn't verified
-      if (!result.success && result.statusCode === 406) {
-        toast.info(result.message, { id: toastId });
-        router.push(`/verification-request?email=${data.email}`);
-      }
-
-      // general error
-      if (!result.success) {
-        toast.error(result.message, { id: toastId });
-      }
-
-      // success
-      if (result.success) {
-        toast.success(result.message, { id: toastId });
-        router.push(`/`);
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+      if (!result?.ok) {
+        const parsedError: { message: string; status: number } = JSON.parse(result?.error!);
+        if (parsedError.status === 406) {
+          toast.info(parsedError.message, { id: toastId });
+          router.push(`/verification-request?email=${data.email}`);
+        }
+        if (parsedError.status === 401) {
+          toast.info(parsedError.message, { id: toastId });
+        }
+      } else {
+        toast.success("User logged in successfully", { id: toastId });
+        router.push("/");
         form.reset({ email: "", password: "" });
       }
     });
   };
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">

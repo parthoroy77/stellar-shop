@@ -119,11 +119,9 @@ const userSessionRefresh = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const getUserSession = asyncHandler(async (req: Request, res: Response) => {
-  const { user, session } = await AuthServices.getSession(req.user.id);
   ApiResponse(res, {
     data: {
-      session,
-      user,
+      user: req.user,
     },
     message: "User session retrieve successfully.",
     success: true,

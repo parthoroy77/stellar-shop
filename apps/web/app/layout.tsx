@@ -2,6 +2,7 @@ import "@repo/ui/main.css";
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import "./globals.css";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Stellar Shop | Ecommerce",
@@ -19,7 +20,7 @@ export default function RootLayout({
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
       </head>
       <body suppressHydrationWarning={true}>
-        {children}
+        <Providers>{children}</Providers>
         <Toaster richColors closeButton />
       </body>
     </html>

@@ -17,5 +17,5 @@ AuthRoutes.post(
 );
 AuthRoutes.post("/verify-account", zodSafeParse(verifyAccountSchema), AuthControllers.verifyUserEmail);
 AuthRoutes.post("/refresh-session", zodCookieParse(sessionRefreshSchema), AuthControllers.userSessionRefresh);
-AuthRoutes.get("/get-session", authMiddleware(), AuthControllers.getUserSession);
+AuthRoutes.get("/get-me", authMiddleware(), AuthControllers.getUserSession);
 export default AuthRoutes;

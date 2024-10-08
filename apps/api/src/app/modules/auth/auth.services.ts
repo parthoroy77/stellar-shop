@@ -78,7 +78,7 @@ const login = async (payload: TLoginPayload): Promise<{ session: Session; refres
   }
 
   // check password valid or not
-  const isPasswordValid = comparePassword(payload.password, isUserExists?.password?.hashPassword as string);
+  const isPasswordValid = await comparePassword(payload.password, isUserExists?.password?.hashPassword as string);
 
   if (!isPasswordValid) {
     throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid email or password");
