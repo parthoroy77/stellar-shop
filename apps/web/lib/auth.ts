@@ -72,7 +72,6 @@ export const authOptions: NextAuthOptions = {
             Cookie: `refresh_token=${jwtToken.refreshToken}`,
           },
         });
-        console.log({ response });
         if (!response.success) {
           return { ...jwtToken, error: "RefreshTokenError" as const };
         }

@@ -1,7 +1,9 @@
 "use server";
+import { getServerAuth } from "@/lib/auth-utils";
 import { fetcher } from "@/lib/fetcher";
 import { TRefreshToken, TSession } from "@repo/utils/types";
 import { loginSchema, registrationSchema, z } from "@repo/utils/validations";
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
 const setCookies = (session: TSession, refreshToken: TRefreshToken) => {
@@ -46,6 +48,32 @@ export const loginUser = async (data: z.infer<typeof loginSchema>) => {
     statusCode: result.statusCode,
     success: result.success,
   };
+};
+
+// logout user
+export const logoutUser = async () => {
+  const { session } = await getServerAuth();
+  if (!session?.sessionToken) {
+    return {
+      success: false,
+      message: "No active session found!",
+      statusCode: 401,
+      data: {},
+    };
+  }
+
+  const result = await fetcher("/auth/logout", {
+    method: "POST",
+    headers: {
+      Cookie: `session_token=${session.sessionToken}`,
+    },
+  });
+
+  if (result.success) {
+    revalidateTag("auth");
+  }
+
+  return result;
 };
 
 export const resendVerificationEmail = async (email: string) => {

@@ -1,7 +1,9 @@
 import { getServerAuth } from "@/lib/auth-utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@ui/index";
-import { CiLogin, CiLogout, CiSettings } from "react-icons/ci";
+import Link from "next/link";
+import { CiLogin, CiSettings } from "react-icons/ci";
 import { PiUserCircleLight } from "react-icons/pi";
+import NavLogoutButton from "./nav-logout-button";
 
 const NavProfileMenu = async () => {
   const { isAuthenticated } = await getServerAuth();
@@ -20,15 +22,16 @@ const NavProfileMenu = async () => {
               My Account
             </DropdownMenuItem>
             <DropdownMenuItem className="flex gap-3 text-sm">
-              <CiLogout size={20} />
-              Logout
+              <NavLogoutButton />
             </DropdownMenuItem>
           </>
         ) : (
-          <DropdownMenuItem className="flex gap-3 text-sm">
-            <CiLogin size={20} />
-            Login
-          </DropdownMenuItem>
+          <Link href={"/login"}>
+            <DropdownMenuItem className="flex gap-3 text-sm">
+              <CiLogin size={20} />
+              Login / Register
+            </DropdownMenuItem>
+          </Link>
         )}
       </DropdownMenuContent>
     </DropdownMenu>
