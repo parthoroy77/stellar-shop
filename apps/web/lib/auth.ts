@@ -1,31 +1,7 @@
 import { IUser, TRefreshToken, TSession } from "@repo/utils/types";
-import { DefaultSession, NextAuthOptions, Session, User } from "next-auth";
-import { JWT } from "next-auth/jwt";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { fetcher } from "./fetcher";
-
-// Extend the built-in Session type
-interface ExtendedSession extends Session {
-  user: IUser & DefaultSession["user"];
-  sessionToken: string;
-}
-
-// Extend the built-in JWT type
-interface ExtendedJWT extends JWT {
-  sessionToken: string;
-  refreshToken: string;
-  sessionExpiresAt: number;
-  refreshExpiresAt: number;
-  userId: number;
-}
-
-// Extend the built-in User type
-interface ExtendedUser extends User {
-  sessionToken: string;
-  refreshToken: string;
-  sessionExpiresAt: number;
-  refreshExpiresAt: number;
-}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -34,7 +10,7 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials): Promise<ExtendedUser | null> {
+      async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
@@ -68,9 +44,9 @@ export const authOptions: NextAuthOptions = {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   },
   callbacks: {
-    async jwt({ token, user }): Promise<ExtendedJWT> {
+    async jwt({ token, user }) {
       if (user) {
-        const extendedUser = user as ExtendedUser;
+        const extendedUser = user;
         return {
           ...token,
           sessionToken: extendedUser.sessionToken,
@@ -81,7 +57,7 @@ export const authOptions: NextAuthOptions = {
         };
       }
 
-      const jwtToken = token as ExtendedJWT;
+      const jwtToken = token;
 
       // Check if the session token has expired
       if (Date.now() > jwtToken.sessionExpiresAt) {
@@ -114,8 +90,8 @@ export const authOptions: NextAuthOptions = {
 
       return jwtToken;
     },
-    async session({ session, token }): Promise<Session> {
-      const jwtToken = token as ExtendedJWT;
+    async session({ session, token }) {
+      const jwtToken = token;
 
       // Fetch the latest user data
       const result = await fetcher<{ user: IUser }>("/auth/get-me", {
@@ -124,6 +100,7 @@ export const authOptions: NextAuthOptions = {
         },
         next: {
           revalidate: 300,
+          tags: ["auth"],
         },
       });
       if (!result.success || !result.data) {
@@ -135,9 +112,8 @@ export const authOptions: NextAuthOptions = {
           ...result.data.user,
         },
         sessionToken: jwtToken.sessionToken,
-        // TODO: add expires
-        // expires: new Date(jwtToken.sessionExpiresAt * 1000).toString(),
-      } as ExtendedSession;
+        expires: new Date(jwtToken.sessionExpiresAt).toISOString(),
+      };
     },
   },
   pages: {
