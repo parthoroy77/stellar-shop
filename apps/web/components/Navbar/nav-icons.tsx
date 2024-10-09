@@ -2,6 +2,7 @@ import { HiArrowPath } from "react-icons/hi2";
 import { PiUserCircleLight } from "react-icons/pi";
 import { SlHeart } from "react-icons/sl";
 import CartHoverMenu from "./cart-hover-menu";
+import NavProfileMenu from "./nav-profile-menu";
 
 const NavIcons = () => {
   return (
@@ -19,9 +20,7 @@ const NavIcons = () => {
           <span>4</span>
         </div>
       </div>
-      <div>
-        <PiUserCircleLight size={26} aria-label="User" />
-      </div>
+      <NavProfileMenu />
     </div>
   );
 };
