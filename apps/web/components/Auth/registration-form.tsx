@@ -17,9 +17,9 @@ const RegistrationForm = () => {
   const form: UseFormReturn<TRegistrationForm> = useForm<TRegistrationForm>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
-      fullName: "Partho Roy",
+      fullName: process.env.NODE_ENV !== "production" ? "Partho Roy" : "",
       email: "",
-      password: "password123",
+      password: process.env.NODE_ENV !== "development" ? "password123" : "",
     },
   });
   const router = useRouter();

@@ -1,14 +1,9 @@
-import { getServerAuth } from "@/lib/auth-utils";
 import { Separator } from "@ui/index";
 import { redirect } from "next/navigation";
 import { CiInboxOut } from "react-icons/ci";
 import SendNewEmail from "./components/send-new-email";
 
 const VerificationRequestPage = async ({ searchParams }: { searchParams: { email: string } }) => {
-  const { isAuthenticated } = await getServerAuth();
-  if (isAuthenticated) {
-    redirect("/");
-  }
   const email = searchParams.email;
   if (!email) {
     redirect("/register");

@@ -31,8 +31,8 @@ const LoginForm = () => {
   const form: UseFormReturn<TLoginForm> = useForm<TLoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      password: "password123",
-      email: "partho@gmail.com",
+      password: process.env.NODE_ENV !== "production" ? "password123" : "",
+      email: process.env.NODE_ENV !== "production" ? "partho@gmail.com" : "",
     },
   });
 
