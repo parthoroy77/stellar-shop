@@ -77,3 +77,32 @@
     scroll-behavior: smooth;
   }
 }
+
+body::-webkit-scrollbar {
+  width: 4px; /* Width of the scrollbar */
+}
+
+.remove-scrollbar::-webkit-scrollbar{
+  display: none;
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #e06d2e; /* Color of the scrollbar thumb */
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Changes color when hovering */
+}
+
+/* Apply the custom scrollbar styles to the specific class */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px; /* Width of the scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #e06d2e; /* Color of the scrollbar thumb */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Changes color when hovering */
+}
