@@ -6,7 +6,7 @@ const MainLayout = () => {
   return (
     <main className="flex max-h-screen w-full overflow-hidden">
       <Sidebar />
-      <section className="custom-scrollbar h-screen w-[80%] space-y-5 overflow-hidden overflow-y-scroll p-5">
+      <section className="custom-scrollbar h-screen flex-1 space-y-5 overflow-hidden overflow-y-scroll p-5">
         <TopBar />
         <Outlet />
       </section>
