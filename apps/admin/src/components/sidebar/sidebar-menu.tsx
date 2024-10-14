@@ -1,45 +1,50 @@
 import { TSidebarItem } from "@/types/sidebar.types";
-import { FC, useState } from "react";
-import { GoCircle } from "react-icons/go";
+import { cn } from "@ui/lib/utils";
+import { FC, memo, useCallback, useState } from "react";
 import { SlArrowRight } from "react-icons/sl";
 import { NavLink } from "react-router-dom";
 
 interface SidebarMenuProps {
   item: TSidebarItem;
+  expanded: boolean;
+  subItem?: boolean;
 }
 
-const SidebarMenu: FC<SidebarMenuProps> = ({ item }) => {
+const SidebarMenu: FC<SidebarMenuProps> = memo(({ item, expanded, subItem = false }) => {
   const [open, setOpen] = useState(false);
+
+  const toggleOpen = useCallback(() => {
+    setOpen((prev) => !prev);
+  }, []);
+
   return (
-    <ul className="text-accent-foreground space-y-1 text-sm *:rounded-md *:px-4 *:py-2">
+    <div className="space-y-2">
       <NavLink
         to={item.href}
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={item.children ? toggleOpen : undefined}
         className={({ isActive }) =>
-          `flex cursor-pointer items-center justify-between gap-3 duration-200 ${item.label === "Dashboard" ? "bg-accent/60 text-black" : "hover:bg-accent/50 hover:text-black"}`
+          cn(
+            "hover:bg-accent/30 flex w-full items-center gap-2 rounded-md border py-2 text-sm duration-300",
+            expanded ? "justify-between px-5" : "justify-center",
+            isActive ? "bg-accent hover:bg-accent/70" : "bg-transparent",
+            !subItem && "pl-9"
+          )
         }
       >
-        <div className="flex items-center gap-3">
-          <item.Icon />
-          <span>{item.label}</span>
+        <div className="flex items-center gap-2">
+          <item.Icon size={!expanded ? 20 : subItem ? 18 : 10} />
+          {expanded && <span>{item.label}</span>}
         </div>
-        {item.children && <SlArrowRight size={12} className={`duration-200 ${open ? "rotate-90" : "rotate-0"}`} />}
+        {expanded && item.children && (
+          <SlArrowRight size={12} className={cn("rotate-0 duration-300", open && "rotate-90")} />
+        )}
       </NavLink>
-      {open && item.children && (
-        <>
-          {item.children.map((_y, i) => (
-            <li
-              key={i}
-              className="hover:bg-accent/60 flex cursor-pointer items-center gap-3 !pl-9 duration-200 hover:text-black"
-            >
-              <GoCircle size={10} />
-              <span>Child</span>
-            </li>
-          ))}
-        </>
-      )}
-    </ul>
+      {expanded &&
+        open &&
+        item.children &&
+        item.children.map((subElem, i) => <SidebarMenu key={i} item={subElem} subItem={false} expanded={expanded} />)}
+    </div>
   );
-};
+});
 
 export default SidebarMenu;

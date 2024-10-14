@@ -22,9 +22,9 @@ const NavProfileMenu = () => {
               <CiSettings size={20} />
               My Account
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex gap-3 text-sm">
-              <NavLogoutButton />
-            </DropdownMenuItem>
+            <NavLogoutButton />
+            {/* <DropdownMenuItem className="flex gap-3 text-sm cursor-pointer">
+            </DropdownMenuItem> */}
           </>
         ) : (
           <Link href={"/login"}>

@@ -1,6 +1,7 @@
 import { IUser, TRefreshToken, TSession } from "@repo/utils/types";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { signOut } from "next-auth/react";
 import { fetcher } from "./fetcher";
 
 export const authOptions: NextAuthOptions = {
@@ -45,6 +46,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
+      // First Time login
       if (user) {
         const extendedUser = user;
         return {
@@ -58,12 +60,12 @@ export const authOptions: NextAuthOptions = {
       }
 
       const jwtToken = token;
-
       // Check if the session token has expired
-      if (Date.now() > jwtToken.sessionExpiresAt) {
+      if (new Date().getTime() > jwtToken.sessionExpiresAt) {
         // Check if the refresh token has expired
         if (Date.now() > jwtToken.refreshExpiresAt) {
           // Both tokens have expired, force sign out
+          signOut({ callbackUrl: "/login" });
           return { ...jwtToken, error: "RefreshTokenExpired" as const };
         }
         const response = await fetcher<{ session: TSession; refreshToken: TRefreshToken }>("/auth/refresh-session", {
@@ -73,6 +75,7 @@ export const authOptions: NextAuthOptions = {
           },
         });
         if (!response.success) {
+          signOut({ callbackUrl: "/login" });
           return { ...jwtToken, error: "RefreshTokenError" as const };
         }
 
