@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
-import AppButton from "../ui/app-button";
+import AppButton from "@ui/components/ui/app-button";
 
 type TRegistrationForm = z.infer<typeof registrationSchema>;
 

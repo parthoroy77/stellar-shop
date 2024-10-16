@@ -2,11 +2,12 @@
 import { useSearch } from "@/hooks/use-search";
 import { Input } from "@repo/ui";
 import { debounce } from "@repo/utils/functions";
+import AppButton from "@ui/components/ui/app-button";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { AiOutlineLoading } from "react-icons/ai";
 import { CgSearch } from "react-icons/cg";
-import AppButton from "../ui/app-button";
+
 import SearchResultItem from "./search-result-item";
 
 const NavSearchBar = () => {

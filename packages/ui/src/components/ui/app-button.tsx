@@ -1,8 +1,8 @@
-import { buttonVariants } from "@ui/index";
 import { cn } from "@ui/lib/utils";
 import { type VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { AiOutlineLoading } from "react-icons/ai";
+import { buttonVariants } from "./button";
 
 export interface AppButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,

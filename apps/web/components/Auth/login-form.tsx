@@ -21,7 +21,8 @@ import { useTransition } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { FaFacebook, FaGoogle } from "react-icons/fa6";
 import { toast } from "sonner";
-import AppButton from "../ui/app-button";
+import AppButton from "@ui/components/ui/app-button";
+
 import OrDivider from "../ui/or-divider";
 
 type TLoginForm = z.infer<typeof loginSchema>;
