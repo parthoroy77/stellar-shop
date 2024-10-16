@@ -3,7 +3,7 @@ import { Application } from "express";
 import config from "../config";
 
 // List of allowed origins (add multiple frontend's here)
-const allowedOrigins: string[] = [config.origin_url_1 as string];
+const allowedOrigins: string[] = [config.origin_url_1!, config.origin_url_2!];
 
 // Configure CORS
 const corsOptions: CorsOptions = {

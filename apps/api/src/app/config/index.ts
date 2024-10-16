@@ -16,4 +16,5 @@ export default {
   nodemailer_user: process.env.NODEMAILER_USER,
   nodemailer_password: process.env.NODEMAILER_PASS,
   origin_url_1: process.env.ORIGIN_URL_1,
+  origin_url_2: process.env.ORIGIN_URL_2,
 };
