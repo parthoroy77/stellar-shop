@@ -14,6 +14,10 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   let message = error.message || "Internal Server Error";
   let errorSources = null;
 
+  if (config.NODE_ENV === "development") {
+    console.log(error.message);
+  }
+
   // handle prisma errors
   if (
     error instanceof Prisma.PrismaClientKnownRequestError ||
@@ -27,7 +31,6 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     message = prismaError.message;
     errorSources = prismaError.errorSources;
   }
-  console.log(error.message);
 
   // handle zod error
   if (error instanceof ZodError) {
