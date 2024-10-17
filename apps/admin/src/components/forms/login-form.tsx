@@ -1,8 +1,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { handleApiError, useUserLoginMutation } from "@repo/redux";
+import { IApiResponse, TLoginResponse } from "@repo/utils/types";
 import { loginSchema, z } from "@repo/utils/validations";
 import AppButton from "@ui/components/ui/app-button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@ui/index";
 import { useForm, UseFormReturn } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 type TLoginForm = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
@@ -13,8 +17,24 @@ const LoginForm = () => {
       email: process.env.NODE_ENV !== "production" ? "partho@gmail.com" : "",
     },
   });
-
-  const onSubmit = async () => {};
+  const navigate = useNavigate();
+  const [loginUser] = useUserLoginMutation();
+  const onSubmit = async (data: TLoginForm) => {
+    const toastId = toast.loading("Sending request to login...", { duration: 2000 });
+    try {
+      const response: IApiResponse<TLoginResponse> = await loginUser(data).unwrap();
+      console.log(response);
+      if (response.success) {
+        toast.success(response.message, { id: toastId });
+        form.reset();
+        navigate("/");
+      }
+    } catch (error) {
+      const appError = handleApiError(error);
+      console.log(appError);
+      toast.error(appError.message, { id: toastId });
+    }
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">

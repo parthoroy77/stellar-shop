@@ -25,3 +25,8 @@ export type TOTPRequest = {
   createAt: Date;
   updatedAt: Date;
 };
+
+export type TLoginResponse = {
+  sessionToken: TSession;
+  refreshToken: TRefreshToken;
+};
