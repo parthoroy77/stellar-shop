@@ -25,7 +25,7 @@ export interface UserRole {
 // Users
 export interface IUser {
   id: number;
-  roleId: number; // Foreign key referencing UserRole
+  role: string; // Foreign key referencing UserRole
   fullName: string;
   email: string; // Unique
   password: string;
@@ -33,8 +33,9 @@ export interface IUser {
   phonePrefixCode: string; // Country code
   emailVerified: boolean;
   phoneVerified: boolean;
-  profilePictureUrl?: string;
   status: TUserActivationStatus;
   createdAt: Date;
   updatedAt?: Date;
 }
+
+export type TUser = Omit<IUser, "password">;

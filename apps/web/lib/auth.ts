@@ -1,4 +1,4 @@
-import { IUser, TRefreshToken, TSession } from "@repo/utils/types";
+import { TRefreshToken, TSession, TUser } from "@repo/utils/types";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { signOut } from "next-auth/react";
@@ -96,7 +96,7 @@ export const authOptions: NextAuthOptions = {
       const jwtToken = token;
 
       // Fetch the latest user data
-      const result = await fetcher<{ user: IUser }>("/auth/get-me", {
+      const result = await fetcher<{ user: TUser }>("/auth/get-me", {
         headers: {
           Cookie: `session_token=${jwtToken.sessionToken}`,
         },

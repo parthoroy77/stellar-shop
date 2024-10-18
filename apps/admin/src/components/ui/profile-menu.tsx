@@ -2,7 +2,6 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -11,8 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@ui/index";
 import { CiSettings, CiUser } from "react-icons/ci";
-import { IoIosLogOut } from "react-icons/io";
 import { Link } from "react-router-dom";
+import LogoutButton from "./logout-button";
 
 const menuItems = [
   { label: "Profile", href: "/", Icon: CiUser },
@@ -32,18 +31,15 @@ const ProfileMenu = () => {
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {menuItems.map(({ label, href, Icon }, i) => (
-          <Link to={href}>
-            <DropdownMenuItem key={i} className="flex items-center gap-2 font-medium">
+          <Link key={i} to={href}>
+            <DropdownMenuItem className="flex items-center gap-2 font-medium">
               <Icon size={22} />
               <span>{label}</span>
             </DropdownMenuItem>
           </Link>
         ))}
         <DropdownMenuSeparator />
-        <Button size={"sm"} className="flex h-7 w-full items-center justify-center gap-2">
-          <span>Logout</span>
-          <IoIosLogOut />
-        </Button>
+        <LogoutButton />
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -16,7 +16,6 @@ app.use(cookieParser());
 
 // cors middleware
 applyCors(app);
-
 const morganFormat = ":method :url :status :response-time ms";
 
 app.use(
