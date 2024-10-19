@@ -33,7 +33,10 @@ export async function middleware(req: NextRequest) {
 
   if (isPrivateRoute) {
     if (!isValidToken) {
-      return Response.redirect(new URL("/login", nextUrl));
+      const url = req.nextUrl.clone();
+      url.pathname = "/login";
+      url.searchParams.set("callbackUrl", req.url);
+      return Response.redirect(url);
     }
     return null;
   }

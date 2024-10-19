@@ -1,4 +1,5 @@
 import { getErrorMessage } from "@repo/utils/functions";
+import { revalidateTag } from "next/cache";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -44,6 +45,11 @@ export async function fetcher<TResponse, TBody = unknown>(
   try {
     const response = await fetch(url, fetchOptions);
     const result = await response.json();
+
+    if (!response.ok && response.status === 401) {
+      revalidateTag("auth");
+    }
+
     if (response.ok) {
       return {
         data: result.data,

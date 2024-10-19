@@ -14,7 +14,7 @@ export default function NavLogoutButton() {
     const toastId = toast.loading("Sending request to logout...", { duration: 3000 });
     const result = await logoutUser();
     if (result.success) {
-      await signOut({ callbackUrl: "/" });
+      await signOut();
       toast.success(result.message, { id: toastId });
     } else {
       toast.error(result.message, { id: toastId });
@@ -26,9 +26,9 @@ export default function NavLogoutButton() {
     <button
       disabled={isLoading}
       onClick={handleLogout}
-      className="flex items-center gap-3 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"
+      className="flex w-full items-center gap-3 rounded-md px-2 py-1 text-sm font-medium text-gray-700 hover:bg-gray-100"
     >
-      <CiLogout size={20} />
+      <CiLogout size={18} />
       {isLoading ? "Logging out..." : "Logout"}
     </button>
   );

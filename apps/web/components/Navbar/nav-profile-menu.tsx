@@ -23,8 +23,6 @@ const NavProfileMenu = () => {
               My Account
             </DropdownMenuItem>
             <NavLogoutButton />
-            {/* <DropdownMenuItem className="flex gap-3 text-sm cursor-pointer">
-            </DropdownMenuItem> */}
           </>
         ) : (
           <Link href={"/login"}>

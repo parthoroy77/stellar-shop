@@ -14,18 +14,33 @@ import {
   Separator,
 } from "@repo/ui";
 import { loginSchema, z } from "@repo/utils/validations";
+import AppButton from "@ui/components/ui/app-button";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { FaFacebook, FaGoogle } from "react-icons/fa6";
 import { toast } from "sonner";
-import AppButton from "@ui/components/ui/app-button";
 
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import OrDivider from "../ui/or-divider";
 
 type TLoginForm = z.infer<typeof loginSchema>;
+
+export const getSafeRedirectUrl = (url = "") => {
+  if (!url) {
+    return null;
+  }
+  const urlParsed = new URL(url);
+
+  // Avoid open redirection security vulnerability
+  if (![process.env.DOMAIN_URL as string].some((u) => new URL(u).origin === urlParsed.origin)) {
+    url = `http://localhost:3000/`;
+  }
+
+  return url;
+};
 
 const LoginForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -36,8 +51,10 @@ const LoginForm = () => {
       email: process.env.NODE_ENV !== "production" ? "partho@gmail.com" : "",
     },
   });
-
+  const searchParams = useSearchParams();
   const router = useRouter();
+
+  const callbackUrl = searchParams.get("callbackUrl") || DEFAULT_LOGIN_REDIRECT;
 
   const onSubmit = async (data: TLoginForm) => {
     const toastId = toast.loading("Sending request to login", { duration: 2000 });
@@ -58,7 +75,8 @@ const LoginForm = () => {
         }
       } else {
         toast.success("User logged in successfully", { id: toastId });
-        router.push("/");
+        console.log(callbackUrl);
+        router.push(callbackUrl);
         form.reset({ email: "", password: "" });
       }
     });

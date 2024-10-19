@@ -24,7 +24,6 @@ const LoginForm = () => {
     const toastId = toast.loading("Sending request to login...", { duration: 2000 });
     try {
       const response: IApiResponse<TLoginResponse> = await loginUser(data).unwrap();
-      console.log(response);
       if (response.success) {
         toast.success(response.message, { id: toastId });
         form.reset();
@@ -32,7 +31,6 @@ const LoginForm = () => {
       }
     } catch (error) {
       const appError = handleApiError(error);
-      console.log(appError);
       toast.error(appError.message, { id: toastId });
     }
   };

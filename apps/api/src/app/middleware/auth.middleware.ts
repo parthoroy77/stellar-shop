@@ -37,7 +37,7 @@ const fetchUser = async (userId: number) => {
   });
 
   if (!user) {
-    throw new ApiError(StatusCodes.UNAUTHORIZED, "User account is inactive or email is not verified.");
+    throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "User account is inactive or email is not verified.");
   }
 
   return user;
