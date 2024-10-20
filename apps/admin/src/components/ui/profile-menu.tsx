@@ -11,7 +11,7 @@ import {
 } from "@ui/index";
 import { CiSettings, CiUser } from "react-icons/ci";
 import { Link } from "react-router-dom";
-import LogoutButton from "./logout-button";
+import LogoutButton from "./logout-button.tsx";
 
 const menuItems = [
   { label: "Profile", href: "/", Icon: CiUser },

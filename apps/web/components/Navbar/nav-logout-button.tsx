@@ -10,16 +10,16 @@ export default function NavLogoutButton() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogout = async () => {
-    setIsLoading(true);
-    const toastId = toast.loading("Sending request to logout...", { duration: 3000 });
-    const result = await logoutUser();
-    if (result.success) {
-      await signOut();
-      toast.success(result.message, { id: toastId });
-    } else {
-      toast.error(result.message, { id: toastId });
-    }
-    setIsLoading(false);
+    await signOut();
+    // setIsLoading(true);
+    // const toastId = toast.loading("Sending request to logout...", { duration: 3000 });
+    // const result = await logoutUser();
+    // if (result.success) {
+    //   toast.success(result.message, { id: toastId });
+    // } else {
+    //   toast.error(result.message, { id: toastId });
+    // }
+    // setIsLoading(false);
   };
 
   return (
