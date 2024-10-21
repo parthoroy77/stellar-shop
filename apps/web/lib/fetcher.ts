@@ -1,4 +1,6 @@
 import { getErrorMessage } from "@repo/utils/functions";
+import { Session } from "next-auth";
+import { getServerAuth } from "./auth-utils";
 import { revalidateTag } from "next/cache";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
@@ -9,6 +11,7 @@ interface FetcherOptions<TBody = unknown> {
   body?: TBody;
   cache?: RequestCache;
   next?: NextFetchRequestConfig;
+  session?: Session | null;
 }
 
 export interface ApiResponse<T> {
@@ -25,7 +28,7 @@ export async function fetcher<TResponse, TBody = unknown>(
   endpoint: string,
   options: FetcherOptions<TBody> = {}
 ): Promise<ApiResponse<TResponse>> {
-  const { method = "GET", headers = {}, body, cache, next } = options;
+  const { method = "GET", headers = {}, body, cache, next, session = null } = options;
 
   const url = `${baseUrl}${endpoint}`;
 
@@ -41,6 +44,14 @@ export async function fetcher<TResponse, TBody = unknown>(
   // Only add cache or next options if they are provided
   if (cache) fetchOptions.cache = cache;
   if (next) fetchOptions.next = next;
+
+  // Add authorization header if session is available
+  if (session?.sessionToken) {
+    fetchOptions.headers = {
+      ...fetchOptions.headers,
+      Authorization: `Bearer ${session.sessionToken}`,
+    };
+  }
 
   try {
     const response = await fetch(url, fetchOptions);
