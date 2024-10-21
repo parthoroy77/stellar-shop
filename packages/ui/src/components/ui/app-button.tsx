@@ -36,4 +36,4 @@ const AppButton = React.forwardRef<HTMLButtonElement, AppButtonProps>(
 );
 AppButton.displayName = "AppButton";
 
-export default AppButton;
+export { AppButton };

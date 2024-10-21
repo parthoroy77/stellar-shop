@@ -1,8 +1,7 @@
 "use client";
 import { useSearch } from "@/hooks/use-search";
-import { Input } from "@repo/ui";
+import { AppButton, Input } from "@repo/ui";
 import { debounce } from "@repo/utils/functions";
-import AppButton from "@ui/components/ui/app-button";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { AiOutlineLoading } from "react-icons/ai";

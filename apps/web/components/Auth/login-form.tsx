@@ -2,6 +2,7 @@
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  AppButton,
   Button,
   Checkbox,
   Form,
@@ -16,7 +17,6 @@ import {
   Skeleton,
 } from "@repo/ui";
 import { loginSchema, z } from "@repo/utils/validations";
-import AppButton from "@ui/components/ui/app-button";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";

@@ -1,6 +1,6 @@
 "use client";
 import { resendVerificationEmail } from "@/actions/auth";
-import AppButton from "@ui/components/ui/app-button";
+import { AppButton } from "@ui/index";
 import { useTransition } from "react";
 import { toast } from "sonner";
 

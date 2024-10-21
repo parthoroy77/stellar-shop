@@ -1,6 +1,6 @@
 import { handleApiError, useUserLogOutMutation } from "@repo/redux";
 import { IApiResponse } from "@repo/utils/types";
-import AppButton from "@ui/components/ui/app-button";
+import { AppButton } from "@ui/index";
 import { IoIosLogOut } from "react-icons/io";
 import { toast } from "sonner";
 

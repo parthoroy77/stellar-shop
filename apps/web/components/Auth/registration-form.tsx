@@ -1,14 +1,13 @@
 "use client";
 import { registerUser } from "@/actions/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Separator } from "@repo/ui";
+import { AppButton, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Separator } from "@repo/ui";
 import { registrationSchema, z } from "@repo/utils/validations";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
-import AppButton from "@ui/components/ui/app-button";
 
 type TRegistrationForm = z.infer<typeof registrationSchema>;
 
