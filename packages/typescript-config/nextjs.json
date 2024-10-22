@@ -17,6 +17,10 @@
       "@ui/*": [
         "../../packages/ui/src/*"
       ]
-    }
+    },
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
   }
 }

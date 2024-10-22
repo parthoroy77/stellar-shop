@@ -20,13 +20,13 @@ const SidebarMenu: FC<SidebarMenuProps> = memo(({ item, expanded, subItem = fals
   return (
     <div className="space-y-2">
       <NavLink
-        to={item.href}
+        to={!item.children ? (item.href ? item.href : "") : ""}
         onClick={item.children ? toggleOpen : undefined}
         className={({ isActive }) =>
           cn(
             "hover:bg-accent/30 flex w-full items-center gap-2 rounded-md border py-2 text-sm duration-300",
             expanded ? "justify-between px-5" : "justify-center",
-            isActive ? "bg-accent hover:bg-accent/70" : "bg-transparent",
+            isActive && !item.children ? "bg-accent hover:bg-accent/70" : "bg-transparent",
             !subItem && "pl-9"
           )
         }

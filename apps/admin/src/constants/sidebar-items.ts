@@ -10,28 +10,17 @@ export const sidebarItems: TSidebarItem[] = [
     label: "Dashboard",
     href: "/",
     Icon: RxDashboard,
-    children: [
-      {
-        label: "Child",
-        href: "/item",
-        Icon: GoCircle,
-      },
-      {
-        label: "Child",
-        href: "/item",
-        Icon: GoCircle,
-      },
-      {
-        label: "Child",
-        href: "/item",
-        Icon: GoCircle,
-      },
-    ],
   },
   {
     label: "Products",
-    href: "/item",
     Icon: RiAlignItemLeftLine,
+    children: [
+      {
+        label: "Categories",
+        href: "categories",
+        Icon: GoCircle,
+      },
+    ],
   },
   {
     label: "Orders",

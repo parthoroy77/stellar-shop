@@ -12,7 +12,16 @@ export const routes = createBrowserRouter([
         <MainLayout />
       </PrivateRoute>
     ),
-    children: [],
+    children: [
+      {
+        index: true,
+        element: <div>Dashboard</div>,
+      },
+      {
+        path: "/categories",
+        element: <div>Categories</div>,
+      },
+    ],
   },
   {
     path: "/login",
