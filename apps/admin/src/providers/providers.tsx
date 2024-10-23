@@ -6,7 +6,7 @@ const Providers = ({ children }: { children: ReactNode }) => {
   return (
     <Provider store={store}>
       {children}
-      <Toaster richColors />
+      <Toaster richColors position="top-center" />
     </Provider>
   );
 };
