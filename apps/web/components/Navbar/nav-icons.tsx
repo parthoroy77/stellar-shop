@@ -1,5 +1,4 @@
 import { HiArrowPath } from "react-icons/hi2";
-import { PiUserCircleLight } from "react-icons/pi";
 import { SlHeart } from "react-icons/sl";
 import CartHoverMenu from "./cart-hover-menu";
 import NavProfileMenu from "./nav-profile-menu";

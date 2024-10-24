@@ -1,4 +1,4 @@
-export const CategoryLevel = {
+export const CategoryLevels = {
   COLLECTION: "COLLECTION",
   CATEGORY: "CATEGORY",
   SUB_CATEGORY: "SUB_CATEGORY",
@@ -11,7 +11,7 @@ export const CategoryStatus = {
 
 export type TCategoryStatus = (typeof CategoryStatus)[keyof typeof CategoryStatus];
 
-export type CategoryLevels = (typeof CategoryLevel)[keyof typeof CategoryLevel];
+export type TCategoryLevels = (typeof CategoryLevels)[keyof typeof CategoryLevels];
 
 // Categories
 export interface ICategory {
@@ -19,7 +19,7 @@ export interface ICategory {
   categoryName: string;
   urlSlug: string;
   parentCategoryId?: number | null; // Nullable Foreign key referencing Category
-  level: CategoryLevels;
+  level: TCategoryLevels;
   categoryImageUrl?: string;
   status: TCategoryStatus;
   createdAt: string;

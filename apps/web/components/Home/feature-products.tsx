@@ -1,6 +1,5 @@
 import CustomPagination from "../ui/custom-pagination";
 import ProductShowcase from "./product-showcase";
-import ProductsSlider from "./products-slider";
 import SideBanner from "./side-banner";
 
 const FeatureProducts = () => {

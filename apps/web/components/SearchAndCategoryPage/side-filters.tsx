@@ -8,16 +8,16 @@ import FilterItem from "./filter-item";
 import PriceRange from "./price-range";
 
 // Define types for filter options and items
-type TFilterOption = {
-  label: string;
-  value: string;
-  productCount?: number;
-};
+// type TFilterOption = {
+//   label: string;
+//   value: string;
+//   productCount?: number;
+// };
 
-type TFilterItem = {
-  label: string;
-  options: TFilterOption[];
-};
+// type TFilterItem = {
+//   label: string;
+//   options: TFilterOption[];
+// };
 
 // Props for the SideFilters component
 interface SideFiltersProps {

@@ -63,17 +63,6 @@ const ProductDetailPage = () => {
   );
 };
 
-const TabNavigation = () => (
-  <div className="h-full w-full bg-gray-400">
-    <ul className="flex space-x-4 border-b">
-      <li>Specification</li>
-      <li>Description</li>
-      <li>Review</li>
-      <li>FAQ</li>
-    </ul>
-  </div>
-);
-const Reviews = () => <div>Reviews</div>;
 const FAQ = () => <div>FAQ</div>;
 const Specification = () => <div>Specification</div>;
 const Description = () => <div>Description</div>;

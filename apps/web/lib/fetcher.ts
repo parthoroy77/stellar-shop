@@ -1,6 +1,5 @@
 import { getErrorMessage } from "@repo/utils/functions";
 import { Session } from "next-auth";
-import { getServerAuth } from "./auth-utils";
 import { revalidateTag } from "next/cache";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";

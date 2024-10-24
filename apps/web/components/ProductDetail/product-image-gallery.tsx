@@ -49,7 +49,7 @@ const ProductImageGallery = () => {
     zoomX: "0%",
     zoomY: "0%",
   });
-  const handleMouseMove = (event: MouseEvent<HTMLDivElement>, image: string) => {
+  const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLDivElement;
     const { offsetX, offsetY } = event.nativeEvent;
     const { offsetWidth, offsetHeight } = target;
@@ -96,7 +96,7 @@ const ProductImageGallery = () => {
                   "--url": `url(${image.image})`,
                 } as CSSProperties
               }
-              onMouseMove={(event) => handleMouseMove(event, image.image)}
+              onMouseMove={(event) => handleMouseMove(event)}
               onMouseOut={handleMouseOut}
             >
               <Image

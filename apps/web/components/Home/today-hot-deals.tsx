@@ -1,8 +1,7 @@
 import { Separator } from "@repo/ui";
-import ProductsSlider from "./products-slider";
-import SideBanner from "./side-banner";
-import ProductShowcase from "./product-showcase";
 import CustomPagination from "../ui/custom-pagination";
+import ProductShowcase from "./product-showcase";
+import SideBanner from "./side-banner";
 
 const TodayHotDeals = () => {
   return (

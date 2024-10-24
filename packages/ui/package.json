@@ -38,6 +38,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
+    "@tanstack/react-table": "^8.20.5",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "lucide-react": "^0.446.0",
@@ -51,6 +52,7 @@
     "./main.css": "./main.css",
     "./postcss.config": "./postcss.config.js",
     "./tailwind.config": "./tailwind.config.ts",
-    "./lib/*": "./src/lib/*.ts"
+    "./lib/*": "./src/lib/*.ts",
+    "./tanstack-table": "./src/tanstack-table.ts"
   }
 }

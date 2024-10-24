@@ -1,6 +1,4 @@
 import ProductCard from "@/components/ui/product-card";
-import MobileFilterTrigger from "./mobile-filter-trigger";
-import ProductSortOptions from "./product-sort-options";
 
 const ProductListing = () => {
   return (

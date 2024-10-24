@@ -1,5 +1,5 @@
 import { TRefreshToken, TSession, TUser } from "@repo/utils/types";
-import { NextAuthOptions, User } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { fetcher } from "./fetcher";
 
@@ -134,14 +134,3 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
-
-// Step 6: Create a custom error handler
-export async function handleAuthError(error: unknown) {
-  if (error instanceof ForceLogoutError) {
-    // Step 7: Implement force logout
-    await fetch("/api/auth/signout", { method: "POST" });
-    window.location.href = "/login?error=session_expired";
-  } else {
-    console.error("Authentication error:", error);
-  }
-}

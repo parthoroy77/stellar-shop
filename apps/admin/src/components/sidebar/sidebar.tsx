@@ -61,7 +61,7 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
         </div>
         <nav className={"space-y-2"}>
           {sidebarItems.map((x, i) => (
-            <SidebarMenu expanded={expanded || mouseEnter} subItem={true} key={i} item={x} />
+            <SidebarMenu expanded={expanded || mouseEnter} key={i} item={x} />
           ))}
         </nav>
       </aside>
