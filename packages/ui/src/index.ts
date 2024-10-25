@@ -1,3 +1,4 @@
+export * from "./components/off-canvas";
 export * from "./components/ui/app-button";
 export * from "./components/ui/avatar";
 export * from "./components/ui/badge";

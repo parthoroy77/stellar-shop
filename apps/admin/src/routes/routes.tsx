@@ -1,7 +1,7 @@
 import MainLayout from "@/layouts/main-layout";
 import PrivateRoute from "@/layouts/private-route";
 import PublicRoute from "@/layouts/public-route";
-import CategoryListPage from "@/pages/category-list-page";
+import CategoriesPage from "@/pages/categories-page";
 import LoginPage from "@/pages/login-page";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -19,12 +19,8 @@ export const routes = createBrowserRouter([
         element: <div>Dashboard</div>,
       },
       {
-        path: "/category-list",
-        element: <CategoryListPage />,
-      },
-      {
-        path: "/add-category",
-        element: <div>Hi hello</div>,
+        path: "/categories",
+        element: <CategoriesPage />,
       },
     ],
   },

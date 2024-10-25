@@ -125,12 +125,12 @@ const CategoryListTable = () => {
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between py-4">
+      <div className="flex items-center justify-between gap-5 py-4">
         <Input
           placeholder="Search categories..."
+          className="max-w-[300px] text-xs lg:text-sm"
           value={(table.getColumn("categoryName")?.getFilterValue() as string) ?? ""}
           onChange={(event) => table.getColumn("categoryName")?.setFilterValue(event.target.value)}
-          className="max-w-sm"
         />
         <CategoryLevel />
       </div>
@@ -141,7 +141,7 @@ const CategoryListTable = () => {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead className="text-xs font-medium uppercase" key={header.id}>
+                    <TableHead className="text-nowrap text-xs font-medium capitalize" key={header.id}>
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
@@ -194,15 +194,22 @@ const CategoryListTable = () => {
 const CategoryLevel = () => {
   return (
     <Select>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-[100px] text-xs lg:w-[180px]">
         <SelectValue placeholder="Category Level" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Select Level</SelectLabel>
-          <SelectItem value={CategoryLevels.COLLECTION}>Collection</SelectItem>
-          <SelectItem value={CategoryLevels.CATEGORY}>Category </SelectItem>
-          <SelectItem value={CategoryLevels.SUB_CATEGORY}>Sub Category </SelectItem>
+          <SelectLabel className="pl-2 text-xs font-medium">Select Level</SelectLabel>
+          <hr />
+          <SelectItem className="text-xs font-normal" value={CategoryLevels.COLLECTION}>
+            Collection
+          </SelectItem>
+          <SelectItem className="text-xs font-normal" value={CategoryLevels.CATEGORY}>
+            Category{" "}
+          </SelectItem>
+          <SelectItem className="text-xs font-normal" value={CategoryLevels.SUB_CATEGORY}>
+            Sub Category{" "}
+          </SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

@@ -17,16 +17,7 @@ export const sidebarItems: TSidebarItem[] = [
     children: [
       {
         label: "Category",
-        children: [
-          {
-            label: "List",
-            href: "category-list",
-          },
-          {
-            label: "Add",
-            href: "add-category",
-          },
-        ],
+        href: "/categories",
       },
     ],
   },
