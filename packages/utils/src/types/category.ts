@@ -19,7 +19,7 @@ export type TCategoryLevels = (typeof CategoryLevels)[keyof typeof CategoryLevel
 export interface ICategory {
   id: number;
   categoryName: string;
-  description: string;
+  description?: string;
   urlSlug: string;
   parentCategoryId?: number | null; // Nullable Foreign key referencing Category
   level: TCategoryLevels;

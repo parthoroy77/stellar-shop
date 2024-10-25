@@ -1,16 +1,12 @@
 import { collections } from "@/dummyData/nav-categories";
-import { ICategory } from "@repo/utils/types";
+import { TCategory } from "@repo/utils/types";
 import Image from "next/image";
 import Link from "next/link";
 import { BiChevronDown, BiChevronRight } from "react-icons/bi";
 import { CiShoppingCart } from "react-icons/ci";
 import { RxHamburgerMenu } from "react-icons/rx";
 
-type TCategory = ICategory & {
-  subCategories: TCategory[];
-};
-
-const SubcategoryItem = ({ subcategory }: { subcategory: ICategory }) => {
+const SubcategoryItem = ({ subcategory }: { subcategory: TCategory }) => {
   return (
     <Link href={`/categories/${subcategory.urlSlug}`}>
       <div className="flex flex-col items-center justify-center rounded-md border p-1">
@@ -96,7 +92,7 @@ const NavCategory = () => {
           </div>
         </Link>
         {collections.map((collection, i) => (
-          <CollectionItem key={i} collection={collection as TCategory} />
+          <CollectionItem key={i} collection={collection as unknown as TCategory} />
         ))}
       </div>
     </div>
