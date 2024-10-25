@@ -29,74 +29,7 @@ import {
 } from "@ui/index";
 import { useState } from "react";
 import { categoryListColumn } from "./category-list-column";
-const data: TCategory[] = [
-  {
-    id: 20,
-    categoryName: "Home & Lifestyle",
-    urlSlug: "home-lifestyle",
-    parentCategoryId: null,
-    level: "COLLECTION",
-    categoryImageUrl: "home-lifestyle.jpg",
-    status: "ACTIVE",
-    createdAt: "2024-08-25",
-    updatedAt: null,
-  },
-  {
-    id: 20,
-    categoryName: "Home & dfdf Lifestyle",
-    urlSlug: "home-lifestyle",
-    parentCategoryId: null,
-    level: "COLLECTION",
-    categoryImageUrl: "home-lifestyle.jpg",
-    status: "ACTIVE",
-    createdAt: "2024-08-25",
-    updatedAt: null,
-  },
-  {
-    id: 20,
-    categoryName: "Home & Lifestyle",
-    urlSlug: "home-lifestyle",
-    parentCategoryId: null,
-    level: "COLLECTION",
-    categoryImageUrl: "home-lifestyle.jpg",
-    status: "ACTIVE",
-    createdAt: "2024-08-25",
-    updatedAt: null,
-  },
-  {
-    id: 20,
-    categoryName: "Home & Lifestyle",
-    urlSlug: "home-lifestyle",
-    parentCategoryId: null,
-    level: "COLLECTION",
-    categoryImageUrl: "home-lifestyle.jpg",
-    status: "ACTIVE",
-    createdAt: "2024-08-25",
-    updatedAt: null,
-  },
-  {
-    id: 20,
-    categoryName: "Home & Lifestyle",
-    urlSlug: "home-lifestyle",
-    parentCategoryId: null,
-    level: "COLLECTION",
-    categoryImageUrl: "home-lifestyle.jpg",
-    status: "ACTIVE",
-    createdAt: "2024-08-25",
-    updatedAt: null,
-  },
-  {
-    id: 20,
-    categoryName: "Home & Lifestyle",
-    urlSlug: "home-lifestyle",
-    parentCategoryId: null,
-    level: "COLLECTION",
-    categoryImageUrl: "home-lifestyle.jpg",
-    status: "ACTIVE",
-    createdAt: "2024-08-25",
-    updatedAt: null,
-  },
-];
+const data: TCategory[] = [];
 
 const CategoryListTable = () => {
   const [sorting, setSorting] = useState<SortingState>([]);

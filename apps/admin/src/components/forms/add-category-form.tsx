@@ -20,41 +20,9 @@ import {
 } from "@ui/index";
 import { useMemo } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-const data: TCategory[] = [
-  {
-    id: 1,
-    categoryName: "Home & Lifestyle",
-    urlSlug: "home-lifestyle",
-    parentCategoryId: null,
-    level: "COLLECTION",
-    categoryImageUrl: "home-lifestyle.jpg",
-    status: "ACTIVE",
-    createdAt: "2024-08-25",
-    updatedAt: null,
-  },
-  {
-    id: 2,
-    categoryName: "Home & dfdf Lifestyle",
-    urlSlug: "home-lifestyle",
-    parentCategoryId: null,
-    level: "COLLECTION",
-    categoryImageUrl: "home-lifestyle.jpg",
-    status: "ACTIVE",
-    createdAt: "2024-08-25",
-    updatedAt: null,
-  },
-  {
-    id: 4,
-    categoryName: "Home & Lifestyle",
-    urlSlug: "home-lifestyle",
-    parentCategoryId: null,
-    level: "COLLECTION",
-    categoryImageUrl: "home-lifestyle.jpg",
-    status: "ACTIVE",
-    createdAt: "2024-08-25",
-    updatedAt: null,
-  },
-];
+
+const data: TCategory[] = [];
+
 type TAddCategoryFormType = z.infer<typeof createCategoryValidationSchema>;
 
 const AddCategoryForm = () => {
