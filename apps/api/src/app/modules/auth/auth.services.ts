@@ -3,7 +3,7 @@ import { parseTimeToDate } from "@repo/utils/functions";
 import { StatusCodes } from "http-status-codes";
 import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
-import { TLoginPayload, TLogoutPayload, TRegistrationPayload } from "./auth.interface";
+import { TLoginPayload, TLogoutPayload, TRegistrationPayload } from "./auth.types";
 import {
   comparePassword,
   generateSessionAndRefreshToken,

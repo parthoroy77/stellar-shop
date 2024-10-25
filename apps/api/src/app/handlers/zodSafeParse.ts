@@ -7,6 +7,7 @@ const zodSafeParse = (schema: AnyZodObject) => {
     await schema.parseAsync({
       ...req.body,
       ...req.cookies,
+      ...req.files,
     });
     next();
   });

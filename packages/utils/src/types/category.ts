@@ -1,3 +1,5 @@
+import { ICategoryFile, IFile } from "./file";
+
 export const CategoryLevels = {
   COLLECTION: "COLLECTION",
   CATEGORY: "CATEGORY",
@@ -17,10 +19,10 @@ export type TCategoryLevels = (typeof CategoryLevels)[keyof typeof CategoryLevel
 export interface ICategory {
   id: number;
   categoryName: string;
+  description: string;
   urlSlug: string;
   parentCategoryId?: number | null; // Nullable Foreign key referencing Category
   level: TCategoryLevels;
-  categoryImageUrl?: string;
   status: TCategoryStatus;
   createdAt: string;
   updatedAt?: string | null;
@@ -28,4 +30,8 @@ export interface ICategory {
 
 export type TCategory = ICategory & {
   subCategories?: TCategory[];
+  images: ICategoryFile &
+    {
+      file: IFile;
+    }[];
 };

@@ -17,4 +17,7 @@ export default {
   nodemailer_password: process.env.NODEMAILER_PASS,
   origin_url_1: process.env.ORIGIN_URL_1,
   origin_url_2: process.env.ORIGIN_URL_2,
+  cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
+  cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET,
 };

@@ -1,19 +1,20 @@
 model Category {
   id               Int            @id @default(autoincrement())
   categoryName     String
+  description      String?        @db.VarChar(60)
   urlSlug          String         @unique
-  parentCategoryId Int
-  categoryImageUrl String?
+  parentCategoryId Int?
   level            CategoryLevel
-  status           CategoryStatus
+  status           CategoryStatus @default(ACTIVE)
 
   // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // references
-  parentCategory Category?  @relation("CategoryToParent", fields: [parentCategoryId], references: [id])
-  subCategories  Category[] @relation("CategoryToParent")
+  parentCategory Category?      @relation("CategoryToParent", fields: [parentCategoryId], references: [id])
+  subCategories  Category[]     @relation("CategoryToParent")
+  images         CategoryFile[]
 
   @@index([urlSlug, categoryName])
   @@map("Categories")

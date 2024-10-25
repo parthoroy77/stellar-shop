@@ -6,7 +6,7 @@ model ProductVariant {
   price         Float
   stockQuantity Int
   sku           String?
-  status        ProductVariantStatus
+  status        ProductVariantStatus @default(ACTIVE)
 
   // timestamps
   createdAt DateTime @default(now())
@@ -15,6 +15,7 @@ model ProductVariant {
   // references
   attributes ProductVariantAttribute[]
   product    Product                   @relation(fields: [productId], references: [id])
+  images     VariantFile[]
 
   @@index([productId])
   @@map("ProductVariants")
@@ -31,7 +32,7 @@ model Product {
   lowStockThreshold Int?
   sellerId          Int
   brandId           Int
-  status            ProductStatus
+  status            ProductStatus @default(PENDING)
 
   // timestamps
   createdAt DateTime @default(now())
@@ -43,6 +44,7 @@ model Product {
   brand      Brand              @relation(fields: [brandId], references: [id])
   attributes ProductAttribute[]
   variants   ProductVariant[]
+  images     ProductFile[]
 
   @@index([urlSlug, productName])
   @@map("Products")

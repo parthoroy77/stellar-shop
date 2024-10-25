@@ -1,16 +1,15 @@
 import colors from "colors";
 import config from "../config";
-import { ApiError } from "../handlers/ApiError";
 import logger from "../logger";
 
 // Function to ping the server (using public domain)
 const pingServer = async () => {
   try {
     // Ping your own server's public URL to prevent shutdown
-    console.log("Pinging Domain:" + config.domain_url);
+    logger.info("Pinging Domain:" + config.domain_url);
     const response = await fetch(`${config.domain_url}/ping`);
     if (response.statusText === "OK") {
-      console.log(colors.blue.bold(`Ping Successful Server Up & Running`));
+      logger.info(colors.blue.bold(`Ping Successful Server Up & Running`));
     }
   } catch (error) {
     logger.error(error);

@@ -24,8 +24,29 @@ export interface IFile {
   fileUrl: string;
   fileSecureUrl: string;
   uploadedBy: number; // Foreign key referencing User
-  associatedEntityId: number; // Foreign key referencing entities like Product or Variant
   status: TFileStatus;
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
+export interface ICategoryFile {
+  id: number;
+  categoryId: number;
+  fileId: number;
+  createdAt: Date;
+  updatedAt?: Date;
+}
+export interface IProductFile {
+  id: number;
+  categoryId: number;
+  fileId: number;
+  createdAt: Date;
+  updatedAt?: Date;
+}
+export interface IVariantFile {
+  id: number;
+  categoryId: number;
+  fileId: number;
   createdAt: Date;
   updatedAt?: Date;
 }

@@ -5,7 +5,7 @@ model Seller {
   shopDescription String       @db.Text
   logoUrl         String
   contactNumber   String
-  status          SellerStatus
+  status          SellerStatus @default(INACTIVE)
 
   // timestapms
   createdAt DateTime @default(now())
