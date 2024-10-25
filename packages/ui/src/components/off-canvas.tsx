@@ -14,7 +14,7 @@ const OffCanvas: FC<OffCanvasProps> = ({ open, setOpen, children, className }) =
       {open && <div className={overlayClasses} onClick={() => setOpen(false)} />}
       <div
         className={cn(
-          "absolute inset-y-0 right-0 z-50 overflow-hidden bg-white duration-300",
+          "custom-scrollbar absolute inset-y-0 right-0 z-50 h-screen overflow-hidden overflow-y-auto bg-white duration-300",
           open ? "w-80 lg:w-96" : "w-0 translate-x-full",
           className
         )}

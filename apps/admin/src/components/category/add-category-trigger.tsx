@@ -2,9 +2,10 @@ import OffCanvas from "@ui/components/off-canvas";
 import { Button } from "@ui/index";
 import { useState } from "react";
 import { RxCross1 } from "react-icons/rx";
+import AddCategoryForm from "../forms/add-category-form";
 
 const AddCategoryTrigger = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   return (
     <>
@@ -24,7 +25,7 @@ const AddCategoryTrigger = () => {
               <RxCross1 size={16} />
             </Button>
           </div>
-          <div></div>
+          <AddCategoryForm />
         </div>
       </OffCanvas>
     </>

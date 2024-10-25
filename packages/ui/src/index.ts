@@ -1,3 +1,4 @@
+export * from "./components/image-dropzone";
 export * from "./components/off-canvas";
 export * from "./components/ui/app-button";
 export * from "./components/ui/avatar";
@@ -20,4 +21,5 @@ export * from "./components/ui/skeleton";
 export * from "./components/ui/slider";
 export * from "./components/ui/table";
 export * from "./components/ui/tabs";
+export * from "./components/ui/textarea";
 export * from "./components/ui/tooltip";
