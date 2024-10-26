@@ -18,6 +18,10 @@ router.post(
 
 router.get("/get-all", CategoryControllers.getAllCategories);
 
+router.get("/get-all-parents", CategoryControllers.getAllParentCategories);
+
+router.get("/get-all-with-children", CategoryControllers.getCategoriesWithAllChildren);
+
 const CategoryRoutes = router;
 
 export default CategoryRoutes;

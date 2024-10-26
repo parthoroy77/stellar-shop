@@ -17,10 +17,10 @@ const createCategory = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "Category image file not found!");
   }
 
-  const response = await CategoryServices.create(payload, fileLocalPath, req.user.id);
+  const result = await CategoryServices.create(payload, fileLocalPath, req.user.id);
 
   ApiResponse(res, {
-    data: response,
+    data: result,
     success: true,
     statusCode: StatusCodes.CREATED,
     message: "Category created successfully!",
@@ -35,14 +35,37 @@ const getAllCategories = asyncHandler(async (req: Request, res: Response) => {
 
   ApiResponse(res, {
     data: result,
-    message: "Category retrieved successfully!",
+    message: "Categories retrieved successfully!",
     statusCode: StatusCodes.OK,
     success: true,
     meta,
   });
 });
 
+const getCategoriesWithAllChildren = asyncHandler(async (req: Request, res: Response) => {
+  const result = await CategoryServices.getAllWithChildren();
+  ApiResponse(res, {
+    data: result,
+    message: "Categories with children retrieved successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+  });
+});
+
+const getAllParentCategories = asyncHandler(async (req: Request, res: Response) => {
+  const query = pick(req.query, ["query"]);
+  const result = await CategoryServices.getAllParentCategories(query);
+  ApiResponse(res, {
+    data: result,
+    message: "Parent categories retrieved successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+  });
+});
+
 export const CategoryControllers = {
   createCategory,
   getAllCategories,
+  getCategoriesWithAllChildren,
+  getAllParentCategories,
 };
