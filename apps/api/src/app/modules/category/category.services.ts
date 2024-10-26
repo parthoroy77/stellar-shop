@@ -1,19 +1,27 @@
 import prisma from "@repo/prisma/client";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
-import { deleteFromCloudinary, uploadOnCloudinary } from "../../utils/cloudinary";
-import { generateUniqueSlug } from "../../utils/generateUniqueSlug";
-import { TCategoryInput } from "./category.types";
+import { handleCloudinaryUpload } from "../../handlers/handleCloudUpload";
 import logger from "../../logger";
+import { TPaginateOption } from "../../utils/calculatePagination";
+import { deleteFromCloudinary } from "../../utils/cloudinary";
+import { generateUniqueSlug } from "../../utils/generateUniqueSlug";
+import { TCategoryFilters, TCategoryInput } from "./category.types";
+import { getCategoryBaseQuery } from "./category.utils";
 
+const IMAGE_INCLUDE = {
+  images: {
+    include: {
+      file: true,
+    },
+  },
+};
+
+// create category
 const create = async (payload: TCategoryInput, filePath: string, userId: number) => {
   const slug = await generateUniqueSlug(payload.categoryName, prisma.category, "urlSlug");
 
-  const uploadedFile = await uploadOnCloudinary(filePath, "categoryImages");
-
-  if (!uploadedFile) {
-    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "An error occurred while doing server upload!");
-  }
+  const uploadedFile = await handleCloudinaryUpload(filePath, "categoryImages");
 
   try {
     const result = await prisma.category.create({
@@ -48,6 +56,92 @@ const create = async (payload: TCategoryInput, filePath: string, userId: number)
   }
 };
 
+// get all categories with all possible filters
+const getAll = async (filters: TCategoryFilters, options: TPaginateOption) => {
+  const { finalWhereClause, limit, skip, sortBy, sortOrder, page } = getCategoryBaseQuery(filters, options);
+
+  const [result, total] = await prisma.$transaction([
+    prisma.category.findMany({
+      where: finalWhereClause,
+      include: {
+        images: {
+          include: {
+            file: true,
+          },
+        },
+      },
+      take: limit,
+      skip,
+      orderBy: {
+        [sortBy]: sortOrder,
+      },
+    }),
+
+    prisma.category.count({ where: finalWhereClause }),
+  ]);
+
+  return {
+    result,
+    meta: {
+      limit,
+      skip,
+      total,
+      page,
+      sortBy,
+      sortOrder,
+    },
+  };
+};
+
+// get all categories with all children
+const getAllWithChildren = async () => {
+  const result = await prisma.category.findMany({
+    where: {
+      level: "COLLECTION",
+      status: "ACTIVE",
+    },
+    include: {
+      ...IMAGE_INCLUDE,
+      subCategories: {
+        where: {
+          status: "ACTIVE",
+        },
+        include: {
+          ...IMAGE_INCLUDE,
+          subCategories: {
+            where: {
+              status: "ACTIVE",
+            },
+            include: {
+              ...IMAGE_INCLUDE,
+            },
+          },
+        },
+      },
+    },
+  });
+  return result;
+};
+
+// get all selected parent categories with search criteria
+const getAllParentCategories = async (filters: TCategoryFilters) => {
+  const { finalWhereClause } = getCategoryBaseQuery(filters, {});
+  const result = await prisma.category.findMany({
+    where: {
+      ...finalWhereClause,
+      status: "ACTIVE",
+    },
+    include: {
+      ...IMAGE_INCLUDE,
+    },
+  });
+
+  return result;
+};
+
 export const CategoryServices = {
   create,
+  getAll,
+  getAllWithChildren,
+  getAllParentCategories,
 };

@@ -29,7 +29,7 @@ export const uploadOnCloudinary = async (localFilePath: string, folderName: stri
     logger.error("Cloudinary upload error:", error);
     // Ensure the local file is deleted even if the upload fails
     fs.unlinkSync(localFilePath);
-    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Error uploading to Cloudinary");
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Error uploading file to Cloud");
   }
 };
 
@@ -46,7 +46,7 @@ export const deleteFromCloudinary = async (publicId: string, resourceType: strin
     return response;
   } catch (error) {
     logger.error("Cloudinary deletion error:", error);
-    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Something went wrong while deleting from Cloudinary");
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Something went wrong while deleting file from Cloud");
   }
 };
 
@@ -63,7 +63,7 @@ export const fetchFromCloudinary = async (publicId: string, resourceType: string
     return response;
   } catch (error) {
     logger.error("Cloudinary fetch error:", error);
-    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Error fetching data from Cloudinary");
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Error fetching data file from Cloud");
   }
 };
 
@@ -78,6 +78,6 @@ export const listFilesInCloudinaryFolder = async (folderName: string) => {
     return response.resources;
   } catch (error) {
     logger.error("Cloudinary list error:", error);
-    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Error fetching file list from Cloudinary");
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Error fetching file list from Cloud");
   }
 };

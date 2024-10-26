@@ -6,3 +6,10 @@ export type TCategoryInput = {
   level: CategoryLevel;
   parentId?: string;
 };
+
+export type TCategoryFilters = {
+  query?: string;
+  level?: string;
+  parentId?: string;
+  status?: string;
+};

@@ -16,6 +16,8 @@ router.post(
   CategoryControllers.createCategory
 );
 
+router.get("/get-all", CategoryControllers.getAllCategories);
+
 const CategoryRoutes = router;
 
 export default CategoryRoutes;

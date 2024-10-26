@@ -1,4 +1,5 @@
 import { getErrorMessage } from "@repo/utils/functions";
+import { IApiResponse } from "@repo/utils/types";
 import { Session } from "next-auth";
 import { revalidateTag } from "next/cache";
 
@@ -13,20 +14,12 @@ interface FetcherOptions<TBody = unknown> {
   session?: Session | null;
 }
 
-export interface ApiResponse<T> {
-  data: T | null;
-  success: boolean;
-  message: string;
-  error?: unknown;
-  statusCode: number;
-}
-
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
 
 export async function fetcher<TResponse, TBody = unknown>(
   endpoint: string,
   options: FetcherOptions<TBody> = {}
-): Promise<ApiResponse<TResponse>> {
+): Promise<IApiResponse<TResponse>> {
   const { method = "GET", headers = {}, body, cache, next, session = null } = options;
 
   const url = `${baseUrl}${endpoint}`;
