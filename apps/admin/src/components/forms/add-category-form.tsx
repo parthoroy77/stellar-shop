@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CategoryLevels, TCategory } from "@repo/utils/types";
 import { createCategoryValidationSchema, z } from "@repo/utils/validations";
-import ImageDropzone from "@ui/components/image-dropzone";
 import {
   Button,
   Form,
@@ -10,6 +9,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  ImageDropzone,
   Input,
   Select,
   SelectContent,

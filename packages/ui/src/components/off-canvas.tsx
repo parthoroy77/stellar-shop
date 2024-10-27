@@ -25,4 +25,4 @@ const OffCanvas: FC<OffCanvasProps> = ({ open, setOpen, children, className }) =
   );
 };
 
-export default OffCanvas;
+export { OffCanvas };

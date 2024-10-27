@@ -4,3 +4,4 @@ export { Provider } from "react-redux";
 export * from "./utils";
 // apis
 export * from "./apis/auth/authApi";
+export * from "./apis/category/categoryApi";

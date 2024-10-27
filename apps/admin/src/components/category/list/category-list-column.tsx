@@ -1,5 +1,4 @@
-"use client";
-
+import { TCategory } from "@repo/utils/types";
 import {
   Badge,
   Button,
@@ -8,8 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@repo/ui";
-import { TCategory } from "@repo/utils/types";
+} from "@ui/index";
 import { ColumnDef } from "@ui/tanstack-table";
 import { AiOutlineSortAscending } from "react-icons/ai";
 import { BiDotsHorizontal } from "react-icons/bi";

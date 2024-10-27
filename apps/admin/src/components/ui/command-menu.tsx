@@ -1,4 +1,4 @@
-import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "./command";
+import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@ui/index";
 import { useEffect, useState } from "react";
 import { GoSearch } from "react-icons/go";
 

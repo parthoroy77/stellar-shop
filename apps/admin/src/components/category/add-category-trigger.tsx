@@ -1,5 +1,4 @@
-import OffCanvas from "@ui/components/off-canvas";
-import { Button } from "@ui/index";
+import { Button, OffCanvas } from "@ui/index";
 import { useState } from "react";
 import { RxCross1 } from "react-icons/rx";
 import AddCategoryForm from "../forms/add-category-form";

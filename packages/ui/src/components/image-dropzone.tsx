@@ -2,7 +2,7 @@
 
 import { cn } from "@ui/lib/utils";
 import { Upload, X } from "lucide-react";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { FC, useCallback, useMemo, useRef, useState } from "react";
 import { Button } from "./ui/button";
 
 interface FileWithPreview extends File {
@@ -17,13 +17,13 @@ interface ImageDropzoneProps {
   maxSize?: number; // in bytes
 }
 
-export default function ImageDropzone({
+export const ImageDropzone: FC<ImageDropzoneProps> = ({
   onFilesChange,
   multiple = false,
   maxFiles = 5,
   accept = "image/*",
   maxSize = 5 * 1024 * 1024, // 5MB
-}: ImageDropzoneProps) {
+}) => {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -198,4 +198,4 @@ export default function ImageDropzone({
       )}
     </div>
   );
-}
+};
