@@ -4,7 +4,7 @@ import { RxCross1 } from "react-icons/rx";
 import AddCategoryForm from "../forms/add-category-form";
 
 const AddCategoryTrigger = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
 
   return (
     <>

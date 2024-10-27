@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CategoryLevels, TCategory } from "@repo/utils/types";
+import { handleApiError, useCreateCategoryMutation, useGetAllParentCategoriesQuery } from "@repo/redux";
+import { CategoryLevels, IApiResponse, TCategory } from "@repo/utils/types";
 import { createCategoryValidationSchema, z } from "@repo/utils/validations";
 import {
   Button,
@@ -11,6 +12,7 @@ import {
   FormMessage,
   ImageDropzone,
   Input,
+  OptionSelect,
   Select,
   SelectContent,
   SelectItem,
@@ -18,22 +20,59 @@ import {
   SelectValue,
   Textarea,
 } from "@ui/index";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
-
-const data: TCategory[] = [];
+import { toast } from "sonner";
 
 type TAddCategoryFormType = z.infer<typeof createCategoryValidationSchema>;
 
 const AddCategoryForm = () => {
+  // States
+  const [searchTerms, setSearchTerms] = useState("");
+  // Form
   const form: UseFormReturn<TAddCategoryFormType> = useForm<TAddCategoryFormType>({
     resolver: zodResolver(createCategoryValidationSchema),
   });
-  const isCollectionLevel = useMemo(() => form.watch("level") === CategoryLevels.COLLECTION, [form.watch("level")]);
+  const selectedLevel = form.watch("level");
+  const isCollectionLevel = selectedLevel === CategoryLevels.COLLECTION;
 
+  // Query memoization
+  const query = useMemo(() => {
+    let queryString = "";
+    if (searchTerms.length > 3) queryString += `&query=${searchTerms}`;
+    if (selectedLevel) queryString += `&level=${selectedLevel}`;
+    return queryString;
+  }, [searchTerms, selectedLevel]);
+
+  // Data fetching
+  const { data, isFetching: isParentCatFetching } = useGetAllParentCategoriesQuery(query, {
+    skip: isCollectionLevel || !query,
+  });
+
+  // Mutations
+  const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation();
+
+  const parentCategories = (data?.data as TCategory[]) || [];
+  // Form submission handler
   const onSubmit = async (data: TAddCategoryFormType) => {
-    console.log(data);
+    const toastId = toast.loading("Creating category...", { duration: 2000 });
+    const { attachment, ...rest } = data;
+    delete attachment.preview;
+    const formData = new FormData();
+    Object.entries({ attachment, ...rest }).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    try {
+      const response: IApiResponse<TCategory> = await createCategory(formData).unwrap();
+      if (response.success) {
+        toast.success(response.message, { id: toastId });
+      }
+    } catch (error) {
+      const appError = handleApiError(error);
+      toast.error(appError.message, { id: toastId });
+    }
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
@@ -46,7 +85,6 @@ const AddCategoryForm = () => {
               <FormControl>
                 <Input
                   {...field}
-                  name="categoryName"
                   placeholder="e.g. Fashion"
                   type="text"
                   className="focus:border-secondary h-9 w-full border px-5 placeholder:text-sm"
@@ -56,12 +94,19 @@ const AddCategoryForm = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="attachment"
           render={({ field }) => (
             <FormItem>
-              <ImageDropzone onFilesChange={(files) => field.onChange(files)} multiple={false} />
+              <ImageDropzone
+                onFilesChange={(files) => {
+                  field.onChange(files);
+                }}
+                multiple={false}
+              />
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -83,47 +128,45 @@ const AddCategoryForm = () => {
                   <SelectItem value={CategoryLevels.SUB_CATEGORY}>Sub Category</SelectItem>
                 </SelectContent>
               </Select>
-
               <FormMessage />
             </FormItem>
           )}
         />
-        {form.watch("level") && isCollectionLevel !== true && (
+        {selectedLevel && !isCollectionLevel && (
           <FormField
             control={form.control}
             name="parentId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-accent-foreground text-xs">Parent Category</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger className="h-9">
-                      <SelectValue placeholder="Select parent category" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {data.map((x, i) => (
-                      <SelectItem value={x.id.toString()} key={i}>
-                        <div className="flex items-center gap-2">
-                          <img
-                            className="size-7"
-                            src={
-                              "https://demos.pixinvent.com/vuexy-vuejs-admin-template/demo-2/assets/product-1-CnD-btSp.png"
-                            }
-                            alt={`Image of ${x.categoryName} Category`}
-                          />
-                          <span>{x.categoryName}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-
+                <OptionSelect
+                  items={parentCategories}
+                  selectedItems={parentCategories.filter((x) => x.id.toString() === form.watch("parentId")) || []}
+                  onSelectionChange={(categories) => {
+                    if (Array.isArray(categories)) {
+                      return;
+                    } else {
+                      field.onChange(categories.id.toString());
+                    }
+                  }}
+                  searchPlaceholder="Search Categories..."
+                  itemRenderer={(cat) => (
+                    <div className="flex items-center gap-2 text-xs">
+                      <img className="size-6 rounded-md" src={cat.images[0].file.fileUrl} alt={cat.categoryName} />
+                      {cat.categoryName}
+                    </div>
+                  )}
+                  isLoading={isParentCatFetching}
+                  onSearch={setSearchTerms}
+                  multiSelect={false}
+                  getItemId={(cat) => cat.id}
+                />
                 <FormMessage />
               </FormItem>
             )}
           />
         )}
+
         <FormField
           control={form.control}
           name="description"
@@ -137,13 +180,12 @@ const AddCategoryForm = () => {
                   {...field}
                 />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type="submit" size={"sm"} variant={"outline"}>
+        <Button disabled={isCreating || isParentCatFetching} type="submit" size="sm" variant="outline">
           Add Category
         </Button>
       </form>

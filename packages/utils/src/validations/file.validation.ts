@@ -4,7 +4,7 @@ import { ALLOWED_IMAGE_EXTENSIONS, MAX_IMAGE_SIZE } from "../constants/file.cons
 // Helper function to check if the file type is an image
 function checkImageType(file: File) {
   const fileType = file && file.name.split(".").pop()?.toLowerCase();
-  return fileType && ALLOWED_IMAGE_EXTENSIONS.includes(fileType);
+  return fileType && ALLOWED_IMAGE_EXTENSIONS.includes(`.${fileType}`);
 }
 
 // Zod schema to validate an image file
