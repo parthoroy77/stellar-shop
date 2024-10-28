@@ -1,3 +1,4 @@
+"use client";
 import { debounce } from "@repo/utils/functions";
 import { useCallback, useState } from "react";
 import { RxCaretSort } from "react-icons/rx";

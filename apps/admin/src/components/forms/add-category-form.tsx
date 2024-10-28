@@ -56,10 +56,8 @@ const AddCategoryForm = () => {
   // Form submission handler
   const onSubmit = async (data: TAddCategoryFormType) => {
     const toastId = toast.loading("Creating category...", { duration: 2000 });
-    const { attachment, ...rest } = data;
-    delete attachment.preview;
     const formData = new FormData();
-    Object.entries({ attachment, ...rest }).forEach(([key, value]) => {
+    Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value);
     });
     try {
