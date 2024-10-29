@@ -2,7 +2,7 @@ import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
-const baseUrl = "http://localhost:5000/api/v1";
+const baseUrl = import.meta.env.VITE_API_URL + "/api/v1";
 
 // Create an axios instance with default configuration
 const axiosInstance = axios.create({

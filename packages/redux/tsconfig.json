@@ -1,7 +1,9 @@
 {
   "extends": "@repo/typescript-config/base.json",
   "compilerOptions": {
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "module": "ESNext", // or "ES2020"
+    "moduleResolution": "Node"
   },
   "include": ["src"],
   "exclude": ["node_modules"]
