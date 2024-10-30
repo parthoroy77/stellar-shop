@@ -22,7 +22,7 @@ export async function fetcher<TResponse, TBody = unknown>(
 ): Promise<IApiResponse<TResponse>> {
   const { method = "GET", headers = {}, body, cache, next, session = null } = options;
 
-  const url = `${baseUrl}${endpoint}`;
+  const url = `${baseUrl}/api/v1${endpoint}`;
 
   const fetchOptions: RequestInit & { next?: NextFetchRequestConfig } = {
     method,
