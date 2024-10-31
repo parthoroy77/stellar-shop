@@ -7,15 +7,7 @@ import { TPaginateOption } from "../../utils/calculatePagination";
 import { deleteFromCloudinary } from "../../utils/cloudinary";
 import { generateUniqueSlug } from "../../utils/generateUniqueSlug";
 import { TCategoryFilters, TCategoryInput } from "./category.types";
-import { getCategoryBaseQuery } from "./category.utils";
-
-const IMAGE_INCLUDE = {
-  images: {
-    include: {
-      file: true,
-    },
-  },
-};
+import { CATEGORY_IMAGE_INCLUDE, getCategoryBaseQuery } from "./category.utils";
 
 // create category
 const create = async (payload: TCategoryInput, filePath: string, userId: number) => {
@@ -59,7 +51,6 @@ const create = async (payload: TCategoryInput, filePath: string, userId: number)
 // get all categories with all possible filters
 const getAll = async (filters: TCategoryFilters, options: TPaginateOption) => {
   const { finalWhereClause, limit, skip, sortBy, sortOrder, page } = getCategoryBaseQuery(filters, options);
-
   const [result, total] = await prisma.$transaction([
     prisma.category.findMany({
       where: finalWhereClause,
@@ -101,19 +92,19 @@ const getAllWithChildren = async () => {
       status: "ACTIVE",
     },
     include: {
-      ...IMAGE_INCLUDE,
+      ...CATEGORY_IMAGE_INCLUDE,
       subCategories: {
         where: {
           status: "ACTIVE",
         },
         include: {
-          ...IMAGE_INCLUDE,
+          ...CATEGORY_IMAGE_INCLUDE,
           subCategories: {
             where: {
               status: "ACTIVE",
             },
             include: {
-              ...IMAGE_INCLUDE,
+              ...CATEGORY_IMAGE_INCLUDE,
             },
           },
         },
@@ -132,7 +123,7 @@ const getAllParentCategories = async (filters: TCategoryFilters) => {
       status: "ACTIVE",
     },
     include: {
-      ...IMAGE_INCLUDE,
+      ...CATEGORY_IMAGE_INCLUDE,
     },
   });
 

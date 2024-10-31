@@ -53,7 +53,7 @@ const getCategoriesWithAllChildren = asyncHandler(async (req: Request, res: Resp
 });
 
 const getAllParentCategories = asyncHandler(async (req: Request, res: Response) => {
-  const query = pick(req.query, ["query"]);
+  const query = pick(req.query, ["query", "level"]);
   const result = await CategoryServices.getAllParentCategories(query);
   ApiResponse(res, {
     data: result,

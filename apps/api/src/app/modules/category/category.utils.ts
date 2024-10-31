@@ -37,7 +37,7 @@ export const getCategoryBaseQuery = (filters: TCategoryFilters, options: TPagina
   };
 };
 
-const CATEGORY_IMAGE_INCLUDE = {
+export const CATEGORY_IMAGE_INCLUDE = {
   images: {
     include: {
       file: true,
