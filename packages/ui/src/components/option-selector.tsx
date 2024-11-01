@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import { RxCaretSort } from "react-icons/rx";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
-import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from "./ui/command";
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList, CommandSeparator } from "./ui/command";
 import { Input } from "./ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
@@ -76,9 +76,14 @@ function OptionSelect<T>({
           <RxCaretSort className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0">
+      <PopoverContent className="p-0">
         <Command>
-          <Input placeholder={searchPlaceholder} className="h-9" onChange={(e) => handleSearchChange(e.target.value)} />
+          <Input
+            placeholder={searchPlaceholder}
+            className="h-8 rounded-none border-none text-xs"
+            onChange={(e) => handleSearchChange(e.target.value)}
+          />
+          <CommandSeparator />
           <CommandList>
             <CommandEmpty>No items found.</CommandEmpty>
             <CommandGroup>

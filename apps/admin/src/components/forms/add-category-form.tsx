@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { handleApiError, useCreateCategoryMutation, useGetAllParentCategoriesQuery } from "@repo/redux";
 import { CategoryLevels, IApiResponse, TCategory } from "@repo/utils/types";
@@ -20,40 +22,38 @@ import {
   SelectValue,
   Textarea,
 } from "@ui/index";
-import { useMemo, useState } from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 type TAddCategoryFormType = z.infer<typeof createCategoryValidationSchema>;
 
-const AddCategoryForm = () => {
-  // States
+export default function AddCategoryForm({ close }: { close: () => void }) {
   const [searchTerms, setSearchTerms] = useState("");
-  // Form
-  const form: UseFormReturn<TAddCategoryFormType> = useForm<TAddCategoryFormType>({
+  const form = useForm<TAddCategoryFormType>({
     resolver: zodResolver(createCategoryValidationSchema),
   });
+
   const selectedLevel = form.watch("level");
   const isCollectionLevel = selectedLevel === CategoryLevels.COLLECTION;
 
-  // Query memoization
   const query = useMemo(() => {
-    let queryString = "";
-    if (searchTerms.length > 3) queryString += `&query=${searchTerms}`;
-    if (selectedLevel) queryString += `&level=${selectedLevel}`;
-    return queryString;
+    const queryParams = new URLSearchParams();
+    if (searchTerms.length > 3) queryParams.append("query", searchTerms);
+    if (selectedLevel && selectedLevel !== CategoryLevels.COLLECTION) {
+      queryParams.append("level", selectedLevel === CategoryLevels.CATEGORY ? "COLLECTION" : "COLLECTION,CATEGORY");
+    }
+    return queryParams.toString();
   }, [searchTerms, selectedLevel]);
 
-  // Data fetching
   const { data, isFetching: isParentCatFetching } = useGetAllParentCategoriesQuery(query, {
     skip: isCollectionLevel || !query,
   });
 
-  // Mutations
   const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation();
 
   const parentCategories = (data?.data as TCategory[]) || [];
-  // Form submission handler
+
   const onSubmit = async (data: TAddCategoryFormType) => {
     const toastId = toast.loading("Creating category...", { duration: 2000 });
     const formData = new FormData();
@@ -64,12 +64,18 @@ const AddCategoryForm = () => {
       const response: IApiResponse<TCategory> = await createCategory(formData).unwrap();
       if (response.success) {
         toast.success(response.message, { id: toastId });
+        form.reset();
+        close();
       }
     } catch (error) {
       const appError = handleApiError(error);
       toast.error(appError.message, { id: toastId });
     }
   };
+
+  useEffect(() => {
+    setSearchTerms("");
+  }, [selectedLevel]);
 
   return (
     <Form {...form}>
@@ -108,6 +114,7 @@ const AddCategoryForm = () => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="level"
@@ -121,15 +128,18 @@ const AddCategoryForm = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value={CategoryLevels.COLLECTION}>Collection</SelectItem>
-                  <SelectItem value={CategoryLevels.CATEGORY}>Category</SelectItem>
-                  <SelectItem value={CategoryLevels.SUB_CATEGORY}>Sub Category</SelectItem>
+                  {Object.values(CategoryLevels).map((level) => (
+                    <SelectItem key={level} value={level}>
+                      {level.charAt(0) + level.slice(1).toLowerCase().replace("_", " ")}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <FormMessage />
             </FormItem>
           )}
         />
+
         {selectedLevel && !isCollectionLevel && (
           <FormField
             control={form.control}
@@ -141,9 +151,7 @@ const AddCategoryForm = () => {
                   items={parentCategories}
                   selectedItems={parentCategories.filter((x) => x.id.toString() === form.watch("parentId")) || []}
                   onSelectionChange={(categories) => {
-                    if (Array.isArray(categories)) {
-                      return;
-                    } else {
+                    if (!Array.isArray(categories)) {
                       field.onChange(categories.id.toString());
                     }
                   }}
@@ -189,6 +197,4 @@ const AddCategoryForm = () => {
       </form>
     </Form>
   );
-};
-
-export default AddCategoryForm;
+}

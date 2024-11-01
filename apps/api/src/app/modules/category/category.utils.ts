@@ -1,4 +1,4 @@
-import { Prisma } from "@repo/prisma/client";
+import { CategoryLevel, Prisma } from "@repo/prisma/client";
 import calculatePagination, { TPaginateOption } from "../../utils/calculatePagination";
 import { CATEGORY_SEARCHABLE_KEYS } from "./category.constant";
 import { TCategoryFilters } from "./category.types";
@@ -6,7 +6,7 @@ import { TCategoryFilters } from "./category.types";
 export const getCategoryBaseQuery = (filters: TCategoryFilters, options: TPaginateOption) => {
   const paginateOptions = calculatePagination(options);
 
-  const { query, ...filterData } = filters;
+  const { level, query, ...filterData } = filters;
 
   const andClauses: Prisma.CategoryWhereInput[] = [];
 
@@ -18,6 +18,15 @@ export const getCategoryBaseQuery = (filters: TCategoryFilters, options: TPagina
           mode: "insensitive",
         },
       })),
+    });
+  }
+
+  if (level) {
+    const levelsArray = level.split(",");
+    andClauses.push({
+      level: {
+        in: levelsArray as CategoryLevel[],
+      },
     });
   }
 

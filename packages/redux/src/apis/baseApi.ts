@@ -29,9 +29,9 @@ const axiosBaseQuery =
     unknown,
     unknown
   > =>
-  async ({ url, method, data, params }) => {
+  async ({ url, method, data, params, headers }) => {
     try {
-      const result = await axiosInstance({ url: baseUrl + url, method, data, params });
+      const result = await axiosInstance({ url: baseUrl + url, method, data, params, headers });
       return { data: result.data };
     } catch (axiosError) {
       const err = axiosError as AxiosError;

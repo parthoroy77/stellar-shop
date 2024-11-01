@@ -8,6 +8,9 @@ const categoryApi = baseApi.injectEndpoints({
         url: `/categories/create`,
         method: "POST",
         data,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       }),
       invalidatesTags: ["Categories"],
     }),

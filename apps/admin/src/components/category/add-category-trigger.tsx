@@ -5,7 +5,6 @@ import AddCategoryForm from "../forms/add-category-form";
 
 const AddCategoryTrigger = () => {
   const [open, setOpen] = useState(false);
-
   return (
     <>
       <Button onClick={() => setOpen((prev) => !prev)} variant={"default"} size={"sm"}>
@@ -24,7 +23,7 @@ const AddCategoryTrigger = () => {
               <RxCross1 size={16} />
             </Button>
           </div>
-          <AddCategoryForm />
+          <AddCategoryForm close={() => setOpen(false)} />
         </div>
       </OffCanvas>
     </>
