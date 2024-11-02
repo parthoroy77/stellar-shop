@@ -24,7 +24,7 @@ const userLogin = asyncHandler(async (req: Request, res: Response) => {
   res.cookie("session_token", session.sessionToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "none",
     path: "/",
     expires: new Date(session.expiresAt),
   });
@@ -32,7 +32,7 @@ const userLogin = asyncHandler(async (req: Request, res: Response) => {
   res.cookie("refresh_token", refreshToken.token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "none",
     path: "/",
     expires: new Date(refreshToken.expiresAt),
   });
