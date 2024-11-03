@@ -1,6 +1,6 @@
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 import { createApi } from "@reduxjs/toolkit/query/react";
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL + "/api/v1";
 
@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, // This ensures cookies are sent with requests
+  withCredentials: true,
 });
 
 // Define the axiosBaseQuery function
@@ -46,6 +46,7 @@ const axiosBaseQuery =
 
 // Variables for managing token refresh
 let isRefreshing = false;
+let hasMadeFirstRequest = false;
 let failedQueue: Array<{
   resolve: (value?: unknown) => void;
   reject: (reason?: any) => void;
@@ -60,38 +61,57 @@ const processQueue = (error: any, token: string | null = null) => {
       prom.resolve(token);
     }
   });
-
   failedQueue = [];
+};
+
+const noRefreshRoutes = ["/auth/login", "/auth/register", "/auth/refresh-session"];
+// Function to check if a route should attempt token refresh
+const shouldAttemptRefresh = (url: string): boolean => {
+  return !noRefreshRoutes.some((route) => url.includes(route));
 };
 
 // Add a response interceptor to handle token refresh
 axiosInstance.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
+  (response: AxiosResponse) => {
+    hasMadeFirstRequest = true;
+    return response;
+  },
+  async (error: AxiosError) => {
+    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (!hasMadeFirstRequest || !shouldAttemptRefresh(originalRequest.url!)) {
+      return Promise.reject(error);
+    }
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
-          .then(() => {
-            return axiosInstance(originalRequest);
-          })
-          .catch((err) => {
-            return Promise.reject(err);
-          });
+          .then(() => axiosInstance(originalRequest))
+          .catch((err) => Promise.reject(err));
       }
 
       originalRequest._retry = true;
       isRefreshing = true;
 
-      return new Promise(function (resolve, reject) {
+      return new Promise((resolve, reject) => {
         axios
           .post(baseUrl + "/auth/refresh-session", {}, { withCredentials: true })
-          .then(() => {
-            processQueue(null);
-            resolve(axiosInstance(originalRequest));
+          .then(async (response) => {
+            if (response.status === 200) {
+              try {
+                await axiosInstance.get(baseUrl + "/auth/me");
+                processQueue(null);
+                resolve(axiosInstance(originalRequest));
+              } catch (err) {
+                processQueue(err, null);
+                reject(err);
+              }
+            } else {
+              processQueue(new Error("Token refresh failed"), null);
+              reject(new Error("Token refresh failed"));
+            }
           })
           .catch((err) => {
             processQueue(err, null);
