@@ -64,7 +64,7 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
-const noRefreshRoutes = ["/auth/login", "/auth/register", "/auth/refresh-session"];
+const noRefreshRoutes = ["/auth/login", "/auth/register", "/auth/refresh-session", "/auth/logout"];
 // Function to check if a route should attempt token refresh
 const shouldAttemptRefresh = (url: string): boolean => {
   return !noRefreshRoutes.some((route) => url.includes(route));

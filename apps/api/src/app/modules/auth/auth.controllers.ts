@@ -23,7 +23,7 @@ const userLogin = asyncHandler(async (req: Request, res: Response) => {
 
   res.cookie("session_token", session.sessionToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     // Should not add sameSite none. Added because of not having same domain.
     sameSite: "none",
     path: "/",
@@ -32,7 +32,7 @@ const userLogin = asyncHandler(async (req: Request, res: Response) => {
 
   res.cookie("refresh_token", refreshToken.token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
     // Should not add sameSite none. Added because of not having same domain.
     sameSite: "none",
     path: "/",
