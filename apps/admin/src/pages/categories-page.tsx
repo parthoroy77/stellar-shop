@@ -1,5 +1,6 @@
 import AddCategoryTrigger from "@/components/category/add-category-trigger";
-import CategoryListTable from "@/components/category/list/category-list-table";
+import { columns } from "@/components/data-tables/category/columns";
+import CategoryListTable from "@/components/data-tables/category/data-table";
 
 const CategoriesPage = () => {
   return (
@@ -8,7 +9,7 @@ const CategoriesPage = () => {
         <h1 className="text-xl font-medium">Categories</h1>
         <AddCategoryTrigger />
       </div>
-      <CategoryListTable />
+      <CategoryListTable data={[]} columns={columns} isLoading={false} />
     </div>
   );
 };

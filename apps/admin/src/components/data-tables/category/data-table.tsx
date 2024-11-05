@@ -1,4 +1,5 @@
 import {
+  ColumnDef,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -9,7 +10,7 @@ import {
   useReactTable,
   VisibilityState,
 } from "@repo/ui/tanstack-table";
-import { CategoryLevels, TCategory } from "@repo/utils/types";
+import { CategoryLevels } from "@repo/utils/types";
 import {
   Button,
   Input,
@@ -28,10 +29,14 @@ import {
   TableRow,
 } from "@ui/index";
 import { useState } from "react";
-import { categoryListColumn } from "./category-list-column";
-const data: TCategory[] = [];
 
-const CategoryListTable = () => {
+interface CategoryListTableProps<TData, TValue> {
+  data: TData[];
+  columns: ColumnDef<TData, TValue>[];
+  isLoading: boolean;
+}
+
+const CategoryListTable = <TData, TValue>({ data, columns }: CategoryListTableProps<TData, TValue>) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -39,7 +44,7 @@ const CategoryListTable = () => {
 
   const table = useReactTable({
     data,
-    columns: categoryListColumn,
+    columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -93,7 +98,7 @@ const CategoryListTable = () => {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={categoryListColumn.length} className="h-24 text-center">
+                <TableCell colSpan={columns.length} className="h-24 text-center">
                   No results.
                 </TableCell>
               </TableRow>

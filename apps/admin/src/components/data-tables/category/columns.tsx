@@ -1,17 +1,8 @@
 import { TCategory } from "@repo/utils/types";
-import {
-  Badge,
-  Button,
-  Checkbox,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@ui/index";
+import { Badge, Button, Checkbox } from "@ui/index";
 import { ColumnDef } from "@ui/tanstack-table";
 import { AiOutlineSortAscending } from "react-icons/ai";
-import { BiDotsHorizontal } from "react-icons/bi";
-import { FaRegEdit } from "react-icons/fa";
+import CategoryDataTableAction from "./data-table-action";
 
 export const columns: ColumnDef<TCategory>[] = [
   {
@@ -97,25 +88,7 @@ export const columns: ColumnDef<TCategory>[] = [
     id: "actions",
     header: "Actions",
     cell: () => {
-      return (
-        <div className="flex items-center gap-3">
-          <button>
-            <span className="sr-only">Open category edit menu</span>
-            <FaRegEdit className="text-base lg:text-lg" />
-          </button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button>
-                <span className="sr-only">Open menu</span>
-                <BiDotsHorizontal className="text-base lg:text-lg" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
+      return <CategoryDataTableAction />;
     },
   },
 ];
