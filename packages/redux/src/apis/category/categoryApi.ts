@@ -1,9 +1,10 @@
+import { IApiResponse, TCategory } from "@repo/utils/types";
 import { baseApi } from "../baseApi";
 
 const categoryApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // mutations
-    createCategory: builder.mutation({
+    createCategory: builder.mutation<IApiResponse<TCategory>, unknown>({
       query: (data) => ({
         url: `/categories/create`,
         method: "POST",
@@ -16,19 +17,19 @@ const categoryApi = baseApi.injectEndpoints({
     }),
 
     // queries
-    getAllCategoryWithChildren: builder.query({
+    getAllCategoryWithChildren: builder.query<IApiResponse<TCategory[]>, undefined>({
       query: () => ({
         url: `/categories/get-all-with-children`,
       }),
       providesTags: ["Categories"],
     }),
-    getAllCategories: builder.query({
+    getAllCategories: builder.query<IApiResponse<TCategory[]>, unknown>({
       query: (query) => ({
         url: `/categories/get-all?${query}`,
       }),
       providesTags: ["Categories"],
     }),
-    getAllParentCategories: builder.query({
+    getAllParentCategories: builder.query<IApiResponse<TCategory[]>, string>({
       query: (query) => ({
         url: `/categories/get-all-parents?${query}`,
       }),

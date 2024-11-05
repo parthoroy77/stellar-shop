@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { handleApiError, useCreateCategoryMutation, useGetAllParentCategoriesQuery } from "@repo/redux";
-import { CategoryLevels, IApiResponse, TCategory } from "@repo/utils/types";
+import { CategoryLevels, TCategory } from "@repo/utils/types";
 import { createCategoryValidationSchema, z } from "@repo/utils/validations";
 import {
   Button,
@@ -61,7 +61,7 @@ export default function AddCategoryForm({ close }: { close: () => void }) {
       formData.append(key, value);
     });
     try {
-      const response: IApiResponse<TCategory> = await createCategory(formData).unwrap();
+      const response = await createCategory(formData).unwrap();
       if (response.success) {
         toast.success(response.message, { id: toastId });
         form.reset();

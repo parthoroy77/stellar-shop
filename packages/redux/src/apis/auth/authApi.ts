@@ -1,9 +1,10 @@
+import { IApiResponse, TLoginResponse, TUser } from "@repo/utils/types";
 import { baseApi } from "../baseApi";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // queries
-    getAuth: builder.query({
+    getAuth: builder.query<IApiResponse<TUser>, undefined>({
       query: () => ({
         url: "/auth/get-me",
       }),
@@ -11,7 +12,7 @@ const authApi = baseApi.injectEndpoints({
       providesTags: ["Auth"],
     }),
     // mutations
-    userLogin: builder.mutation({
+    userLogin: builder.mutation<IApiResponse<TLoginResponse>, unknown>({
       query: (data) => ({
         url: "/auth/login",
         method: "POST",
@@ -19,7 +20,7 @@ const authApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Auth"],
     }),
-    userLogOut: builder.mutation({
+    userLogOut: builder.mutation<IApiResponse<{}>, undefined>({
       query: () => ({
         url: "/auth/logout",
         method: "POST",

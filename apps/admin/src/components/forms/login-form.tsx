@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { handleApiError, useUserLoginMutation } from "@repo/redux";
-import { IApiResponse, TLoginResponse } from "@repo/utils/types";
 import { loginSchema, z } from "@repo/utils/validations";
 import { AppButton, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@ui/index";
 import { useForm, UseFormReturn } from "react-hook-form";
@@ -22,7 +21,7 @@ const LoginForm = () => {
   const onSubmit = async (data: TLoginForm) => {
     const toastId = toast.loading("Sending request to login...", { duration: 2000 });
     try {
-      const response: IApiResponse<TLoginResponse> = await loginUser(data).unwrap();
+      const response = await loginUser(data).unwrap();
       if (response.success) {
         toast.success(response.message, { id: toastId });
         form.reset();
