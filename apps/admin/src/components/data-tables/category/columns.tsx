@@ -36,21 +36,21 @@ export const columns: ColumnDef<TCategory>[] = [
         </div>
       );
     },
-    cell: ({ row }) => (
-      <div className="flex min-w-[300px] gap-3 text-sm capitalize lg:items-center">
-        <img
-          className="bg-accent size-9 rounded-md"
-          src="https://demos.pixinvent.com/vuexy-vuejs-admin-template/demo-2/assets/product-1-CnD-btSp.png"
-          alt="Category Image"
-        />
-        <div className="flex flex-col">
-          <span className="text-xs font-medium lg:text-sm">{row.getValue("categoryName")}</span>
-          <span className="text-accent-foreground text-[10px] lg:text-xs">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deleniti, assumenda?
-          </span>
+    cell: ({ row }) => {
+      return (
+        <div className="flex min-w-[300px] gap-3 text-sm capitalize lg:items-center">
+          <img
+            className="bg-accent size-9 rounded-md"
+            src="https://demos.pixinvent.com/vuexy-vuejs-admin-template/demo-2/assets/product-1-CnD-btSp.png"
+            alt="Category Image"
+          />
+          <div className="flex flex-col">
+            <span className="text-xs font-medium lg:text-sm">{row.getValue("categoryName")}</span>
+            <span className="text-accent-foreground truncate text-[10px] lg:text-xs">{row?.original?.description}</span>
+          </div>
         </div>
-      </div>
-    ),
+      );
+    },
   },
   {
     accessorKey: "createdAt",
@@ -86,9 +86,15 @@ export const columns: ColumnDef<TCategory>[] = [
   },
   {
     id: "actions",
-    header: "Actions",
-    cell: () => {
-      return <CategoryDataTableAction />;
+    header: () => {
+      return (
+        <div className="text-right">
+          <span>Actions</span>
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return <CategoryDataTableAction row={row} />;
     },
   },
 ];

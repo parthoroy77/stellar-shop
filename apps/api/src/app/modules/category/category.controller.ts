@@ -63,9 +63,25 @@ const getAllParentCategories = asyncHandler(async (req: Request, res: Response) 
   });
 });
 
+const deleteCategoryById = asyncHandler(async (req: Request, res: Response) => {
+  const { categoryId } = req.params;
+
+  if (!categoryId) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Category id not found!");
+  }
+  await CategoryServices.deleteACategory(Number(categoryId));
+  ApiResponse(res, {
+    data: {},
+    message: "Category deleted successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+  });
+});
+
 export const CategoryControllers = {
   createCategory,
   getAllCategories,
   getCategoriesWithAllChildren,
   getAllParentCategories,
+  deleteCategoryById,
 };

@@ -130,9 +130,21 @@ const getAllParentCategories = async (filters: TCategoryFilters) => {
   return result;
 };
 
+// delete specific category
+const deleteACategory = async (categoryId: number) => {
+  await prisma.category.delete({
+    where: {
+      id: categoryId,
+    },
+  });
+
+  return;
+};
+
 export const CategoryServices = {
   create,
   getAll,
   getAllWithChildren,
   getAllParentCategories,
+  deleteACategory,
 };

@@ -64,9 +64,8 @@ const authMiddleware = (...requiredRoles: TUserRoles[]) => {
 
     // Fetch the user and check account status
     const user = await fetchUser(session.userId);
-
     // Check if the user has the required role(s)
-    if (requiredRoles.length > 0 && !requiredRoles.includes(decode.role as TUserRoles)) {
+    if (requiredRoles.length > 0 && !requiredRoles.includes((decode.role && user.role) as TUserRoles)) {
       throw new ApiError(StatusCodes.FORBIDDEN, "You do not have the required permissions to access this resource.");
     }
 

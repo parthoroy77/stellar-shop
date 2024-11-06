@@ -1,3 +1,4 @@
+import { UserRole } from "@repo/prisma/client";
 import { createCategoryValidationSchema } from "@repo/utils/validations";
 import { Router } from "express";
 import zodSafeParse from "../../handlers/zodSafeParse";
@@ -21,6 +22,8 @@ router.get("/get-all", CategoryControllers.getAllCategories);
 router.get("/get-all-parents", CategoryControllers.getAllParentCategories);
 
 router.get("/get-all-with-children", CategoryControllers.getCategoriesWithAllChildren);
+
+router.delete("/delete-category/:categoryId", authMiddleware(UserRole.ADMIN), CategoryControllers.deleteCategoryById);
 
 const CategoryRoutes = router;
 
