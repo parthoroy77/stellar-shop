@@ -130,13 +130,29 @@ const getAllParentCategories = async (filters: TCategoryFilters) => {
   return result;
 };
 
-// delete specific category
 const deleteACategory = async (categoryId: number) => {
-  await prisma.category.delete({
-    where: {
-      id: categoryId,
-    },
+  // Find the category file with the related file information
+  const categoryFile = await prisma.categoryFile.findFirst({
+    where: { categoryId },
+    include: { file: true },
   });
+
+  // If there's no category or file association, return early
+  if (!categoryFile) return;
+
+  // Perform all deletions in a single transaction
+  await prisma.$transaction(async (tx) => {
+    if (categoryFile.fileId) {
+      await tx.categoryFile.delete({ where: { id: categoryFile.id } });
+      await tx.file.delete({ where: { id: categoryFile.fileId } });
+      await tx.category.delete({ where: { id: categoryId } });
+    }
+  });
+
+  // Delete file from Cloudinary if it exists
+  if (categoryFile.file?.filePublicId) {
+    await deleteFromCloudinary(categoryFile.file.filePublicId);
+  }
 
   return;
 };
