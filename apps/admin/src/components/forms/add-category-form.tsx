@@ -41,7 +41,10 @@ export default function AddCategoryForm({ close }: { close: () => void }) {
     const queryParams = new URLSearchParams();
     if (searchTerms.length > 3) queryParams.append("query", searchTerms);
     if (selectedLevel && selectedLevel !== CategoryLevels.COLLECTION) {
-      queryParams.append("level", selectedLevel === CategoryLevels.CATEGORY ? "COLLECTION" : "COLLECTION,CATEGORY");
+      queryParams.append(
+        "level",
+        selectedLevel === CategoryLevels.CATEGORY ? "COLLECTION" : selectedLevel === "SUB_CATEGORY" ? "CATEGORY" : ""
+      );
     }
     return queryParams.toString();
   }, [searchTerms, selectedLevel]);
@@ -64,7 +67,7 @@ export default function AddCategoryForm({ close }: { close: () => void }) {
       const response = await createCategory(formData).unwrap();
       if (response.success) {
         toast.success(response.message, { id: toastId });
-        form.reset();
+        form.reset({});
         close();
       }
     } catch (error) {

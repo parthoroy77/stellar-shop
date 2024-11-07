@@ -11,6 +11,7 @@ import {
   VisibilityState,
 } from "@repo/ui/tanstack-table";
 import { CategoryLevels } from "@repo/utils/types";
+import TableSkeleton from "@ui/components/ui/table-skeleton";
 import {
   Button,
   Input,
@@ -36,7 +37,7 @@ interface CategoryListTableProps<TData, TValue> {
   isLoading: boolean;
 }
 
-const CategoryListTable = <TData, TValue>({ data, columns }: CategoryListTableProps<TData, TValue>) => {
+const CategoryListTable = <TData, TValue>({ data, columns, isLoading }: CategoryListTableProps<TData, TValue>) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -87,23 +88,27 @@ const CategoryListTable = <TData, TValue>({ data, columns }: CategoryListTablePr
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                  ))}
+          {isLoading ? (
+            <TableSkeleton rowNo={8} columnNo={columns.length} />
+          ) : (
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                    No results.
+                  </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+              )}
+            </TableBody>
+          )}
         </ShadTable>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
