@@ -9,6 +9,7 @@ import { CATEGORY_FILTER_KEYS } from "./category.constant";
 import { CategoryServices } from "./category.services";
 import { TCategoryFilters } from "./category.types";
 
+// create categories
 const createCategory = asyncHandler(async (req: Request, res: Response) => {
   const payload = req.body;
   const fileLocalPath = req?.file?.path;
@@ -27,6 +28,7 @@ const createCategory = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// get all categories
 const getAllCategories = asyncHandler(async (req: Request, res: Response) => {
   const filters = pick(req.query, [...CATEGORY_FILTER_KEYS, "query"]) as TCategoryFilters;
   const paginateOptions = pick(req.query, PAGINATION_KEYS);
@@ -42,6 +44,7 @@ const getAllCategories = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// get all categories with children for show hierarchy
 const getCategoriesWithAllChildren = asyncHandler(async (req: Request, res: Response) => {
   const result = await CategoryServices.getAllWithChildren();
   ApiResponse(res, {
@@ -52,6 +55,7 @@ const getCategoriesWithAllChildren = asyncHandler(async (req: Request, res: Resp
   });
 });
 
+// get all only parent categories with queries
 const getAllParentCategories = asyncHandler(async (req: Request, res: Response) => {
   const query = pick(req.query, ["query", "level"]);
   const result = await CategoryServices.getAllParentCategories(query);
@@ -63,6 +67,7 @@ const getAllParentCategories = asyncHandler(async (req: Request, res: Response) 
   });
 });
 
+// delete category
 const deleteCategoryById = asyncHandler(async (req: Request, res: Response) => {
   const { categoryId } = req.params;
 
@@ -78,10 +83,25 @@ const deleteCategoryById = asyncHandler(async (req: Request, res: Response) => {
   });
 });
 
+// update category
+const updateCategoryFields = asyncHandler(async (req: Request, res: Response) => {
+  const payload = req.body;
+  const { categoryId } = req.params;
+  const filePath = req.file?.path;
+  const result = await CategoryServices.updateACategory({ ...payload, categoryId }, filePath);
+  ApiResponse(res, {
+    data: result,
+    message: "Category updated successfully",
+    success: true,
+    statusCode: StatusCodes.OK,
+  });
+});
+
 export const CategoryControllers = {
   createCategory,
   getAllCategories,
   getCategoriesWithAllChildren,
   getAllParentCategories,
   deleteCategoryById,
+  updateCategoryFields,
 };

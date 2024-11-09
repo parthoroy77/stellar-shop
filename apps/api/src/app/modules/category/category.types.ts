@@ -13,3 +13,12 @@ export type TCategoryFilters = {
   parentId?: string;
   status?: string;
 };
+
+export type TCategoryUpdate = {
+  categoryId: string;
+  categoryName?: string;
+  level?: string;
+  parentId?: string;
+  status?: string;
+  description?: string;
+};
