@@ -41,7 +41,10 @@ export const columns: ColumnDef<TCategory>[] = [
         <div className="flex min-w-[300px] gap-3 text-sm capitalize lg:items-center">
           <img
             className="bg-accent size-9 rounded-md"
-            src="https://demos.pixinvent.com/vuexy-vuejs-admin-template/demo-2/assets/product-1-CnD-btSp.png"
+            src={
+              row?.original?.images[0]?.file?.fileUrl ||
+              "https://demos.pixinvent.com/vuexy-vuejs-admin-template/demo-2/assets/product-1-CnD-btSp.png"
+            }
             alt="Category Image"
           />
           <div className="flex flex-col">

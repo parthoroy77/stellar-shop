@@ -24,9 +24,9 @@ router.get("/get-all-parents", CategoryControllers.getAllParentCategories);
 router.get("/get-all-with-children", CategoryControllers.getCategoriesWithAllChildren);
 
 router.patch(
-  "update/:categoryId",
+  "/update/:categoryId",
   authMiddleware(UserRole.ADMIN),
-  upload.single("image"),
+  upload.single("attachment"),
   CategoryControllers.updateCategoryFields
 );
 

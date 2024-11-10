@@ -223,7 +223,7 @@ const updateACategory = async (updateData: TCategoryUpdate, filePath?: string) =
 
   // Prepare update fields with valid values only
   const updateFields: Record<string, any> = Object.fromEntries(
-    Object.entries(fieldsToUpdate).filter(([_, value]) => value !== undefined)
+    Object.entries(fieldsToUpdate).filter(([_, value]) => value !== undefined && value !== "" && value !== null)
   );
 
   // Validate and map `parentId` and `level` if either is provided
