@@ -8,12 +8,11 @@ import { CategoryControllers } from "./category.controller";
 
 const router = Router();
 
-// TODO: Add role restriction only admin can create!
 router.post(
   "/create",
+  authMiddleware(UserRole.ADMIN),
   upload.single("attachment"),
   zodSafeParse(createCategoryValidationSchema.omit({ attachment: true })),
-  authMiddleware(),
   CategoryControllers.createCategory
 );
 
