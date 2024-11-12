@@ -10,26 +10,37 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@ui/index";
 import { Row } from "@ui/tanstack-table";
 import { AiOutlineDelete } from "react-icons/ai";
+import { BsThreeDots } from "react-icons/bs";
 import { FaRegEdit } from "react-icons/fa";
-import { TfiZoomIn } from "react-icons/tfi";
 import { toast } from "sonner";
 
 const CategoryDataTableAction = ({ row }: { row: Row<TCategory> }) => {
   return (
-    <div className="flex items-center justify-end gap-3">
-      <button>
-        <span className="sr-only">Open category edit menu</span>
-        <TfiZoomIn className="text-base lg:text-lg" />
-      </button>
-      <button>
-        <span className="sr-only">Open category edit menu</span>
-        <FaRegEdit className="text-base lg:text-lg" />
-      </button>
-      <CategoryDeleteAction categoryId={row?.original?.id} />
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger className="border-secondary rounded-md border px-3 py-1.5">
+        <BsThreeDots />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="min-w-48">
+        <DropdownMenuLabel>Category Actions</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <CategoryDeleteAction categoryId={row?.original?.id} />
+        </DropdownMenuItem>
+        <DropdownMenuItem className="flex items-center gap-2 px-3">
+          <FaRegEdit />
+          <span>Edit Category</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
@@ -52,9 +63,9 @@ const CategoryDeleteAction = ({ categoryId }: { categoryId: number }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <button disabled={isLoading}>
-          <span className="sr-only">Open category edit menu</span>
+        <button disabled={isLoading} className="flex items-center gap-2">
           <AiOutlineDelete className="text-base lg:text-lg" />
+          <span>Delete category</span>
         </button>
       </AlertDialogTrigger>
       <AlertDialogContent>

@@ -74,13 +74,13 @@ export const columns: ColumnDef<TCategory>[] = [
     accessorKey: "status",
     header: () => {
       return (
-        <div className="text-right">
+        <div className="text-center">
           <span>Status</span>
         </div>
       );
     },
     cell: ({ row }) => (
-      <div className="text-right">
+      <div className="text-center">
         <Badge variant={"success"} className="rounded-md capitalize">
           {(row.getValue("status") as string)?.toLowerCase()}
         </Badge>
@@ -91,13 +91,17 @@ export const columns: ColumnDef<TCategory>[] = [
     id: "actions",
     header: () => {
       return (
-        <div className="text-right">
+        <div className="text-center">
           <span>Actions</span>
         </div>
       );
     },
     cell: ({ row }) => {
-      return <CategoryDataTableAction row={row} />;
+      return (
+        <div className="flex justify-center">
+          <CategoryDataTableAction row={row} />
+        </div>
+      );
     },
   },
 ];
