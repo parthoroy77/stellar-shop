@@ -10,7 +10,7 @@ interface ProductReviewContainerProps {
 const ProductReviewContainer: FC<ProductReviewContainerProps> = ({ product }) => {
   const { productName } = product || {};
   return (
-    <div className="space-y-5 rounded-md border p-4">
+    <div className="space-y-5 divide-y rounded-md border p-4">
       <ProductReviewHeading productName={productName} />
       <ProductReviewStatistics />
       <ProductReviews />
@@ -21,7 +21,7 @@ const ProductReviewContainer: FC<ProductReviewContainerProps> = ({ product }) =>
 const ProductReviewHeading = ({ productName }: { productName: string }) => {
   return (
     <div>
-      <h5 className="text-clip font-medium">Ratings & Reviews of {productName}</h5>
+      <h5 className="text-clip text-sm font-medium lg:text-base">Ratings & Reviews of {productName}</h5>
     </div>
   );
 };

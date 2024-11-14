@@ -3,7 +3,7 @@ import { GoStarFill } from "react-icons/go";
 
 const ProductReviewCard = () => {
   return (
-    <div className="space-y-1 py-3">
+    <div className="space-y-2 py-3">
       <div className="flex gap-1 text-yellow-500">
         <GoStarFill />
         <GoStarFill />
@@ -25,7 +25,7 @@ const ProductReviewCard = () => {
             height={80}
             width={80}
             key={i}
-            className="size-20 object-contain"
+            className="size-20 rounded-md object-contain"
             src="https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg"
             alt="Product Review Image"
           />
