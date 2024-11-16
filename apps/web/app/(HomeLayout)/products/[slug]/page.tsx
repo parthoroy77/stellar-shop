@@ -1,5 +1,6 @@
 import PaymentInfo from "@/components/ProductDetail/payment-info";
 import ProductDeliveryInfo from "@/components/ProductDetail/product-delivery-info";
+import ProductDescription from "@/components/ProductDetail/product-description";
 import ProductImageGallery from "@/components/ProductDetail/product-image-gallery";
 import ProductInfoPanel from "@/components/ProductDetail/product-info-panel";
 import ProductReviewContainer from "@/components/ProductDetail/product-review-container";
@@ -56,7 +57,7 @@ const ProductDetailPage = () => {
           <ProductSellerInfo />
           <FAQ />
           <Specification />
-          <Description />
+          <ProductDescription description={product?.description ?? ""} />
         </div>
       </div>
     </section>
@@ -65,6 +66,4 @@ const ProductDetailPage = () => {
 
 const FAQ = () => <div>FAQ</div>;
 const Specification = () => <div>Specification</div>;
-const Description = () => <div>Description</div>;
-
 export default ProductDetailPage;
