@@ -1,10 +1,10 @@
 import { Badge, Button } from "@repo/ui";
 import Image from "next/image";
 import Link from "next/link";
+import { BsHeart } from "react-icons/bs";
 import { GoStarFill } from "react-icons/go";
 import { HiArrowPath, HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoEyeOutline } from "react-icons/io5";
-import { SlHeart } from "react-icons/sl";
 import TooltipComponent from "./tooltip-component";
 
 const ProductCard = () => {
@@ -22,9 +22,25 @@ const ProductCard = () => {
             alt="Product Image"
           />
         </div>
-
+        <div className="visible absolute right-0 top-0 flex flex-col gap-1 text-xs opacity-100 duration-300 group-hover:visible group-hover:opacity-100 md:text-sm lg:invisible lg:text-xl lg:opacity-0">
+          <TooltipComponent tooltipContent="Add To Wishlist">
+            <span className="bg-muted-foreground flex size-5 items-center justify-center rounded-full md:size-6 lg:size-8">
+              <BsHeart aria-label="Wishlist" />
+            </span>
+          </TooltipComponent>
+          <TooltipComponent tooltipContent="Add To Compare">
+            <span className="bg-muted-foreground flex size-5 items-center justify-center rounded-full md:size-6 lg:size-8">
+              <HiArrowPath aria-label="Compare" />
+            </span>
+          </TooltipComponent>
+          <TooltipComponent tooltipContent="Quick Overview">
+            <span className="bg-muted-foreground flex size-5 items-center justify-center rounded-full md:size-6 lg:size-8">
+              <IoEyeOutline aria-label="Quick Overview" />
+            </span>
+          </TooltipComponent>
+        </div>
         {/* Quick action icons (Wishlist, Compare, Quick Overview) */}
-        <div className="hidden items-center justify-center gap-5 text-lg *:cursor-pointer lg:flex">
+        {/* <div className="hidden items-center justify-center gap-5 text-lg *:cursor-pointer lg:flex">
           <TooltipComponent tooltipContent="Add To Wishlist">
             <SlHeart aria-label="Wishlist" />
           </TooltipComponent>
@@ -34,7 +50,7 @@ const ProductCard = () => {
           <TooltipComponent tooltipContent="Quick Overview">
             <IoEyeOutline aria-label="Quick Overview" />
           </TooltipComponent>
-        </div>
+        </div> */}
 
         {/* Product Information (Name, Stock, Rating, Sold count) */}
         <div className="space-y-2">
