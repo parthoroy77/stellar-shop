@@ -1,14 +1,24 @@
 "use client";
 import { Button } from "@ui/index";
+import { cn } from "@ui/lib/utils";
 import { useCallback, useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 interface ProductQuantitySelectionProps {
   stock: number;
   initialQuantity?: number;
+  className?: string;
+  buttonClass?: string;
+  labelClass?: string;
 }
 
-const ProductQuantitySelection = ({ stock, initialQuantity = 0 }: ProductQuantitySelectionProps) => {
+const ProductQuantitySelection = ({
+  stock,
+  initialQuantity = 0,
+  className,
+  buttonClass,
+  labelClass,
+}: ProductQuantitySelectionProps) => {
   const [quantity, setQuantity] = useState(initialQuantity);
 
   const incrementQuantity = useCallback(() => {
@@ -20,30 +30,28 @@ const ProductQuantitySelection = ({ stock, initialQuantity = 0 }: ProductQuantit
   }, []);
 
   return (
-    <div>
-      <div className="bg-accent/40 flex w-[60%] items-center justify-between rounded-md p-1 lg:w-[35%]">
-        <Button
-          disabled={quantity === stock}
-          onClick={incrementQuantity}
-          variant="outline"
-          size={"sm"}
-          className="text-primary h-fit w-fit p-2 text-sm lg:text-xl"
-          aria-label="Increase Quantity"
-        >
-          <AiOutlinePlus />
-        </Button>
-        <span className="text-accent-foreground block text-base font-medium">{quantity || "Add"}</span>
-        <Button
-          disabled={quantity === 0}
-          onClick={decrementQuantity}
-          variant="outline"
-          size={"sm"}
-          className="text-primary h-fit w-fit p-2 text-sm lg:text-xl"
-          aria-label="Decrease Quantity"
-        >
-          <AiOutlineMinus />
-        </Button>
-      </div>
+    <div className={cn("bg-accent/40 flex w-[60%] items-center justify-between rounded-md p-1 lg:w-[35%]", className)}>
+      <Button
+        disabled={quantity === stock}
+        onClick={incrementQuantity}
+        variant="outline"
+        size={"sm"}
+        className={cn("text-primary h-fit w-fit p-2 text-sm lg:text-xl", buttonClass)}
+        aria-label="Increase Quantity"
+      >
+        <AiOutlinePlus />
+      </Button>
+      <span className={cn("text-accent-foreground block text-base font-medium", labelClass)}>{quantity || "Add"}</span>
+      <Button
+        disabled={quantity === 0}
+        onClick={decrementQuantity}
+        variant="outline"
+        size={"sm"}
+        className={cn("text-primary h-fit w-fit p-2 text-sm lg:text-xl", buttonClass)}
+        aria-label="Decrease Quantity"
+      >
+        <AiOutlineMinus />
+      </Button>
     </div>
   );
 };

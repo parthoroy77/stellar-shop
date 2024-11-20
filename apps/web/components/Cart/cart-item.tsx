@@ -1,9 +1,9 @@
 import { TProduct } from "@repo/utils/types";
 import { AppButton, Checkbox } from "@ui/index";
 import Image from "next/image";
-import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { TbCurrencyTaka } from "react-icons/tb";
+import ProductQuantitySelection from "../ProductDetail/product-quantity-selection";
 
 type CartItemProps = {
   product: TProduct;
@@ -11,9 +11,9 @@ type CartItemProps = {
 
 const CartItem = ({ product }: CartItemProps) => {
   return (
-    <div className="hover:bg-accent/40 flex items-center gap-3 px-4 py-4 lg:items-center lg:px-6 lg:py-3">
+    <div className="flex items-center gap-3 px-4 py-4 lg:items-center lg:px-6 lg:py-3">
       <Checkbox className="size-5 lg:size-4" />
-      <div className="flex w-full items-start justify-between gap-3 lg:items-center">
+      <div className="flex w-full items-center justify-between gap-3 lg:items-center">
         <Image
           width={70}
           height={70}
@@ -24,15 +24,13 @@ const CartItem = ({ product }: CartItemProps) => {
         <div className="flex w-full flex-col justify-between gap-2 lg:flex-row lg:items-center">
           <h5 className="text-sm font-medium lg:w-[65%]">{product.productName}</h5>
           <div className="flex-row- flex justify-between gap-5 lg:flex-row lg:items-center">
-            <div className="flex items-center gap-5 rounded-md border p-2 text-xs md:min-w-24">
-              <button>
-                <AiOutlineMinus size={14} />
-              </button>
-              <span>Add</span>
-              <button>
-                <AiOutlinePlus size={14} />
-              </button>
-            </div>
+            <ProductQuantitySelection
+              className="h-fit w-[120px] flex-row-reverse lg:min-w-[150px]"
+              buttonClass="text-xs lg:p-2 p-1 lg:text-sm"
+              labelClass="text-xs"
+              stock={30}
+              initialQuantity={0}
+            />
             <div className="flex items-center justify-start text-sm font-medium text-black md:min-w-24 lg:justify-center lg:text-lg">
               <TbCurrencyTaka />
               <span>{product.price}</span>
