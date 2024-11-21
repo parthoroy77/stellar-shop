@@ -1,15 +1,15 @@
 "use client";
 import { Button } from "@ui/index";
-import { cn } from "@ui/lib/utils";
+import { ClassValue, cn } from "@ui/lib/utils";
 import { useCallback, useState } from "react";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 
 interface ProductQuantitySelectionProps {
   stock: number;
   initialQuantity?: number;
-  className?: string;
-  buttonClass?: string;
-  labelClass?: string;
+  className?: ClassValue;
+  buttonClass?: ClassValue;
+  labelClass?: ClassValue;
 }
 
 const ProductQuantitySelection = ({

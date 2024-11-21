@@ -25,7 +25,9 @@ const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
       />
       <ProductPrice comparePrice={comparePrice} price={productPrice} />
       <ProductAttributeSelection attributes={attributes} />
-      <ProductQuantitySelection stock={stockQuantity} />
+      <div>
+        <ProductQuantitySelection className="" stock={stockQuantity} />
+      </div>
       <ProductActionButtons />
     </div>
   );
