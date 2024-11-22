@@ -1,6 +1,6 @@
 model Category {
   id               Int            @id @default(autoincrement())
-  categoryName     String
+  categoryName     String         @unique
   description      String?        @db.VarChar(60)
   urlSlug          String         @unique
   parentCategoryId Int?
@@ -16,7 +16,7 @@ model Category {
   subCategories  Category[]     @relation("CategoryToParent")
   images         CategoryFile[]
 
-  @@index([urlSlug, categoryName])
+  @@index([urlSlug, categoryName, parentCategoryId])
   @@map("Categories")
 }
 
@@ -29,12 +29,14 @@ model ProductCategory {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([categoryId])
   @@map("ProductCategories")
 }
 
 enum CategoryStatus {
   ACTIVE
   INACTIVE
+  FEATURED
 }
 
 enum CategoryLevel {
