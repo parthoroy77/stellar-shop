@@ -1,0 +1,35 @@
+model ProductDeliveryInfo {
+  id            Int   @id @default(autoincrement())
+  productId     Int   @unique
+  packageWeight Float
+  packageHeight Float
+  packageWidth  Float
+  packageLength Float
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  product Product @relation(fields: [productId], references: [id])
+
+  @@index([productId])
+  @@map("ProductDeliverInfos")
+}
+
+model ProductDeliveryOption {
+  id               Int @id @default(autoincrement())
+  productId        Int
+  deliveryOptionId Int
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  product Product        @relation(fields: [productId], references: [id])
+  option  DeliveryOption @relation(fields: [deliveryOptionId], references: [id])
+
+  @@index([productId, deliveryOptionId])
+  @@map("ProductDeliverOptions")
+}

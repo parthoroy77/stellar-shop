@@ -1,61 +1,38 @@
-model ProductVariant {
-  id            Int                  @id @default(autoincrement())
-  productId     Int
-  variantName   String
-  description   String?              @db.Text
-  price         Float
-  stockQuantity Int
-  sku           String?
-  status        ProductVariantStatus @default(ACTIVE)
-
-  // timestamps
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // references
-  attributes ProductVariantAttribute[]
-  product    Product                   @relation(fields: [productId], references: [id])
-  images     VariantFile[]
-
-  @@index([productId])
-  @@map("ProductVariants")
-}
-
 model Product {
-  id                Int           @id @default(autoincrement())
-  productName       String
-  urlSlug           String        @unique @db.Text
-  description       String        @db.Text
-  price             Float
-  comparePrice      Float
-  stockQuantity     Int
-  lowStockThreshold Int?
-  sellerId          Int
-  brandId           Int
-  status            ProductStatus @default(PENDING)
+  id Int @id @default(autoincrement())
+
+  productId     String        @unique
+  productName   String
+  urlSlug       String        @unique @db.Text
+  description   String        @db.Text
+  brandId       Int
+  sku           String
+  price         Float
+  comparePrice  Float
+  stockQuantity Int
+  status        ProductStatus @default(PENDING)
+  sellerId      Int
 
   // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // references
-  seller     Seller             @relation(fields: [sellerId], references: [id])
-  tags       Tag[]
-  brand      Brand              @relation(fields: [brandId], references: [id])
-  attributes ProductAttribute[]
-  variants   ProductVariant[]
-  images     ProductFile[]
+  seller                 Seller                  @relation(fields: [sellerId], references: [id])
+  tags                   Tag[]
+  brand                  Brand                   @relation(fields: [brandId], references: [id])
+  attributes             ProductAttribute[]
+  variants               ProductVariant[]
+  images                 ProductFile[]
+  productDeliveryInfo    ProductDeliveryInfo?
+  productDeliveryOptions ProductDeliveryOption[]
 
   @@index([urlSlug, productName])
   @@map("Products")
 }
 
-enum ProductVariantStatus {
-  ACTIVE
-  INACTIVE
-}
-
 enum ProductStatus {
+  DRAFT
   PENDING
   ACTIVE
   INACTIVE

@@ -1,0 +1,20 @@
+model DeliveryOption {
+  id           Int                  @id @default(autoincrement())
+  name         String               @unique
+  charge       Float
+  estimateDays String
+  status       DeliveryOptionStatus @default(ACTIVE)
+
+  // timestamps
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  productDeliveryOptions ProductDeliveryOption[]
+
+  @@map("DeliveryOptions")
+}
+
+enum DeliveryOptionStatus {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}

@@ -1,0 +1,28 @@
+model ProductVariant {
+  id            Int                  @id @default(autoincrement())
+  variantId     String               @unique
+  productId     Int
+  variantName   String
+  description   String?              @db.Text
+  price         Float
+  stockQuantity Int
+  sku           String?
+  status        ProductVariantStatus @default(ACTIVE)
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  attributes ProductVariantAttribute[]
+  product    Product                   @relation(fields: [productId], references: [id])
+  images     VariantFile[]
+
+  @@index([productId])
+  @@map("ProductVariants")
+}
+
+enum ProductVariantStatus {
+  ACTIVE
+  INACTIVE
+}

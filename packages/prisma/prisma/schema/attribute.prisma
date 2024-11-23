@@ -1,6 +1,6 @@
 model Attribute {
   id          Int     @id @default(autoincrement())
-  name        String
+  name        String  @unique
   description String? @db.Text
 
   // timestamps
@@ -45,7 +45,8 @@ model ProductAttribute {
   attributeValue AttributeValue @relation(fields: [attributeValueId], references: [id])
   product        Product        @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  @@map("ProductAttribues")
+  @@index([productId, attributeValueId])
+  @@map("ProductAttributes")
 }
 
 model ProductVariantAttribute {
@@ -61,5 +62,6 @@ model ProductVariantAttribute {
   attributeValue AttributeValue @relation(fields: [attributeValueId], references: [id])
   productVariant ProductVariant @relation(fields: [variantId], references: [id], onDelete: Cascade)
 
+  @@index([variantId, attributeValueId])
   @@map("ProductVariantAttributes")
 }
