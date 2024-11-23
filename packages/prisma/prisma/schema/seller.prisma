@@ -7,7 +7,7 @@ model Seller {
   contactNumber   String
   status          SellerStatus @default(INACTIVE)
 
-  // timestapms
+  // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

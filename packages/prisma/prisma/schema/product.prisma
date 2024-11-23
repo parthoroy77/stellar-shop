@@ -1,31 +1,33 @@
 model Product {
   id Int @id @default(autoincrement())
 
-  productId     String        @unique
-  productName   String
-  urlSlug       String        @unique @db.Text
-  description   String        @db.Text
-  brandId       Int
-  sku           String
-  price         Float
-  comparePrice  Float
-  stockQuantity Int
-  status        ProductStatus @default(PENDING)
-  sellerId      Int
+  uniqueId     String        @unique
+  productName  String
+  urlSlug      String        @unique @db.Text
+  description  String        @db.Text
+  brandId      Int
+  sku          String
+  price        Float
+  comparePrice Float
+  stock        Int
+  status       ProductStatus @default(PENDING)
+  sellerId     Int
 
   // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // references
-  seller                 Seller                  @relation(fields: [sellerId], references: [id])
-  tags                   Tag[]
-  brand                  Brand                   @relation(fields: [brandId], references: [id])
-  attributes             ProductAttribute[]
-  variants               ProductVariant[]
-  images                 ProductFile[]
-  productDeliveryInfo    ProductDeliveryInfo?
-  productDeliveryOptions ProductDeliveryOption[]
+  seller                   Seller                    @relation(fields: [sellerId], references: [id])
+  tags                     Tag[]
+  brand                    Brand                     @relation(fields: [brandId], references: [id])
+  attributes               ProductAttribute[]
+  variants                 ProductVariant[]
+  images                   ProductFile[]
+  productDeliveryInfo      ProductDeliveryInfo?
+  productDeliveryOptions   ProductDeliveryOption[]
+  inventoryLogs            InventoryLog[]
+  restockInventoryRequests RestockInventoryRequest[]
 
   @@index([urlSlug, productName])
   @@map("Products")
