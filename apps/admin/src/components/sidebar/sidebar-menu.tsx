@@ -30,7 +30,7 @@ const SidebarMenu: FC<SidebarMenuProps> = memo(({ item, expanded, level = 0 }) =
           cn(
             "hover:bg-accent/30 flex w-full items-center gap-2 rounded-md border py-2 text-sm duration-300",
             expanded ? "justify-between px-5" : "justify-center",
-            isActive && !item.children ? "bg-accent hover:bg-accent/70" : "bg-transparent",
+            isActive && !item.children ? "bg-accent/60 hover:bg-accent/70" : "bg-transparent",
             paddingLeft
           )
         }
