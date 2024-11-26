@@ -1,7 +1,7 @@
 import "@repo/ui/main.css";
 import type { Metadata } from "next";
+import { Toaster } from "sonner";
 import "./globals.css";
-
 export const metadata: Metadata = {
   title: "Stellar Shop | Seller Panel",
   description: "A Full Stack Platform",
@@ -14,7 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Toaster richColors />
+      </body>
     </html>
   );
 }
