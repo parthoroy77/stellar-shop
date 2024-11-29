@@ -1,20 +1,20 @@
 import { RxDashboard } from "react-icons/rx";
 import { TSidebarItem } from "../types/sidebar.types";
+import { VscFeedback, VscSymbolMethod } from "react-icons/vsc";
+import { CiBoxList } from "react-icons/ci";
+import { LuBadgeDollarSign, LuSignal } from "react-icons/lu";
+import { RiCustomerService2Line } from "react-icons/ri";
+import { IoStorefrontOutline } from "react-icons/io5";
 
 export const menuItems: TSidebarItem[] = [
   {
     label: "Dashboard",
     Icon: RxDashboard,
-    children: [
-      { label: "Overview", href: "/dashboard/overview" },
-      { label: "Sales Performance", href: "/dashboard/sales" },
-      { label: "Revenue Statistics", href: "/dashboard/revenue" },
-      { label: "Notifications", href: "/dashboard/notifications" },
-    ],
+    href: "/dashboard",
   },
   {
     label: "Products",
-    Icon: RxDashboard,
+    Icon: VscSymbolMethod,
     children: [
       { label: "Manage Products", href: "/products/manage" },
       { label: "Add New Product", href: "/products/add" },
@@ -26,7 +26,7 @@ export const menuItems: TSidebarItem[] = [
   },
   {
     label: "Orders",
-    Icon: RxDashboard,
+    Icon: CiBoxList,
     children: [
       { label: "View Orders", href: "/orders" },
       { label: "Order History", href: "/orders/history" },
@@ -37,7 +37,7 @@ export const menuItems: TSidebarItem[] = [
   },
   {
     label: "Subscriptions & Payments",
-    Icon: RxDashboard,
+    Icon: LuBadgeDollarSign,
     children: [
       { label: "Subscription Plans", href: "/subscriptions/plans" },
       { label: "Payment Methods", href: "/subscriptions/payment-methods" },
@@ -48,7 +48,7 @@ export const menuItems: TSidebarItem[] = [
   },
   {
     label: "Marketing & Promotions",
-    Icon: RxDashboard,
+    Icon: LuSignal,
     children: [
       { label: "Marketing Dashboard", href: "/marketing/dashboard" },
       { label: "Email Campaigns", href: "/marketing/email-campaigns" },
@@ -58,19 +58,8 @@ export const menuItems: TSidebarItem[] = [
     ],
   },
   {
-    label: "Analytics & Reports",
-    Icon: RxDashboard,
-    children: [
-      { label: "Sales Analytics", href: "/analytics/sales" },
-      { label: "Traffic & Conversion", href: "/analytics/traffic" },
-      { label: "Product Performance", href: "/analytics/product-performance" },
-      { label: "Customer Insights", href: "/analytics/customer-insights" },
-      { label: "Custom Reports", href: "/analytics/reports" },
-    ],
-  },
-  {
     label: "Store Settings",
-    Icon: RxDashboard,
+    Icon: IoStorefrontOutline,
     children: [
       { label: "Store Profile", href: "/settings/profile" },
       { label: "Store Branding", href: "/settings/branding" },
@@ -82,7 +71,7 @@ export const menuItems: TSidebarItem[] = [
   },
   {
     label: "Customer Support",
-    Icon: RxDashboard,
+    Icon: RiCustomerService2Line,
     children: [
       { label: "Help Center", href: "/support/help-center" },
       { label: "Contact Support", href: "/support/contact" },
@@ -92,22 +81,11 @@ export const menuItems: TSidebarItem[] = [
   },
   {
     label: "Feedback & Reviews",
-    Icon: RxDashboard,
+    Icon: VscFeedback,
     children: [
       { label: "Manage Reviews", href: "/feedback/reviews" },
       { label: "Customer Feedback", href: "/feedback/customer-feedback" },
       { label: "Product Feedback", href: "/feedback/product-feedback" },
-    ],
-  },
-  {
-    label: "Account Settings",
-    Icon: RxDashboard,
-    children: [
-      { label: "Profile Settings", href: "/account/settings" },
-      { label: "Change Password", href: "/account/change-password" },
-      { label: "Notifications Settings", href: "/account/notifications" },
-      { label: "Privacy Settings", href: "/account/privacy" },
-      { label: "Deactivate Account", href: "/account/deactivate" },
     ],
   },
 ];

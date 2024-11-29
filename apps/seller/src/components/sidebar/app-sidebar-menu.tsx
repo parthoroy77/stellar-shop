@@ -19,17 +19,17 @@ const AppSidebarMenu = () => {
       {menuItems.map((menu, i) => (
         <Collapsible key={i} asChild className="group/collapsible list-none">
           <SidebarMenuItem>
-            <CollapsibleTrigger asChild className="min-h-9 text-nowrap border px-4">
+            <CollapsibleTrigger asChild className="min-h-10 text-nowrap border px-4 text-base">
               {menu.href ? (
-                <Link href={menu.href || ""}>
-                  <SidebarMenuButton tooltip={menu.label}>
+                <SidebarMenuButton tooltip={menu.label}>
+                  <Link href={menu.href} className="flex items-center gap-2">
                     {menu.Icon && <menu.Icon />}
                     <span>{menu.label}</span>
                     {menu.children?.length && (
                       <BiChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                     )}
-                  </SidebarMenuButton>
-                </Link>
+                  </Link>
+                </SidebarMenuButton>
               ) : (
                 <SidebarMenuButton tooltip={menu.label}>
                   {menu.Icon && <menu.Icon />}
