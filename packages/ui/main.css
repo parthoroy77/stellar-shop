@@ -36,7 +36,7 @@
     --radius: 0.5rem;
 
     /* sidebar colors */
-    
+
     --sidebar-background: 0 0% 98%;
 
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -116,6 +116,7 @@ body::-webkit-scrollbar {
 
 body::-webkit-scrollbar-thumb {
   background-color: #e06d2e; /* Color of the scrollbar thumb */
+  border-radius: 10%;
 }
 
 body::-webkit-scrollbar-thumb:hover {
@@ -129,6 +130,7 @@ body::-webkit-scrollbar-thumb:hover {
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: #e06d2e; /* Color of the scrollbar thumb */
+  border-radius: 10%;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {

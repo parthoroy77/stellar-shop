@@ -45,7 +45,7 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
             </span>
             <h3
               className={cn(
-                "w-0 overflow-hidden text-xl font-bold capitalize transition-all duration-300 ease-in-out",
+                "w-0 overflow-hidden text-nowrap text-xl font-bold capitalize transition-all duration-300 ease-in-out",
                 (expanded || mouseEnter) && "w-fit"
               )}
             >

@@ -1,16 +1,19 @@
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarHeader } from "@repo/ui";
+import { Sidebar, SidebarContent, SidebarHeader, SidebarSeparator } from "@repo/ui";
+import AppSidebarFooter from "./app-sidebar-footer";
+import AppSidebarMenu from "./app-sidebar-menu";
+import LogoText from "./logo-text";
 
 export function AppSidebar() {
   return (
-    <Sidebar collapsible="icon" variant="inset">
-      <SidebarHeader>
-        <h1>Stellar Shop | Seller</h1>
+    <Sidebar collapsible="icon" className="border-r bg-white *:bg-white">
+      <SidebarHeader className="hover:bg-accent/40 cursor-pointer rounded-md duration-300">
+        <LogoText />
       </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup />
-        <SidebarGroup />
+      <SidebarSeparator />
+      <SidebarContent className="custom-scrollbar">
+        <AppSidebarMenu />
       </SidebarContent>
-      <SidebarFooter />
+      <AppSidebarFooter />
     </Sidebar>
   );
 }
