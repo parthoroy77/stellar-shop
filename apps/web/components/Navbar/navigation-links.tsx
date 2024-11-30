@@ -1,8 +1,8 @@
+import { Container } from "@repo/ui";
 import Link from "next/link";
 import { AiOutlineProduct } from "react-icons/ai";
 import { CiShop } from "react-icons/ci";
 import { IoHomeOutline } from "react-icons/io5";
-import Container from "../ui/container";
 import NavCategory from "./nav-category";
 import NavContactOption from "./nav-contact-option";
 const navLinks = [

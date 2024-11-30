@@ -1,8 +1,8 @@
 "use client";
+import { Container } from "@repo/ui";
 import { useState } from "react";
 import { RiUser3Line } from "react-icons/ri";
 import { RxHamburgerMenu } from "react-icons/rx";
-import Container from "../ui/container";
 import Logo from "../ui/logo";
 import MobileDoc from "./mobile-doc";
 import MobileSidebar from "./mobile-sidebar";

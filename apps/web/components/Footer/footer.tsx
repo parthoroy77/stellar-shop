@@ -1,12 +1,11 @@
 import { aboutItems, corporateLinks, quickLinks, usefulLinks } from "@/constants/footer-data";
-import { Button, Input, Separator } from "@repo/ui";
+import { Button, Container, Input, Separator } from "@repo/ui";
 import Image from "next/image";
 import Link from "next/link";
 import { BsShop } from "react-icons/bs";
 import { FaFacebook, FaInstagram, FaTwitter, FaWhatsapp } from "react-icons/fa6";
 import { MdOutlineEmail } from "react-icons/md";
 import { PiTelegramLogo } from "react-icons/pi";
-import Container from "../ui/container";
 import Logo from "../ui/logo";
 
 const Footer = () => {

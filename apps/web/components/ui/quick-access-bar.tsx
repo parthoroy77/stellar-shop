@@ -1,6 +1,5 @@
-import { Badge } from "@repo/ui";
+import { Badge, Container } from "@repo/ui";
 import { FaFacebook, FaInstagram, FaTwitter, FaWhatsapp } from "react-icons/fa6";
-import Container from "./container";
 const QuickAccessBar = () => {
   return (
     <div className="border">

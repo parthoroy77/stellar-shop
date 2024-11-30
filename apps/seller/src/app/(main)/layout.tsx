@@ -6,7 +6,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <>
       <AppSidebar />
-      <main className="custom-scrollbar max-h-screen w-full overflow-hidden overflow-y-scroll bg-white p-5">
+      <main className="custom-scrollbar max-h-screen w-full space-y-5 overflow-hidden overflow-y-scroll bg-white p-5">
         <TopBar />
         {children}
       </main>
