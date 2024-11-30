@@ -14,7 +14,7 @@ const MobileCollectionMenu = memo(({ collection }: { collection: TCategory }) =>
     <>
       <div
         onClick={toggleCategory}
-        className="flex cursor-pointer justify-between px-4 py-3 text-xs font-medium text-gray-600"
+        className="text-accent-foreground flex cursor-pointer justify-between px-4 py-3 text-xs font-medium"
       >
         <Link href={`/categories/${collection.urlSlug}`}>
           <div className="flex items-center gap-2">
@@ -27,7 +27,7 @@ const MobileCollectionMenu = memo(({ collection }: { collection: TCategory }) =>
         )}
       </div>
       {isCategoryOpen && collection.subCategories && collection?.subCategories?.length > 0 && (
-        <div className="inset-0 divide-y overflow-hidden bg-gray-50 pl-3 transition-all duration-300">
+        <div className="bg-accent/40 inset-0 divide-y overflow-hidden pl-3 transition-all duration-300">
           {collection.subCategories.map((subCategory, index) => (
             <MobileCollectionMenu key={index} collection={subCategory} />
           ))}

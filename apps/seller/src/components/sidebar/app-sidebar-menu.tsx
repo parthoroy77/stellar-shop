@@ -1,4 +1,4 @@
-import { menuItems } from "@/src/constants/sidebar-menu";
+import { menuItems } from "@/constants/sidebar-menu";
 import {
   Collapsible,
   CollapsibleContent,
@@ -9,7 +9,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@ui/index";
+} from "@repo/ui";
 import Link from "next/link";
 import { BiChevronRight } from "react-icons/bi";
 

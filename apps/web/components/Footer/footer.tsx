@@ -28,7 +28,7 @@ const NewsletterSection = () => (
     <div className="flex flex-col items-center gap-2 lg:flex-row lg:gap-5">
       <PiTelegramLogo size={40} className="text-primary" />
       <h1 className="text-2xl font-semibold">Sign Up to Newsletter</h1>
-      <span className="text-gray-600">...and receive $20 coupon for first shopping</span>
+      <span className="text-accent-foreground">...and receive $20 coupon for first shopping</span>
     </div>
     <div className="flex h-[40px] items-center">
       <Input
@@ -55,7 +55,7 @@ const LinksSection = () => (
 const FooterInfo = () => (
   <div>
     <Logo />
-    <p className="text-sm text-gray-600">
+    <p className="text-accent-foreground text-sm">
       Discover the best deals on a wide range of top-quality products, from electronics and fashion to home goods and
       beauty essentials.
     </p>

@@ -27,7 +27,7 @@ const CategoryItem = ({ category }: { category: TCategory }) => {
   return (
     <div className="group/category relative">
       <Link href={`/categories/${category.urlSlug}`}>
-        <div className="flex cursor-pointer justify-between px-4 py-3 text-sm font-medium text-gray-600">
+        <div className="text-accent-foreground flex cursor-pointer justify-between px-4 py-3 text-sm font-medium">
           <span className="flex items-center gap-2">
             <CiShoppingCart className="text-xl" />
             {category.categoryName}
@@ -55,7 +55,7 @@ const CollectionItem = ({ collection }: { collection: TCategory }) => {
   return (
     <div className="group/collection relative">
       <Link href={`/categories/${collection.urlSlug}`}>
-        <div className="flex cursor-pointer justify-between px-4 py-3 text-sm font-medium text-gray-600">
+        <div className="text-accent-foreground flex cursor-pointer justify-between px-4 py-3 text-sm font-medium">
           <span className="flex items-center gap-2">
             <CiShoppingCart className="text-xl" />
             {collection.categoryName}
@@ -84,7 +84,7 @@ const NavCategory = () => {
       </div>
       <div className="invisible absolute top-12 z-20 h-fit w-full divide-y rounded-md border bg-white opacity-0 shadow-md duration-300 group-hover/parent:visible group-hover/parent:opacity-100">
         <Link href={`/categories/all-products`}>
-          <div className="flex cursor-pointer justify-between px-4 py-3 text-sm font-medium text-gray-600">
+          <div className="text-accent-foreground flex cursor-pointer justify-between px-4 py-3 text-sm font-medium">
             <span className="flex items-center gap-2">
               <CiShoppingCart className="text-xl" />
               All Products

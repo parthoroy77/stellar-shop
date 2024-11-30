@@ -162,7 +162,7 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
           ) : (
             <div className="space-y-1 text-center">
               <Upload className="mx-auto size-8 text-gray-400" />
-              <p className="text-xs text-gray-600">Drag and drop your images here.</p>
+              <p className="text-accent-foreground text-xs">Drag and drop your images here.</p>
               <p className="text-xs text-gray-500">or</p>
             </div>
           )}

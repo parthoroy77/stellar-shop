@@ -1,4 +1,4 @@
-import { AppSidebar } from "@/src/components/sidebar/app-sidebar";
+import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { FC, ReactNode } from "react";
 import TopBar from "./components/top-bar";
 
