@@ -1,4 +1,4 @@
-import { JwtPayload } from "jsonwebtoken";
+import { User } from "@repo/prisma/client";
 interface File {
   fieldname: string;
   originalname: string;
@@ -19,8 +19,9 @@ interface CertificateData {
 declare global {
   namespace Express {
     interface Request {
-      user: JwtPayload;
+      user: Partial<User>;
       file: File;
+      originRole: string;
     }
   }
 }

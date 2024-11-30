@@ -27,6 +27,7 @@ export default {
   domain_url: process.env.DOMAIN_URL,
   origin_url_1: process.env.ORIGIN_URL_1,
   origin_url_2: process.env.ORIGIN_URL_2,
+  origin_url_3: process.env.ORIGIN_URL_3,
 
   // cloudinary
   cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

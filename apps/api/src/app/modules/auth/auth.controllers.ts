@@ -56,7 +56,7 @@ const userVerifyOTPLogin = asyncHandler(async (req: Request, res: Response) => {
 
 const userLogout = asyncHandler(async (req: Request, res: Response) => {
   const { session_token } = req.cookies;
-  const response = await AuthServices.logout({ userId: req.user.id, sessionToken: session_token });
+  const response = await AuthServices.logout({ userId: +req.user.id!, sessionToken: session_token });
 
   res.clearCookie("session_token");
   res.clearCookie("refresh_token");
