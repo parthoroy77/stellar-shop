@@ -1,7 +1,8 @@
 "use client";
-import { useSidebar } from "@ui/index";
-import { cn } from "@ui/lib/utils";
+import { useSidebar } from "@repo/ui";
+import { cn } from "@repo/ui/lib/utils";
 import { PiCodesandboxLogo } from "react-icons/pi";
+
 const LogoText = () => {
   const { open } = useSidebar();
 
