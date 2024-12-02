@@ -7,7 +7,7 @@ import notFoundHandler from "./app/handlers/notFounderHandler";
 import logger from "./app/logger";
 import { applyCors } from "./app/middleware/cors.middleware";
 import router from "./app/routes/index.route";
-import { refreshTokenCleanup, sessionCleanup } from "./app/services/databaseCleanup";
+
 const app: Application = express();
 
 // parser
