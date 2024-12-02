@@ -12,6 +12,7 @@ import {
   FormMessage,
   Input,
   Label,
+  OrDivider,
   Separator,
   Skeleton,
 } from "@repo/ui";
@@ -23,7 +24,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useTransition } from "react";
 import { FaFacebook, FaGoogle } from "react-icons/fa6";
 import { toast } from "sonner";
-import OrDivider from "../ui/or-divider";
 
 export const getSafeRedirectUrl = (url = "") => {
   if (!url) {
