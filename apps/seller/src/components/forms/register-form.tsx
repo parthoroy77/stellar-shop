@@ -1,27 +1,51 @@
 "use client";
 
 import { useForm, zodResolver } from "@repo/utils/hook-form";
-import { loginSchema, TLoginValidation } from "@repo/utils/validations";
+import { registrationSchema, TRegistrationValidation } from "@repo/utils/validations";
 import { AppButton, Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@ui/index";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { HiOutlineEyeOff, HiOutlineMail } from "react-icons/hi";
-import { HiOutlineEye, HiOutlineLockClosed } from "react-icons/hi2";
+import { HiOutlineEye, HiOutlineLockClosed, HiOutlineUser } from "react-icons/hi2";
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const [eyeEnable, setEyeEnable] = useState(false);
   const router = useRouter();
-  const form = useForm<TLoginValidation>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<TRegistrationValidation>({
+    resolver: zodResolver(registrationSchema),
   });
 
-  const onSubmit = async (data: TLoginValidation) => {
+  const onSubmit = async (data: TRegistrationValidation) => {
     console.log(data);
   };
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-5">
         <div className="space-y-2">
+          <FormField
+            control={form.control}
+            name="fullName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-accent-foreground text-xs">Your Full Name *</FormLabel>
+                <FormControl className="relative">
+                  <div className="relative h-10">
+                    <Input
+                      {...field}
+                      placeholder="e.g. John Doe"
+                      name="text"
+                      type="fullName"
+                      className="bg-accent/40 focus:border-secondary h-full w-full rounded-md pl-12 placeholder:text-xs focus:border"
+                    />
+                    <span className="text-secondary absolute left-2 top-[6.5px] rounded-md bg-white p-1.5">
+                      <HiOutlineUser size={15} />
+                    </span>
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="email"
@@ -78,12 +102,6 @@ const LoginForm = () => {
             )}
           />
         </div>
-
-        <div className="flex justify-end">
-          <Button variant={"link"} type="button" className="h-fit p-0" size={"sm"}>
-            <span>Forgot Password?</span>
-          </Button>
-        </div>
         <AppButton
           // disabled={isPending} loading={isPending}
           variant={"secondary"}
@@ -93,15 +111,15 @@ const LoginForm = () => {
           Login
         </AppButton>
         <div className="flex justify-center gap-1">
-          <span className="text-accent-foreground text-xs font-medium">Don't you have an account?</span>
+          <span className="text-accent-foreground text-xs font-medium">Already have an account?</span>
           <Button
-            onClick={() => router.push("/register")}
+            onClick={() => router.push("/login")}
             variant={"link"}
             type="button"
             className="h-fit p-0"
             size={"sm"}
           >
-            Register
+            Login
           </Button>
         </div>
       </form>
@@ -109,4 +127,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
