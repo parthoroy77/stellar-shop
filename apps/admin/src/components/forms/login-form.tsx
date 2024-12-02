@@ -1,14 +1,12 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { handleApiError, useUserLoginMutation } from "@repo/redux";
-import { loginSchema, z } from "@repo/utils/validations";
+import { useForm, UseFormReturn, zodResolver } from "@repo/utils/hook-form";
+import { loginSchema, TLoginValidation } from "@repo/utils/validations";
 import { AppButton, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@ui/index";
-import { useForm, UseFormReturn } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-type TLoginForm = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
-  const form: UseFormReturn<TLoginForm> = useForm<TLoginForm>({
+  const form: UseFormReturn<TLoginValidation> = useForm<TLoginValidation>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       password: process.env.NODE_ENV !== "production" ? "password123" : "",
@@ -18,7 +16,7 @@ const LoginForm = () => {
 
   const navigate = useNavigate();
   const [loginUser] = useUserLoginMutation();
-  const onSubmit = async (data: TLoginForm) => {
+  const onSubmit = async (data: TLoginValidation) => {
     const toastId = toast.loading("Sending request to login...", { duration: 2000 });
     try {
       const response = await loginUser(data).unwrap();

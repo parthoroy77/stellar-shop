@@ -1,19 +1,16 @@
 "use client";
 import { registerUser } from "@/actions/auth";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { AppButton, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, Separator } from "@repo/ui";
-import { registrationSchema, z } from "@repo/utils/validations";
+import { useForm, UseFormReturn, zodResolver } from "@repo/utils/hook-form";
+import { registrationSchema, TRegistrationValidation } from "@repo/utils/validations";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
-import { useForm, UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
-
-type TRegistrationForm = z.infer<typeof registrationSchema>;
 
 const RegistrationForm = () => {
   const [isPending, startTransition] = useTransition();
-  const form: UseFormReturn<TRegistrationForm> = useForm<TRegistrationForm>({
+  const form: UseFormReturn<TRegistrationValidation> = useForm<TRegistrationValidation>({
     resolver: zodResolver(registrationSchema),
     defaultValues: {
       fullName: process.env.NODE_ENV !== "production" ? "Partho Roy" : "",
@@ -22,7 +19,7 @@ const RegistrationForm = () => {
     },
   });
   const router = useRouter();
-  const onSubmit = async (data: TRegistrationForm) => {
+  const onSubmit = async (data: TRegistrationValidation) => {
     const toastId = toast.loading("Registering your account", { duration: 2000 });
     startTransition(async () => {
       const response = await registerUser(data);

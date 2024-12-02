@@ -1,6 +1,5 @@
 "use client";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   AppButton,
   Button,
@@ -16,17 +15,15 @@ import {
   Separator,
   Skeleton,
 } from "@repo/ui";
-import { loginSchema, z } from "@repo/utils/validations";
+import { useForm, zodResolver } from "@repo/utils/hook-form";
+import { loginSchema, TLoginValidation } from "@repo/utils/validations";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useTransition } from "react";
-import { useForm } from "react-hook-form";
 import { FaFacebook, FaGoogle } from "react-icons/fa6";
 import { toast } from "sonner";
 import OrDivider from "../ui/or-divider";
-
-type TLoginForm = z.infer<typeof loginSchema>;
 
 export const getSafeRedirectUrl = (url = "") => {
   if (!url) {
@@ -48,7 +45,7 @@ function LoginFormContent() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || DEFAULT_LOGIN_REDIRECT;
 
-  const form = useForm<TLoginForm>({
+  const form = useForm<TLoginValidation>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: process.env.NODE_ENV !== "production" ? "partho@gmail.com" : "",
@@ -56,7 +53,7 @@ function LoginFormContent() {
     },
   });
 
-  const onSubmit = async (data: TLoginForm) => {
+  const onSubmit = async (data: TLoginValidation) => {
     const toastId = toast.loading("Sending request to login", { duration: 2000 });
     startTransition(async () => {
       const result = await signIn("credentials", {

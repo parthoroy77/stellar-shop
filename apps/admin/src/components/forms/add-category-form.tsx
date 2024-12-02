@@ -1,9 +1,9 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { handleApiError, useCreateCategoryMutation, useGetAllParentCategoriesQuery } from "@repo/redux";
+import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { CategoryLevels, TCategory } from "@repo/utils/types";
-import { createCategoryValidationSchema, z } from "@repo/utils/validations";
+import { createCategoryValidationSchema, TCreateCategoryValidation } from "@repo/utils/validations";
 import {
   Button,
   Form,
@@ -23,14 +23,11 @@ import {
   Textarea,
 } from "@ui/index";
 import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
-type TAddCategoryFormType = z.infer<typeof createCategoryValidationSchema>;
 
 export default function AddCategoryForm({ close }: { close: () => void }) {
   const [searchTerms, setSearchTerms] = useState("");
-  const form = useForm<TAddCategoryFormType>({
+  const form = useForm<TCreateCategoryValidation>({
     resolver: zodResolver(createCategoryValidationSchema),
   });
 
@@ -57,7 +54,7 @@ export default function AddCategoryForm({ close }: { close: () => void }) {
 
   const parentCategories = (data?.data as TCategory[]) || [];
 
-  const onSubmit = async (data: TAddCategoryFormType) => {
+  const onSubmit = async (data: TCreateCategoryValidation) => {
     const toastId = toast.loading("Creating category...", { duration: 2000 });
     const formData = new FormData();
     Object.entries(data).forEach(([key, value]) => {
