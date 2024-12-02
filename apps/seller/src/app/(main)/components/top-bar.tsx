@@ -1,4 +1,4 @@
-import { SidebarTrigger } from "@ui/index";
+import { SidebarTrigger } from "@repo/ui";
 
 const TopBar = () => {
   return (
