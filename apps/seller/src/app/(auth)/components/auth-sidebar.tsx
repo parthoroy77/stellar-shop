@@ -1,6 +1,7 @@
 "use client";
 
 import LogoText from "@/components/sidebar/logo-text";
+import { usePathname } from "next/navigation";
 import { DiStreamline } from "react-icons/di";
 import { FaMoneyBillWave, FaShoppingCart, FaUsers } from "react-icons/fa";
 import { LuTrendingDown, LuTrendingUp } from "react-icons/lu";
@@ -41,8 +42,9 @@ const cards = [
 ];
 
 const AuthSidebar = () => {
+  const path = usePathname();
   return (
-    <section className="bg-accent/30 flex h-full w-full flex-col justify-between gap-8 p-4 md:w-[60%] md:p-20">
+    <section className="bg-accent/30 hidden h-full w-full flex-col justify-between gap-8 p-4 md:w-[60%] md:p-20 lg:flex">
       <div className="relative h-full w-full">
         <LogoText />
         {cards.map((card, index) => (
@@ -69,7 +71,9 @@ const AuthSidebar = () => {
         ))}
       </div>
       <div className="space-y-3">
-        <h3 className="text-2xl font-medium md:text-3xl">Welcome Back!</h3>
+        <h3 className="text-2xl font-medium md:text-3xl">
+          {path === "/register" ? "Start wonderful journey with us!" : "Welcome Back!"}
+        </h3>
         <p className="text-accent-foreground text-sm md:text-base">Start managing your store and grow exponentially!</p>
         <p className="text-accent-foreground text-sm md:text-base">
           Check your remaining orders fulfill buyer needs <br /> with your great{" "}
