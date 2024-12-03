@@ -1,22 +1,35 @@
 "use client";
 
+import { registerUser } from "@/actions/auth.action";
 import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { registrationSchema, TRegistrationValidation } from "@repo/utils/validations";
 import { AppButton, Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@ui/index";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { HiOutlineEyeOff, HiOutlineMail } from "react-icons/hi";
 import { HiOutlineEye, HiOutlineLockClosed, HiOutlineUser } from "react-icons/hi2";
+import { toast } from "sonner";
 
 const RegisterForm = () => {
   const [eyeEnable, setEyeEnable] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const form = useForm<TRegistrationValidation>({
     resolver: zodResolver(registrationSchema),
   });
 
   const onSubmit = async (data: TRegistrationValidation) => {
-    console.log(data);
+    const toastId = toast.loading("Registering your account", { duration: 2000 });
+    startTransition(async () => {
+      const response = await registerUser(data);
+      if (response.success) {
+        toast.success(response.message, { id: toastId });
+        // router.push(`/verification-request?email=${data.email}`);
+        // form.reset({ email: "", fullName: "", password: "" });
+      } else {
+        toast.error(response.message, { id: toastId });
+      }
+    });
   };
   return (
     <Form {...form}>
@@ -57,7 +70,7 @@ const RegisterForm = () => {
                     <Input
                       {...field}
                       placeholder="you@example.com"
-                      name="email"
+                      name="userEmail"
                       type="email"
                       className="bg-accent/40 focus:border-secondary h-full w-full rounded-md pl-12 placeholder:text-xs focus:border"
                     />
@@ -102,12 +115,7 @@ const RegisterForm = () => {
             )}
           />
         </div>
-        <AppButton
-          // disabled={isPending} loading={isPending}
-          variant={"secondary"}
-          type="submit"
-          className="w-full"
-        >
+        <AppButton disabled={isPending} loading={isPending} variant={"secondary"} type="submit" className="w-full">
           Login
         </AppButton>
         <div className="flex justify-center gap-1">
