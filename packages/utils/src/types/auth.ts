@@ -27,6 +27,6 @@ export type TOTPRequest = {
 };
 
 export type TLoginResponse = {
-  sessionToken: TSession;
+  session: TSession;
   refreshToken: TRefreshToken;
 };
