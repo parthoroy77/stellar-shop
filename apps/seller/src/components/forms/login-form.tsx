@@ -3,15 +3,16 @@
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { loginSchema, TLoginValidation } from "@repo/utils/validations";
+import AuthFormFallback from "@ui/components/auth-form-fallback";
 import { AppButton, Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@ui/index";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useTransition } from "react";
+import { Suspense, useState, useTransition } from "react";
 import { HiOutlineEyeOff, HiOutlineMail } from "react-icons/hi";
 import { HiOutlineEye, HiOutlineLockClosed } from "react-icons/hi2";
 import { toast } from "sonner";
 
-const LoginForm = () => {
+const LoginFormContent = () => {
   const [eyeEnable, setEyeEnable] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -135,6 +136,14 @@ const LoginForm = () => {
         </div>
       </form>
     </Form>
+  );
+};
+
+const LoginForm = () => {
+  return (
+    <Suspense fallback={<AuthFormFallback />}>
+      <LoginFormContent />
+    </Suspense>
   );
 };
 

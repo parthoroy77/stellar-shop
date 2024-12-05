@@ -14,10 +14,10 @@ import {
   Label,
   OrDivider,
   Separator,
-  Skeleton,
 } from "@repo/ui";
 import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { loginSchema, TLoginValidation } from "@repo/utils/validations";
+import AuthFormFallback from "@ui/components/auth-form-fallback";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -148,30 +148,9 @@ function LoginFormContent() {
   );
 }
 
-function LoginFormFallback() {
-  return (
-    <div className="space-y-5">
-      <Skeleton className="h-9 w-full" />
-      <Skeleton className="h-9 w-full" />
-      <div className="flex items-center justify-between">
-        <Skeleton className="h-5 w-24" />
-        <Skeleton className="h-4 w-40" />
-      </div>
-      <Skeleton className="h-9 w-full" />
-      <OrDivider />
-      <div className="flex flex-col items-center gap-3">
-        <Skeleton className="h-9 w-[300px]" />
-        <Skeleton className="h-9 w-[300px]" />
-      </div>
-      <Separator />
-      <Skeleton className="h-5 w-full" />
-    </div>
-  );
-}
-
 export default function LoginForm() {
   return (
-    <Suspense fallback={<LoginFormFallback />}>
+    <Suspense fallback={<AuthFormFallback />}>
       <LoginFormContent />
     </Suspense>
   );

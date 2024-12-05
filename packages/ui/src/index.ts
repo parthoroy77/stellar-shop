@@ -3,6 +3,7 @@ export * from "./components/off-canvas";
 export * from "./components/option-selector";
 export * from "./components/ui/alert-dialog";
 export * from "./components/ui/app-button";
+export * from "./components/auth-form-fallback";
 export * from "./components/ui/avatar";
 export * from "./components/ui/badge";
 export * from "./components/ui/breadcrumb";
