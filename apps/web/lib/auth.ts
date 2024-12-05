@@ -1,4 +1,4 @@
-import { TRefreshToken, TSession, TUser } from "@repo/utils/types";
+import { TLoginResponse, TRefreshToken, TSession, TUser } from "@repo/utils/types";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { fetcher } from "./fetcher";
@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const result = await fetcher<{ session: TSession; refreshToken: TRefreshToken }>("/auth/login", {
+        const result = await fetcher<TLoginResponse>("/auth/login", {
           method: "POST",
           body: { email: credentials.email, password: credentials.password },
           cache: "no-store",

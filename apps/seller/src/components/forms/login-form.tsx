@@ -1,22 +1,52 @@
 "use client";
 
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { loginSchema, TLoginValidation } from "@repo/utils/validations";
 import { AppButton, Button, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@ui/index";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useTransition } from "react";
 import { HiOutlineEyeOff, HiOutlineMail } from "react-icons/hi";
 import { HiOutlineEye, HiOutlineLockClosed } from "react-icons/hi2";
+import { toast } from "sonner";
 
 const LoginForm = () => {
   const [eyeEnable, setEyeEnable] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || DEFAULT_LOGIN_REDIRECT;
   const form = useForm<TLoginValidation>({
     resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = async (data: TLoginValidation) => {
-    console.log(data);
+    const toastId = toast.loading("Sending request to login!", {
+      duration: 300,
+    });
+    startTransition(async () => {
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        callbackUrl,
+        redirect: false,
+      });
+      if (!result?.ok) {
+        const parsedError: { message: string; status: number } = JSON.parse(result?.error!);
+        if (parsedError.status === 406) {
+          toast.info(parsedError.message, { id: toastId });
+          router.push(`/verification-request?email=${data.email}`);
+        }
+        if (parsedError.status === 401) {
+          toast.info(parsedError.message, { id: toastId });
+        }
+      } else {
+        toast.success("User logged in successfully", { id: toastId });
+        router.push(callbackUrl);
+        form.reset({ email: "", password: "" });
+      }
+    });
   };
   return (
     <Form {...form}>
@@ -84,12 +114,7 @@ const LoginForm = () => {
             <span>Forgot Password?</span>
           </Button>
         </div>
-        <AppButton
-          // disabled={isPending} loading={isPending}
-          variant={"secondary"}
-          type="submit"
-          className="w-full"
-        >
+        <AppButton disabled={isPending} loading={isPending} variant={"secondary"} type="submit" className="w-full">
           Login
         </AppButton>
         <div className="flex justify-center gap-1">
