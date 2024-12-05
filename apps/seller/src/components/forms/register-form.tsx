@@ -16,6 +16,11 @@ const RegisterForm = () => {
   const router = useRouter();
   const form = useForm<TRegistrationValidation>({
     resolver: zodResolver(registrationSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+    },
   });
 
   const onSubmit = async (data: TRegistrationValidation) => {

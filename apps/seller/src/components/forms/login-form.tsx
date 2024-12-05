@@ -19,6 +19,10 @@ const LoginForm = () => {
   const callbackUrl = searchParams.get("callbackUrl") || DEFAULT_LOGIN_REDIRECT;
   const form = useForm<TLoginValidation>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: process.env.NODE_ENV !== "production" ? "partho@gmail.com" : "",
+      password: process.env.NODE_ENV !== "production" ? "password123" : "",
+    },
   });
 
   const onSubmit = async (data: TLoginValidation) => {
