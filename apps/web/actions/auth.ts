@@ -26,7 +26,7 @@ const setCookies = (session: TSession, refreshToken: TRefreshToken) => {
 };
 
 export const registerUser = async (data: z.infer<typeof registrationSchema>) => {
-  return await fetcher("/auth/register", { method: "POST", body: data, cache: "no-store" });
+  return await fetcher("/auth/buyer-registration", { method: "POST", body: data, cache: "no-store" });
 };
 // not required as switched to next auth
 export const loginUser = async (data: z.infer<typeof loginSchema>) => {

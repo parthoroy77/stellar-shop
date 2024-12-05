@@ -7,8 +7,12 @@ import { resendVerificationEmailSchema, sessionRefreshSchema, verifyAccountSchem
 
 const AuthRoutes = Router();
 
-AuthRoutes.post("/register", zodSafeParse(registrationSchema), AuthControllers.userRegistration);
-AuthRoutes.post("/login", zodSafeParse(loginSchema), AuthControllers.userLogin);
+AuthRoutes.post("/buyer-registration", zodSafeParse(registrationSchema), AuthControllers.userRegistration("BUYER"));
+AuthRoutes.post("/seller-registration", zodSafeParse(registrationSchema), AuthControllers.userRegistration("SELLER"));
+AuthRoutes.post("/buyer-login", zodSafeParse(loginSchema), AuthControllers.userLogin("BUYER"));
+AuthRoutes.post("/seller-login", zodSafeParse(loginSchema), AuthControllers.userLogin("SELLER"));
+AuthRoutes.post("/admin-login", zodSafeParse(loginSchema), AuthControllers.userLogin("ADMIN"));
+
 AuthRoutes.post("/logout", authMiddleware(), AuthControllers.userLogout);
 AuthRoutes.post(
   "/resend-verification",

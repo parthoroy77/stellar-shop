@@ -46,6 +46,7 @@ const LoginFormContent = () => {
         if (parsedError.status === 401) {
           toast.info(parsedError.message, { id: toastId });
         }
+        toast.error(parsedError.message, { id: toastId });
       } else {
         toast.success("User logged in successfully", { id: toastId });
         router.push(callbackUrl);

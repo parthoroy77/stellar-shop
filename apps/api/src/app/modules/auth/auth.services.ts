@@ -14,7 +14,8 @@ import {
 
 // registration
 const register = async (payload: TRegistrationPayload): Promise<void> => {
-  const { email, password, fullName } = payload;
+  // TODO: if other things need to create for admin/seller then create do that.
+  const { email, password, fullName, role } = payload;
 
   // check user exists
   const isExists = await prisma.user.findUnique({ where: { email } });
@@ -36,6 +37,7 @@ const register = async (payload: TRegistrationPayload): Promise<void> => {
           hashPassword: encryptedPassword,
         },
       },
+      role,
     },
   });
 
@@ -44,7 +46,7 @@ const register = async (payload: TRegistrationPayload): Promise<void> => {
   }
 
   // send verification email
-  if (config.NODE_ENV === "production") {
+  if (config.NODE_ENV === "production" || role !== "ADMIN") {
     sendVerificationEmail(email, newUser.id);
   }
 
@@ -72,8 +74,13 @@ const login = async (payload: TLoginPayload): Promise<{ session: Session; refres
     throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid email or password.");
   }
 
+  // validate role
+  if (isUserExists.role !== payload.role) {
+    throw new ApiError(StatusCodes.FORBIDDEN, "Access denied!");
+  }
+
   // if not verified account then verify first
-  if (isUserExists.status !== "ACTIVE" && !isUserExists.emailVerified) {
+  if (isUserExists.status !== "ACTIVE" || !isUserExists.emailVerified) {
     throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "Please verify your account first.");
   }
 

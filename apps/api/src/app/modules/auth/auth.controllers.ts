@@ -1,56 +1,59 @@
+import { UserRole } from "@repo/prisma/client";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
 import { AuthServices } from "./auth.services";
 
-const userRegistration = asyncHandler(async (req: Request, res: Response) => {
-  const payload = req.body;
+const userRegistration = (role: UserRole) =>
+  asyncHandler(async (req: Request, res: Response) => {
+    const payload = req.body;
 
-  await AuthServices.register(payload);
+    await AuthServices.register({ ...payload, role });
 
-  ApiResponse(res, {
-    data: {},
-    message: "User registered successfully. Check your email for verification.",
-    success: true,
-    statusCode: StatusCodes.CREATED,
-  });
-});
-
-const userLogin = asyncHandler(async (req: Request, res: Response) => {
-  const payload = req.body;
-  const { session, refreshToken } = await AuthServices.login(payload);
-
-  res.cookie("session_token", session.sessionToken, {
-    httpOnly: true,
-    secure: true,
-    // Should not add sameSite none. Added because of not having same domain.
-    sameSite: "none",
-    path: "/",
-    expires: new Date(session.expiresAt),
+    ApiResponse(res, {
+      data: {},
+      message: "User registered successfully. Check your email for verification.",
+      success: true,
+      statusCode: StatusCodes.CREATED,
+    });
   });
 
-  res.cookie("refresh_token", refreshToken.token, {
-    httpOnly: true,
-    secure: true,
-    // Should not add sameSite none. Added because of not having same domain.
-    sameSite: "none",
-    path: "/",
-    expires: new Date(refreshToken.expiresAt),
+const userLogin = (role: UserRole) =>
+  asyncHandler(async (req: Request, res: Response) => {
+    const payload = req.body;
+    const { session, refreshToken } = await AuthServices.login({ ...payload, role });
+
+    res.cookie("session_token", session.sessionToken, {
+      httpOnly: true,
+      secure: true,
+      // Should not add sameSite none. Added because of not having same domain.
+      sameSite: "none",
+      path: "/",
+      expires: new Date(session.expiresAt),
+    });
+
+    res.cookie("refresh_token", refreshToken.token, {
+      httpOnly: true,
+      secure: true,
+      // Should not add sameSite none. Added because of not having same domain.
+      sameSite: "none",
+      path: "/",
+      expires: new Date(refreshToken.expiresAt),
+    });
+
+    ApiResponse(res, {
+      data: {
+        session,
+        refreshToken,
+      },
+      message: "User logged in successfully.",
+      success: true,
+      statusCode: StatusCodes.OK,
+    });
   });
 
-  ApiResponse(res, {
-    data: {
-      session,
-      refreshToken,
-    },
-    message: "User logged in successfully.",
-    success: true,
-    statusCode: StatusCodes.OK,
-  });
-});
-
-const userVerifyOTPLogin = asyncHandler(async (req: Request, res: Response) => {
+const userVerifyOTPLogin = asyncHandler(async (_req: Request, _res: Response) => {
   // const payload
 });
 

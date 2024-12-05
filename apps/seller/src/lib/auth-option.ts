@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) return null;
 
-        const result = await fetcher<TLoginResponse>("/auth/login", {
+        const result = await fetcher<TLoginResponse>("/auth/seller-login", {
           method: "POST",
           cache: "no-store",
           body: { email: credentials.email, password: credentials.password },

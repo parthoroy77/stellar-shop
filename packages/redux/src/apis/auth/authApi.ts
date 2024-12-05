@@ -14,7 +14,7 @@ const authApi = baseApi.injectEndpoints({
     // mutations
     userLogin: builder.mutation<IApiResponse<TLoginResponse>, unknown>({
       query: (data) => ({
-        url: "/auth/login",
+        url: "/auth/admin-login",
         method: "POST",
         data,
       }),

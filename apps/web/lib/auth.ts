@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const result = await fetcher<TLoginResponse>("/auth/login", {
+        const result = await fetcher<TLoginResponse>("/auth/buyer-login", {
           method: "POST",
           body: { email: credentials.email, password: credentials.password },
           cache: "no-store",
