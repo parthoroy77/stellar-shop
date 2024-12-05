@@ -1,7 +1,7 @@
 "use server";
 import { getServerAuth } from "@/lib/auth-utils";
 import { fetcher } from "@/lib/fetcher";
-import { TRefreshToken, TSession } from "@repo/utils/types";
+import { TLoginResponse, TRefreshToken, TSession } from "@repo/utils/types";
 import { loginSchema, registrationSchema, z } from "@repo/utils/validations";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
@@ -30,7 +30,7 @@ export const registerUser = async (data: z.infer<typeof registrationSchema>) => 
 };
 // not required as switched to next auth
 export const loginUser = async (data: z.infer<typeof loginSchema>) => {
-  const result = await fetcher<{ session: TSession; refreshToken: TRefreshToken }>("/auth/login", {
+  const result = await fetcher<TLoginResponse>("/auth/login", {
     method: "POST",
     body: data,
     cache: "no-store",

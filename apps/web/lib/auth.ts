@@ -1,4 +1,4 @@
-import { TLoginResponse, TRefreshToken, TSession, TUser } from "@repo/utils/types";
+import { TLoginResponse, TUser } from "@repo/utils/types";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { fetcher } from "./fetcher";
@@ -73,7 +73,7 @@ export const authOptions: NextAuthOptions = {
           throw new ForceLogoutError("Refresh token expired");
         }
 
-        const response = await fetcher<{ session: TSession; refreshToken: TRefreshToken }>("/auth/refresh-session", {
+        const response = await fetcher<TLoginResponse>("/auth/refresh-session", {
           method: "POST",
           headers: {
             Cookie: `refresh_token=${token.refreshToken}`,

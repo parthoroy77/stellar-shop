@@ -1,5 +1,6 @@
 import { getErrorMessage } from "@repo/utils/functions";
 import { IApiResponse } from "@repo/utils/types";
+import { Session } from "next-auth";
 import { revalidateTag } from "next/cache";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
@@ -10,6 +11,7 @@ interface FetcherOptions<TBody = unknown> {
   body?: TBody;
   cache?: RequestCache;
   next?: NextFetchRequestConfig;
+  session?: Session | null;
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
@@ -18,7 +20,7 @@ export async function fetcher<TResponse, TBody = unknown>(
   endpoint: string,
   options: FetcherOptions<TBody> = {}
 ): Promise<IApiResponse<TResponse>> {
-  const { method = "GET", headers = {}, body, cache, next } = options;
+  const { method = "GET", headers = {}, body, cache, next, session = null } = options;
 
   const url = `${baseUrl}/api/v1${endpoint}`;
 
@@ -31,9 +33,19 @@ export async function fetcher<TResponse, TBody = unknown>(
     body: body ? JSON.stringify(body) : undefined,
     credentials: "include",
   };
+
   // Only add cache or next options if they are provided
   if (cache) fetchOptions.cache = cache;
   if (next) fetchOptions.next = next;
+
+  // Add authorization header if session is available
+  if (session?.sessionToken) {
+    fetchOptions.headers = {
+      ...fetchOptions.headers,
+      Authorization: `Bearer ${session.sessionToken}`,
+    };
+  }
+  console.log(session);
 
   try {
     const response = await fetch(url, fetchOptions);

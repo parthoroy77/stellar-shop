@@ -79,6 +79,9 @@ export const authOptions: NextAuthOptions = {
 
         const result = await fetcher<TLoginResponse>("/auth/refresh-session", {
           method: "POST",
+          headers: {
+            Cookie: `refresh_token=${token.refreshToken}`,
+          },
         });
 
         if (!result.success || !result.data) {
@@ -101,6 +104,9 @@ export const authOptions: NextAuthOptions = {
       // fetch the auth user from backend
       const result = await fetcher<{ user: TUser }>("/auth/get-me", {
         cache: "force-cache",
+        headers: {
+          Cookie: `session_token=${token.sessionToken}`,
+        },
         next: { revalidate: 300, tags: ["auth"] },
       });
 

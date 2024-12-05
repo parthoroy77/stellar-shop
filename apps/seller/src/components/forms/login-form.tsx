@@ -27,7 +27,7 @@ const LoginForm = () => {
 
   const onSubmit = async (data: TLoginValidation) => {
     const toastId = toast.loading("Sending request to login!", {
-      duration: 300,
+      duration: 2000,
     });
     startTransition(async () => {
       const result = await signIn("credentials", {
