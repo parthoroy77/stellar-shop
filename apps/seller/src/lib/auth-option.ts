@@ -32,6 +32,10 @@ export const authOptions: NextAuthOptions = {
           body: { email: credentials.email, password: credentials.password },
         });
 
+        if (!result.success) {
+          throw new Error(JSON.stringify({ message: result.message, status: result.statusCode }));
+        }
+
         if (!result.success || !result.data) return null;
 
         const { session, refreshToken } = result.data;

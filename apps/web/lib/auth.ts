@@ -29,6 +29,10 @@ export const authOptions: NextAuthOptions = {
           cache: "no-store",
         });
 
+        if (!result.success) {
+          throw new Error(JSON.stringify({ message: result.message, status: result.statusCode }));
+        }
+
         if (!result.success || !result.data) {
           return null;
         }
