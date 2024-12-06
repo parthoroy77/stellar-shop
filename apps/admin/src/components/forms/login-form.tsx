@@ -10,7 +10,7 @@ const LoginForm = () => {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       password: process.env.NODE_ENV !== "production" ? "password123" : "",
-      email: process.env.NODE_ENV !== "production" ? "partho@gmail.com" : "",
+      email: process.env.NODE_ENV !== "production" ? "admin@gmail.com" : "",
     },
   });
 

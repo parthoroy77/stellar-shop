@@ -21,7 +21,7 @@ const LoginFormContent = () => {
   const form = useForm<TLoginValidation>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: process.env.NODE_ENV !== "production" ? "partho@gmail.com" : "",
+      email: process.env.NODE_ENV !== "production" ? "seller@gmail.com" : "",
       password: process.env.NODE_ENV !== "production" ? "password123" : "",
     },
   });
