@@ -1,11 +1,30 @@
 import { Button } from "@ui/index";
 import { cn } from "@ui/lib/utils";
 
+const steps = [
+  {
+    id: 1,
+    label: "Store Information",
+  },
+  {
+    id: 2,
+    label: "Address Details",
+  },
+  {
+    id: 3,
+    label: "Subscription Plans",
+  },
+];
+
 const StepperIndicator = () => {
   return (
     <ul className="mx-auto flex justify-between">
-      {Array.from({ length: 3 }).map((_x, i) => (
-        <li key={i}>
+      {steps.map(({ label }, i) => (
+        <li key={i} className="relative">
+          {i !== 2 && <div className={cn("border-accent absolute left-full top-1/2 -z-10 h-[1px] w-1/2 border")}></div>}
+          {i !== 0 && (
+            <div className={cn("border-accent absolute right-full top-1/2 -z-10 h-[1px] w-1/2 border")}></div>
+          )}
           <Button
             size={"sm"}
             variant={"ghost"}
@@ -16,7 +35,7 @@ const StepperIndicator = () => {
             )}
           >
             <span className="border-secondary size-4 rounded-full border text-xs text-black">{i + 1}</span>
-            <span className="text-sm">Store Information</span>
+            <span className="text-sm">{label}</span>
           </Button>
         </li>
       ))}
