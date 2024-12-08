@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@ui/lib/utils";
+import { ClassValue } from "class-variance-authority/types";
 import { Upload, X } from "lucide-react";
 import React, { FC, useCallback, useMemo, useRef, useState } from "react";
 import { Button } from "./ui/button";
@@ -15,6 +16,7 @@ interface ImageDropzoneProps {
   maxFiles?: number;
   accept?: string;
   maxSize?: number; // in bytes
+  containerClassNames?: ClassValue;
 }
 
 export const ImageDropzone: FC<ImageDropzoneProps> = ({
@@ -23,6 +25,7 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
   maxFiles = 5,
   accept = "image/*",
   maxSize = 5 * 1024 * 1024, // 5MB
+  containerClassNames,
 }) => {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -133,9 +136,11 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
         onDragLeave={handleDragOut}
         onDragOver={handleDrag}
         onDrop={handleDrop}
-        className={`rounded-lg border border-dashed p-4 transition-colors ${
-          isDragging ? "border-primary bg-accent" : "hover:border-primary border-gray-300"
-        }`}
+        className={cn(
+          "rounded-lg border border-dashed p-4 transition-colors",
+          isDragging ? "border-primary bg-accent" : "hover:border-primary border-gray-300",
+          containerClassNames
+        )}
       >
         <div className="space-y-3">
           {files.length > 0 ? (

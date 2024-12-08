@@ -4,6 +4,7 @@ import { Button, Form } from "@ui/index";
 import { useState } from "react";
 import OnboardingHeader from "./onboarding-header";
 import StepperIndicator from "./stepper-indicator";
+import StoreInformationForm from "./store-information-form";
 const steps = [
   {
     id: 1,
@@ -29,7 +30,7 @@ const OnboardingStepperForm = () => {
   const renderElements = (step: number) => {
     switch (step) {
       case 1:
-        return <div> Store Information</div>;
+        return <StoreInformationForm form={form} />;
       case 2:
         return <div>Address Details</div>;
       case 3:
