@@ -22,4 +22,5 @@ model Address {
 enum AddressType {
   HOME
   WORK
+  BUSINESS
 }
