@@ -2,6 +2,7 @@
 import { useForm } from "@repo/utils/hook-form";
 import { Button, Form } from "@ui/index";
 import { useState } from "react";
+import AddressDetailsForm from "./address-details-form";
 import OnboardingHeader from "./onboarding-header";
 import StepperIndicator from "./stepper-indicator";
 import StoreInformationForm from "./store-information-form";
@@ -21,7 +22,7 @@ const steps = [
 ];
 
 const OnboardingStepperForm = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(2);
   const totalStep = steps.length;
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === totalStep;
@@ -32,7 +33,7 @@ const OnboardingStepperForm = () => {
       case 1:
         return <StoreInformationForm form={form} />;
       case 2:
-        return <div>Address Details</div>;
+        return <AddressDetailsForm form={form} />;
       case 3:
         return <div>Subscription Plans</div>;
       default:
