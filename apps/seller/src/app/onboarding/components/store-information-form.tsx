@@ -66,6 +66,44 @@ const StoreInformationForm = ({ form }: { form: any }) => {
           <ImageDropzone onFilesChange={() => {}} containerClassNames=" hover:border-secondary" />
         </div>
       </div>
+      <div className="grid grid-cols-2 gap-5">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  placeholder="e.g. Stellar Shop"
+                  type="email"
+                  className="bg-accent/40 h-10 w-full border px-5 placeholder:text-xs"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Contact Number</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  placeholder="e.g. Stellar Shop"
+                  type="email"
+                  className="bg-accent/40 h-10 w-full border px-5 placeholder:text-xs"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
     </div>
   );
 };
