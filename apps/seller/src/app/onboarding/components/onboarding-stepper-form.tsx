@@ -6,6 +6,7 @@ import AddressDetailsForm from "./address-details-form";
 import OnboardingHeader from "./onboarding-header";
 import StepperIndicator from "./stepper-indicator";
 import StoreInformationForm from "./store-information-form";
+import SubscriptionPlanForm from "./subscription-plan-form";
 const steps = [
   {
     id: 1,
@@ -22,7 +23,7 @@ const steps = [
 ];
 
 const OnboardingStepperForm = () => {
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(3);
   const totalStep = steps.length;
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === totalStep;
@@ -35,7 +36,7 @@ const OnboardingStepperForm = () => {
       case 2:
         return <AddressDetailsForm form={form} />;
       case 3:
-        return <div>Subscription Plans</div>;
+        return <SubscriptionPlanForm form={form} />;
       default:
         break;
     }
