@@ -25,7 +25,7 @@ const steps = [
 
 const OnboardingStepperForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [isReviewing] = useState(true);
+  const [isReviewing] = useState(false);
   const totalStep = steps.length;
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === totalStep - 1;
@@ -43,7 +43,9 @@ const OnboardingStepperForm = () => {
   };
 
   useEffect(() => {
-    setCurrentStep(steps.length);
+    if (isReviewing) {
+      setCurrentStep(steps.length);
+    }
   }, [isReviewing]);
 
   return (
