@@ -1,12 +1,13 @@
 "use client";
 import { useForm } from "@repo/utils/hook-form";
 import { Button, Form } from "@ui/index";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddressDetailsForm from "./address-details-form";
+import FinalReview from "./final-review";
 import OnboardingHeader from "./onboarding-header";
 import StepperIndicator from "./stepper-indicator";
 import StoreInformationForm from "./store-information-form";
-import SubscriptionPlanForm from "./subscription-plan-form";
+
 const steps = [
   {
     id: 1,
@@ -18,15 +19,16 @@ const steps = [
   },
   {
     id: 3,
-    label: "Subscription Plans",
+    label: "Final Review",
   },
 ];
 
 const OnboardingStepperForm = () => {
-  const [currentStep, setCurrentStep] = useState(3);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isReviewing] = useState(true);
   const totalStep = steps.length;
   const isFirstStep = currentStep === 1;
-  const isLastStep = currentStep === totalStep;
+  const isLastStep = currentStep === totalStep - 1;
   const form = useForm();
 
   const renderElements = (step: number) => {
@@ -35,52 +37,61 @@ const OnboardingStepperForm = () => {
         return <StoreInformationForm form={form} />;
       case 2:
         return <AddressDetailsForm form={form} />;
-      case 3:
-        return <SubscriptionPlanForm form={form} />;
       default:
         break;
     }
   };
+
+  useEffect(() => {
+    setCurrentStep(steps.length);
+  }, [isReviewing]);
+
   return (
     <div className="mx-auto w-[55%] space-y-5 py-20">
       <OnboardingHeader />
       <StepperIndicator steps={steps} currentStep={currentStep} />
-      <Form {...form}>
-        <form>{renderElements(currentStep)}</form>
-      </Form>
-      <div className="flex items-center justify-between">
-        <Button
-          variant={"accent"}
-          onClick={() => setCurrentStep((prev) => prev - 1)}
-          type="button"
-          size={"sm"}
-          disabled={isFirstStep}
-          className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
-        >
-          Previous
-        </Button>
-        {isLastStep ? (
-          <Button
-            variant={"accent"}
-            type="button"
-            size={"sm"}
-            className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
-          >
-            Submit
-          </Button>
-        ) : (
-          <Button
-            variant={"accent"}
-            onClick={() => setCurrentStep((prev) => prev + 1)}
-            type="button"
-            size={"sm"}
-            disabled={isLastStep}
-            className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
-          >
-            Next
-          </Button>
-        )}
-      </div>
+      {isReviewing ? (
+        <FinalReview />
+      ) : (
+        <>
+          <Form {...form}>
+            <form>{renderElements(currentStep)}</form>
+          </Form>
+          <div className="flex items-center justify-between">
+            <Button
+              variant={"accent"}
+              onClick={() => setCurrentStep((prev) => prev - 1)}
+              type="button"
+              size={"sm"}
+              disabled={isFirstStep}
+              className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
+            >
+              Previous
+            </Button>
+            {isLastStep ? (
+              <Button
+                variant={"accent"}
+                type="button"
+                size={"sm"}
+                className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
+              >
+                Proceed
+              </Button>
+            ) : (
+              <Button
+                variant={"accent"}
+                onClick={() => setCurrentStep((prev) => prev + 1)}
+                type="button"
+                size={"sm"}
+                disabled={isLastStep}
+                className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
+              >
+                Next
+              </Button>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

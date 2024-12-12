@@ -67,7 +67,7 @@ const SubscriptionPlanForm = ({}: { form: any }) => {
       </div>
       <hr />
       <RadioGroup className="space-y-3 *:rounded-lg *:border *:px-5 *:py-3 *:shadow-sm">
-        {data.map(({ billingPeriod, features, name, price, }, i) => (
+        {data.map(({ billingPeriod, features, name, price }, i) => (
           <div key={i} className="flex items-start gap-3">
             <RadioGroupItem className="mt-1 size-6" value="option-one" id="option-one" />
             <div className="w-full space-y-2">
