@@ -6,7 +6,7 @@ model Seller {
   shopBannerId    Int
   shopLogoId      Int
   contactNumber   String
-  businessEmail   String
+  businessEmail   String?
   status          SellerStatus @default(INACTIVE)
 
   // timestamps

@@ -1,4 +1,5 @@
 import { User } from "@repo/prisma/client";
+import { Express } from "express";
 interface File {
   fieldname: string;
   originalname: string;
@@ -21,6 +22,7 @@ declare global {
     interface Request {
       user: Partial<User>;
       file: File;
+      files?: { [fieldname: string]: File[] };
       originRole: string;
     }
   }

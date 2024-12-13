@@ -1,6 +1,7 @@
 export const AddressType = {
   HOME: "HOME",
   WORK: "WORK",
+  BUSINESS: "BUSINESS",
 } as const;
 
 export type TAddressTypes = (typeof AddressType)[keyof typeof AddressType];
@@ -10,11 +11,12 @@ export interface IAddress {
   id: number;
   userId: number; // Foreign key referencing User
   fullAddress: string;
-  state: string;
-  city: string;
-  zipCode: string;
   country: string;
-  addressType: TAddressTypes;
+  city: string;
+  state: string;
+  zipCode: string;
+  type: TAddressTypes;
+  isPrimary: boolean;
   createdAt: Date;
   updatedAt?: Date;
 }

@@ -1,0 +1,24 @@
+import { UserRole } from "@repo/prisma/client";
+import { sellerOnboardingValidationSchema } from "@repo/utils/validations";
+import { Router } from "express";
+import zodSafeParse from "../../handlers/zodSafeParse";
+import authMiddleware from "../../middleware/auth.middleware";
+import { upload } from "../../middleware/multer.middleware";
+import { SellerControllers } from "./seller.controllers";
+
+const router = Router();
+
+router.post(
+  "/onboarding",
+  upload.fields([
+    { name: "logo", maxCount: 1 },
+    { name: "banner", maxCount: 1 },
+  ]),
+  authMiddleware(UserRole.SELLER),
+  zodSafeParse(sellerOnboardingValidationSchema.omit({ logo: true, banner: true })),
+  SellerControllers.sellerOnboarding
+);
+
+const SellerRoutes = router;
+
+export default SellerRoutes;
