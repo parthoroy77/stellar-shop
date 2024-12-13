@@ -3,8 +3,10 @@ model Seller {
   userId          Int          @unique
   shopName        String
   shopDescription String       @db.Text
-  logoUrl         String
+  shopBannerId    Int
+  shopLogoId      Int
   contactNumber   String
+  businessEmail   String
   status          SellerStatus @default(INACTIVE)
 
   // timestamps
@@ -13,6 +15,8 @@ model Seller {
 
   // references
   user     User      @relation(fields: [userId], references: [id])
+  logo     File      @relation("LogoForSellers", fields: [shopLogoId], references: [id])
+  banner   File      @relation("BannerForSellers", fields: [shopBannerId], references: [id])
   products Product[]
 
   @@index([shopName])
