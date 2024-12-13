@@ -7,11 +7,12 @@ import {
   ImageDropzone,
   Input,
   Label,
+  PhoneInput,
   Textarea,
 } from "@ui/index";
 
 // TODO: remove any add corresponding types
-const StoreInformationForm = ({ form }: { form: any }) => {
+const StoreInformationFields = ({ form }: { form: any }) => {
   return (
     <div className="space-y-5">
       <div className="space-y-1">
@@ -53,7 +54,7 @@ const StoreInformationForm = ({ form }: { form: any }) => {
                   <Textarea
                     {...field}
                     placeholder="Max 70 words"
-                    className="bg-accent/40 w-full border px-5 placeholder:text-xs"
+                    className="bg-accent/40 min-h-[70px] w-full border px-5 placeholder:text-xs"
                   />
                 </FormControl>
                 <FormMessage />
@@ -61,24 +62,25 @@ const StoreInformationForm = ({ form }: { form: any }) => {
             )}
           />
         </div>
-        <div className="w-[35%]">
+        <div className="h-full w-[35%]">
           <Label>Store Logo</Label>
-          <ImageDropzone onFilesChange={() => {}} containerClassNames=" hover:border-secondary" />
+          <ImageDropzone onFilesChange={() => {}} containerClassNames="hover:border-secondary" />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-5">
         <FormField
           control={form.control}
-          name="email"
+          name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>Contact Number</FormLabel>
               <FormControl>
-                <Input
+                <PhoneInput
+                  placeholder="e.g. +880 1XXXXXXXX"
+                  className="*:bg-accent/40 h-10 w-full placeholder:text-xs"
                   {...field}
-                  placeholder="e.g. Stellar Shop"
-                  type="email"
-                  className="bg-accent/40 h-10 w-full border px-5 placeholder:text-xs"
+                  international
+                  defaultCountry="BD"
                 />
               </FormControl>
               <FormMessage />
@@ -90,11 +92,11 @@ const StoreInformationForm = ({ form }: { form: any }) => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Contact Number</FormLabel>
+              <FormLabel>Business Email (Optional)</FormLabel>
               <FormControl>
                 <Input
                   {...field}
-                  placeholder="e.g. Stellar Shop"
+                  placeholder="e.g. example@shop.com"
                   type="email"
                   className="bg-accent/40 h-10 w-full border px-5 placeholder:text-xs"
                 />
@@ -108,4 +110,4 @@ const StoreInformationForm = ({ form }: { form: any }) => {
   );
 };
 
-export default StoreInformationForm;
+export default StoreInformationFields;

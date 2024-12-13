@@ -2,11 +2,11 @@
 import { useForm } from "@repo/utils/hook-form";
 import { Button, Form } from "@ui/index";
 import { useEffect, useState } from "react";
-import AddressDetailsForm from "./address-details-form";
+import AddressDetailsFields from "./address-details-fields";
 import FinalReview from "./final-review";
 import OnboardingHeader from "./onboarding-header";
 import StepperIndicator from "./stepper-indicator";
-import StoreInformationForm from "./store-information-form";
+import StoreInformationFields from "./store-information-fields";
 
 const steps = [
   {
@@ -34,9 +34,9 @@ const OnboardingStepperForm = () => {
   const renderElements = (step: number) => {
     switch (step) {
       case 1:
-        return <StoreInformationForm form={form} />;
+        return <StoreInformationFields form={form} />;
       case 2:
-        return <AddressDetailsForm form={form} />;
+        return <AddressDetailsFields form={form} />;
       default:
         break;
     }

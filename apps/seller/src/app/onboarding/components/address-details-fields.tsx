@@ -7,11 +7,11 @@ interface AddressIso {
   stateCode: string | null;
 }
 
-interface AddressDetailsFormProps {
+interface AddressDetailsFieldProps {
   form: any; // Replace `any` with your form type, e.g., `UseFormReturn<T>`
 }
 
-const AddressDetailsForm = ({ form }: AddressDetailsFormProps) => {
+const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
   const [addressIso, setAddressIso] = useState<AddressIso>({
     countryCode: null,
     stateCode: null,
@@ -184,4 +184,4 @@ const AddressDetailsForm = ({ form }: AddressDetailsFormProps) => {
   );
 };
 
-export default AddressDetailsForm;
+export default AddressDetailsFields;
