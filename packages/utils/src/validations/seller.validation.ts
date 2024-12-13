@@ -8,7 +8,7 @@ export const sellerOnboardingValidationSchema = z.object({
   storeName: z.string(),
   description: z.string(),
   contactNumber: z.string(),
-  contactEmail: z.string().email(),
+  businessEmail: z.string().email(),
   address: addressValidationSchema,
 });
 

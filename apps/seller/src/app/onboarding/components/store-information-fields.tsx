@@ -1,3 +1,5 @@
+import { UseFormReturn } from "@repo/utils/hook-form";
+import { TSellerOnboardingValidation } from "@repo/utils/validations";
 import {
   FormControl,
   FormField,
@@ -10,9 +12,9 @@ import {
   PhoneInput,
   Textarea,
 } from "@ui/index";
+import { cn } from "@ui/lib/utils";
 
-// TODO: remove any add corresponding types
-const StoreInformationFields = ({ form }: { form: any }) => {
+const StoreInformationFields = ({ form }: { form: UseFormReturn<TSellerOnboardingValidation> }) => {
   return (
     <div className="space-y-5">
       <div className="space-y-1">
@@ -22,13 +24,16 @@ const StoreInformationFields = ({ form }: { form: any }) => {
       <hr />
       <div className="space-y-2">
         <Label>Store Banner</Label>
-        <ImageDropzone onFilesChange={() => {}} containerClassNames=" hover:border-secondary" />
+        <ImageDropzone
+          onFilesChange={(file) => form.setValue("banner", file)}
+          containerClassNames=" hover:border-secondary"
+        />
       </div>
       <div className="flex w-full items-start gap-5 *:space-y-2">
         <div className="w-[65%] !space-y-3">
           <FormField
             control={form.control}
-            name="email"
+            name="storeName"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Store Name</FormLabel>
@@ -36,7 +41,6 @@ const StoreInformationFields = ({ form }: { form: any }) => {
                   <Input
                     {...field}
                     placeholder="e.g. Stellar Shop"
-                    type="email"
                     className="bg-accent/40 h-10 w-full border px-5 placeholder:text-xs"
                   />
                 </FormControl>
@@ -46,7 +50,7 @@ const StoreInformationFields = ({ form }: { form: any }) => {
           />
           <FormField
             control={form.control}
-            name="email"
+            name="description"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Store Short Description</FormLabel>
@@ -64,13 +68,16 @@ const StoreInformationFields = ({ form }: { form: any }) => {
         </div>
         <div className="h-full w-[35%]">
           <Label>Store Logo</Label>
-          <ImageDropzone onFilesChange={() => {}} containerClassNames="hover:border-secondary" />
+          <ImageDropzone
+            onFilesChange={(file) => form.setValue("logo", file)}
+            containerClassNames="hover:border-secondary"
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-5">
         <FormField
           control={form.control}
-          name="phone"
+          name="contactNumber"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Contact Number</FormLabel>
@@ -89,7 +96,7 @@ const StoreInformationFields = ({ form }: { form: any }) => {
         />
         <FormField
           control={form.control}
-          name="email"
+          name="businessEmail"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Business Email (Optional)</FormLabel>
@@ -98,7 +105,7 @@ const StoreInformationFields = ({ form }: { form: any }) => {
                   {...field}
                   placeholder="e.g. example@shop.com"
                   type="email"
-                  className="bg-accent/40 h-10 w-full border px-5 placeholder:text-xs"
+                  className={cn("bg-accent/40 h-10 w-full border px-5 placeholder:text-xs")}
                 />
               </FormControl>
               <FormMessage />

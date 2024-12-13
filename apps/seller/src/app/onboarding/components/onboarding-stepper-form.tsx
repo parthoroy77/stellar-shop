@@ -1,5 +1,6 @@
 "use client";
-import { useForm } from "@repo/utils/hook-form";
+import { useForm, zodResolver } from "@repo/utils/hook-form";
+import { sellerOnboardingValidationSchema, TSellerOnboardingValidation } from "@repo/utils/validations";
 import { Button, Form } from "@ui/index";
 import { useEffect, useState } from "react";
 import AddressDetailsFields from "./address-details-fields";
@@ -29,7 +30,26 @@ const OnboardingStepperForm = () => {
   const totalStep = steps.length;
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === totalStep - 1;
-  const form = useForm();
+  const form = useForm<TSellerOnboardingValidation>({
+    resolver: zodResolver(sellerOnboardingValidationSchema),
+    defaultValues: {
+      banner: null,
+      logo: null,
+      storeName: "",
+      description: "",
+      businessEmail: "",
+      contactNumber: "",
+      address: {
+        fullAddress: "",
+        country: "",
+        state: "",
+        city: "",
+        zipCode: "",
+        isPrimary: true,
+        type: "BUSINESS",
+      },
+    },
+  });
 
   const renderElements = (step: number) => {
     switch (step) {
@@ -40,6 +60,10 @@ const OnboardingStepperForm = () => {
       default:
         break;
     }
+  };
+
+  const onOnboardingSubmit = (data: TSellerOnboardingValidation) => {
+    console.log(data);
   };
 
   useEffect(() => {
@@ -57,7 +81,7 @@ const OnboardingStepperForm = () => {
       ) : (
         <>
           <Form {...form}>
-            <form>{renderElements(currentStep)}</form>
+            <form onSubmit={form.handleSubmit(onOnboardingSubmit)}>{renderElements(currentStep)}</form>
           </Form>
           <div className="flex items-center justify-between">
             <Button
@@ -74,6 +98,7 @@ const OnboardingStepperForm = () => {
               <Button
                 variant={"accent"}
                 type="button"
+                onClick={form.handleSubmit(onOnboardingSubmit)}
                 size={"sm"}
                 className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
               >

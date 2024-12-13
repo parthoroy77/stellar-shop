@@ -1,3 +1,5 @@
+import { UseFormReturn } from "@repo/utils/hook-form";
+import { TSellerOnboardingValidation } from "@repo/utils/validations";
 import { Combobox, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@ui/index";
 import { City, Country, ICountry, IState, State } from "country-state-city";
 import { useCallback, useMemo, useState } from "react";
@@ -8,7 +10,7 @@ interface AddressIso {
 }
 
 interface AddressDetailsFieldProps {
-  form: any; // Replace `any` with your form type, e.g., `UseFormReturn<T>`
+  form: UseFormReturn<TSellerOnboardingValidation>;
 }
 
 const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
@@ -32,8 +34,8 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
 
   const handleCountryChange = useCallback(
     (country: ICountry | undefined) => {
-      form.setValue("state", "");
-      form.setValue("city", "");
+      form.setValue("address.state", "");
+      form.setValue("address.city", "");
       setAddressIso(() => ({
         countryCode: country?.isoCode || null,
         stateCode: null,
@@ -44,7 +46,7 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
 
   const handleStateChange = useCallback(
     (state: IState | undefined) => {
-      form.setValue("city", "");
+      form.setValue("address.city", "");
       setAddressIso((prev) => ({
         ...prev,
         stateCode: state?.isoCode || null,
@@ -65,7 +67,7 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
       {/* Full Address Field */}
       <FormField
         control={form.control}
-        name="fullAddress"
+        name="address.fullAddress"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Full Address</FormLabel>
@@ -86,14 +88,14 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
         {/* Country Field */}
         <FormField
           control={form.control}
-          name="country"
+          name="address.country"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Country</FormLabel>
               <FormControl>
                 <Combobox
                   items={countries}
-                  selectedItem={countries.find((x) => x.name === form.watch("country"))}
+                  selectedItem={countries.find((x) => x.name === form.watch("address.country"))}
                   onValueChange={(item) => {
                     field.onChange(item?.name);
                     handleCountryChange(item);
@@ -112,14 +114,14 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
         {/* State Field */}
         <FormField
           control={form.control}
-          name="state"
+          name="address.state"
           render={({ field }) => (
             <FormItem>
               <FormLabel>State/District</FormLabel>
               <FormControl>
                 <Combobox
                   items={states}
-                  selectedItem={states.find((x) => x.name === form.watch("state"))}
+                  selectedItem={states.find((x) => x.name === form.watch("address.state"))}
                   onValueChange={(item) => {
                     field.onChange(item?.name);
                     handleStateChange(item);
@@ -139,14 +141,14 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
         {/* City Field */}
         <FormField
           control={form.control}
-          name="city"
+          name="address.city"
           render={({ field }) => (
             <FormItem>
               <FormLabel>City</FormLabel>
               <FormControl>
                 <Combobox
                   items={cities}
-                  selectedItem={cities.find((x) => x.name === form.watch("city"))}
+                  selectedItem={cities.find((x) => x.name === form.watch("address.city"))}
                   onValueChange={(item) => {
                     field.onChange(item?.name);
                   }}
@@ -164,7 +166,7 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
         {/* Zip Code Field */}
         <FormField
           control={form.control}
-          name="zipCode"
+          name="address.zipCode"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Zip Code</FormLabel>
