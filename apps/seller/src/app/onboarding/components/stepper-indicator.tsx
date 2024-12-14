@@ -1,14 +1,15 @@
 import { Button } from "@ui/index";
 import { cn } from "@ui/lib/utils";
 import { FC } from "react";
-import { LuCheck } from "react-icons/lu";
+import { LuCheck, LuLoader } from "react-icons/lu";
 
 interface Props {
   steps: { label: string; id: number }[];
   currentStep: number;
+  loading: boolean;
 }
 
-const StepperIndicator: FC<Props> = ({ steps, currentStep }) => {
+const StepperIndicator: FC<Props> = ({ steps, currentStep, loading }) => {
   return (
     <ul className="mx-auto flex justify-between">
       {steps.map(({ label, id }, i) => (
@@ -29,7 +30,7 @@ const StepperIndicator: FC<Props> = ({ steps, currentStep }) => {
           >
             <span className="border-secondary size-4 rounded-full border text-xs text-black">{i + 1}</span>
             <span className="text-sm">{label}</span>
-            {currentStep > id && <LuCheck />}
+            {currentStep > id && (loading ? <LuLoader className="animate-spin" /> : <LuCheck />)}
           </Button>
         </li>
       ))}

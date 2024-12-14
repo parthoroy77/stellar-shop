@@ -41,4 +41,4 @@ const sellerOnboardingStatus = asyncHandler(async (req, res) => {
   });
 });
 
-export const SellerControllers = { sellerOnboarding,sellerOnboardingStatus };
+export const SellerControllers = { sellerOnboarding, sellerOnboardingStatus };

@@ -45,7 +45,7 @@ const fetchUser = async (userId: number) => {
 
 // Auth middleware
 const authMiddleware = (...requiredRoles: TUserRoles[]) => {
-  return asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  return asyncHandler(async (req: Request, _res: Response, next: NextFunction) => {
     const session_token = req.cookies.session_token || req.headers.authorization?.split(" ")[1];
 
     // Check if session token exists

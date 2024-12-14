@@ -5,11 +5,11 @@ import { Session } from "next-auth";
 import { Suspense } from "react";
 import OnboardingFormSkeleton from "./components/onboarding-form-skeleton";
 import OnboardingStepperForm from "./components/onboarding-stepper-form";
-
+const revalidateAt = 300;
 const onboardingStatusCheck = async (session: Session) => {
   const result = await fetcher<{ approved: boolean; submitted: boolean }>(
     `/sellers/onboarding/status/${session.user.id!}`,
-    { session, cache: "no-store" }
+    { session, next: { revalidate: revalidateAt, tags: ["onboarding-status"] } }
   );
   return result.data;
 };
@@ -21,7 +21,7 @@ const OnboardingPage = async () => {
     <main className="flex min-h-screen w-full items-center justify-center">
       <Container>
         <Suspense fallback={<OnboardingFormSkeleton />}>
-          <OnboardingStepperForm sellerApproved={onboardingStatus!} />
+          <OnboardingStepperForm sellerStatus={onboardingStatus!} />
         </Suspense>
       </Container>
     </main>

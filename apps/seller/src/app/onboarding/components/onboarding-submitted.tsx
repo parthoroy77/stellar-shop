@@ -1,6 +1,7 @@
+import { Progress } from "@ui/index";
 import { LuHourglass } from "react-icons/lu";
 
-const FinalReview = () => {
+const OnboardingSubmitted = () => {
   return (
     <div className="flex h-[350px] w-full flex-col justify-center space-y-5 rounded-lg border bg-white p-8 text-center">
       <div className="flex items-center justify-center">
@@ -17,7 +18,7 @@ const FinalReview = () => {
         further information.
       </p>
       <div className="bg-accent h-2 w-full rounded-full">
-        <div className="bg-secondary h-2 rounded-xl" style={{ width: "75%" }}></div>
+        <Progress value={75} className="bg-accent h-2" indicatorClass="bg-secondary" />
       </div>
       <p className="text-accent-foreground text-sm">
         This process usually takes 1-2 business days. We appreciate your understanding.
@@ -26,4 +27,4 @@ const FinalReview = () => {
   );
 };
 
-export default FinalReview;
+export default OnboardingSubmitted;

@@ -2,10 +2,11 @@ import * as ProgressPrimitive from "@radix-ui/react-progress";
 import * as React from "react";
 
 import { cn } from "@ui/lib/utils";
+import { ClassValue } from "class-variance-authority/types";
 
 // Extend the props to include indicatorClass
 type ProgressProps = React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> & {
-  indicatorClass?: string; // Optional string type for additional classes
+  indicatorClass?: ClassValue; // Optional string type for additional classes
 };
 
 const Progress = React.forwardRef<React.ElementRef<typeof ProgressPrimitive.Root>, ProgressProps>(
