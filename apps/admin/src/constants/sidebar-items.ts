@@ -4,6 +4,7 @@ import { GoPeople } from "react-icons/go";
 import { IoSettingsOutline } from "react-icons/io5";
 import { RxDashboard } from "react-icons/rx";
 import { SiOpenproject } from "react-icons/si";
+import { TbUserStar } from "react-icons/tb";
 import { VscSymbolMethod } from "react-icons/vsc";
 
 export const sidebarItems: TSidebarItem[] = [
@@ -44,6 +45,24 @@ export const sidebarItems: TSidebarItem[] = [
     label: "Orders",
     href: "/item",
     Icon: CiBoxList,
+  },
+  {
+    label: "Seller Management",
+    Icon: TbUserStar,
+    children: [
+      {
+        label: "Seller List",
+        href: "/item",
+      },
+      {
+        label: "Seller Approval",
+        href: "/seller-management/seller-approval",
+      },
+      {
+        label: "Add New Seller",
+        href: "/item",
+      },
+    ],
   },
   {
     label: "Users",

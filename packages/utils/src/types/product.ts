@@ -3,7 +3,7 @@ import { IBrand } from "./brand";
 import { TCategory } from "./category";
 import { IFile } from "./file";
 import { IProductRatingAverage, IProductReview } from "./productReviewRatings";
-import { ISellerProfile } from "./seller";
+import { ISeller } from "./seller";
 import { ITag } from "./tag";
 
 export const ProductActivationStatus = {
@@ -91,5 +91,5 @@ export type TProduct = IProduct & {
   variants: TProductVariant[];
   ratingAverage?: IProductRatingAverage;
   reviews?: IProductReview[];
-  seller: ISellerProfile;
+  seller: ISeller;
 };

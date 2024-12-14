@@ -3,7 +3,8 @@ import PrivateRoute from "@/layouts/private-route";
 import PublicRoute from "@/layouts/public-route";
 import CategoriesPage from "@/pages/categories-page";
 import LoginPage from "@/pages/login-page";
-import { createBrowserRouter } from "react-router-dom";
+import SellerApprovalPage from "@/pages/seller-management/seller-approval-page";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 
 export const routes = createBrowserRouter([
   {
@@ -21,6 +22,11 @@ export const routes = createBrowserRouter([
       {
         path: "/categories",
         element: <CategoriesPage />,
+      },
+      {
+        path: "/seller-management",
+        element: <Outlet />,
+        children: [{ path: "seller-approval", element: <SellerApprovalPage /> }],
       },
     ],
   },
