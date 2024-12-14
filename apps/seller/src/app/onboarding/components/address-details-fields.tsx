@@ -105,7 +105,7 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
       />
 
       {/* Country, State, and City Fields */}
-      <div className="grid grid-cols-2 gap-x-5 gap-y-2">
+      <div className="grid gap-x-5 gap-y-2 lg:grid-cols-2">
         {/* Country Field */}
         <FormField
           control={form.control}

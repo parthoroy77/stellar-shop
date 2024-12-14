@@ -4,7 +4,7 @@ import { LuArrowRight, LuCheckCircle } from "react-icons/lu";
 
 const OnboardingSuccessful = () => {
   return (
-    <div className="flex h-[350px] w-full flex-col justify-center space-y-5 rounded-lg border bg-white p-8 text-center">
+    <div className="flex min-h-[350px] w-full flex-col justify-center space-y-5 rounded-lg border bg-white p-8 text-center">
       <div>
         <LuCheckCircle className="mx-auto size-10" color="green" />
       </div>

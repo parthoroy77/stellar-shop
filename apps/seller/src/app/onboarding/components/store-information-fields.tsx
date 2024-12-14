@@ -14,29 +14,29 @@ import {
 } from "@ui/index";
 import { cn } from "@ui/lib/utils";
 
-const StoreInformationFields = ({ form }: { form: UseFormReturn<TSellerOnboardingValidation> }) => {
+const ShopInformationFields = ({ form }: { form: UseFormReturn<TSellerOnboardingValidation> }) => {
   return (
     <div className="space-y-5">
       <div className="space-y-1">
         <h6 className="text-accent-foreground text-xs">Step 1</h6>
-        <h3 className="text-lg font-medium text-black">Store Information</h3>
+        <h3 className="text-lg font-medium text-black">Shop Information</h3>
       </div>
       <hr />
       <div className="space-y-2">
-        <Label>Store Banner</Label>
+        <Label>Shop Banner</Label>
         <ImageDropzone
           onFilesChange={(file) => form.setValue("banner", file)}
           containerClassNames=" hover:border-secondary"
         />
       </div>
-      <div className="flex w-full items-start gap-5 *:space-y-2">
-        <div className="w-[65%] !space-y-3">
+      <div className="flex w-full flex-col-reverse items-start gap-5 *:space-y-2 lg:flex-row">
+        <div className="w-full !space-y-3 lg:w-[65%]">
           <FormField
             control={form.control}
             name="shopName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Store Name</FormLabel>
+                <FormLabel>Shop Name</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
@@ -53,7 +53,7 @@ const StoreInformationFields = ({ form }: { form: UseFormReturn<TSellerOnboardin
             name="shopDescription"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Store Short Description</FormLabel>
+                <FormLabel>Shop Short Description</FormLabel>
                 <FormControl>
                   <Textarea
                     {...field}
@@ -66,15 +66,15 @@ const StoreInformationFields = ({ form }: { form: UseFormReturn<TSellerOnboardin
             )}
           />
         </div>
-        <div className="h-full w-[35%]">
-          <Label>Store Logo</Label>
+        <div className="h-full w-full lg:w-[35%]">
+          <Label>Shop Logo</Label>
           <ImageDropzone
             onFilesChange={(file) => form.setValue("logo", file)}
             containerClassNames="hover:border-secondary"
           />
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid gap-5 lg:grid-cols-2">
         <FormField
           control={form.control}
           name="contactNumber"
@@ -117,4 +117,4 @@ const StoreInformationFields = ({ form }: { form: UseFormReturn<TSellerOnboardin
   );
 };
 
-export default StoreInformationFields;
+export default ShopInformationFields;

@@ -157,7 +157,7 @@ const OnboardingStepperForm = ({ sellerStatus }: { sellerStatus: SellerStatus })
   );
 
   return (
-    <div className="mx-auto w-[55%] space-y-5 py-20">
+    <div className="mx-auto w-full space-y-5 py-20 md:w-[80%] lg:w-[55%]">
       <OnboardingHeader />
       <StepperIndicator steps={steps} currentStep={currentStep} loading={isPending} />
       {isReviewing ? (
