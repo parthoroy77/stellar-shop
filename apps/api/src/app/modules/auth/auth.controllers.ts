@@ -53,9 +53,9 @@ const userLogin = (role: UserRole) =>
     });
   });
 
-const userVerifyOTPLogin = asyncHandler(async (_req: Request, _res: Response) => {
-  // const payload
-});
+// const userVerifyOTPLogin = asyncHandler(async (_req: Request, _res: Response) => {
+//   // const payload
+// });
 
 const userLogout = asyncHandler(async (req: Request, res: Response) => {
   const { session_token } = req.cookies;

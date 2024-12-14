@@ -2,20 +2,21 @@ import { Prisma } from "@repo/prisma/client";
 import { ZodError } from "@repo/utils/validations";
 import { ErrorRequestHandler } from "express";
 import config from "../config";
+import logger from "../logger";
 import { ApiError } from "./ApiError";
 import handleApiError from "./handleAppError";
 import { handlePrismaError } from "./handlePrismaErrors";
 import handleZodError from "./handleZodError";
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
+const globalErrorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
   const success = false;
   let statusCode = 500;
   let message = error.message || "Internal Server Error";
   let errorSources = null;
 
   if (config.NODE_ENV === "development") {
-    console.log(error.message);
+    logger.log(error.message);
   }
 
   // handle prisma errors

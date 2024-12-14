@@ -16,7 +16,7 @@ async function main() {
     });
     pingServer();
   } catch (error) {
-    console.error(colors.red.bold("Error connecting to database:"), error);
+    logger.error(colors.red.bold("Error connecting to database:"), error);
     process.exit(1);
   }
 }
@@ -39,7 +39,7 @@ process.on("unhandledRejection", (error) => {
 
 // Handle uncaughtException
 process.on("uncaughtException", (error) => {
-  console.error(colors.red.bold("Uncaught Exception Error:"), error);
+  logger.error(colors.red.bold("Uncaught Exception Error:"), error);
   if (server) {
     server.close(() => {
       prisma.$disconnect();

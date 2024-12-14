@@ -18,7 +18,7 @@ const createCategory = asyncHandler(async (req: Request, res: Response) => {
     throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "Category image file not found!");
   }
 
-  const result = await CategoryServices.create(payload, fileLocalPath, req.user.id);
+  const result = await CategoryServices.create(payload, fileLocalPath, +req.user?.id!);
 
   ApiResponse(res, {
     data: result,
@@ -45,7 +45,7 @@ const getAllCategories = asyncHandler(async (req: Request, res: Response) => {
 });
 
 // get all categories with children for show hierarchy
-const getCategoriesWithAllChildren = asyncHandler(async (req: Request, res: Response) => {
+const getCategoriesWithAllChildren = asyncHandler(async (_req: Request, res: Response) => {
   const result = await CategoryServices.getAllWithChildren();
   ApiResponse(res, {
     data: result,

@@ -9,7 +9,7 @@ import { ApiError } from "../handlers/ApiError";
  * please use auth middleware before using roleMatcher.
  */
 
-export const roleMatcher = (req: Request, res: Response, next: NextFunction) => {
+export const roleMatcher = (req: Request, _res: Response, next: NextFunction) => {
   const userRole = req?.user?.role;
   const originRole = req?.originRole;
 
