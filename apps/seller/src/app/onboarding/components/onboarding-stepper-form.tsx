@@ -1,8 +1,11 @@
 "use client";
+import { useClientSession } from "@/lib/auth-utils";
+import { fetcher } from "@/lib/fetcher";
 import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { sellerOnboardingValidationSchema, TSellerOnboardingValidation } from "@repo/utils/validations";
 import { Button, Form } from "@ui/index";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
+import { toast } from "sonner";
 import AddressDetailsFields from "./address-details-fields";
 import FinalReview from "./final-review";
 import OnboardingHeader from "./onboarding-header";
@@ -26,6 +29,8 @@ const steps = [
 
 const OnboardingStepperForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
+  const { session } = useClientSession();
+  const [isPending, startTransition] = useTransition();
   const [isReviewing] = useState(false);
   const totalStep = steps.length;
   const isFirstStep = currentStep === 1;
@@ -35,19 +40,17 @@ const OnboardingStepperForm = () => {
     defaultValues: {
       banner: null,
       logo: null,
-      storeName: "",
-      description: "",
+      shopName: "",
+      shopDescription: "",
       businessEmail: "",
       contactNumber: "",
-      address: {
-        fullAddress: "",
-        country: "",
-        state: "",
-        city: "",
-        zipCode: "",
-        isPrimary: true,
-        type: "BUSINESS",
-      },
+      fullAddress: "",
+      country: "",
+      state: "",
+      city: "",
+      zipCode: "",
+      isPrimary: true,
+      type: "BUSINESS",
     },
   });
 
@@ -63,7 +66,23 @@ const OnboardingStepperForm = () => {
   };
 
   const onOnboardingSubmit = (data: TSellerOnboardingValidation) => {
-    console.log(data);
+    const toastId = toast.loading("Sending you request!", { duration: 3000 });
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    startTransition(async () => {
+      const result = await fetcher("/sellers/onboarding", {
+        method: "POST",
+        body: formData,
+        session,
+      });
+      if (result.success) {
+        toast.success(result.message, { id: toastId });
+      } else {
+        toast.error(result.message, { id: toastId });
+      }
+    });
   };
 
   useEffect(() => {
@@ -100,6 +119,7 @@ const OnboardingStepperForm = () => {
                 type="button"
                 onClick={form.handleSubmit(onOnboardingSubmit)}
                 size={"sm"}
+                disabled={isPending}
                 className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
               >
                 Proceed

@@ -27,10 +27,8 @@ export async function fetcher<TResponse, TBody = unknown>(
   const fetchOptions: RequestInit & { next?: NextFetchRequestConfig } = {
     method,
     headers: {
-      "Content-Type": "application/json",
       ...headers,
     },
-    body: body ? JSON.stringify(body) : undefined,
     credentials: "include",
   };
 
@@ -45,8 +43,18 @@ export async function fetcher<TResponse, TBody = unknown>(
       Authorization: `Bearer ${session.sessionToken}`,
     };
   }
-  console.log(session);
 
+  // Handle body based on its type
+  if (body instanceof FormData) {
+    fetchOptions.body = body;
+    // Don't set Content-Type for FormData, browser will set it automatically
+  } else if (body) {
+    fetchOptions.body = JSON.stringify(body);
+    fetchOptions.headers = {
+      ...fetchOptions.headers,
+      "Content-Type": "application/json",
+    };
+  }
   try {
     const response = await fetch(url, fetchOptions);
     const result = await response.json();

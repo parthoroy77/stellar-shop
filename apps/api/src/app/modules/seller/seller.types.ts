@@ -5,5 +5,4 @@ export type TOnboardingInput = {
   shopDescription: string;
   contactNumber: string;
   businessEmail?: string;
-  address: TAddressInput;
-};
+} & TAddressInput;

@@ -10,12 +10,12 @@ const router = Router();
 
 router.post(
   "/onboarding",
+  authMiddleware(UserRole.SELLER),
   upload.fields([
     { name: "logo", maxCount: 1 },
     { name: "banner", maxCount: 1 },
   ]),
-  authMiddleware(UserRole.SELLER),
-  zodSafeParse(sellerOnboardingValidationSchema.omit({ logo: true, banner: true })),
+  zodSafeParse(sellerOnboardingValidationSchema.omit({ logo: true, banner: true, isPrimary: true })),
   SellerControllers.sellerOnboarding
 );
 

@@ -33,7 +33,7 @@ const StoreInformationFields = ({ form }: { form: UseFormReturn<TSellerOnboardin
         <div className="w-[65%] !space-y-3">
           <FormField
             control={form.control}
-            name="storeName"
+            name="shopName"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Store Name</FormLabel>
@@ -50,7 +50,7 @@ const StoreInformationFields = ({ form }: { form: UseFormReturn<TSellerOnboardin
           />
           <FormField
             control={form.control}
-            name="description"
+            name="shopDescription"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Store Short Description</FormLabel>

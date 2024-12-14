@@ -11,7 +11,8 @@ const onboarding = async (
   userId: number,
   filePaths: { logoPath: string; bannerPath: string }
 ) => {
-  const { address, shopName, shopDescription, contactNumber, businessEmail } = payload;
+  const { country, city, state, zipCode, fullAddress, type, shopName, shopDescription, contactNumber, businessEmail } =
+    payload;
 
   const uploadResults = [];
 
@@ -27,7 +28,7 @@ const onboarding = async (
     // Perform all database operations in a transaction
     const seller = await prisma.$transaction(async (tx) => {
       await tx.address.create({
-        data: address,
+        data: { country, state, city, zipCode, fullAddress, isPrimary: true, type, userId },
       });
 
       const result = await tx.seller.create({
@@ -48,7 +49,8 @@ const onboarding = async (
   } catch (error) {
     logger.error(error);
     // Cleanup uploaded files in case of error
-    await Promise.all(uploadResults.map((publicId) => deleteFromCloudinary(publicId, "shopMedia")));
+    await Promise.all(uploadResults.map((publicId) => deleteFromCloudinary(publicId, "image")));
+    console.log(error);
     throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "An error occurred while onboarding!");
   }
 };

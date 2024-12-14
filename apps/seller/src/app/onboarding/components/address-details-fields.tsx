@@ -2,7 +2,7 @@ import { UseFormReturn } from "@repo/utils/hook-form";
 import { TSellerOnboardingValidation } from "@repo/utils/validations";
 import { Combobox, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@ui/index";
 import { City, Country, ICountry, IState, State } from "country-state-city";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface AddressIso {
   countryCode: string | null;
@@ -18,7 +18,9 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
     countryCode: null,
     stateCode: null,
   });
-
+  const country = useMemo(() => form.watch("country"), [form]);
+  const state = useMemo(() => form.watch("state"), [form]);
+  const city = useMemo(() => form.watch("city"), [form]);
   const countries = useMemo(() => Country.getAllCountries(), []);
   const states = useMemo(
     () => (addressIso.countryCode ? State.getStatesOfCountry(addressIso.countryCode) : []),
@@ -31,11 +33,30 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
         : [],
     [addressIso.countryCode, addressIso.stateCode]
   );
+  // Automatically find and set country and state ISO when form values are loaded
+  useEffect(() => {
+    if (country) {
+      const selectedCountry = countries.find((c) => c.name === country);
+      setAddressIso((prev) => ({
+        ...prev,
+        countryCode: selectedCountry?.isoCode || null,
+      }));
+    }
+  }, [country, countries]);
 
+  useEffect(() => {
+    if (state && addressIso.countryCode) {
+      const selectedState = State.getStatesOfCountry(addressIso.countryCode).find((s) => s.name === state);
+      setAddressIso((prev) => ({
+        ...prev,
+        stateCode: selectedState?.isoCode || null,
+      }));
+    }
+  }, [state, addressIso.countryCode]);
   const handleCountryChange = useCallback(
     (country: ICountry | undefined) => {
-      form.setValue("address.state", "");
-      form.setValue("address.city", "");
+      form.setValue("state", "");
+      form.setValue("city", "");
       setAddressIso(() => ({
         countryCode: country?.isoCode || null,
         stateCode: null,
@@ -46,7 +67,7 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
 
   const handleStateChange = useCallback(
     (state: IState | undefined) => {
-      form.setValue("address.city", "");
+      form.setValue("city", "");
       setAddressIso((prev) => ({
         ...prev,
         stateCode: state?.isoCode || null,
@@ -67,7 +88,7 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
       {/* Full Address Field */}
       <FormField
         control={form.control}
-        name="address.fullAddress"
+        name="fullAddress"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Full Address</FormLabel>
@@ -75,7 +96,7 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
               <Input
                 {...field}
                 placeholder="e.g. Block 4, Street 9, Rd 2, East Dhaka"
-                className="bg-accent/40 h-9 w-full border px-5 placeholder:text-xs"
+                className="bg-accent/40 h-9 w-full border px-5 text-sm placeholder:text-xs"
               />
             </FormControl>
             <FormMessage />
@@ -88,14 +109,14 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
         {/* Country Field */}
         <FormField
           control={form.control}
-          name="address.country"
+          name="country"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Country</FormLabel>
               <FormControl>
                 <Combobox
                   items={countries}
-                  selectedItem={countries.find((x) => x.name === form.watch("address.country"))}
+                  selectedItem={countries.find((x) => x.name === form.watch("country"))}
                   onValueChange={(item) => {
                     field.onChange(item?.name);
                     handleCountryChange(item);
@@ -114,14 +135,14 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
         {/* State Field */}
         <FormField
           control={form.control}
-          name="address.state"
+          name="state"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>State/District</FormLabel>
+              <FormLabel>State</FormLabel>
               <FormControl>
                 <Combobox
                   items={states}
-                  selectedItem={states.find((x) => x.name === form.watch("address.state"))}
+                  selectedItem={states.find((x) => x.name === form.watch("state"))}
                   onValueChange={(item) => {
                     field.onChange(item?.name);
                     handleStateChange(item);
@@ -141,14 +162,14 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
         {/* City Field */}
         <FormField
           control={form.control}
-          name="address.city"
+          name="city"
           render={({ field }) => (
             <FormItem>
               <FormLabel>City</FormLabel>
               <FormControl>
                 <Combobox
                   items={cities}
-                  selectedItem={cities.find((x) => x.name === form.watch("address.city"))}
+                  selectedItem={cities.find((x) => x.name === city)}
                   onValueChange={(item) => {
                     field.onChange(item?.name);
                   }}
@@ -166,7 +187,7 @@ const AddressDetailsFields = ({ form }: AddressDetailsFieldProps) => {
         {/* Zip Code Field */}
         <FormField
           control={form.control}
-          name="address.zipCode"
+          name="zipCode"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Zip Code</FormLabel>
