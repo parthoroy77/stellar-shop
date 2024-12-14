@@ -17,6 +17,11 @@ const onboarding = async (
   const uploadResults = [];
 
   try {
+    // check is shop already created by this user.
+    const isExist = await prisma.seller.findUnique({ where: { userId } });
+    if (isExist) {
+      throw new ApiError(StatusCodes.CONFLICT, "You already completed your onboarding!");
+    }
     // Upload logo and banner files and create file records
     const logoUpload = uploadFileToCloudinaryAndCreateRecord(filePaths.logoPath, "shopMedia", userId);
     const bannerUpload = uploadFileToCloudinaryAndCreateRecord(filePaths.bannerPath, "shopMedia", userId);
@@ -55,4 +60,10 @@ const onboarding = async (
   }
 };
 
-export const SellerServices = { onboarding };
+const onboardingStatus = async (userId: number) => {
+  const result = await prisma.seller.findUnique({ where: { userId } });
+  console.log(result);
+  return { approved: result?.status === "ACTIVE" || false, submitted: result ? true : false };
+};
+
+export const SellerServices = { onboarding, onboardingStatus };

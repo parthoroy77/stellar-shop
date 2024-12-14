@@ -19,6 +19,12 @@ router.post(
   SellerControllers.sellerOnboarding
 );
 
+router.get(
+  "/onboarding/status/:userId",
+  authMiddleware(UserRole.ADMIN, UserRole.SELLER),
+  SellerControllers.sellerOnboardingStatus
+);
+
 const SellerRoutes = router;
 
 export default SellerRoutes;

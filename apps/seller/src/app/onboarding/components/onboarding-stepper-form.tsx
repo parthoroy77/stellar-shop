@@ -4,11 +4,13 @@ import { fetcher } from "@/lib/fetcher";
 import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { sellerOnboardingValidationSchema, TSellerOnboardingValidation } from "@repo/utils/validations";
 import { Button, Form } from "@ui/index";
+import { revalidateTag } from "next/cache";
 import { useEffect, useState, useTransition } from "react";
 import { toast } from "sonner";
 import AddressDetailsFields from "./address-details-fields";
 import FinalReview from "./final-review";
 import OnboardingHeader from "./onboarding-header";
+import OnboardingSuccessful from "./onboarding-successful";
 import StepperIndicator from "./stepper-indicator";
 import StoreInformationFields from "./store-information-fields";
 
@@ -27,14 +29,15 @@ const steps = [
   },
 ];
 
-const OnboardingStepperForm = () => {
+const OnboardingStepperForm = ({ sellerApproved }: { sellerApproved: { approved: boolean; submitted: boolean } }) => {
   const [currentStep, setCurrentStep] = useState(1);
   const { session } = useClientSession();
   const [isPending, startTransition] = useTransition();
-  const [isReviewing] = useState(false);
+  const [isReviewing, setIsReviewing] = useState(sellerApproved?.submitted || false);
   const totalStep = steps.length;
   const isFirstStep = currentStep === 1;
   const isLastStep = currentStep === totalStep - 1;
+  const isFinalStep = currentStep === steps.length;
   const form = useForm<TSellerOnboardingValidation>({
     resolver: zodResolver(sellerOnboardingValidationSchema),
     defaultValues: {
@@ -60,6 +63,8 @@ const OnboardingStepperForm = () => {
         return <StoreInformationFields form={form} />;
       case 2:
         return <AddressDetailsFields form={form} />;
+      case 3:
+        return <OnboardingSuccessful />;
       default:
         break;
     }
@@ -71,6 +76,10 @@ const OnboardingStepperForm = () => {
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value);
     });
+    if (status) {
+      toast.info("Your request already submitted!", { id: toastId });
+      return;
+    }
     startTransition(async () => {
       const result = await fetcher("/sellers/onboarding", {
         method: "POST",
@@ -79,17 +88,21 @@ const OnboardingStepperForm = () => {
       });
       if (result.success) {
         toast.success(result.message, { id: toastId });
+        revalidateTag("onboarding-status");
+        form.reset();
       } else {
         toast.error(result.message, { id: toastId });
       }
     });
-  };
+  };  
+  console.log(sellerApproved);
 
   useEffect(() => {
-    if (isReviewing) {
+    if (sellerApproved.approved) {
       setCurrentStep(steps.length);
+      setIsReviewing(false);
     }
-  }, [isReviewing]);
+  }, [sellerApproved]);
 
   return (
     <div className="mx-auto w-[55%] space-y-5 py-20">
@@ -102,41 +115,43 @@ const OnboardingStepperForm = () => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onOnboardingSubmit)}>{renderElements(currentStep)}</form>
           </Form>
-          <div className="flex items-center justify-between">
-            <Button
-              variant={"accent"}
-              onClick={() => setCurrentStep((prev) => prev - 1)}
-              type="button"
-              size={"sm"}
-              disabled={isFirstStep}
-              className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
-            >
-              Previous
-            </Button>
-            {isLastStep ? (
+          {!isFinalStep && (
+            <div className="flex items-center justify-between">
               <Button
                 variant={"accent"}
-                type="button"
-                onClick={form.handleSubmit(onOnboardingSubmit)}
-                size={"sm"}
-                disabled={isPending}
-                className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
-              >
-                Proceed
-              </Button>
-            ) : (
-              <Button
-                variant={"accent"}
-                onClick={() => setCurrentStep((prev) => prev + 1)}
+                onClick={() => setCurrentStep((prev) => prev - 1)}
                 type="button"
                 size={"sm"}
-                disabled={isLastStep}
+                disabled={isFirstStep}
                 className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
               >
-                Next
+                Previous
               </Button>
-            )}
-          </div>
+              {isLastStep ? (
+                <Button
+                  variant={"accent"}
+                  type="button"
+                  onClick={form.handleSubmit(onOnboardingSubmit)}
+                  size={"sm"}
+                  disabled={isPending}
+                  className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
+                >
+                  Proceed
+                </Button>
+              ) : (
+                <Button
+                  variant={"accent"}
+                  onClick={() => setCurrentStep((prev) => prev + 1)}
+                  type="button"
+                  size={"sm"}
+                  disabled={isLastStep}
+                  className="hover:text-secondary min-w-[100px] hover:border hover:bg-white"
+                >
+                  Next
+                </Button>
+              )}
+            </div>
+          )}
         </>
       )}
     </div>

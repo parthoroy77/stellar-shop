@@ -27,4 +27,18 @@ const sellerOnboarding = asyncHandler(async (req, res) => {
   });
 });
 
-export const SellerControllers = { sellerOnboarding };
+const sellerOnboardingStatus = asyncHandler(async (req, res) => {
+  const userId = req?.params?.userId || req.user.id;
+  if (!userId) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "User not found!");
+  }
+  const result = await SellerServices.onboardingStatus(+userId);
+  ApiResponse(res, {
+    data: result,
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: "Seller onboarding status fetched successfully!",
+  });
+});
+
+export const SellerControllers = { sellerOnboarding,sellerOnboardingStatus };
