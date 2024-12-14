@@ -55,14 +55,12 @@ const onboarding = async (
     logger.error(error);
     // Cleanup uploaded files in case of error
     await Promise.all(uploadResults.map((publicId) => deleteFromCloudinary(publicId, "image")));
-    console.log(error);
     throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "An error occurred while onboarding!");
   }
 };
 
 const onboardingStatus = async (userId: number) => {
   const result = await prisma.seller.findUnique({ where: { userId } });
-  console.log(result);
   return { approved: result?.status === "ACTIVE" || false, submitted: result ? true : false };
 };
 
