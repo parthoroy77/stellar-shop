@@ -1,5 +1,6 @@
+import { IAddress } from "./address";
 import { IFile } from "./file";
-import { IUser } from "./user";
+import { TUser } from "./user";
 
 export const SellerStatus = {
   ACTIVE: "ACTIVE",
@@ -26,7 +27,7 @@ export interface ISeller {
 }
 
 export type TSeller = ISeller & {
-  user?: IUser;
+  user?: TUser & { addresses: IAddress[] };
   logo: IFile;
   banner: IFile;
 };

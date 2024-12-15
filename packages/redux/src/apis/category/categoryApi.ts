@@ -13,14 +13,14 @@ const categoryApi = baseApi.injectEndpoints({
           "Content-Type": "multipart/form-data",
         },
       }),
-      invalidatesTags: ["Categories"],
+      invalidatesTags: ["categories"],
     }),
     deleteCategoryById: builder.mutation<IApiResponse<{}>, string>({
       query: (categoryId) => ({
         url: `/categories/delete-category/${categoryId}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Categories"],
+      invalidatesTags: ["categories"],
     }),
 
     // queries
@@ -28,19 +28,19 @@ const categoryApi = baseApi.injectEndpoints({
       query: () => ({
         url: `/categories/get-all-with-children`,
       }),
-      providesTags: ["Categories"],
+      providesTags: ["categories"],
     }),
     getAllCategories: builder.query<IApiResponse<TCategory[]>, unknown>({
       query: (query) => ({
         url: `/categories/get-all?${query}`,
       }),
-      providesTags: ["Categories"],
+      providesTags: ["categories"],
     }),
     getAllParentCategories: builder.query<IApiResponse<TCategory[]>, string>({
       query: (query) => ({
         url: `/categories/get-all-parents?${query}`,
       }),
-      providesTags: ["Categories"],
+      providesTags: ["categories"],
     }),
   }),
 });

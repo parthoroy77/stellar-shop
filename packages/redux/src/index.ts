@@ -5,3 +5,4 @@ export * from "./utils";
 // apis
 export * from "./apis/auth/authApi";
 export * from "./apis/category/categoryApi";
+export * from "./apis/seller/sellerApi";

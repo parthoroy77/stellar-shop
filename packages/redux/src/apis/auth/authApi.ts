@@ -9,7 +9,7 @@ const authApi = baseApi.injectEndpoints({
         url: "/auth/get-me",
       }),
       keepUnusedDataFor: 300,
-      providesTags: ["Auth"],
+      providesTags: ["auth"],
     }),
     // mutations
     userLogin: builder.mutation<IApiResponse<TLoginResponse>, unknown>({
@@ -18,14 +18,14 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         data,
       }),
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ["auth"],
     }),
     userLogOut: builder.mutation<IApiResponse<{}>, undefined>({
       query: () => ({
         url: "/auth/logout",
         method: "POST",
       }),
-      invalidatesTags: ["Auth"],
+      invalidatesTags: ["auth"],
     }),
   }),
 });

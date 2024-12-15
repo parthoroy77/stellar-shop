@@ -101,6 +101,12 @@ const getAll = async (filters: TSellerFilters, options: TPaginateOption) => {
         user: {
           select: {
             fullName: true,
+            email: true,
+            addresses: {
+              select: {
+                country: true,
+              },
+            },
           },
         },
         logo: { select: { fileName: true, fileSecureUrl: true, fileUrl: true } },
