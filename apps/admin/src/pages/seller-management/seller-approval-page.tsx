@@ -3,7 +3,7 @@ import SellerApprovalTable from "@/components/data-tables/seller-approval/data-t
 import { useGetAllSellersQuery } from "@repo/redux";
 
 const SellerApprovalPage = () => {
-  const { data, isFetching } = useGetAllSellersQuery("status=active");
+  const { data, isFetching } = useGetAllSellersQuery("status=inactive");
   const sellers = data?.data || [];
   return (
     <div className="space-y-5">

@@ -2,6 +2,7 @@ import { TSeller } from "@repo/utils/types";
 import { Badge, Button, Checkbox, PhoneDisplay } from "@ui/index";
 import { ColumnDef } from "@ui/tanstack-table";
 import { AiOutlineSortAscending } from "react-icons/ai";
+import SellerApprovalDataTableAction from "./data-table-action";
 export const columns: ColumnDef<TSeller>[] = [
   {
     id: "select",
@@ -153,17 +154,8 @@ export const columns: ColumnDef<TSeller>[] = [
         </div>
       );
     },
-    cell: () => {
-      return (
-        <div className="flex justify-start gap-2">
-          <Button variant={"accent"} className="h-fit w-fit border px-3 py-1" size={"sm"}>
-            View Details
-          </Button>
-          <Button variant={"success"} className="h-fit w-fit border px-3 py-1" size={"sm"}>
-            Approve
-          </Button>
-        </div>
-      );
+    cell: ({ row }) => {
+      return <SellerApprovalDataTableAction row={row} />;
     },
   },
 ];

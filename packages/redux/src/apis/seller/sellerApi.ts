@@ -11,10 +11,21 @@ const sellerApi = baseApi.injectEndpoints({
       }),
       providesTags: ["seller"],
     }),
+
+    // mutations
+    approveSeller: builder.mutation<IApiResponse<{}>, unknown>({
+      query: (sellerId) => ({
+        url: `sellers/approve/seller/${sellerId}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["seller"],
+    }),
   }),
 });
 
 export const {
   // queries
   useGetAllSellersQuery,
+  // mutations
+  useApproveSellerMutation,
 } = sellerApi;
