@@ -8,6 +8,7 @@ import { deleteFromCloudinary } from "../../utils/cloudinary";
 import { SELLER_SEARCHABLE_KEYS } from "./seller.constants";
 import { TOnboardingInput, TSellerFilters } from "./seller.types";
 
+// seller onboarding
 const onboarding = async (
   payload: TOnboardingInput,
   userId: number,
@@ -61,11 +62,13 @@ const onboarding = async (
   }
 };
 
+// seller onboarding status checking
 const onboardingStatus = async (userId: number) => {
   const result = await prisma.seller.findUnique({ where: { userId } });
   return { approved: result?.status === "ACTIVE" || false, submitted: result ? true : false };
 };
 
+// get all sellers list including user, address, logo data with filters and pagination
 const getAll = async (filters: TSellerFilters, options: TPaginateOption) => {
   const { limit, page, skip, sortBy, sortOrder } = calculatePagination(options);
   const { query, status } = filters;
@@ -126,4 +129,29 @@ const getAll = async (filters: TSellerFilters, options: TPaginateOption) => {
   };
 };
 
-export const SellerServices = { onboarding, onboardingStatus, getAll };
+// FOR ADMIN: approve seller profile and shop to continue selling
+const sellerApproval = async (sellerId: number) => {
+  const sellerProfile = await prisma.seller.findFirst({
+    where: { id: sellerId, status: "INACTIVE" },
+    include: { user: { select: { status: true } } },
+  });
+
+  if (!sellerProfile) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Seller not found or already approved!");
+  }
+
+  if (sellerProfile?.user.status !== "ACTIVE") {
+    throw new ApiError(StatusCodes.CONFLICT, "This seller associate user restricted or inactive!");
+  }
+
+  await prisma.seller.update({
+    where: { id: sellerId },
+    data: { status: "ACTIVE" },
+  });
+
+  // TODO: Send an welcome mail and mention their profile now approved can post products
+
+  return;
+};
+
+export const SellerServices = { onboarding, onboardingStatus, getAll, sellerApproval };

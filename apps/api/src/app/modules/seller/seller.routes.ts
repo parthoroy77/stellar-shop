@@ -27,6 +27,8 @@ router.get(
 
 router.get("/get-all", authMiddleware(UserRole.ADMIN), SellerControllers.getAllSellers);
 
+router.post("/approve/seller/:sellerId", authMiddleware(UserRole.ADMIN), SellerControllers.sellerApproval);
+
 const SellerRoutes = router;
 
 export default SellerRoutes;

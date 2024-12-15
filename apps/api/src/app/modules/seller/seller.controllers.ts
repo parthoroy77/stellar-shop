@@ -60,4 +60,21 @@ const getAllSellers = asyncHandler(async (req, res) => {
   });
 });
 
-export const SellerControllers = { sellerOnboarding, sellerOnboardingStatus, getAllSellers };
+const sellerApproval = asyncHandler(async (req, res) => {
+  const { sellerId } = req.params;
+
+  if (!sellerId) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Seller identifier not found!");
+  }
+
+  await SellerServices.sellerApproval(+sellerId);
+
+  ApiResponse(res, {
+    data: {},
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: "Seller has been approved now!",
+  });
+});
+
+export const SellerControllers = { sellerOnboarding, sellerOnboardingStatus, getAllSellers, sellerApproval };
