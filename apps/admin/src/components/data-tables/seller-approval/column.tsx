@@ -1,8 +1,7 @@
 import { TSeller } from "@repo/utils/types";
-import { Badge, Button, Checkbox } from "@ui/index";
+import { Badge, Button, Checkbox, PhoneDisplay } from "@ui/index";
 import { ColumnDef } from "@ui/tanstack-table";
 import { AiOutlineSortAscending } from "react-icons/ai";
-
 export const columns: ColumnDef<TSeller>[] = [
   {
     id: "select",
@@ -24,13 +23,17 @@ export const columns: ColumnDef<TSeller>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-
   {
     accessorKey: "shopName",
     header: ({ column }) => {
       return (
-        <div className="text-start">
-          <Button variant="ghost" size={"sm"} onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
+        <div className="w-fit text-start">
+          <Button
+            variant="ghost"
+            size={"sm"}
+            className="h-fit px-3 py-1"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
             Shop Name
             <AiOutlineSortAscending className="ml-2 h-4 w-4" />
           </Button>
@@ -39,14 +42,14 @@ export const columns: ColumnDef<TSeller>[] = [
     },
     cell: ({ row }) => {
       return (
-        <div className="flex min-w-[300px] gap-3 text-sm capitalize lg:items-center">
+        <div className="flex w-[200px] gap-3 py-1 text-sm capitalize lg:items-center">
           <img
-            className="bg-accent size-9 rounded-md"
+            className="bg-accent size-9 rounded-md border object-contain object-center"
             src={
               row?.original?.logo?.fileUrl ||
               "https://demos.pixinvent.com/vuexy-vuejs-admin-template/demo-2/assets/product-1-CnD-btSp.png"
             }
-            alt="Category Image"
+            alt={`${row.getValue("shopName")} Shop Image`}
           />
           <div className="flex flex-col">
             <span className="text-xs font-medium lg:text-sm">{row.getValue("shopName")}</span>
@@ -62,33 +65,80 @@ export const columns: ColumnDef<TSeller>[] = [
     accessorKey: "userId",
     header: () => {
       return (
-        <div className="w-fit text-start">
-          <Button variant="ghost" size={"sm"}>
-            Owner Name
-          </Button>
+        <div>
+          <span>Owner Name</span>
         </div>
       );
     },
     cell: ({ row }) => {
       return (
-        <div className="flex gap-3 text-sm capitalize lg:items-center">
+        <div className="flex gap-3 capitalize lg:items-center">
           <span className="text-xs font-medium lg:text-sm">{row?.original.user?.fullName}</span>
         </div>
       );
     },
   },
   {
+    accessorKey: "userId",
+    header: () => {
+      return (
+        <div>
+          <span>User email</span>
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="flex gap-3 lg:items-center">
+          <span className="text-xs lg:text-sm">{row?.original.user?.email}</span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "contactNumber",
+    header: () => {
+      return (
+        <div className="text-start">
+          <span>Contact Number</span>
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="flex justify-start gap-3 text-sm capitalize lg:items-center">
+          <PhoneDisplay value={row?.original?.contactNumber} className="text-xs font-medium" />
+        </div>
+      );
+    },
+  },
+  {
+    id: "country",
+    header: () => {
+      return (
+        <div className="text-start">
+          <span>Country</span>
+        </div>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="text-primary text-start text-xs font-medium">
+        <Badge variant={"accent"}>{row.original?.user?.addresses[0]?.country}</Badge>
+      </div>
+    ),
+  },
+  {
     accessorKey: "status",
     header: () => {
       return (
-        <div className="text-center">
+        <div className="text-start">
           <span>Status</span>
         </div>
       );
     },
     cell: ({ row }) => (
-      <div className="text-center">
-        <Badge variant={"accent"} className="rounded-md capitalize">
+      <div className="text-start">
+        <Badge variant={"outline"} className="text-secondary border-secondary rounded-md capitalize">
           {(row.getValue("status") as string)?.toLowerCase()}
         </Badge>
       </div>
@@ -98,18 +148,18 @@ export const columns: ColumnDef<TSeller>[] = [
     id: "actions",
     header: () => {
       return (
-        <div className="text-center">
+        <div className="text-start">
           <span>Actions</span>
         </div>
       );
     },
     cell: () => {
       return (
-        <div className="flex justify-center">
-          <Button variant={"outline"} size={"sm"}>
+        <div className="flex justify-start gap-2">
+          <Button variant={"accent"} className="h-fit w-fit border px-3 py-1" size={"sm"}>
             View Details
           </Button>
-          <Button variant={"success"} size={"sm"}>
+          <Button variant={"success"} className="h-fit w-fit border px-3 py-1" size={"sm"}>
             Approve
           </Button>
         </div>
