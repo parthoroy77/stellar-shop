@@ -25,6 +25,8 @@ router.get(
   SellerControllers.sellerOnboardingStatus
 );
 
+router.get("/get-all", authMiddleware(UserRole.ADMIN), SellerControllers.getAllSellers);
+
 const SellerRoutes = router;
 
 export default SellerRoutes;

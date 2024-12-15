@@ -6,3 +6,8 @@ export type TOnboardingInput = {
   contactNumber: string;
   businessEmail?: string;
 } & TAddressInput;
+
+export type TSellerFilters = {
+  query?: string;
+  status?: string;
+};

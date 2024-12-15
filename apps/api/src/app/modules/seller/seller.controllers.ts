@@ -1,8 +1,11 @@
 import { StatusCodes } from "http-status-codes";
+import { PAGINATION_KEYS } from "../../constants";
 import { ApiError } from "../../handlers/ApiError";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
+import pick from "../../utils/pick";
 import { getFilePath } from "../../utils/utils";
+import { SELLER_FILTERABLE_KEYS } from "./seller.constants";
 import { SellerServices } from "./seller.services";
 
 const sellerOnboarding = asyncHandler(async (req, res) => {
@@ -41,4 +44,20 @@ const sellerOnboardingStatus = asyncHandler(async (req, res) => {
   });
 });
 
-export const SellerControllers = { sellerOnboarding, sellerOnboardingStatus };
+const getAllSellers = asyncHandler(async (req, res) => {
+  const filters = pick(req.query, [...SELLER_FILTERABLE_KEYS, "query"]);
+
+  const paginateOption = pick(req.query, PAGINATION_KEYS);
+
+  const { result, meta } = await SellerServices.getAll(filters, paginateOption);
+
+  ApiResponse(res, {
+    data: result,
+    meta,
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: "Seller onboarding status fetched successfully!",
+  });
+});
+
+export const SellerControllers = { sellerOnboarding, sellerOnboardingStatus, getAllSellers };

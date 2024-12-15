@@ -1,10 +1,12 @@
-import prisma from "@repo/prisma/client";
+import prisma, { Prisma, SellerStatus } from "@repo/prisma/client";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
 import { uploadFileToCloudinaryAndCreateRecord } from "../../handlers/handleCloudUpload";
 import logger from "../../logger";
+import calculatePagination, { TPaginateOption } from "../../utils/calculatePagination";
 import { deleteFromCloudinary } from "../../utils/cloudinary";
-import { TOnboardingInput } from "./seller.types";
+import { SELLER_SEARCHABLE_KEYS } from "./seller.constants";
+import { TOnboardingInput, TSellerFilters } from "./seller.types";
 
 const onboarding = async (
   payload: TOnboardingInput,
@@ -64,4 +66,58 @@ const onboardingStatus = async (userId: number) => {
   return { approved: result?.status === "ACTIVE" || false, submitted: result ? true : false };
 };
 
-export const SellerServices = { onboarding, onboardingStatus };
+const getAll = async (filters: TSellerFilters, options: TPaginateOption) => {
+  const { limit, page, skip, sortBy, sortOrder } = calculatePagination(options);
+  const { query, status } = filters;
+
+  const andClauses: Prisma.SellerWhereInput[] = [];
+
+  if (query) {
+    andClauses.push({
+      OR: SELLER_SEARCHABLE_KEYS.map((key) => ({
+        [key]: {
+          contains: query,
+          mode: "insensitive",
+        },
+      })),
+    });
+  }
+
+  if (status) {
+    andClauses.push({
+      AND: {
+        status: {
+          equals: status.toUpperCase() as SellerStatus,
+        },
+      },
+    });
+  }
+
+  const finalWhereClause: Prisma.SellerWhereInput = andClauses.length > 0 ? { AND: andClauses } : {};
+  const [result, total] = await prisma.$transaction([
+    prisma.seller.findMany({
+      where: finalWhereClause,
+      include: {
+        user: {
+          select: {
+            fullName: true,
+          },
+        },
+        logo: { select: { fileName: true, fileSecureUrl: true, fileUrl: true } },
+      },
+      take: limit,
+      skip,
+      orderBy: {
+        [sortBy]: sortOrder,
+      },
+    }),
+    prisma.seller.count({ where: finalWhereClause }),
+  ]);
+
+  return {
+    result,
+    meta: { limit, page, total, skip, sortBy, sortOrder },
+  };
+};
+
+export const SellerServices = { onboarding, onboardingStatus, getAll };

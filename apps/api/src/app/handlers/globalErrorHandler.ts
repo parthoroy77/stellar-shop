@@ -16,7 +16,7 @@ const globalErrorHandler: ErrorRequestHandler = (error, _req, res, _next) => {
   let errorSources = null;
 
   if (config.NODE_ENV === "development") {
-    logger.log(error.message);
+    logger.error(error.message);
   }
 
   // handle prisma errors
