@@ -1,7 +1,7 @@
 "use client";
 import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
-import { Menu } from "lucide-react";
+import { PanelLeft } from "lucide-react";
 import * as React from "react";
 
 import { Button } from "@ui/components/ui/button";
@@ -234,7 +234,7 @@ const SidebarTrigger = React.forwardRef<React.ElementRef<typeof Button>, React.C
         }}
         {...props}
       >
-        <Menu />
+        <PanelLeft size={15} />
         <span className="sr-only">Toggle Sidebar</span>
       </Button>
     );
