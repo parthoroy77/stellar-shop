@@ -1,9 +1,14 @@
-import { SidebarTrigger } from "@repo/ui";
+import AppBreadcrumbs from "@/components/ui/app-breadcrumbs";
+import { Separator, SidebarTrigger } from "@repo/ui";
 
 const TopBar = () => {
   return (
-    <div className="sticky top-0 z-30 flex h-[50px] w-full items-center justify-between gap-5 rounded-md border bg-white px-6">
-      <SidebarTrigger />
+    <div className="sticky top-0 z-30 flex h-[50px] items-center rounded-md border-b bg-white px-5 py-3 drop-shadow">
+      <div className="flex items-center gap-3">
+        <SidebarTrigger className="h-fit w-fit" variant={"ghost"} />
+        <Separator orientation="vertical" className="bg-secondary h-4" />
+        <AppBreadcrumbs />
+      </div>
     </div>
   );
 };
