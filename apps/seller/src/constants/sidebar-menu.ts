@@ -1,10 +1,10 @@
-import { RxDashboard } from "react-icons/rx";
-import { TSidebarItem } from "../types/sidebar.types";
-import { VscFeedback, VscSymbolMethod } from "react-icons/vsc";
 import { CiBoxList } from "react-icons/ci";
-import { LuBadgeDollarSign, LuSignal } from "react-icons/lu";
-import { RiCustomerService2Line } from "react-icons/ri";
 import { IoStorefrontOutline } from "react-icons/io5";
+import { LuSignal } from "react-icons/lu";
+import { RiCustomerService2Line } from "react-icons/ri";
+import { RxDashboard } from "react-icons/rx";
+import { VscFeedback, VscSymbolMethod } from "react-icons/vsc";
+import { TSidebarItem } from "../types/sidebar.types";
 
 export const menuItems: TSidebarItem[] = [
   {
@@ -33,17 +33,6 @@ export const menuItems: TSidebarItem[] = [
       { label: "Order Status", href: "/orders/status" },
       { label: "Refund Requests", href: "/orders/refunds" },
       { label: "Shipping & Delivery", href: "/orders/shipping" },
-    ],
-  },
-  {
-    label: "Subscriptions & Payments",
-    Icon: LuBadgeDollarSign,
-    children: [
-      { label: "Subscription Plans", href: "/subscriptions/plans" },
-      { label: "Payment Methods", href: "/subscriptions/payment-methods" },
-      { label: "Invoices", href: "/subscriptions/invoices" },
-      { label: "Subscription Renewals", href: "/subscriptions/renewals" },
-      { label: "Payment History", href: "/subscriptions/payment-history" },
     ],
   },
   {

@@ -5,7 +5,7 @@ import LogoText from "./logo-text";
 
 export function AppSidebar() {
   return (
-    <Sidebar collapsible="icon" className="border-r bg-white *:bg-white">
+    <Sidebar collapsible="icon" className="border-r">
       <SidebarHeader className="hover:bg-accent/40 cursor-pointer rounded-md duration-300">
         <LogoText />
       </SidebarHeader>

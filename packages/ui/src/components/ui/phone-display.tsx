@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@ui/lib/utils";
 import * as React from "react";
 import * as RPNInput from "react-phone-number-input";
