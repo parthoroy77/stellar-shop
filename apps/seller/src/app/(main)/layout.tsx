@@ -8,7 +8,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
       <AppSidebar />
       <main className="bg-sidebar custom-scrollbar max-h-screen w-full space-y-3 overflow-hidden overflow-y-scroll p-2">
         <TopBar />
-        <div className="h-full w-full rounded-xl border bg-white">{children}</div>
+        <div className="min-h-[calc(100vh-76px)] w-full rounded-md border bg-white">{children}</div>
       </main>
     </>
   );

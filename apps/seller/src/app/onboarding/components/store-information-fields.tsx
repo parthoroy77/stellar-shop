@@ -26,7 +26,7 @@ const ShopInformationFields = ({ form }: { form: UseFormReturn<TSellerOnboarding
         <Label>Shop Banner</Label>
         <ImageDropzone
           onFilesChange={(file) => form.setValue("banner", file)}
-          containerClassNames=" hover:border-secondary"
+          containerClassName=" hover:border-secondary"
         />
       </div>
       <div className="flex w-full flex-col-reverse items-start gap-5 *:space-y-2 lg:flex-row">
@@ -70,7 +70,7 @@ const ShopInformationFields = ({ form }: { form: UseFormReturn<TSellerOnboarding
           <Label>Shop Logo</Label>
           <ImageDropzone
             onFilesChange={(file) => form.setValue("logo", file)}
-            containerClassNames="hover:border-secondary"
+            containerClassName="hover:border-secondary"
           />
         </div>
       </div>

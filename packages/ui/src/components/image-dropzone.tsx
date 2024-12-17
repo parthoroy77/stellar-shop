@@ -3,10 +3,10 @@
 import { cn } from "@ui/lib/utils";
 import { ClassValue } from "class-variance-authority/types";
 import { Upload, X } from "lucide-react";
-import React, { FC, useCallback, useMemo, useRef, useState } from "react";
+import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button } from "./ui/button";
 
-interface FileWithPreview extends File {
+export interface FileWithPreview extends File {
   preview: string;
 }
 
@@ -16,7 +16,8 @@ interface ImageDropzoneProps {
   maxFiles?: number;
   accept?: string;
   maxSize?: number; // in bytes
-  containerClassNames?: ClassValue;
+  containerClassName?: ClassValue;
+  placeholder?: string;
 }
 
 export const ImageDropzone: FC<ImageDropzoneProps> = ({
@@ -25,7 +26,8 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
   maxFiles = 5,
   accept = "image/*",
   maxSize = 5 * 1024 * 1024, // 5MB
-  containerClassNames,
+  containerClassName,
+  placeholder,
 }) => {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -84,7 +86,6 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
         } else {
           updatedFiles = [newFiles[0]!];
         }
-        onFilesChange(multiple ? updatedFiles : updatedFiles[0]!);
         return updatedFiles;
       });
       setError(null);
@@ -94,7 +95,7 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
         fileInputRef.current.value = "";
       }
     },
-    [multiple, maxFiles, maxSize, onFilesChange]
+    [multiple, maxFiles, maxSize]
   );
 
   const handleBrowse = useCallback(() => {
@@ -114,7 +115,6 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
     (fileToRemove: FileWithPreview) => {
       setFiles((prevFiles) => {
         const updatedFiles = prevFiles.filter((file) => file !== fileToRemove);
-        onFilesChange(multiple ? updatedFiles : null);
         return updatedFiles;
       });
       URL.revokeObjectURL(fileToRemove.preview);
@@ -124,10 +124,16 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
         fileInputRef.current.value = "";
       }
     },
-    [onFilesChange, multiple]
+    [multiple]
   );
 
   const fileCountText = useMemo(() => `${files.length} file${files.length !== 1 ? "s" : ""} selected`, [files.length]);
+
+  useEffect(() => {
+    if (onFilesChange) {
+      onFilesChange(multiple ? files : files[0] || null);
+    }
+  }, [files, multiple, onFilesChange]);
 
   return (
     <div>
@@ -137,26 +143,29 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
         onDragOver={handleDrag}
         onDrop={handleDrop}
         className={cn(
-          "rounded-lg border border-dashed p-4 transition-colors",
-          isDragging ? "border-primary bg-accent" : "hover:border-primary border-gray-300",
-          containerClassNames
+          "flex items-center justify-center rounded-lg border border-dashed p-4 transition-colors",
+          isDragging ? "border-primary bg-accent" : "hover:border-primary border-accent-fotext-accent-foreground",
+          containerClassName
         )}
       >
         <div className="space-y-3">
           {files.length > 0 ? (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
               {files.map((file, index) => (
-                <div key={file.name + index} className={cn("group relative", !multiple && "col-span-3")}>
+                <div
+                  key={file.name + index}
+                  className={cn("group relative rounded-md border", !multiple && "col-span-3")}
+                >
                   <img
                     src={file.preview}
                     alt={`Preview ${index + 1}`}
-                    className="mx-auto h-24 w-fit rounded-md object-cover"
-                    onLoad={() => URL.revokeObjectURL(file.preview)}
+                    className="mx-auto h-24 w-fit rounded-md object-contain object-center"
+                    // onLoad={() => URL.revokeObjectURL(file.preview)}
                   />
                   <button
                     type="button"
                     onClick={() => removeFile(file)}
-                    className="absolute -right-2 -top-2 rounded-full bg-red-500 p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                    className="bg-destructive absolute -right-2 -top-2 rounded-full p-1 text-white opacity-0 transition-opacity group-hover:opacity-100"
                     aria-label={`Remove ${file.name}`}
                   >
                     <X className="h-4 w-4" />
@@ -165,10 +174,20 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
               ))}
             </div>
           ) : (
-            <div className="space-y-1 text-center">
-              <Upload className="mx-auto size-8 text-gray-400" />
-              <p className="text-accent-foreground text-xs">Drag and drop your images here.</p>
-              <p className="text-xs text-gray-500">or</p>
+            <div className="space-y-2 text-center">
+              <Upload className="text-accent-foreground mx-auto size-8" />
+              {placeholder && <h6 className="text-sm">{placeholder}</h6>}
+              <p className="text-accent-foreground text-xs">
+                Drag and drop your images here.{" "}
+                {multiple && (
+                  <>
+                    {" "}
+                    <br />
+                    <span>(max {maxFiles} files)</span>
+                  </>
+                )}
+              </p>
+              <p className="text-accent-foreground text-xs">or</p>
             </div>
           )}
           <div className="flex justify-center">
@@ -190,10 +209,10 @@ export const ImageDropzone: FC<ImageDropzoneProps> = ({
       {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
       {files.length > 0 && (
         <div className="mt-4">
-          <p className="text-sm font-medium text-gray-700">{fileCountText}</p>
+          <p className="text-accent-foreground text-sm font-medium">{fileCountText}</p>
           <ul className="mt-2 space-y-1">
             {files.map((file, index) => (
-              <li key={index} className="flex items-center justify-between text-xs text-gray-500">
+              <li key={index} className="text-accent-foreground flex items-center justify-between text-xs">
                 <span className="max-w-[80%] truncate">{file.name}</span>
                 <span>{(file.size / 1024).toFixed(1)} KB</span>
               </li>
