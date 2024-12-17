@@ -1,4 +1,5 @@
 export * from "./components/auth-form-fallback";
+export * from "./components/editor";
 export * from "./components/image-dropzone";
 export * from "./components/off-canvas";
 export * from "./components/option-selector";

@@ -1,3 +1,4 @@
+import Editor from "@ui/components/editor";
 import { FormControl, FormField, FormItem, FormLabel, Input } from "@ui/index";
 
 const ProductInformationFields = ({ form }: { form: any }) => {
@@ -70,6 +71,18 @@ const ProductInformationFields = ({ form }: { form: any }) => {
           )}
         />
       </div>
+      <FormField
+        control={form.control}
+        name="productDescription"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Description</FormLabel>
+            <FormControl>
+              <Editor value={field.value} onChangeHandler={field.onChange} className="text-blue-600" />
+            </FormControl>
+          </FormItem>
+        )}
+      />
     </div>
   );
 };
