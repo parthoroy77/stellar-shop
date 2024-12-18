@@ -1,6 +1,6 @@
 "use client";
 import JoditEditor, { IJoditEditorProps } from "jodit-react";
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo, useRef } from "react";
 
 interface EditorProps {
   value: string;
@@ -10,6 +10,7 @@ interface EditorProps {
   disabled?: boolean;
 }
 const Editor: FC<EditorProps> = ({ value, onChangeHandler, className, disabled = false }) => {
+  const ref = useRef(null);
   const config: IJoditEditorProps["config"] = useMemo(
     () => ({
       readonly: disabled,
@@ -29,9 +30,11 @@ const Editor: FC<EditorProps> = ({ value, onChangeHandler, className, disabled =
     onChangeHandler(value);
   };
 
+  useEffect(() => {}, []);
+
   return (
     <div>
-      <JoditEditor config={config} onBlur={handleChange} value={value} onChange={handleChange} />
+      <JoditEditor ref={ref} config={config} onBlur={handleChange} value={value} />
     </div>
   );
 };
