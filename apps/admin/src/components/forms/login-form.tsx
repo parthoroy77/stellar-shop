@@ -1,4 +1,4 @@
-import { handleApiError, useUserLoginMutation } from "@repo/redux";
+import { handleApiError, useAdminLoginMutation } from "@repo/redux";
 import { useForm, UseFormReturn, zodResolver } from "@repo/utils/hook-form";
 import { loginSchema, TLoginValidation } from "@repo/utils/validations";
 import { AppButton, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@ui/index";
@@ -15,7 +15,7 @@ const LoginForm = () => {
   });
 
   const navigate = useNavigate();
-  const [loginUser] = useUserLoginMutation();
+  const [loginUser] = useAdminLoginMutation();
   const onSubmit = async (data: TLoginValidation) => {
     const toastId = toast.loading("Sending request to login...", { duration: 2000 });
     try {

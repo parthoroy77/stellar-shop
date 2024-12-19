@@ -12,7 +12,7 @@ const authApi = baseApi.injectEndpoints({
       providesTags: ["auth"],
     }),
     // mutations
-    userLogin: builder.mutation<IApiResponse<TLoginResponse>, unknown>({
+    adminLogin: builder.mutation<IApiResponse<TLoginResponse>, unknown>({
       query: (data) => ({
         url: "/auth/admin-login",
         method: "POST",
@@ -30,4 +30,4 @@ const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useUserLoginMutation, useUserLogOutMutation, useGetAuthQuery } = authApi;
+export const { useAdminLoginMutation, useUserLogOutMutation, useGetAuthQuery } = authApi;
