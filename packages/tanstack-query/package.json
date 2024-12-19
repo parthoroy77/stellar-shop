@@ -1,0 +1,19 @@
+{
+  "name": "@repo/tanstack-query",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@tanstack/react-query": "^5.62.8",
+    "@tanstack/react-query-devtools": "^5.62.8"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "@repo/utils": "*",
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}
