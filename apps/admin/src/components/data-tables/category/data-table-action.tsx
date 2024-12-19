@@ -32,7 +32,7 @@ const CategoryDataTableAction = ({ row }: { row: Row<TCategory> }) => {
       <DropdownMenuContent align="end" className="min-w-48">
         <DropdownMenuLabel>Category Actions</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <CategoryDeleteAction categoryId={row?.original?.id} />
         </DropdownMenuItem>
         <DropdownMenuItem className="flex items-center gap-2 px-3">
@@ -50,7 +50,6 @@ const CategoryDeleteAction = ({ categoryId }: { categoryId: number }) => {
     const toastId = toast.loading("Sending request to delete category", { duration: 3000 });
     try {
       const response = await deleteCategory(categoryId.toString()).unwrap();
-      console.log(response);
       if (response.success) {
         toast.success(response.message, { id: toastId });
       }
@@ -62,8 +61,8 @@ const CategoryDeleteAction = ({ categoryId }: { categoryId: number }) => {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <button disabled={isLoading} className="flex items-center gap-2">
+      <AlertDialogTrigger disabled={isLoading} asChild>
+        <button className="flex items-center gap-2 px-2 text-sm">
           <AiOutlineDelete className="text-base lg:text-lg" />
           <span>Delete category</span>
         </button>

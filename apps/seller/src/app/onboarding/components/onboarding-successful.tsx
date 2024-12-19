@@ -1,6 +1,6 @@
 import { Button } from "@ui/index";
 import Link from "next/link";
-import { LuArrowRight,  LuCircleCheck } from "react-icons/lu";
+import { LuArrowRight, LuCircleCheck } from "react-icons/lu";
 
 const OnboardingSuccessful = () => {
   return (
