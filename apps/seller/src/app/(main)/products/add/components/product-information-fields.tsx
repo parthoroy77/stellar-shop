@@ -17,7 +17,7 @@ const ProductInformationFields = ({ form }: { form: any }) => {
               <Input
                 {...field}
                 placeholder="e.g. Luxury comfortable summer T Shirt"
-                className="focus:border-secondary h-10s rounded-md px-5 placeholder:text-xs focus:border"
+                className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
               />
             </FormControl>
           </FormItem>
@@ -34,7 +34,7 @@ const ProductInformationFields = ({ form }: { form: any }) => {
                 <Input
                   {...field}
                   placeholder="Your Best Price"
-                  className="focus:border-secondary h-10s rounded-md px-5 placeholder:text-xs focus:border"
+                  className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
                 />
               </FormControl>
             </FormItem>
@@ -50,7 +50,7 @@ const ProductInformationFields = ({ form }: { form: any }) => {
                 <Input
                   {...field}
                   placeholder="Your Compare Price"
-                  className="focus:border-secondary h-10s rounded-md px-5 placeholder:text-xs focus:border"
+                  className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
                 />
               </FormControl>
             </FormItem>
@@ -66,7 +66,7 @@ const ProductInformationFields = ({ form }: { form: any }) => {
                 <Input
                   {...field}
                   placeholder="Your product base sku"
-                  className="focus:border-secondary h-10s rounded-md px-5 placeholder:text-xs focus:border"
+                  className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
                 />
               </FormControl>
             </FormItem>
