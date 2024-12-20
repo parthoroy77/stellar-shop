@@ -4,20 +4,34 @@ import { useCallback, useState } from "react";
 import { RxCaretSort } from "react-icons/rx";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
-import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList, CommandSeparator } from "./ui/command";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from "./ui/command";
 import { Input } from "./ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 
 interface OptionSelectProps<T> {
+  multiSelect?: boolean;
   items: T[];
   selectedItems: T[];
   onSelectionChange: (items: T | T[]) => void;
-  searchPlaceholder?: string;
   itemRenderer: (item: T) => React.ReactNode;
+  placeholder?: string;
   isLoading?: boolean;
-  onSearch?: (term: string) => void;
-  multiSelect?: boolean;
   getItemId: (item: T) => string | number;
+  disabled?: boolean;
+  disabledWarning?: string;
+  // if we want to handle outside query params search.
+  customQuerySearch: boolean;
+  // this will be the outside query search handler
+  onSearch?: (term: string) => void;
+  searchPlaceholder?: string;
 }
 
 function OptionSelect<T>({
@@ -30,6 +44,10 @@ function OptionSelect<T>({
   onSearch,
   multiSelect = false,
   getItemId,
+  disabled = false,
+  disabledWarning = "Please match criteria!",
+  placeholder = "Select Item",
+  customQuerySearch,
 }: OptionSelectProps<T>) {
   const [open, setOpen] = useState(false);
 
@@ -57,14 +75,13 @@ function OptionSelect<T>({
   };
 
   const renderSelectedItems = () => {
-    if (selectedItems.length === 0) return "Select items";
+    if (selectedItems.length === 0) return disabled ? disabledWarning : placeholder || placeholder;
     if (!multiSelect && selectedItems.length === 1) return itemRenderer(selectedItems[0]!);
     return `${selectedItems.length} items selected`;
   };
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger disabled={disabled} asChild>
         <Button
           size={"sm"}
           variant="ghost"
@@ -78,11 +95,15 @@ function OptionSelect<T>({
       </PopoverTrigger>
       <PopoverContent className="p-0">
         <Command>
-          <Input
-            placeholder={searchPlaceholder}
-            className="h-8 rounded-none border-none text-xs"
-            onChange={(e) => handleSearchChange(e.target.value)}
-          />
+          {customQuerySearch ? (
+            <Input
+              placeholder={searchPlaceholder}
+              className="h-8 rounded-none border-none text-xs"
+              onChange={(e) => handleSearchChange(e.target.value)}
+            />
+          ) : (
+            <CommandInput placeholder={searchPlaceholder} className="h-8 rounded-none border-none text-xs" />
+          )}
           <CommandSeparator />
           <CommandList>
             <CommandEmpty>No items found.</CommandEmpty>

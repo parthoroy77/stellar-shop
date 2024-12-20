@@ -1,6 +1,7 @@
 "use client";
 import { useForm } from "@repo/utils/hook-form";
 import { Form } from "@ui/index";
+import ProductClassifications from "./product-classifications";
 import ProductInformationFields from "./product-information-fields";
 import ProductMediaUpload from "./product-media-upload";
 
@@ -10,12 +11,10 @@ const ProductUploadForm = () => {
     <section className="flex h-full w-full items-start">
       <div className="h-full w-[75%] border-r">
         <Form {...form}>
-          <form className="h-full divide-y *:space-y-3 *:px-5 *:py-3">
+          <form className="h-full divide-y *:space-y-1 *:px-5 *:py-5">
             <ProductMediaUpload form={form} />
             <ProductInformationFields form={form} />
-            <div>
-              <h3 className="text-lg">Product Classifications</h3>
-            </div>
+            <ProductClassifications form={form} />
             <div>
               <h3 className="text-lg">Product Variants</h3>
             </div>

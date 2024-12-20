@@ -6,7 +6,7 @@ import { TCategoryFilters } from "./category.types";
 export const getCategoryBaseQuery = (filters: TCategoryFilters, options: TPaginateOption) => {
   const paginateOptions = calculatePagination(options);
 
-  const { level, query, ...filterData } = filters;
+  const { parentId, level, query, ...filterData } = filters;
 
   const andClauses: Prisma.CategoryWhereInput[] = [];
 
@@ -25,7 +25,17 @@ export const getCategoryBaseQuery = (filters: TCategoryFilters, options: TPagina
     const levelsArray = level.split(",");
     andClauses.push({
       level: {
-        in: levelsArray as CategoryLevel[],
+        in: levelsArray.map((x) => x.toUpperCase()) as CategoryLevel[],
+      },
+    });
+  }
+
+  if (parentId) {
+    andClauses.push({
+      AND: {
+        parentCategoryId: {
+          equals: Number(parentId),
+        },
       },
     });
   }

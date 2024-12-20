@@ -80,7 +80,7 @@ const ProductInformationFields = ({ form }: { form: any }) => {
           <FormItem>
             <FormLabel>Description</FormLabel>
             <FormControl>
-              <Editor value={field.value} onChangeHandler={field.onChange} className="text-blue-600" />
+              <Editor value={field.value} onChangeHandler={field.onChange} />
             </FormControl>
           </FormItem>
         )}

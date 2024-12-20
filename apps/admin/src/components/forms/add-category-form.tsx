@@ -148,6 +148,7 @@ export default function AddCategoryForm({ close }: { close: () => void }) {
               <FormItem>
                 <FormLabel className="text-accent-foreground text-xs">Parent Category</FormLabel>
                 <OptionSelect
+                  customQuerySearch={true}
                   items={parentCategories}
                   selectedItems={parentCategories.filter((x) => x.id.toString() === form.watch("parentId")) || []}
                   onSelectionChange={(categories) => {
