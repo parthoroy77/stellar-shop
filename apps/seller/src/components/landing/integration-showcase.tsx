@@ -1,4 +1,4 @@
-import { LuChartBar, LuBox, LuCreditCard, LuShare2 } from "react-icons/lu";
+import { LuBarChart, LuBox, LuCreditCard, LuShare2 } from "react-icons/lu";
 
 export function IntegrationShowcase() {
   return (
@@ -28,7 +28,7 @@ export function IntegrationShowcase() {
             {
               title: "Analytics Tools",
               description: "Connect your favorite analytics and tracking tools",
-              icon: LuChartBar,
+              icon: LuBarChart,
               gradient: "from-teal-400 to-green-500",
             },
             {

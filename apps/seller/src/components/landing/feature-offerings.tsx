@@ -1,4 +1,4 @@
-import { LuChartColumn, LuShoppingBag, LuTruck, LuUsers } from "react-icons/lu";
+import { LuBarChart3, LuShoppingBag, LuTruck, LuUsers2 } from "react-icons/lu";
 
 const features = [
   {
@@ -9,7 +9,7 @@ const features = [
   {
     name: "Powerful Analytics",
     description: "Track your sales, customer behavior, and growth with detailed insights.",
-    icon: LuChartColumn,
+    icon: LuBarChart3,
   },
   {
     name: "Global Reach",
@@ -19,7 +19,7 @@ const features = [
   {
     name: "Community Support",
     description: "Join a community of sellers and share experiences and tips.",
-    icon: LuUsers,
+    icon: LuUsers2,
   },
 ];
 const FeatureOfferings = () => {

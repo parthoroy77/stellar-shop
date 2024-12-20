@@ -1,12 +1,12 @@
 import { Button } from "@ui/index";
 import Link from "next/link";
-import { LuArrowRight, LuCircleCheck } from "react-icons/lu";
+import { LuArrowRight, LuCheckCircle } from "react-icons/lu";
 
 const OnboardingSuccessful = () => {
   return (
     <div className="flex min-h-[350px] w-full flex-col justify-center space-y-5 rounded-lg border bg-white p-8 text-center">
       <div>
-        <LuCircleCheck className="mx-auto size-10" color="green" />
+        <LuCheckCircle className="mx-auto size-10" color="green" />
       </div>
       <h1 className="text-2xl font-semibold text-black">Account Approved!</h1>
       <p className="text-accent-foreground mx-auto w-[80%]">
