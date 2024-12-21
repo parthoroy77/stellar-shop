@@ -1,6 +1,7 @@
 "use client";
 
 import { useFieldArray, UseFormReturn } from "@repo/utils/hook-form";
+import { TCreateProductValidation } from "@repo/utils/validations";
 import {
   Button,
   FormControl,
@@ -36,7 +37,7 @@ const attributes = [
 ];
 
 interface ProductAttributeSelectionProps {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<TCreateProductValidation>;
 }
 
 const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => {
@@ -57,8 +58,7 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
 
   const getAvailableAttributes = useCallback(
     (index: number) => {
-      const currentAttributeId = form.watch(`attributes[${index}].attributeId`);
-      console.log(selectedAttributes, currentAttributeId);
+      const currentAttributeId = form.watch(`attributes.${index}.attributeId`);
       return attributes.filter(
         (attr) => attr.id.toString() === currentAttributeId || !selectedAttributes.includes(attr.id.toString())
       );
@@ -69,13 +69,10 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
     <div className="space-y-4">
       <div className="flex items-start justify-between">
         <div className="space-y-1">
-          <h3 className="text-lg font-semibold">Product Attributes</h3>
+          <h3 className="text-lg">Product Attributes</h3>
           <p className="text-accent-foreground text-sm">
             If your product doesn't have any attributes you can skip <strong>Product Attributes</strong> and{" "}
             <strong>Product Variant</strong> Section
-          </p>
-          <p className="text-accent-foreground text-sm">
-            Depending on your selected attributes, product variants will be generated!
           </p>
         </div>
         <Button variant="accent" size="sm" className="flex items-center gap-2" onClick={handleAddAttribute}>
@@ -87,7 +84,7 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
       {fields.map((field, index) => (
         <div key={field.id} className="mb-4 flex items-end gap-3">
           <FormField
-            name={`attributes[${index}].attributeId`}
+            name={`attributes.${index}.attributeId`}
             control={form.control}
             render={({ field: attributeField }) => (
               <FormItem className="flex-1">
@@ -111,7 +108,7 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
             )}
           />
           <FormField
-            name={`attributes[${index}].attributeValueId`}
+            name={`attributes.${index}.attributeValueId`}
             control={form.control}
             render={({ field: valueField }) => (
               <FormItem className="flex-1">
@@ -120,10 +117,10 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
                   <OptionSelect
                     customQuerySearch={false}
                     items={attributeValues.filter(
-                      (attrVal) => attrVal.attributeId.toString() === form.watch(`attributes[${index}].attributeId`)
+                      (attrVal) => attrVal.attributeId.toString() === form.watch(`attributes.${index}.attributeId`)
                     )}
                     selectedItems={attributeValues.filter((x) =>
-                      (form.watch(`attributes[${index}].attributeValueId`) as string[])?.includes(x.id.toString())
+                      (form.watch(`attributes.${index}.attributeValueId`) as string[])?.includes(x.id.toString())
                     )}
                     onSelectionChange={(attributeValue) => {
                       if (Array.isArray(attributeValue)) {

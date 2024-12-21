@@ -1,3 +1,5 @@
+import { UseFormReturn } from "@repo/utils/hook-form";
+import { TCreateProductValidation } from "@repo/utils/validations";
 import { FileWithPreview, FormField, FormItem, FormMessage, ImageDropzone } from "@ui/index";
 import { useCallback } from "react";
 
@@ -8,7 +10,7 @@ import { useCallback } from "react";
  * images[]
  */
 
-const ProductMediaUpload = ({ form }: { form: any }) => {
+const ProductMediaUpload = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
   const handleFilesChange = useCallback(
     (files: FileWithPreview[] | FileWithPreview | null) => {
       if (files) {

@@ -1,10 +1,12 @@
 import { getAllCategories } from "@/lib/api/categories";
 import { useQueryData } from "@repo/tanstack-query";
+import { UseFormReturn } from "@repo/utils/hook-form";
+import { TCreateProductValidation } from "@repo/utils/validations";
 import { FormField, FormItem, FormLabel, FormMessage, OptionSelect } from "@ui/index";
 
-const ProductCategorySelection = ({ form }: { form: any }) => {
-  const collectionId = form.watch("collectionId");
-  const categoryId = form.watch("categoryId");
+const ProductCategorySelection = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
+  const collectionId = form.watch("category.collectionId");
+  const categoryId = form.watch("category.categoryId");
 
   // Fetch collections
   const { data: collectionCategories = [], isFetching: isGrandParentCatFetching } = useQueryData(
@@ -31,7 +33,7 @@ const ProductCategorySelection = ({ form }: { form: any }) => {
       {/* Collection Selection */}
       <FormField
         control={form.control}
-        name="collectionId"
+        name="category.collectionId"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-accent-foreground text-xs">Select Collection</FormLabel>
@@ -42,8 +44,8 @@ const ProductCategorySelection = ({ form }: { form: any }) => {
               onSelectionChange={(category) => {
                 if (!Array.isArray(category)) {
                   field.onChange(category.id.toString());
-                  form.resetField("categoryId"); // Reset dependent field
-                  form.resetField("subCatId"); // Reset subcategories field
+                  form.resetField("category.categoryId"); // Reset dependent field
+                  form.resetField("category.subCategories"); // Reset subcategories field
                 }
               }}
               searchPlaceholder="Search Collections..."
@@ -65,7 +67,7 @@ const ProductCategorySelection = ({ form }: { form: any }) => {
       {/* Category Selection */}
       <FormField
         control={form.control}
-        name="categoryId"
+        name="category.categoryId"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-accent-foreground text-xs">Select Category</FormLabel>
@@ -76,7 +78,7 @@ const ProductCategorySelection = ({ form }: { form: any }) => {
               onSelectionChange={(category) => {
                 if (!Array.isArray(category)) {
                   field.onChange(category.id.toString());
-                  form.resetField("subCatId"); // Reset subcategories field
+                  form.resetField("category.subCategories"); // Reset subcategories field
                 }
               }}
               searchPlaceholder="Search Categories..."
@@ -100,7 +102,7 @@ const ProductCategorySelection = ({ form }: { form: any }) => {
       {/* Subcategory Selection */}
       <FormField
         control={form.control}
-        name="subCatId"
+        name="category.subCategories"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-accent-foreground text-xs">Select Sub Category</FormLabel>

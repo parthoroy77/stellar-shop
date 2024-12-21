@@ -1,3 +1,5 @@
+import { UseFormReturn } from "@repo/utils/hook-form";
+import { TCreateProductValidation } from "@repo/utils/validations";
 import {
   Button,
   FormControl,
@@ -14,7 +16,7 @@ import {
 } from "@ui/index";
 import { LuInfo, LuPlus } from "react-icons/lu";
 
-const ProductBrandSelection = ({ form }: { form: any }) => {
+const ProductBrandSelection = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
   return (
     <div className="grid grid-cols-3 items-center gap-3">
       <FormField

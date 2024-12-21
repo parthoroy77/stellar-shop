@@ -1,9 +1,11 @@
+import { UseFormReturn } from "@repo/utils/hook-form";
+import { TCreateProductValidation } from "@repo/utils/validations";
 import { FormControl, FormField, FormItem, FormLabel, Input } from "@ui/index";
 import dynamic from "next/dynamic";
 
 const Editor = dynamic(() => import("@/components/ui/editor"), { ssr: false });
 
-const ProductInformationFields = ({ form }: { form: any }) => {
+const ProductInformationFields = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
   return (
     <div>
       <h3 className="text-lg">Product Information</h3>
