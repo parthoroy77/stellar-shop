@@ -87,7 +87,7 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
             name={`attributes.${index}.attributeId`}
             control={form.control}
             render={({ field: attributeField }) => (
-              <FormItem className="flex-1">
+              <FormItem className="relative flex-1">
                 <FormLabel>Select Attribute</FormLabel>
                 <Select onValueChange={attributeField.onChange} value={attributeField.value}>
                   <FormControl>
@@ -111,7 +111,7 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
             name={`attributes.${index}.attributeValueId`}
             control={form.control}
             render={({ field: valueField }) => (
-              <FormItem className="flex-1">
+              <FormItem className="relative flex-1">
                 <FormLabel>Select Attribute Value</FormLabel>
                 <FormControl>
                   <OptionSelect

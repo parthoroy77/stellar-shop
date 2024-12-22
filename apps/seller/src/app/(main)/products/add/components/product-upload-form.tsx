@@ -6,6 +6,7 @@ import ProductAttributeSelection from "./product-attribute-selection";
 import ProductClassifications from "./product-classifications";
 import ProductInformationFields from "./product-information-fields";
 import ProductMediaUpload from "./product-media-upload";
+import ProductVariant from "./product-variant";
 
 const ProductUploadForm = () => {
   const form = useForm<TCreateProductValidation>({
@@ -22,6 +23,7 @@ const ProductUploadForm = () => {
             <ProductInformationFields form={form} />
             <ProductClassifications form={form} />
             <ProductAttributeSelection form={form} />
+            <ProductVariant form={form} />
             <div>
               <h3 className="text-lg">Product Delivery Information</h3>
             </div>
