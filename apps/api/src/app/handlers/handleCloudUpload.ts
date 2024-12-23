@@ -26,7 +26,7 @@ export const uploadFileToCloudinaryAndCreateRecord = async (filePath: string, fo
         uploadedBy: userId,
       },
     });
-    return { fileRecord, publicId: uploadResult.public_id };
+    return { uploadResult, fileRecord };
   } catch (error) {
     logger.error(`Error uploading file to Cloudinary or creating file record: ${error}`);
     throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "File upload failed.");

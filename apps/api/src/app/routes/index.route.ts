@@ -1,6 +1,7 @@
 import { Router } from "express";
 import AddressRoutes from "../modules/address/address.routes";
 import AuthRoutes from "../modules/auth/auth.routes";
+import BrandRoutes from "../modules/brand.routes";
 import CategoryRoutes from "../modules/category/category.routes";
 import SellerRoutes from "../modules/seller/seller.routes";
 
@@ -27,6 +28,10 @@ const routerModules: TRouteModule[] = [
   {
     path: "/sellers",
     route: SellerRoutes,
+  },
+  {
+    path: "/brands",
+    route: BrandRoutes,
   },
 ];
 

@@ -31,7 +31,7 @@ const onboarding = async (
 
     // Wait for both uploads to complete
     const [logo, banner] = await Promise.all([logoUpload, bannerUpload]);
-    uploadResults.push(logo.publicId, banner.publicId);
+    uploadResults.push(logo.fileRecord.filePublicId, banner.fileRecord.filePublicId);
 
     // Perform all database operations in a transaction
     const seller = await prisma.$transaction(async (tx) => {
