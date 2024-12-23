@@ -1,22 +1,12 @@
+import { getAllBrands } from "@/lib/api/brands";
+import { useQueryData } from "@repo/tanstack-query";
 import { UseFormReturn } from "@repo/utils/hook-form";
 import { TCreateProductValidation } from "@repo/utils/validations";
-import {
-  Button,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Label,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@ui/index";
+import { Button, FormControl, FormField, FormItem, FormLabel, FormMessage, Label, OptionSelect } from "@ui/index";
 import { LuInfo, LuPlus } from "react-icons/lu";
 
 const ProductBrandSelection = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
+  const { data: brands = [], isFetching } = useQueryData(["brands"], () => getAllBrands());
   return (
     <div className="grid grid-cols-3 items-center gap-3">
       <FormField
@@ -33,14 +23,26 @@ const ProductBrandSelection = ({ form }: { form: UseFormReturn<TCreateProductVal
             </div>
             <FormControl>
               <div className="flex items-center gap-3">
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <SelectTrigger className="h-9">
-                    <SelectValue placeholder="Select brand of you product" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="232">No Brand</SelectItem>
-                  </SelectContent>
-                </Select>
+                <OptionSelect
+                  customQuerySearch={false}
+                  items={brands || []}
+                  selectedItems={brands.filter((brand) => brand.id.toString() === field.value) || []}
+                  onSelectionChange={(brand) => {
+                    if (!Array.isArray(brand)) {
+                      field.onChange(brand.id.toString());
+                    }
+                  }}
+                  searchPlaceholder="Search Collections..."
+                  itemRenderer={(brand) => (
+                    <div className="flex items-center gap-2 text-xs">
+                      <img className="size-6 rounded-md" src={brand.file.fileUrl} alt={brand.name} />
+                      {brand.name}
+                    </div>
+                  )}
+                  isLoading={isFetching}
+                  multiSelect={false}
+                  getItemId={(brand) => brand.id}
+                />
               </div>
             </FormControl>
             <FormMessage />
