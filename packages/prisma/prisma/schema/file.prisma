@@ -33,6 +33,7 @@ model File {
   variantFiles     VariantFile[]
   logoForSellers   Seller[]       @relation("LogoForSellers")
   bannerForSellers Seller[]       @relation("BannerForSellers")
+  brands           Brand[]
 
   @@map("Files")
 }

@@ -1,29 +1,42 @@
 model Tag {
-  id        Int    @id @default(autoincrement())
-  name      String
-  productId Int
+  id   Int    @id @default(autoincrement())
+  name String
 
   // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // references 
-  product Product @relation(fields: [productId], references: [id])
+  productTags ProductTag[]
 
   @@map("Tags")
 }
 
+model ProductTag {
+  id        Int @id @default(autoincrement())
+  tagId     Int
+  productId Int
+
+  // references 
+  product Product @relation(fields: [productId], references: [id])
+  tag     Tag     @relation(fields: [tagId], references: [id])
+
+  @@map("ProductTags")
+}
+
 model Brand {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String   @db.Text
-  logo        String
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String? @db.Text
+  fileId      Int     @unique
+
   // timestamps
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // references 
   products Product[]
+  file     File      @relation(references: [id], fields: [fileId])
 
   @@map("Brands")
 }

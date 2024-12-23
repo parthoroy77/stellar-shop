@@ -19,7 +19,6 @@ model Product {
 
   // references
   seller                   Seller                    @relation(fields: [sellerId], references: [id])
-  tags                     Tag[]
   brand                    Brand                     @relation(fields: [brandId], references: [id])
   attributes               ProductAttribute[]
   variants                 ProductVariant[]
@@ -28,6 +27,7 @@ model Product {
   productDeliveryOptions   ProductDeliveryOption[]
   inventoryLogs            InventoryLog[]
   restockInventoryRequests RestockInventoryRequest[]
+  tags                     ProductTag[]
 
   @@index([urlSlug, productName])
   @@map("Products")
