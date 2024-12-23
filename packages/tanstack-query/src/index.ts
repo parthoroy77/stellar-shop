@@ -1,5 +1,5 @@
 // core dependencies
-export { QueryClient } from "@tanstack/react-query";
+export { QueryClient, useQueryClient } from "@tanstack/react-query";
 
 // provider
 export * from "./provider";
