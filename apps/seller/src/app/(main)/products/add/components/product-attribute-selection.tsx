@@ -49,7 +49,7 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
   const handleAddAttribute = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
-      append({ attributeId: "", attributeValueId: [] });
+      append({ attributeId: "", attributeValues: [] });
     },
     [append]
   );
@@ -65,6 +65,7 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
     },
     [form, selectedAttributes]
   );
+
   return (
     <div className="space-y-4">
       <div className="flex items-start justify-between">
@@ -89,7 +90,13 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
             render={({ field: attributeField }) => (
               <FormItem className="relative flex-1">
                 <FormLabel>Select Attribute</FormLabel>
-                <Select onValueChange={attributeField.onChange} value={attributeField.value}>
+                <Select
+                  onValueChange={(value) => {
+                    form.setValue(`attributes.${index}.name`, attributes.find((x) => x.id.toString() === value)!.name);
+                    attributeField.onChange(value);
+                  }}
+                  value={attributeField.value}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select product attribute" />
@@ -108,7 +115,7 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
             )}
           />
           <FormField
-            name={`attributes.${index}.attributeValueId`}
+            name={`attributes.${index}.attributeValues`}
             control={form.control}
             render={({ field: valueField }) => (
               <FormItem className="relative flex-1">
@@ -119,12 +126,16 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
                     items={attributeValues.filter(
                       (attrVal) => attrVal.attributeId.toString() === form.watch(`attributes.${index}.attributeId`)
                     )}
-                    selectedItems={attributeValues.filter((x) =>
-                      (form.watch(`attributes.${index}.attributeValueId`) as string[])?.includes(x.id.toString())
+                    selectedItems={attributeValues.filter((item) =>
+                      (form.watch(`attributes.${index}.attributeValues`) as { id: string; name: string }[])?.some(
+                        (attr) => attr.id === item.id.toString()
+                      )
                     )}
                     onSelectionChange={(attributeValue) => {
                       if (Array.isArray(attributeValue)) {
-                        valueField.onChange(attributeValue.map((item) => item.id.toString()));
+                        valueField.onChange(
+                          attributeValue.map((item) => ({ id: item.id.toString(), name: item.value }))
+                        );
                       }
                     }}
                     searchPlaceholder="Search attribute values..."
