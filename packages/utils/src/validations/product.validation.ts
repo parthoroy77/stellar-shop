@@ -16,7 +16,7 @@ const productVariantValidation = z.object({
   variantName: z.string().min(1, "Variant name is required").max(70, "Variant name must be under 70 characters"),
   price: z.number().positive("Price must be greater than 0"),
   sku: z.string().regex(/^[a-zA-Z0-9-_]+$/, "SKU must be alphanumeric and can include dashes or underscores"),
-  variantImages: z.array(imageFileSchema).max(1, "Max 1 images per variant"),
+  variantImages: imageFileSchema,
   variantAttributes: z.array(attributeSchema).optional(),
 });
 

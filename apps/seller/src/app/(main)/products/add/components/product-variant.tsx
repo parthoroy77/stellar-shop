@@ -10,7 +10,7 @@ const ProductVariant = ({ form }: { form: UseFormReturn<TCreateProductValidation
   const attributes = form.getValues("attributes") || [];
 
   const hasAttributes = useMemo(
-    () => attributes.some((attr) => attr.attributeId && attr.attributeValueId.length),
+    () => attributes.some((attr) => attr.attributeId && attr.attributeValues.length),
     [attributes]
   );
 
