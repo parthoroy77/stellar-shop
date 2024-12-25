@@ -1,19 +1,19 @@
-model DeliveryOption {
+model ShippingOption {
   id           Int                  @id @default(autoincrement())
   name         String               @unique
   charge       Float
   estimateDays String
-  status       DeliveryOptionStatus @default(ACTIVE)
+  status       ShippingOptionStatus @default(ACTIVE)
 
   // timestamps
   createdAt              DateTime                @default(now())
   updatedAt              DateTime                @updatedAt
-  productDeliveryOptions ProductDeliveryOption[]
+  productShippingOptions ProductShippingOption[]
 
-  @@map("DeliveryOptions")
+  @@map("ShippingOptions")
 }
 
-enum DeliveryOptionStatus {
+enum ShippingOptionStatus {
   ACTIVE
   INACTIVE
   ARCHIVED

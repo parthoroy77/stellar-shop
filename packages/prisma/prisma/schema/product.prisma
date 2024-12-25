@@ -23,8 +23,8 @@ model Product {
   attributes               ProductAttribute[]
   variants                 ProductVariant[]
   images                   ProductFile[]
-  productDeliveryInfo      ProductDeliveryInfo?
-  productDeliveryOptions   ProductDeliveryOption[]
+  deliveryInfo             ProductDeliveryInfo?
+  shippingOptions          ProductShippingOption[]
   inventoryLogs            InventoryLog[]
   restockInventoryRequests RestockInventoryRequest[]
   tags                     ProductTag[]
