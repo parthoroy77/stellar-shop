@@ -63,7 +63,7 @@ const ProductInformationFields = ({ form }: { form: UseFormReturn<TCreateProduct
           name="sku"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>SKU</FormLabel>
+              <FormLabel>Stock Keeping Unit</FormLabel>
               <FormControl>
                 <Input
                   {...field}

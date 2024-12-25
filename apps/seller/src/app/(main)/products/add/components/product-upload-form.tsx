@@ -6,6 +6,7 @@ import ProductAttributeSelection from "./product-attribute-selection";
 import ProductClassifications from "./product-classifications";
 import ProductDeliveryInformation from "./product-delivery-information";
 import ProductInformationFields from "./product-information-fields";
+import ProductInventoryDetails from "./product-inventory-details";
 import ProductMediaUpload from "./product-media-upload";
 import ProductVariant from "./product-variant";
 
@@ -40,6 +41,7 @@ const defaultValues: TCreateProductValidation = {
     packageWeight: 0,
     packageWidth: 0,
   },
+  stock: 0,
 };
 
 const ProductUploadForm = () => {
@@ -59,9 +61,7 @@ const ProductUploadForm = () => {
             <ProductAttributeSelection form={form} />
             <ProductVariant form={form} />
             <ProductDeliveryInformation form={form} />
-            <div>
-              <h3 className="text-lg">Product Inventory</h3>
-            </div>
+            <ProductInventoryDetails form={form} />
           </form>
         </Form>
       </div>

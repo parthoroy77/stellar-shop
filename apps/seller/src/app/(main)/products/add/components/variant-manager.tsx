@@ -52,15 +52,15 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
     form.setValue("attributes", updatedAttributes);
     remove(index);
   };
-
   return (
-    <div className="rounded-md border">
+    <div className="w-full rounded-md border">
       <ShadTable>
         <TableHeader>
           <TableRow className="text-accent-foreground *:font-medium">
             <TableHead className="w-fit">Image</TableHead>
             <TableHead className="w-fit max-w-[250px]">Name</TableHead>
             <TableHead>SKU</TableHead>
+            <TableHead>Stock</TableHead>
             <TableHead>Attributes</TableHead>
             <TableHead className="w-fit text-end">Actions</TableHead>
           </TableRow>
@@ -86,6 +86,18 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
                   onChange={debounce(
                     (e: React.ChangeEvent<HTMLInputElement>) =>
                       update(index, { ...variants[index]!, sku: e.target.value }),
+                    500
+                  )}
+                  className="h-8 w-36 text-xs"
+                  placeholder="Write Here"
+                />
+              </TableCell>
+              <TableCell>
+                <Input
+                  defaultValue={variant.stock}
+                  onChange={debounce(
+                    (e: React.ChangeEvent<HTMLInputElement>) =>
+                      update(index, { ...variants[index]!, stock: Number(e.target.value) }),
                     500
                   )}
                   className="h-8 w-36 text-xs"

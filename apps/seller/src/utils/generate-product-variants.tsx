@@ -27,6 +27,7 @@ export const generateProductVariants = ({ productName, attributes }: Props) => {
       sku: "",
       variantImage: null,
       variantAttributes, // Include only relevant attributes
+      stock: 0,
     };
   });
 
