@@ -8,10 +8,36 @@ import ProductInformationFields from "./product-information-fields";
 import ProductMediaUpload from "./product-media-upload";
 import ProductVariant from "./product-variant";
 
+const defaultValues: TCreateProductValidation = {
+  productName: "Luxury comfortable t shirt",
+  productDescription: "",
+  sku: "DK9LD5045DK",
+  price: 0,
+  comparePrice: 0,
+  productImages: [],
+  category: {
+    collectionId: "",
+    categoryId: "",
+    subCategories: [],
+  },
+  brandId: "",
+  variants: [],
+  attributes: [
+    {
+      name: "Color",
+      attributeId: "1",
+      attributeValues: [
+        { id: "1", name: "Red" },
+        { id: "2", name: "Blue" },
+      ],
+    },
+  ],
+};
+
 const ProductUploadForm = () => {
   const form = useForm<TCreateProductValidation>({
     resolver: zodResolver(createProductValidationSchema),
-    defaultValues: {},
+    defaultValues: { ...defaultValues },
   });
 
   return (

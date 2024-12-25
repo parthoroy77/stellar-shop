@@ -71,7 +71,7 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
       <div className="flex items-start justify-between">
         <div className="space-y-1">
           <h3 className="text-lg">Product Attributes</h3>
-          <p className="text-accent-foreground text-sm">
+          <p className="text-accent-foreground text-xs">
             If your product doesn't have any attributes you can skip <strong>Product Attributes</strong> and{" "}
             <strong>Product Variant</strong> Section
           </p>
@@ -81,7 +81,7 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
           <MdOutlinePlaylistAdd size={15} aria-hidden="true" />
         </Button>
       </div>
-      <hr className="my-4" />
+      {fields.length > 0 && <hr className="my-4" />}
       {fields.map((field, index) => (
         <div key={field.id} className="mb-4 flex items-end gap-3">
           <FormField

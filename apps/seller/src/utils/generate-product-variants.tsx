@@ -3,21 +3,32 @@ import { cartesian, toKebabCase, toTitleCase } from "@repo/utils/functions";
 interface Props {
   productName: string;
   attributes: {
+    attributeId: string;
     name: string;
-    attributeValues: string[];
+    attributeValues: { id: string; name: string }[];
   }[];
 }
 
 export const generateProductVariants = ({ productName, attributes }: Props) => {
-  const combinations = cartesian(attributes.map((attr) => attr.attributeValues));
+  // Generate all combinations of attribute values
+  const combinations = cartesian(...attributes.map((attr) => attr.attributeValues.map((x) => x.name)));
 
-  const variants = combinations.map((combination) => ({
-    variantName: `${toTitleCase(toKebabCase(productName))}-${combination.join("-")}`,
-    price: null,
-    sku: "",
-    variantImages: null,
-    variantAttributes: [],
-  }));
+  // Map combinations to variants
+  const variants = combinations.map((combination) => {
+    // Map the combination to the relevant attributes
+    const variantAttributes = attributes.map((attribute) => ({
+      ...attribute,
+      attributeValues: attribute.attributeValues.filter((value) => combination.includes(value.name)),
+    }));
+
+    return {
+      variantName: `${toTitleCase(toKebabCase(productName))}-${combination.join("-")}`,
+      price: 0,
+      sku: "",
+      variantImage: null,
+      variantAttributes, // Include only relevant attributes
+    };
+  });
 
   return variants;
 };
