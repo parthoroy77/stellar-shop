@@ -1,3 +1,4 @@
+import { debounce } from "@repo/utils/functions";
 import { useFieldArray, UseFormReturn } from "@repo/utils/hook-form";
 import { TCreateProductValidation } from "@repo/utils/validations";
 import {
@@ -19,7 +20,38 @@ import { GoFileMedia, GoTrash } from "react-icons/go";
 import { LuX } from "react-icons/lu";
 
 const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
-  const { fields } = useFieldArray({ name: "variants", control: form.control });
+  const { fields: variants, remove, update } = useFieldArray({ name: "variants", control: form.control });
+
+  const attributes = form.watch("attributes") || [];
+  const removeVariant = (index: number) => {
+    // Step 1: Filter out the variant to be removed
+    const updatedVariants = variants.filter((_, idx) => idx !== index);
+
+    // Step 2: Identify attributes still in use
+    const usedAttributes = updatedVariants.reduce<Record<string, Set<string>>>((acc, variant) => {
+      variant.variantAttributes!.forEach((attr) => {
+        if (!acc[attr.name!]) {
+          acc[attr.name!] = new Set();
+        }
+        attr.attributeValues.forEach((value) => acc[attr.name!]!.add(value.name!));
+      });
+      return acc;
+    }, {});
+
+    // Step 3: Filter out attributes that are no longer referenced
+    const updatedAttributes = attributes.filter((attribute) => {
+      const usedValues = usedAttributes[attribute.name!];
+      if (!usedValues) return false;
+
+      // Retain only values still in use
+      attribute.attributeValues = attribute.attributeValues.filter((value) => usedValues.has(value.name!));
+
+      return attribute.attributeValues.length > 0; // Remove attribute if no values are left
+    });
+
+    form.setValue("attributes", updatedAttributes);
+    remove(index);
+  };
 
   return (
     <div className="rounded-md border">
@@ -34,7 +66,7 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
           </TableRow>
         </TableHeader>
         <TableBody>
-          {fields.map((variant, index) => (
+          {variants.map((variant, index) => (
             <TableRow key={index} className="*:py-2">
               <TableCell>
                 <FormField
@@ -49,7 +81,16 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
               </TableCell>
               <TableCell className="w-fit max-w-[250px] truncate font-medium">{variant.variantName}</TableCell>
               <TableCell>
-                <Input value={variant.sku} className="h-8 w-36 text-xs" placeholder="Write Here" />
+                <Input
+                  defaultValue={variant.sku}
+                  onChange={debounce(
+                    (e: React.ChangeEvent<HTMLInputElement>) =>
+                      update(index, { ...variants[index]!, sku: e.target.value }),
+                    500
+                  )}
+                  className="h-8 w-36 text-xs"
+                  placeholder="Write Here"
+                />
               </TableCell>
               <TableCell>
                 <div className="flex items-center gap-3 text-xs">
@@ -67,7 +108,12 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
               </TableCell>
               <TableCell>
                 <div className="flex items-center justify-end">
-                  <Button variant={"destructive"} className="h-fit w-fit p-2">
+                  <Button
+                    type="button"
+                    onClick={() => removeVariant(index)}
+                    variant={"destructive"}
+                    className="h-fit w-fit p-2"
+                  >
                     <GoTrash size={16} />
                   </Button>
                 </div>
