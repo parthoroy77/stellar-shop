@@ -4,6 +4,7 @@ import { createProductValidationSchema, TCreateProductValidation } from "@repo/u
 import { Form } from "@ui/index";
 import ProductAttributeSelection from "./product-attribute-selection";
 import ProductClassifications from "./product-classifications";
+import ProductDeliveryInformation from "./product-delivery-information";
 import ProductInformationFields from "./product-information-fields";
 import ProductMediaUpload from "./product-media-upload";
 import ProductVariant from "./product-variant";
@@ -32,6 +33,13 @@ const defaultValues: TCreateProductValidation = {
       ],
     },
   ],
+  deliveryOptions: [],
+  deliveryInformation: {
+    packageHeight: 0,
+    packageLength: 0,
+    packageWeight: 0,
+    packageWidth: 0,
+  },
 };
 
 const ProductUploadForm = () => {
@@ -50,11 +58,9 @@ const ProductUploadForm = () => {
             <ProductClassifications form={form} />
             <ProductAttributeSelection form={form} />
             <ProductVariant form={form} />
+            <ProductDeliveryInformation form={form} />
             <div>
-              <h3 className="text-lg">Product Delivery Information</h3>
-            </div>
-            <div>
-              <h3 className="text-lg">Product Delivery Information</h3>
+              <h3 className="text-lg">Product Inventory</h3>
             </div>
           </form>
         </Form>

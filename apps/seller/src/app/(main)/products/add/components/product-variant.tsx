@@ -60,7 +60,11 @@ const ProductVariant = ({ form }: { form: UseFormReturn<TCreateProductValidation
       <hr />
       {!loading ? (
         hasAttributes ? (
-          isGenerated && <VariantManager form={form} />
+          isGenerated ? (
+            <VariantManager form={form} />
+          ) : (
+            <p className="text-accent-foreground text-center text-sm font-medium">Click the button to generate!</p>
+          )
         ) : (
           <p className="text-accent-foreground text-center text-sm font-medium">First select Attributes</p>
         )

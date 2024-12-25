@@ -45,6 +45,15 @@ export const createProductValidationSchema = z.object({
 
   // Product Variants
   variants: z.array(productVariantValidation).optional(),
+
+  // delivery information
+  deliveryInformation: z.object({
+    packageWeight: z.number(),
+    packageHeight: z.number(),
+    packageWidth: z.number(),
+    packageLength: z.number(),
+  }),
+  deliveryOptions: z.array(z.string()),
 });
 
 export type TCreateProductValidation = z.infer<typeof createProductValidationSchema>;
