@@ -5,6 +5,7 @@ import {
   Badge,
   Button,
   FileWithPreview,
+  FormControl,
   FormField,
   FormItem,
   Input,
@@ -59,6 +60,7 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
           <TableRow className="text-accent-foreground *:font-medium">
             <TableHead className="w-fit">Image</TableHead>
             <TableHead className="w-fit max-w-[250px]">Name</TableHead>
+            <TableHead>Price of Variant</TableHead>
             <TableHead>SKU</TableHead>
             <TableHead>Stock</TableHead>
             <TableHead>Attributes</TableHead>
@@ -74,12 +76,31 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
                   name={`variants.${index}.variantImage`}
                   render={({ field }) => (
                     <FormItem>
-                      <VariantImageManager onChange={field.onChange} />
+                      <FormControl>
+                        <VariantImageManager
+                          variantImage={(field.value as unknown as FileWithPreview) ?? null}
+                          index={index}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
                     </FormItem>
                   )}
                 />
               </TableCell>
               <TableCell className="w-fit max-w-[250px] truncate font-medium">{variant.variantName}</TableCell>
+              <TableCell>
+                <Input
+                  defaultValue={variant.price}
+                  onChange={debounce(
+                    (e: React.ChangeEvent<HTMLInputElement>) =>
+                      update(index, { ...variants[index]!, price: Number(e.target.value) }),
+                    500
+                  )}
+                  type="number"
+                  className="h-8 w-36 text-xs"
+                  placeholder="Price of Each Variant"
+                />
+              </TableCell>
               <TableCell>
                 <Input
                   defaultValue={variant.sku}
@@ -100,6 +121,7 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
                       update(index, { ...variants[index]!, stock: Number(e.target.value) }),
                     500
                   )}
+                  type="number"
                   className="h-8 w-36 text-xs"
                   placeholder="Write Here"
                 />
@@ -138,15 +160,20 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
   );
 };
 
-const VariantImageManager = ({ onChange }: { onChange: (value: File | null) => void }) => {
-  const [image, setImage] = useState<FileWithPreview | null>(null);
+const VariantImageManager = ({
+  onChange,
+  index,
+  variantImage,
+}: {
+  onChange: (value: File | null) => void;
+  index: number;
+  variantImage: FileWithPreview | null;
+}) => {
+  const [image, setImage] = useState<FileWithPreview | null>(variantImage);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // get the file from event
     const file = event.target.files?.[0];
-
     if (file) {
-      // create viewable object url
       const fileWithPreview = Object.assign(file, {
         preview: URL.createObjectURL(file),
       });
@@ -161,14 +188,14 @@ const VariantImageManager = ({ onChange }: { onChange: (value: File | null) => v
   return (
     <div
       className="relative flex h-11 w-11 cursor-pointer items-center justify-center rounded-md border"
-      onClick={() => document.getElementById("file-input")?.click()}
+      onClick={() => document.getElementById(`file-input-${index}`)?.click()}
     >
       {image ? (
         <img src={image.preview} alt="Selected Image" className="h-full w-full rounded-md object-cover" />
       ) : (
         <GoFileMedia size={24} className="text-gray-500" />
       )}
-      <input id="file-input" type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+      <input id={`file-input-${index}`} type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
       {image && (
         <button
           onClick={(e) => {

@@ -61,6 +61,8 @@ const ProductDeliveryInformation = ({ form }: { form: UseFormReturn<TCreateProdu
             <FormControl>
               <Input
                 {...field}
+                type="number"
+                onChange={(e) => field.onChange(Number(e.target.value))}
                 placeholder="e.g. 2"
                 className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
               />
@@ -77,6 +79,8 @@ const ProductDeliveryInformation = ({ form }: { form: UseFormReturn<TCreateProdu
             <FormControl>
               <Input
                 {...field}
+                type="number"
+                onChange={(e) => field.onChange(Number(e.target.value))}
                 placeholder="e.g. 15"
                 className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
               />
@@ -93,6 +97,8 @@ const ProductDeliveryInformation = ({ form }: { form: UseFormReturn<TCreateProdu
             <FormControl>
               <Input
                 {...field}
+                type="number"
+                onChange={(e) => field.onChange(Number(e.target.value))}
                 placeholder="e.g. 40"
                 className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
               />
@@ -110,6 +116,8 @@ const ProductDeliveryInformation = ({ form }: { form: UseFormReturn<TCreateProdu
             <FormControl>
               <Input
                 {...field}
+                type="number"
+                onChange={(e) => field.onChange(Number(e.target.value))}
                 placeholder="e.g. 30"
                 className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
               />

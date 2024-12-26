@@ -41,19 +41,20 @@ const ProductUploadForm = () => {
     resolver: zodResolver(createProductValidationSchema),
     defaultValues: { ...defaultValues },
   });
-
+  const handleUpload = (data: TCreateProductValidation) => {
+    console.log(data);
+  };
   return (
     <section className="flex h-full w-full items-start">
       <Form {...form}>
-        <form className="w-full">
+        <form onSubmit={form.handleSubmit(handleUpload)} className="w-full">
           <div className="flex items-center justify-between rounded-md rounded-b-none px-5 py-3">
             <h2 className="text-xl font-medium">Add Product</h2>
-
             <div className="space-x-3">
-              <Button variant={"ghost"} size={"sm"} className="border-secondary border">
+              <Button type="submit" variant={"ghost"} size={"sm"} className="border-secondary border">
                 Save Draft
               </Button>
-              <Button variant={"accent"} size={"sm"} className="border-secondary border">
+              <Button type="submit" variant={"accent"} size={"sm"} className="border-secondary border">
                 Publish Product
               </Button>
             </div>

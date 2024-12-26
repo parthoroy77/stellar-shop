@@ -66,6 +66,7 @@ const ProductInventoryDetails = ({ form }: { form: UseFormReturn<TCreateProductV
                 <Input
                   {...field}
                   type="number"
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                   placeholder="e.g. 100"
                   className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
                 />

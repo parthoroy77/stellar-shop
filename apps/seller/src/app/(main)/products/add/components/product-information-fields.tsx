@@ -1,6 +1,6 @@
 import { UseFormReturn } from "@repo/utils/hook-form";
 import { TCreateProductValidation } from "@repo/utils/validations";
-import { FormControl, FormField, FormItem, FormLabel, Input } from "@ui/index";
+import { FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@ui/index";
 import dynamic from "next/dynamic";
 
 const Editor = dynamic(() => import("@/components/ui/editor"), { ssr: false });
@@ -22,6 +22,7 @@ const ProductInformationFields = ({ form }: { form: UseFormReturn<TCreateProduct
                 className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
               />
             </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />
@@ -35,10 +36,13 @@ const ProductInformationFields = ({ form }: { form: UseFormReturn<TCreateProduct
               <FormControl>
                 <Input
                   {...field}
+                  type="number"
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                   placeholder="Your Best Price"
                   className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -51,10 +55,13 @@ const ProductInformationFields = ({ form }: { form: UseFormReturn<TCreateProduct
               <FormControl>
                 <Input
                   {...field}
+                  type="number"
+                  onChange={(e) => field.onChange(Number(e.target.value))}
                   placeholder="Your Compare Price"
                   className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -71,6 +78,7 @@ const ProductInformationFields = ({ form }: { form: UseFormReturn<TCreateProduct
                   className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -84,6 +92,7 @@ const ProductInformationFields = ({ form }: { form: UseFormReturn<TCreateProduct
             <FormControl>
               <Editor value={field.value} onChangeHandler={field.onChange} />
             </FormControl>
+            <FormMessage />
           </FormItem>
         )}
       />
