@@ -3,6 +3,7 @@ export * from "zod";
 
 // zod schemas
 export * from "./address.validation";
+export * from "./attribute.validation";
 export * from "./auth.validation";
 export * from "./brand.validation";
 export * from "./category.validation";
