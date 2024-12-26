@@ -109,11 +109,17 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {availableAttributes.map((attr) => (
-                        <SelectItem key={attr.id} value={attr.id.toString()}>
-                          {attr.name}
-                        </SelectItem>
-                      ))}
+                      {availableAttributes.length > 0 ? (
+                        availableAttributes.map((attr) => (
+                          <SelectItem key={attr.id} value={attr.id.toString()}>
+                            {attr.name}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <div className="text-accent-foreground text-center text-sm">
+                          <span>No Attributes Found</span>
+                        </div>
+                      )}
                     </SelectContent>
                   </Select>
                   <FormMessage />
