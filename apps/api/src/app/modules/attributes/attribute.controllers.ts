@@ -20,7 +20,7 @@ const getAttributesWithValues = asyncHandler(async (_, res) => {
   ApiResponse(res, {
     data: result,
     message: "Attribute & values fetched successfully!",
-    statusCode: StatusCodes.CREATED,
+    statusCode: StatusCodes.OK,
     success: true,
   });
 });
@@ -30,7 +30,7 @@ const getAllAttributes = asyncHandler(async (_, res) => {
   ApiResponse(res, {
     data: result,
     message: "Attribute fetched successfully!",
-    statusCode: StatusCodes.CREATED,
+    statusCode: StatusCodes.OK,
     success: true,
   });
 });
@@ -45,7 +45,7 @@ const getValuesByAttribute = asyncHandler(async (req, res) => {
   ApiResponse(res, {
     data: result,
     message: "Attribute values fetched successfully!",
-    statusCode: StatusCodes.CREATED,
+    statusCode: StatusCodes.OK,
     success: true,
   });
 });
