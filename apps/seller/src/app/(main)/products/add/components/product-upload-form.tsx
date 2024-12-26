@@ -33,6 +33,7 @@ const defaultValues: TCreateProductValidation = {
     packageWidth: 0,
   },
   stock: 0,
+  tags: [],
 };
 
 const ProductUploadForm = () => {
