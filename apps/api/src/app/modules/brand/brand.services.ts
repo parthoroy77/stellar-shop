@@ -1,5 +1,5 @@
 import prisma, { Prisma } from "@repo/prisma/client";
-import { uploadFileToCloudinaryAndCreateRecord } from "../handlers/handleCloudUpload";
+import { uploadFileToCloudinaryAndCreateRecord } from "../../handlers/handleCloudUpload";
 import { BRAND_SEARCHABLE_FIELDS } from "./brand.constants";
 import { TBrandInput } from "./brand.types";
 

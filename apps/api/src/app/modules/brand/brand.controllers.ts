@@ -1,9 +1,9 @@
 import { StatusCodes } from "http-status-codes";
-import { ApiError } from "../handlers/ApiError";
-import { ApiResponse } from "../handlers/ApiResponse";
-import asyncHandler from "../handlers/asyncHandler";
-import pick from "../utils/pick";
 import { BrandServices } from "./brand.services";
+import asyncHandler from "../../handlers/asyncHandler";
+import { ApiError } from "../../handlers/ApiError";
+import { ApiResponse } from "../../handlers/ApiResponse";
+import pick from "../../utils/pick";
 
 const createBrand = asyncHandler(async (req, res) => {
   const payload = req.body;

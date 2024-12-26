@@ -1,7 +1,7 @@
 import { UserRole } from "@repo/prisma/client";
 import { Router } from "express";
-import authMiddleware from "../middleware/auth.middleware";
-import { upload } from "../middleware/multer.middleware";
+import authMiddleware from "../../middleware/auth.middleware";
+import { upload } from "../../middleware/multer.middleware";
 import { BrandControllers } from "./brand.controllers";
 
 const router = Router();
