@@ -5,6 +5,7 @@ import AuthRoutes from "../modules/auth/auth.routes";
 import BrandRoutes from "../modules/brand/brand.routes";
 import CategoryRoutes from "../modules/category/category.routes";
 import SellerRoutes from "../modules/seller/seller.routes";
+import ShippingRoutes from "../modules/shipping/shipping.routes";
 import TagRoutes from "../modules/tag/tag.routes";
 
 const router = Router();
@@ -42,6 +43,10 @@ const routerModules: TRouteModule[] = [
   {
     path: "/tags",
     route: TagRoutes,
+  },
+  {
+    path: "/shippings",
+    route: ShippingRoutes,
   },
 ];
 

@@ -10,3 +10,4 @@ export * from "./category.validation";
 export * from "./file.validation";
 export * from "./product.validation";
 export * from "./seller.validation";
+export * from "./shipping.validation";
