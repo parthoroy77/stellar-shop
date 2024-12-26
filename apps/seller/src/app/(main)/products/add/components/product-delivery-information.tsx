@@ -1,51 +1,12 @@
+import { getAllShippingOptions } from "@/lib/api";
+import { useQueryData } from "@repo/tanstack-query";
 import { UseFormReturn } from "@repo/utils/hook-form";
 import { TCreateProductValidation } from "@repo/utils/validations";
 import { Checkbox, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@ui/index";
 import { cn } from "@ui/lib/utils";
-const deliveryOptions = [
-  {
-    id: 1,
-    name: "Standard Shipping",
-    charge: 5.99,
-    estimateDays: "5-7 days",
-    status: "ACTIVE",
-    createdAt: "2024-12-01T10:00:00Z",
-    updatedAt: "2024-12-01T10:00:00Z",
-    productDeliveryOptions: [],
-  },
-  {
-    id: 2,
-    name: "Express Shipping",
-    charge: 12.99,
-    estimateDays: "1-3 days",
-    status: "ACTIVE",
-    createdAt: "2024-12-02T11:30:00Z",
-    updatedAt: "2024-12-02T11:30:00Z",
-    productDeliveryOptions: [],
-  },
-  {
-    id: 3,
-    name: "Same Day Shipping",
-    charge: 24.99,
-    estimateDays: "1 day",
-    status: "ACTIVE",
-    createdAt: "2024-12-03T09:15:00Z",
-    updatedAt: "2024-12-03T09:15:00Z",
-    productDeliveryOptions: [],
-  },
-  {
-    id: 5,
-    name: "Local Pickup",
-    charge: 3.49,
-    estimateDays: "Same day",
-    status: "ARCHIVED",
-    createdAt: "2024-10-15T14:20:00Z",
-    updatedAt: "2024-10-15T14:20:00Z",
-    productDeliveryOptions: [],
-  },
-];
 
 const ProductDeliveryInformation = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
+  const { data: shippingOptions = [] } = useQueryData(["shipping-options"], () => getAllShippingOptions());
   return (
     <div>
       <div className="space-y-1">
@@ -133,7 +94,7 @@ const ProductDeliveryInformation = ({ form }: { form: UseFormReturn<TCreateProdu
             <FormLabel>Select Shipping Option</FormLabel>
             <FormControl>
               <div className="space-y-3">
-                {deliveryOptions.map((option) => {
+                {shippingOptions.map((option) => {
                   const checked = field.value && field.value?.includes(option.id.toString());
 
                   return (

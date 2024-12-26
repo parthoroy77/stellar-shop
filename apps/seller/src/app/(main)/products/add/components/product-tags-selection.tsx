@@ -1,28 +1,12 @@
+import { getAllTags } from "@/lib/api";
+import { useQueryData } from "@repo/tanstack-query";
 import { UseFormReturn } from "@repo/utils/hook-form";
 import { TCreateProductValidation } from "@repo/utils/validations";
 import { Badge, FormControl, FormField, FormItem, FormLabel, OptionSelect } from "@ui/index";
-const tags = [
-  { id: 1, name: "summer" },
-  { id: 2, name: "hotsales" },
-  { id: 3, name: "limited edition" },
-  { id: 4, name: "bestseller" },
-  { id: 5, name: "new arrival" },
-  { id: 6, name: "clearance" },
-  { id: 7, name: "exclusive" },
-  { id: 8, name: "discounted" },
-  { id: 9, name: "black friday" },
-  { id: 10, name: "holiday special" },
-  { id: 11, name: "flash sale" },
-  { id: 12, name: "limited stock" },
-  { id: 13, name: "bundle offer" },
-  { id: 14, name: "pre-order" },
-  { id: 15, name: "best value" },
-  { id: 16, name: "top rated" },
-  { id: 17, name: "holiday gift" },
-  { id: 18, name: "exclusive deal" },
-];
+
 const ProductTagsSelection = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
   const selectedTags = form.getValues("tags") || [];
+  const { data: tags = [], isFetching } = useQueryData(["tags"], () => getAllTags());
 
   return (
     <>
@@ -49,6 +33,7 @@ const ProductTagsSelection = ({ form }: { form: UseFormReturn<TCreateProductVali
                 )}
                 getItemId={(tag) => tag.id}
                 multiSelect
+                disabled={isFetching}
               />
             </FormControl>
           </FormItem>

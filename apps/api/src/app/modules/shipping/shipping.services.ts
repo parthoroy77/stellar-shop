@@ -44,7 +44,7 @@ const getAllOptions = async ({ query, name, status }: TShippingOptionFilters) =>
 
   const result = await prisma.shippingOption.findMany({
     where: finalWhereClause,
-    select: { id: true, name: true, estimateDays: true },
+    select: { id: true, name: true, estimateDays: true, charge: true },
   });
 
   return result;

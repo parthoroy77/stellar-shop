@@ -7,7 +7,7 @@ import { TagControllers } from "./tag.controllers";
 
 const router = Router();
 
-router.get("/", authMiddleware(), TagControllers.getAllTags);
+router.get("/", TagControllers.getAllTags);
 router.post(
   "/",
   zodSafeParse(z.object({ name: z.string() })),
