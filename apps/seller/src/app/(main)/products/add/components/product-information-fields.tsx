@@ -77,7 +77,7 @@ const ProductInformationFields = ({ form }: { form: UseFormReturn<TCreateProduct
       </div>
       <FormField
         control={form.control}
-        name="productDescription"
+        name="description"
         render={({ field }) => (
           <FormItem>
             <FormLabel>Description</FormLabel>

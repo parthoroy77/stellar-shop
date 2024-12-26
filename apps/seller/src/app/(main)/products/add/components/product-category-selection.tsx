@@ -29,7 +29,7 @@ const ProductCategorySelection = ({ form }: { form: UseFormReturn<TCreateProduct
   );
 
   return (
-    <div className="grid grid-cols-3 gap-3">
+    <>
       {/* Collection Selection */}
       <FormField
         control={form.control}
@@ -132,7 +132,7 @@ const ProductCategorySelection = ({ form }: { form: UseFormReturn<TCreateProduct
           </FormItem>
         )}
       />
-    </div>
+    </>
   );
 };
 

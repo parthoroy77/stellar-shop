@@ -16,7 +16,11 @@ const ProductVariant = ({ form }: { form: UseFormReturn<TCreateProductValidation
 
   const handleGenerate = async () => {
     setLoading(true);
-    if (!productName) toast.error("Please add product name first!");
+    if (!productName) {
+      toast.error("Please add product name first!");
+      setLoading(false);
+      return;
+    }
     if (hasAttributes) {
       const variants = generateProductVariants({
         productName,

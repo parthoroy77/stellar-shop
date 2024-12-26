@@ -5,9 +5,10 @@ import ProductCategorySelection from "./product-category-selection";
 
 const ProductClassifications = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
   return (
-    <div className="!space-y-5">
+    <div>
       <h3 className="text-lg leading-none">Product Classifications</h3>
       <ProductCategorySelection form={form} />
+      <hr />
       <ProductBrandSelection form={form} />
     </div>
   );

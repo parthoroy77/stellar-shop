@@ -1,7 +1,7 @@
 "use client";
 import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { createProductValidationSchema, TCreateProductValidation } from "@repo/utils/validations";
-import { Form } from "@ui/index";
+import { Button, Form } from "@ui/index";
 import ProductAttributeSelection from "./product-attribute-selection";
 import ProductClassifications from "./product-classifications";
 import ProductDeliveryInformation from "./product-delivery-information";
@@ -11,9 +11,9 @@ import ProductMediaUpload from "./product-media-upload";
 import ProductVariant from "./product-variant";
 
 const defaultValues: TCreateProductValidation = {
-  productName: "Luxury comfortable t shirt",
-  productDescription: "",
-  sku: "DK9LD5045DK",
+  productName: "",
+  description: "",
+  sku: "",
   price: 0,
   comparePrice: 0,
   productImages: [],
@@ -24,17 +24,8 @@ const defaultValues: TCreateProductValidation = {
   },
   brandId: "",
   variants: [],
-  attributes: [
-    {
-      name: "Color",
-      attributeId: "1",
-      attributeValues: [
-        { id: "1", name: "Red" },
-        { id: "2", name: "Blue" },
-      ],
-    },
-  ],
-  deliveryOptions: [],
+  attributes: [],
+  shippingOptions: [],
   deliveryInformation: {
     packageHeight: 0,
     packageLength: 0,
@@ -52,20 +43,36 @@ const ProductUploadForm = () => {
 
   return (
     <section className="flex h-full w-full items-start">
-      <div className="h-full w-[75%] border-r">
-        <Form {...form}>
-          <form className="h-full divide-y *:space-y-3 *:px-5 *:py-5 [&_h3]:text-base [&_h3]:leading-none">
-            <ProductMediaUpload form={form} />
-            <ProductInformationFields form={form} />
-            <ProductClassifications form={form} />
-            <ProductAttributeSelection form={form} />
-            <ProductVariant form={form} />
-            <ProductDeliveryInformation form={form} />
-            <ProductInventoryDetails form={form} />
-          </form>
-        </Form>
-      </div>
-      <aside className="h-full w-[25%] px-5 py-3">Here will be timeline</aside>
+      <Form {...form}>
+        <form className="w-full">
+          <div className="flex items-center justify-between rounded-md rounded-b-none px-5 py-3">
+            <h2 className="text-xl font-medium">Add Product</h2>
+
+            <div className="space-x-3">
+              <Button variant={"ghost"} size={"sm"} className="border-secondary border">
+                Save Draft
+              </Button>
+              <Button variant={"accent"} size={"sm"} className="border-secondary border">
+                Publish Product
+              </Button>
+            </div>
+          </div>
+          <hr />
+          <div className="[&_input]:bg-accent/30 flex h-full w-full *:*:space-y-3 *:divide-y *:*:px-5 *:*:py-5 [&_h3]:text-base [&_h3]:leading-none [&_input]:border-2">
+            <div className="w-[70%] border-r">
+              <ProductMediaUpload form={form} />
+              <ProductInformationFields form={form} />
+              <ProductAttributeSelection form={form} />
+              <ProductVariant form={form} />
+              <ProductInventoryDetails form={form} />
+            </div>
+            <div className="h-full w-[30%]">
+              <ProductClassifications form={form} />
+              <ProductDeliveryInformation form={form} />
+            </div>
+          </div>
+        </form>
+      </Form>
     </section>
   );
 };

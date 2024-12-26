@@ -12,42 +12,47 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
   ImageDropzone,
   Input,
-  Label,
   OptionSelect,
   Textarea,
 } from "@ui/index";
 import { useState, useTransition } from "react";
-import { LuInfo, LuPlus } from "react-icons/lu";
+import { LuPlus } from "react-icons/lu";
 import { TbBrandAirtable } from "react-icons/tb";
 import { toast } from "sonner";
 
 const ProductBrandSelection = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
+  const [open, setOpen] = useState(false);
   const { data: brands = [], isFetching } = useQueryData(["brands"], () => getAllBrands());
   const handleSetNewBrand = (id: string) => {
     form.setValue("brandId", id);
   };
   return (
-    <div className="grid grid-cols-3 items-center gap-3">
+    <>
       <FormField
         name="brandId"
         control={form.control}
         render={({ field }) => (
           <FormItem className="relative col-span-2 w-full">
-            <div className="flex items-center gap-5">
+            <div className="flex items-center justify-between gap-5">
               <FormLabel>Select Product Brand</FormLabel>
-              <div className="text-accent-foreground flex space-x-1 text-xs font-medium">
-                <LuInfo color="gray" size={14} />
-                <p>Select a brand. If none, choose 'No Brand' or add your own.</p>
-              </div>
+              <Button
+                type="button"
+                onClick={() => setOpen((prev) => !prev)}
+                variant={"accent"}
+                size={"sm"}
+                className="h-fit px-6 py-1.5"
+              >
+                <LuPlus className="mr-2" /> Add
+              </Button>
             </div>
             <FormControl>
               <div className="flex items-center gap-3">
@@ -73,22 +78,26 @@ const ProductBrandSelection = ({ form }: { form: UseFormReturn<TCreateProductVal
                 />
               </div>
             </FormControl>
+            <FormDescription>Select a brand. If none, choose 'No Brand' or add your own.</FormDescription>
             <FormMessage />
           </FormItem>
         )}
       />
 
-      <div className="flex flex-col gap-3">
-        <Label>Add Your Own Brand</Label>
-        {/* TODO: On add button open a modal to create a brand */}
-        <AddBrandPopup handleSetNewBrand={handleSetNewBrand} />
-      </div>
-    </div>
+      <AddBrandPopup onClose={() => setOpen(false)} open={open} handleSetNewBrand={handleSetNewBrand} />
+    </>
   );
 };
 
-const AddBrandPopup = ({ handleSetNewBrand }: { handleSetNewBrand: (id: string) => void }) => {
-  const [open, setOpen] = useState(false);
+const AddBrandPopup = ({
+  handleSetNewBrand,
+  open,
+  onClose,
+}: {
+  handleSetNewBrand: (id: string) => void;
+  open: boolean;
+  onClose: () => void;
+}) => {
   const form = useForm<TCreateBrandValidation>({
     defaultValues: {
       name: "",
@@ -112,11 +121,17 @@ const AddBrandPopup = ({ handleSetNewBrand }: { handleSetNewBrand: (id: string) 
       if (result.success) {
         toast.success(result.message, { id: toastId });
         if (result.success && result.data) {
+          // set updated data
           handleSetNewBrand(result.data.id.toString());
-          setOpen(false);
+
+          // close the modal
+          onClose();
 
           // Invalidate and refetch the brands query
           queryClient.invalidateQueries({ queryKey: ["brands"] });
+
+          // reset form
+          form.reset();
         }
       } else {
         toast.error(result.message, { id: toastId });
@@ -125,13 +140,7 @@ const AddBrandPopup = ({ handleSetNewBrand }: { handleSetNewBrand: (id: string) 
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button size={"sm"} variant={"accent"} className="flex items-center gap-2">
-          <LuPlus size={17} />
-          <span>Add</span>
-        </Button>
-      </DialogTrigger>
+    <Dialog open={open} onOpenChange={(state) => !state && onClose()}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">

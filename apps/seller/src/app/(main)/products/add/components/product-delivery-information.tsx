@@ -52,81 +52,79 @@ const ProductDeliveryInformation = ({ form }: { form: UseFormReturn<TCreateProdu
         <h3 className="text-lg">Product Delivery Information</h3>
         <p className="text-accent-foreground text-xs">Please fill carefully</p>
       </div>
-      <div className="grid grid-cols-4 gap-3">
-        <FormField
-          control={form.control}
-          name="deliveryInformation.packageWeight"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Package Weight (KG)</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  placeholder="e.g. 2"
-                  className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="deliveryInformation.packageHeight"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Package Height (CM)</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  placeholder="e.g. 15"
-                  className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="deliveryInformation.packageLength"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Package Length (CM)</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  placeholder="e.g. 40"
-                  className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="deliveryInformation.packageWidth"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Package Width (CM)</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  placeholder="e.g. 30"
-                  className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-      </div>
       <FormField
         control={form.control}
-        name="deliveryOptions"
+        name="deliveryInformation.packageWeight"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Package Weight (KG)</FormLabel>
+            <FormControl>
+              <Input
+                {...field}
+                placeholder="e.g. 2"
+                className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="deliveryInformation.packageHeight"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Package Height (CM)</FormLabel>
+            <FormControl>
+              <Input
+                {...field}
+                placeholder="e.g. 15"
+                className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="deliveryInformation.packageLength"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Package Length (CM)</FormLabel>
+            <FormControl>
+              <Input
+                {...field}
+                placeholder="e.g. 40"
+                className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name="deliveryInformation.packageWidth"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Package Width (CM)</FormLabel>
+            <FormControl>
+              <Input
+                {...field}
+                placeholder="e.g. 30"
+                className="focus:border-secondary h-10 rounded-md px-5 placeholder:text-xs focus:border"
+              />
+            </FormControl>
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="shippingOptions"
         render={({ field }) => (
           <FormItem className="relative">
             <FormLabel>Select Shipping Option</FormLabel>
             <FormControl>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-3">
                 {deliveryOptions.map((option) => {
                   const checked = field.value && field.value?.includes(option.id.toString());
 
@@ -134,7 +132,7 @@ const ProductDeliveryInformation = ({ form }: { form: UseFormReturn<TCreateProdu
                     <div
                       key={option.id}
                       className={cn(
-                        "flex cursor-pointer items-start gap-3 rounded-md border p-2 shadow-sm duration-300",
+                        "flex cursor-pointer items-start gap-3 rounded-md border p-3 shadow-sm duration-300",
                         checked && "bg-accent/40"
                       )}
                     >
@@ -148,8 +146,8 @@ const ProductDeliveryInformation = ({ form }: { form: UseFormReturn<TCreateProdu
                         }}
                       />
                       <div className="text-accent-foreground w-full space-y-1 text-sm">
-                        <h5 className="text-sm font-medium">{option.name}</h5>
-                        <div className="flex justify-between">
+                        <h5 className="text-primary-foreground text-sm font-semibold">{option.name}</h5>
+                        <div className="flex justify-between text-xs">
                           <span>
                             Estimated Days: <b>{option.estimateDays}</b>
                           </span>
