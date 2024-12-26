@@ -7,9 +7,9 @@ import { AttributeControllers } from "./attribute.controllers";
 
 const router = Router();
 
-router.get("/", authMiddleware(), AttributeControllers.getAllAttributes);
-router.get("/all", authMiddleware(), AttributeControllers.getAttributesWithValues);
-router.get("/values/:attributeId", authMiddleware(), AttributeControllers.getValuesByAttribute);
+router.get("/", AttributeControllers.getAllAttributes);
+router.get("/all", AttributeControllers.getAttributesWithValues);
+router.get("/values/:attributeId", AttributeControllers.getValuesByAttribute);
 router.post(
   "/",
   authMiddleware(UserRole.ADMIN),

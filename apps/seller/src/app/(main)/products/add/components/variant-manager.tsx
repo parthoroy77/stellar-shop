@@ -132,7 +132,7 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
                     <div key={attr.attributeId} className="flex items-center gap-2">
                       <span className="font-medium">{attr.name}:</span>
                       {attr.attributeValues.map((value) => (
-                        <Badge key={value.id} variant={"accent"} className="rounded-md">
+                        <Badge key={value.id} variant={"accent"} className="truncate rounded-md">
                           {value.name}
                         </Badge>
                       ))}
