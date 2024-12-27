@@ -36,7 +36,7 @@ export const createProductValidationSchema = z.object({
   category: z.object({
     collectionId: z.string(),
     categoryId: z.string(),
-    subCategories: z.array(z.string()).optional(),
+    subCategories: z.array(z.string()),
   }),
   // brand Id
   brandId: z.string(),

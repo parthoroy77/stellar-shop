@@ -12,9 +12,10 @@ model Category {
   updatedAt DateTime @updatedAt
 
   // references
-  parentCategory Category?      @relation("CategoryToParent", fields: [parentCategoryId], references: [id])
-  subCategories  Category[]     @relation("CategoryToParent")
-  images         CategoryFile[]
+  parentCategory    Category?         @relation("CategoryToParent", fields: [parentCategoryId], references: [id])
+  subCategories     Category[]        @relation("CategoryToParent")
+  images            CategoryFile[]
+  productCategories ProductCategory[]
 
   @@index([urlSlug, categoryName, parentCategoryId])
   @@map("Categories")
@@ -28,6 +29,10 @@ model ProductCategory {
   // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // references
+  product  Product  @relation(fields: [productId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
 
   @@index([categoryId])
   @@map("ProductCategories")
