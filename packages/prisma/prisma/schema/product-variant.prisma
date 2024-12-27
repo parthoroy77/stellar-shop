@@ -6,7 +6,7 @@ model ProductVariant {
   description String?              @db.Text
   price       Float
   stock       Int
-  sku         String?
+  sku         String?              @unique
   status      ProductVariantStatus @default(ACTIVE)
 
   // timestamps

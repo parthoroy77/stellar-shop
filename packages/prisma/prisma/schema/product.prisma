@@ -6,7 +6,7 @@ model Product {
   urlSlug      String        @unique @db.Text
   description  String        @db.Text
   brandId      Int
-  sku          String
+  sku          String        @unique
   price        Float
   comparePrice Float
   stock        Int

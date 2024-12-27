@@ -4,6 +4,7 @@ import AttributeRoutes from "../modules/attributes/attribute.routes";
 import AuthRoutes from "../modules/auth/auth.routes";
 import BrandRoutes from "../modules/brand/brand.routes";
 import CategoryRoutes from "../modules/category/category.routes";
+import ProductRoutes from "../modules/product/product.routes";
 import SellerRoutes from "../modules/seller/seller.routes";
 import ShippingRoutes from "../modules/shipping/shipping.routes";
 import TagRoutes from "../modules/tag/tag.routes";
@@ -47,6 +48,10 @@ const routerModules: TRouteModule[] = [
   {
     path: "/shippings",
     route: ShippingRoutes,
+  },
+  {
+    path: "/products",
+    route: ProductRoutes,
   },
 ];
 
