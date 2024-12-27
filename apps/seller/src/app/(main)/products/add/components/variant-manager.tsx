@@ -16,7 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "@ui/index";
-import { useState } from "react";
 import { GoFileMedia, GoTrash } from "react-icons/go";
 import { LuX } from "react-icons/lu";
 
@@ -53,6 +52,13 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
     form.setValue("attributes", updatedAttributes);
     remove(index);
   };
+
+  const handleVariantUpdate = (index: number, field: keyof (typeof variants)[number], value: any) => {
+    // Get the latest variant state using `form.watch`
+    const currentVariant = form.watch(`variants.${index}`);
+    // Update the specific field while preserving all other properties
+    update(index, { ...currentVariant, [field]: value });
+  };
   return (
     <div className="w-full rounded-md border">
       <ShadTable>
@@ -60,10 +66,10 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
           <TableRow className="text-accent-foreground *:font-medium">
             <TableHead className="w-fit">Image</TableHead>
             <TableHead className="w-fit max-w-[250px]">Name</TableHead>
-            <TableHead>Price of Variant</TableHead>
-            <TableHead>SKU</TableHead>
-            <TableHead>Stock</TableHead>
             <TableHead>Attributes</TableHead>
+            <TableHead>Price of Variant</TableHead>
+            <TableHead>Stock</TableHead>
+            <TableHead>SKU</TableHead>
             <TableHead className="w-fit text-end">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -89,44 +95,6 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
               </TableCell>
               <TableCell className="w-fit max-w-[250px] truncate font-medium">{variant.variantName}</TableCell>
               <TableCell>
-                <Input
-                  defaultValue={variant.price}
-                  onChange={debounce(
-                    (e: React.ChangeEvent<HTMLInputElement>) =>
-                      update(index, { ...variants[index]!, price: Number(e.target.value) }),
-                    500
-                  )}
-                  type="number"
-                  className="h-8 w-36 text-xs"
-                  placeholder="Price of Each Variant"
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  defaultValue={variant.sku}
-                  onChange={debounce(
-                    (e: React.ChangeEvent<HTMLInputElement>) =>
-                      update(index, { ...variants[index]!, sku: e.target.value }),
-                    500
-                  )}
-                  className="h-8 w-36 text-xs"
-                  placeholder="Write Here"
-                />
-              </TableCell>
-              <TableCell>
-                <Input
-                  defaultValue={variant.stock}
-                  onChange={debounce(
-                    (e: React.ChangeEvent<HTMLInputElement>) =>
-                      update(index, { ...variants[index]!, stock: Number(e.target.value) }),
-                    500
-                  )}
-                  type="number"
-                  className="h-8 w-36 text-xs"
-                  placeholder="Write Here"
-                />
-              </TableCell>
-              <TableCell>
                 <div className="flex items-center gap-3 text-xs">
                   {variant.variantAttributes?.map((attr) => (
                     <div key={attr.attributeId} className="flex items-center gap-2">
@@ -139,6 +107,43 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
                     </div>
                   ))}
                 </div>
+              </TableCell>
+              <TableCell>
+                <Input
+                  defaultValue={variant.price}
+                  onChange={debounce(
+                    (e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleVariantUpdate(index, "price", Number(e.target.value)),
+                    500
+                  )}
+                  type="number"
+                  className="h-8 w-36 text-xs"
+                  placeholder="Price of Each Variant"
+                />
+              </TableCell>
+              <TableCell>
+                <Input
+                  defaultValue={variant.stock}
+                  onChange={debounce(
+                    (e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleVariantUpdate(index, "stock", Number(e.target.value)),
+                    500
+                  )}
+                  type="number"
+                  className="h-8 w-36 text-xs"
+                  placeholder="Write Here"
+                />
+              </TableCell>
+              <TableCell>
+                <Input
+                  defaultValue={variant.sku}
+                  onChange={debounce(
+                    (e: React.ChangeEvent<HTMLInputElement>) => handleVariantUpdate(index, "sku", e.target.value),
+                    500
+                  )}
+                  className="h-8 w-36 text-xs"
+                  placeholder="Write Here"
+                />
               </TableCell>
               <TableCell>
                 <div className="flex items-center justify-end">
@@ -169,18 +174,14 @@ const VariantImageManager = ({
   index: number;
   variantImage: FileWithPreview | null;
 }) => {
-  const [image, setImage] = useState<FileWithPreview | null>(variantImage);
-
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const fileWithPreview = Object.assign(file, {
         preview: URL.createObjectURL(file),
       });
-      setImage(fileWithPreview);
-      onChange(file);
+      onChange(fileWithPreview);
     } else {
-      setImage(null);
       onChange(null); // Clear the form field if no file is selected
     }
   };
@@ -190,17 +191,16 @@ const VariantImageManager = ({
       className="relative flex h-11 w-11 cursor-pointer items-center justify-center rounded-md border"
       onClick={() => document.getElementById(`file-input-${index}`)?.click()}
     >
-      {image ? (
-        <img src={image.preview} alt="Selected Image" className="h-full w-full rounded-md object-cover" />
+      {variantImage ? (
+        <img src={variantImage.preview} alt="Selected Image" className="h-full w-full rounded-md object-cover" />
       ) : (
         <GoFileMedia size={24} className="text-gray-500" />
       )}
       <input id={`file-input-${index}`} type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
-      {image && (
+      {variantImage && (
         <button
           onClick={(e) => {
             e.stopPropagation();
-            setImage(null);
             onChange(null); // Clear the form field when the image is removed
           }}
           className="absolute -right-2 -top-2 rounded-full bg-red-500 p-1 text-white"

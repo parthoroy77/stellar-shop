@@ -44,6 +44,7 @@ const ProductUploadForm = () => {
   const handleUpload = (data: TCreateProductValidation) => {
     console.log(data);
   };
+
   return (
     <section className="flex h-full w-full items-start">
       <Form {...form}>
