@@ -37,7 +37,7 @@ export const create = async (payload: TCreateProductValidation, userId: number) 
     if (payload.variants && payload.variants.length > 0) {
       totalStock = payload.variants.reduce((acc, curr) => acc + curr.stock, 0);
     } else {
-      totalStock = payload.stock;
+      totalStock = payload.stock || 0;
     }
 
     // if total stock is 0
