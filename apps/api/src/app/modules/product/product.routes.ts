@@ -7,6 +7,8 @@ import { ProductControllers } from "./product.controllers";
 const router = Router();
 
 router.post("/", authMiddleware(UserRole.ADMIN, UserRole.SELLER), upload.any(), ProductControllers.createProduct);
+router.get("/pending", authMiddleware(UserRole.ADMIN), ProductControllers.getAllPendingProducts);
 
 const ProductRoutes = router;
+
 export default ProductRoutes;

@@ -95,7 +95,7 @@ export const create = async (payload: TCreateProductValidation, userId: number) 
     };
 
     // Add optional fields if they exist
-    if (payload.attributes) {
+    if (payload.attributes && payload.attributes.length > 0) {
       productData.attributes = {
         createMany: {
           data: payload.attributes.flatMap((attr) =>
@@ -105,7 +105,7 @@ export const create = async (payload: TCreateProductValidation, userId: number) 
       };
     }
 
-    if (payload.tags) {
+    if (payload.tags && payload.tags.length > 0) {
       productData.tags = {
         createMany: {
           data: payload.tags.map((tagId) => ({ tagId: +tagId })),
@@ -174,6 +174,12 @@ export const create = async (payload: TCreateProductValidation, userId: number) 
   }
 };
 
+const getPendingProducts = async () => {
+  const result = await prisma.product.findMany({ where: { status: "PENDING" } });
+  return result;
+};
+
 export const ProductServices = {
   create,
+  getPendingProducts,
 };

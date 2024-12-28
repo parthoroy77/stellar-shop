@@ -16,7 +16,17 @@ const createProduct = asyncHandler(async (req, res) => {
     success: true,
   });
 });
+const getAllPendingProducts = asyncHandler(async (_req, res) => {
+  const result = await ProductServices.getPendingProducts();
+  ApiResponse(res, {
+    data: result,
+    message: "Pending products retrieved successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+  });
+});
 
 export const ProductControllers = {
   createProduct,
+  getAllPendingProducts,
 };
