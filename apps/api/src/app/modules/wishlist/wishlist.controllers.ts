@@ -4,7 +4,7 @@ import { WishlistServices } from "./wishlist.services";
 
 const manageAddProductToWishlist = asyncHandler(async (req, res) => {
   const payload = req.body;
-  const result = await WishlistServices.addToWishlist({ ...payload, userId: req.user.id });
+  const result = await WishlistServices.toggleWishlist({ ...payload, userId: req.user.id });
   ApiResponse(res, {
     data: {},
     message: result.message,

@@ -3,7 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
 import { TAddToWishlistInput } from "./wishlist.types";
 
-const addToWishlist = async ({ userId, productId, variantId }: TAddToWishlistInput) => {
+const toggleWishlist = async ({ userId, productId, variantId }: TAddToWishlistInput) => {
   const user = await prisma.user.findUnique({
     where: { id: userId, status: "ACTIVE" },
   });
@@ -46,8 +46,8 @@ const addToWishlist = async ({ userId, productId, variantId }: TAddToWishlistInp
   // Case 3: Product does not have any variants
   // `productVariantId` remains `null`
 
-  // Check if the cart item already exists for this product or variant
-  const existingWishlistItem = await prisma.wishlistItem.findFirst({
+  // Check if the product already exists in wishlist
+  const wishlistItem = await prisma.wishlistItem.findFirst({
     where: {
       productId: product.id,
       productVariantId,
@@ -55,10 +55,16 @@ const addToWishlist = async ({ userId, productId, variantId }: TAddToWishlistInp
     },
   });
 
-  if (existingWishlistItem) {
+  // if exists then delete that
+  if (wishlistItem) {
+    await prisma.wishlistItem.delete({
+      where: {
+        id: wishlistItem.id,
+      },
+    });
     return {
-      message: "This product is already in your wishlist!",
-      status: StatusCodes.CONFLICT,
+      message: "Product removed from wishlist wishlist!",
+      status: StatusCodes.OK,
     };
   } else {
     await prisma.wishlistItem.create({
@@ -83,5 +89,5 @@ const addToWishlist = async ({ userId, productId, variantId }: TAddToWishlistInp
 };
 
 export const WishlistServices = {
-  addToWishlist,
+  toggleWishlist,
 };

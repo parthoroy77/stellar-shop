@@ -8,7 +8,7 @@ import { WishlistControllers } from "./wishlist.controllers";
 const router = Router();
 
 router.post(
-  "/",
+  "/toggle",
   authMiddleware(UserRole.BUYER),
   zodSafeParse(addToWishlistValidationSchema),
   WishlistControllers.manageAddProductToWishlist
