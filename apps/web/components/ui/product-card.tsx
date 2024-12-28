@@ -91,9 +91,9 @@ const ProductCard: FC<Props> = ({ product }) => {
         {/* Price and Add to Cart Button */}
         <div className="flex flex-row items-center justify-between gap-2">
           {/* Price section */}
-          <p className="flex items-end gap-2 text-xs font-medium lg:text-sm">
-            <span className="text-primary text-base font-semibold lg:text-xl">${price}</span>
-            <strike className="text-gray-400">${comparePrice}</strike>
+          <p className="flex items-end gap-1 border-b border-b-white text-xs font-medium">
+            <span className="text-primary p-0 text-base font-semibold !leading-[1rem] lg:text-xl">${price}.99</span>
+            <span className="!leading-[0.8rem] text-gray-400 line-through">${comparePrice}</span>
           </p>
 
           {/* Add to Cart Button */}

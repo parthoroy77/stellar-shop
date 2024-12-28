@@ -85,11 +85,10 @@ const DemoProductCard = () => {
         {/* Price and Add to Cart Button */}
         <div className="flex flex-row items-center justify-between gap-2">
           {/* Price section */}
-          <p className="flex items-end gap-2 text-xs font-medium lg:text-sm">
-            <span className="text-primary text-base font-semibold lg:text-xl">$9.99</span>
-            <strike className="text-gray-400">$9.99</strike>
+          <p className="flex items-end gap-1 border-b border-b-white pb-0.5 text-xs font-medium">
+            <span className="text-primary p-0 text-base font-semibold !leading-[1rem] lg:text-xl">$9.99</span>
+            <span className="!leading-[0.8rem] text-gray-400 line-through">$12.59</span>
           </p>
-
           {/* Add to Cart Button */}
           <Button
             size={"sm"}

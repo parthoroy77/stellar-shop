@@ -7,7 +7,6 @@ import SideBanner from "./side-banner";
 const NewArrivals = async () => {
   const result = await fetcher<TProduct[]>("/products/new-arrivals", { cache: "no-store" });
   const products = result.data || [];
-  console.log(products);
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
       <div className="w-full lg:w-[20%]">
