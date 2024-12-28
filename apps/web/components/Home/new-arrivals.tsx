@@ -5,8 +5,9 @@ import ProductShowcase from "./product-showcase";
 import SideBanner from "./side-banner";
 
 const NewArrivals = async () => {
-  const result = await fetcher<TProduct[]>("/products/new-arrivals", { cache: "no-store" });
+  const result = await fetcher<TProduct[]>("/products/new-arrivals", { cache: "no-cache" });
   const products = result.data || [];
+
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
       <div className="w-full lg:w-[20%]">
@@ -17,8 +18,8 @@ const NewArrivals = async () => {
         />
       </div>
       <div className="w-full space-y-5 lg:w-[80%]">
-        <ProductShowcase isDemo={false} products={products} />
-        {products.length > 4 && <CustomPagination />}
+        <ProductShowcase isDemo={!(products.length > 0)} products={products} />
+        {!(products.length > 0) && <CustomPagination />}
       </div>
     </div>
   );

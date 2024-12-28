@@ -54,7 +54,7 @@ const DemoProductCard = () => {
 
         {/* Product Information (Name, Stock, Rating, Sold count) */}
         <div className="space-y-2">
-          <h5 className="text-pretty text-xs font-medium lg:text-sm">DNA Motoring TOOLS-00266 Green</h5>
+          <h5 className="truncate text-xs font-medium lg:text-sm">DNA Motoring TOOLS-00266 Green</h5>
 
           {/* Stock, Rating, and Sold Badges */}
           <div className="hidden flex-wrap justify-between gap-2 lg:flex">
@@ -85,9 +85,9 @@ const DemoProductCard = () => {
         {/* Price and Add to Cart Button */}
         <div className="flex flex-row items-center justify-between gap-2">
           {/* Price section */}
-          <p className="flex items-end gap-1 border-b border-b-white pb-0.5 text-xs font-medium">
-            <span className="text-primary p-0 text-base font-semibold !leading-[1rem] lg:text-xl">$9.99</span>
-            <span className="!leading-[0.8rem] text-gray-400 line-through">$12.59</span>
+          <p className="flex items-end gap-1 border-b border-b-white text-xs font-medium">
+            <span className="text-primary p-0 text-base font-semibold !leading-[1rem] lg:text-xl">$9.00</span>
+            <span className="!leading-[0.65rem] text-gray-400 line-through">$12.59</span>
           </p>
           {/* Add to Cart Button */}
           <Button

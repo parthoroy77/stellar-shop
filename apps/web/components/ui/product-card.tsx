@@ -1,18 +1,19 @@
-import { Badge, Button } from "@repo/ui";
+import { Badge } from "@repo/ui";
 import { TProduct } from "@repo/utils/types";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { BsHeart } from "react-icons/bs";
 import { GoStarFill } from "react-icons/go";
-import { HiArrowPath, HiOutlineShoppingBag } from "react-icons/hi2";
+import { HiArrowPath } from "react-icons/hi2";
 import { IoEyeOutline } from "react-icons/io5";
+import AddToCartButton from "./add-to-cart-button";
 import TooltipComponent from "./tooltip-component";
 interface Props {
   product: TProduct;
 }
 const ProductCard: FC<Props> = ({ product }) => {
-  const { price, productName, urlSlug, images, comparePrice } = product;
+  const { id, price, productName, urlSlug, images, comparePrice } = product;
   const avgDiscount = Math.round(((comparePrice - price) / comparePrice) * 100);
   return (
     // Link to the product page
@@ -60,7 +61,7 @@ const ProductCard: FC<Props> = ({ product }) => {
 
         {/* Product Information (Name, Stock, Rating, Sold count) */}
         <div className="space-y-2">
-          <h5 className="text-pretty text-xs font-medium lg:text-sm">{productName}</h5>
+          <h5 className="truncate text-xs font-medium lg:text-sm">{productName}</h5>
 
           {/* Stock, Rating, and Sold Badges */}
           <div className="hidden flex-wrap justify-between gap-2 lg:flex">
@@ -92,19 +93,12 @@ const ProductCard: FC<Props> = ({ product }) => {
         <div className="flex flex-row items-center justify-between gap-2">
           {/* Price section */}
           <p className="flex items-end gap-1 border-b border-b-white text-xs font-medium">
-            <span className="text-primary p-0 text-base font-semibold !leading-[1rem] lg:text-xl">${price}.99</span>
-            <span className="!leading-[0.8rem] text-gray-400 line-through">${comparePrice}</span>
+            <span className="text-primary p-0 text-base font-semibold !leading-[1rem] lg:text-xl">${price}</span>
+            <span className="!leading-[0.65rem] text-gray-400 line-through">${comparePrice}</span>
           </p>
 
           {/* Add to Cart Button */}
-          <Button
-            size={"sm"}
-            variant={"accent"}
-            className="group/button flex h-fit w-fit items-center justify-center gap-2 rounded-full p-[5px] font-normal transition-all duration-300 lg:rounded-md lg:p-2"
-          >
-            <HiOutlineShoppingBag className="text-base lg:text-lg" />
-            <span className="hidden lg:block">Add To Cart</span>
-          </Button>
+          <AddToCartButton productId={id} />
         </div>
 
         {/* Discount Label (7% Off) */}
