@@ -4,6 +4,7 @@ import { ColumnDef } from "@ui/tanstack-table";
 import { AiOutlineSortAscending } from "react-icons/ai";
 import { BsBox } from "react-icons/bs";
 import { LuDollarSign } from "react-icons/lu";
+import { PendingProductDataTableAction } from "./data-table-action";
 
 export const columns: ColumnDef<TProduct>[] = [
   {
@@ -84,16 +85,34 @@ export const columns: ColumnDef<TProduct>[] = [
     accessorKey: "price",
     header: () => {
       return (
-        <div className="pl-3">
+        <div>
           <span>Price</span>
         </div>
       );
     },
     cell: ({ row }) => {
       return (
-        <div className="bg-accent/20 flex items-center justify-center gap-2 rounded-md border capitalize">
+        <div className="flex w-fit items-center justify-center gap-1 rounded-md capitalize">
           <LuDollarSign />
           <span className="rounded-md text-xs font-bold uppercase lg:text-sm">{row?.original.price}</span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "comparePrice",
+    header: () => {
+      return (
+        <div>
+          <span>Compare Price</span>
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="flex w-fit items-center justify-center gap-1 rounded-md capitalize">
+          <LuDollarSign />
+          <span className="rounded-md text-xs font-bold uppercase lg:text-sm">{row?.original.comparePrice}</span>
         </div>
       );
     },
@@ -121,14 +140,14 @@ export const columns: ColumnDef<TProduct>[] = [
     accessorKey: "stock",
     header: () => {
       return (
-        <div className="pl-3">
+        <div>
           <span>Stock</span>
         </div>
       );
     },
     cell: ({ row }) => {
       return (
-        <div className="bg-accent/20 flex items-center justify-center gap-2 rounded-md border capitalize">
+        <div className="flex w-fit items-center justify-center gap-2 rounded-md capitalize">
           <BsBox size={15} className="mt-0.5" />
           <span className="text-accent-foreground rounded-md text-xs font-bold uppercase lg:text-base">
             {row?.original.stock}
@@ -168,13 +187,13 @@ export const columns: ColumnDef<TProduct>[] = [
     id: "actions",
     header: () => {
       return (
-        <div className="text-start">
+        <div className="pr-4 text-end">
           <span>Actions</span>
         </div>
       );
     },
-    cell: () => {
-      return <div></div>;
+    cell: ({ row }) => {
+      return <PendingProductDataTableAction row={row} />;
     },
   },
 ];

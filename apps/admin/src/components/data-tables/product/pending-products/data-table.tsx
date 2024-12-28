@@ -55,7 +55,7 @@ const PendingProductTable = <TData, TValue>({ data, isLoading, columns }: Pendin
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead className="text-nowrap text-xs font-medium capitalize" key={header.id}>
+                    <TableHead className="text-nowrap text-xs font-medium" key={header.id}>
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );

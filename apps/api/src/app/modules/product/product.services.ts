@@ -182,6 +182,7 @@ const getPendingProducts = async () => {
       productName: true,
       status: true,
       price: true,
+      comparePrice: true,
       sku: true,
       stock: true,
       categories: {
