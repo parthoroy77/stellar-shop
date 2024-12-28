@@ -13,7 +13,17 @@ const productApi = baseApi.injectEndpoints({
       }),
       providesTags: ["products"],
     }),
+
+    // mutations
+    // POST approve product
+    approveProduct: builder.mutation<IApiResponse<{}>, string>({
+      query: (productId) => ({
+        url: `products/approve/${productId}`,
+        method: "POST",
+      }),
+      invalidatesTags: ["products"],
+    }),
   }),
 });
 
-export const { useGetPendingProductsQuery } = productApi;
+export const { useGetPendingProductsQuery, useApproveProductMutation } = productApi;

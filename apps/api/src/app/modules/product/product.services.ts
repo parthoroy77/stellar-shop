@@ -7,7 +7,7 @@ import { uploadFileToCloudinaryAndCreateRecord } from "../../handlers/handleClou
 import { deleteFromCloudinary } from "../../utils/cloudinary";
 import { generateUniqueSlug } from "../../utils/generateUniqueSlug";
 
-export const create = async (payload: TCreateProductValidation, userId: number) => {
+const create = async (payload: TCreateProductValidation, userId: number) => {
   const uploadedImagesPublicIds: string[] = [];
 
   let totalStock: number = 0;
@@ -178,6 +178,7 @@ const getPendingProducts = async () => {
   const result = await prisma.product.findMany({
     where: { status: "PENDING" },
     select: {
+      id: true,
       uniqueId: true,
       productName: true,
       status: true,
@@ -209,7 +210,29 @@ const getPendingProducts = async () => {
   return result;
 };
 
+/**
+ * For admin only
+ */
+const productApproval = async (productId: number) => {
+  const product = await prisma.product.findUnique({
+    where: { id: productId, status: "PENDING" },
+    select: { id: true, seller: { select: { id: true, status: true, user: { select: { id: true, status: true } } } } },
+  });
+
+  if (!product) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Product already accept or doesn't exists");
+  }
+
+  if (product.seller.status !== "ACTIVE" || product.seller.user.status !== "ACTIVE") {
+    throw new ApiError(StatusCodes.CONFLICT, "This seller or associate user restricted or inactive!");
+  }
+
+  await prisma.product.update({ where: { id: product.id }, data: { status: "ACTIVE" } });
+  return;
+};
+
 export const ProductServices = {
   create,
   getPendingProducts,
+  productApproval,
 };

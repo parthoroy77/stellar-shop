@@ -16,6 +16,7 @@ const createProduct = asyncHandler(async (req, res) => {
     success: true,
   });
 });
+
 const getAllPendingProducts = asyncHandler(async (_req, res) => {
   const result = await ProductServices.getPendingProducts();
   ApiResponse(res, {
@@ -26,7 +27,19 @@ const getAllPendingProducts = asyncHandler(async (_req, res) => {
   });
 });
 
+const approveProduct = asyncHandler(async (req, res) => {
+  const { productId } = req.params;
+  await ProductServices.productApproval(+productId!);
+  ApiResponse(res, {
+    data: {},
+    message: "Product handled successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+  });
+});
+
 export const ProductControllers = {
   createProduct,
   getAllPendingProducts,
+  approveProduct,
 };
