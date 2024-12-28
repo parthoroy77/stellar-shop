@@ -7,7 +7,7 @@ const PendingProductsPage = () => {
   const products = data?.data || [];
   return (
     <div className="space-y-5">
-      <h1 className="text-xl font-medium">Unapproved Seller Lists</h1>
+      <h1 className="text-xl font-medium">Unapproved Products List</h1>
       <PendingProductTable data={products} columns={columns} isLoading={isFetching} />
     </div>
   );

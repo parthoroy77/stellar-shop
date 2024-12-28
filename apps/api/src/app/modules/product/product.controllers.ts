@@ -1,7 +1,9 @@
 import { createProductValidationSchema } from "@repo/utils/validations";
 import { StatusCodes } from "http-status-codes";
+import { PAGINATION_KEYS } from "../../constants";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
+import pick from "../../utils/pick";
 import { ProductServices } from "./product.services";
 import { parseProductData } from "./product.utils";
 
@@ -38,8 +40,21 @@ const approveProduct = asyncHandler(async (req, res) => {
   });
 });
 
+const getAllNewlyArrivedProducts = asyncHandler(async (req, res) => {
+  const paginateOption = pick(req.query, PAGINATION_KEYS);
+  const { result, meta } = await ProductServices.getNewlyArrived(paginateOption);
+  ApiResponse(res, {
+    data: result,
+    message: "New arrivals products retrieved successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+    meta,
+  });
+});
+
 export const ProductControllers = {
   createProduct,
   getAllPendingProducts,
   approveProduct,
+  getAllNewlyArrivedProducts,
 };

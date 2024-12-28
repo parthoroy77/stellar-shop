@@ -4,8 +4,10 @@ import { TCreateProductValidation } from "@repo/utils/validations";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
 import { uploadFileToCloudinaryAndCreateRecord } from "../../handlers/handleCloudUpload";
+import calculatePagination, { TPaginateOption } from "../../utils/calculatePagination";
 import { deleteFromCloudinary } from "../../utils/cloudinary";
 import { generateUniqueSlug } from "../../utils/generateUniqueSlug";
+import { NEWLY_ARRIVAL_TIME_PERIOD } from "./product.constants";
 
 const create = async (payload: TCreateProductValidation, userId: number) => {
   const uploadedImagesPublicIds: string[] = [];
@@ -231,8 +233,54 @@ const productApproval = async (productId: number) => {
   return;
 };
 
+const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
+  const { skip, limit, page } = calculatePagination(paginateOptions);
+  const [result, count] = await prisma.$transaction([
+    prisma.product.findMany({
+      where: {
+        status: "ACTIVE",
+        createdAt: { gte: NEWLY_ARRIVAL_TIME_PERIOD },
+      },
+      select: {
+        id: true,
+        stock: true,
+        price: true,
+        comparePrice: true,
+        productName: true,
+        urlSlug: true,
+        images: {
+          take: 1,
+          select: {
+            file: { select: { fileUrl: true } },
+          },
+        },
+      },
+
+      skip,
+      take: limit,
+    }),
+    prisma.product.count({
+      where: {
+        status: "ACTIVE",
+        createdAt: { gte: NEWLY_ARRIVAL_TIME_PERIOD },
+      },
+    }),
+  ]);
+
+  return {
+    result,
+    meta: {
+      limit,
+      skip,
+      page,
+      total: count,
+    },
+  };
+};
+
 export const ProductServices = {
   create,
   getPendingProducts,
   productApproval,
+  getNewlyArrived,
 };
