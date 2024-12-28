@@ -3,6 +3,7 @@ import AddressRoutes from "../modules/address/address.routes";
 import AttributeRoutes from "../modules/attributes/attribute.routes";
 import AuthRoutes from "../modules/auth/auth.routes";
 import BrandRoutes from "../modules/brand/brand.routes";
+import CartRoutes from "../modules/cart/cart.routes";
 import CategoryRoutes from "../modules/category/category.routes";
 import ProductRoutes from "../modules/product/product.routes";
 import SellerRoutes from "../modules/seller/seller.routes";
@@ -52,6 +53,10 @@ const routerModules: TRouteModule[] = [
   {
     path: "/products",
     route: ProductRoutes,
+  },
+  {
+    path: "/carts",
+    route: CartRoutes,
   },
 ];
 
