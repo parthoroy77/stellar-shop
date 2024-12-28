@@ -32,8 +32,12 @@ export const sidebarItems: TSidebarItem[] = [
     Icon: VscSymbolMethod,
     children: [
       {
-        label: "List",
+        label: "Active Products",
         href: "/item",
+      },
+      {
+        label: "Pending Products",
+        href: "/products/pending",
       },
       {
         label: "Add",

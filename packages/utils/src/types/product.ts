@@ -1,15 +1,18 @@
-import { IAttribute, IAttributeValue, TAttribute } from "./attribute";
+import { IAttribute, IAttributeValue } from "./attribute";
 import { IBrand } from "./brand";
-import { TCategory } from "./category";
-import { IFile } from "./file";
+import { ICategory } from "./category";
+import { IProductDeliveryInfo, IProductShippingOption } from "./delivery-and-shipping";
+import { IFile, IProductFile, IVariantFile } from "./file";
+import { IInventoryLogs, IRestockInventoryRequest } from "./inventoryLogs";
 import { IProductRatingAverage, IProductReview } from "./productReviewRatings";
-import { ISeller } from "./seller";
+import { TSeller } from "./seller";
 import { ITag } from "./tag";
 
 export const ProductActivationStatus = {
   PENDING: "PENDING",
   ACTIVE: "ACTIVE",
   INACTIVE: "INACTIVE",
+  DRAFT: "DRAFT",
 } as const;
 
 export type TProductActivationStatus = (typeof ProductActivationStatus)[keyof typeof ProductActivationStatus];
@@ -26,7 +29,6 @@ export interface IProductVariantAttribute {
   id: number;
   variantId: number; // Foreign key referencing ProductVariant
   attributeValueId: number; // Foreign key referencing AttributeValue
-  attributeId: number; // Foreign key referencing Attribute
   createdAt: Date;
   updatedAt?: Date;
 }
@@ -36,60 +38,103 @@ export interface IProductAttribute {
   id: number;
   productId: number; // Foreign key referencing Product
   attributeValueId: number; // Foreign key referencing AttributeValue
-  attributeId: number; // Foreign key referencing Attribute
   createdAt: Date;
   updatedAt?: Date;
+}
+export interface IProductTag {
+  id: number;
+  productId: number;
+  tagId: number;
+  createdAt: Date;
+  updatedAt?: Date;
+}
+
+export interface IProductCategory {
+  id: number;
+  productId: number;
+  categoryId: number;
+  createdAt: Date;
+  updatedAt?: Date;
+
+  category: ICategory;
 }
 
 // Product Variants main interface
 export interface IProductVariant {
   id: number;
+  uniqueId: string;
   productId: number; // Foreign key referencing Product
   variantName: string;
   description?: string;
   price: number;
-  stockQuantity: number;
+  stock: number;
   sku?: string;
   status: TVariantActivationStatus;
   createdAt: Date;
   updatedAt?: Date;
 }
 
-export type TProductVariant = IProductVariant & {
-  // relations
-  images: IFile[];
-  attributes: IAttribute &
-    {
-      value: IAttributeValue;
-    }[];
-};
-
 // Products
 export interface IProduct {
   id: number;
   productName: string;
+  uniqueId: string;
+  sku: string;
   urlSlug: string;
   brandId: number; // Foreign key referencing Brand
   description: string;
   price: number;
   comparePrice: number;
-  stockQuantity: number;
-  lowStockThreshold: number;
+  stock: number;
   status: TProductActivationStatus;
   sellerId: number; // Foreign key referencing User with Seller role
   createdAt: Date;
   updatedAt?: Date;
 }
 
+// extended product including all children elements
 export type TProduct = IProduct & {
   // relations
-  images: IFile[];
-  brand?: IBrand;
-  tags?: ITag[];
-  categories: TCategory[];
-  attributes: TAttribute[];
+  seller: TSeller;
+  brand: IBrand;
+  attributes: IProductAttribute &
+    {
+      attributeValue: IAttributeValue & {
+        attribute: IAttribute;
+      };
+    }[];
   variants: TProductVariant[];
+  images: IProductFile &
+    {
+      file: IFile;
+    }[];
+  tags: IProductTag &
+    {
+      tag: ITag;
+    }[];
+  categories: IProductCategory[];
+
+  deliveryInfo: IProductDeliveryInfo;
+  shippingOptions: IProductShippingOption[];
+  inventoryLogs: IInventoryLogs[];
+  restockInventoryRequests: IRestockInventoryRequest[];
+
   ratingAverage?: IProductRatingAverage;
   reviews?: IProductReview[];
-  seller: ISeller;
+};
+
+export type TProductVariant = IProductVariant & {
+  // relations
+  images: IVariantFile & {
+    file: IFile[];
+  };
+  attributes: IProductVariantAttribute &
+    {
+      attributeValue: IAttributeValue & {
+        attribute: IAttribute;
+      };
+    }[];
+  product: IProduct;
+  inventoryLogs: IInventoryLogs[];
+  restockInventoryRequests: IRestockInventoryRequest[];
 };

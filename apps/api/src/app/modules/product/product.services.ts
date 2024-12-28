@@ -175,7 +175,36 @@ export const create = async (payload: TCreateProductValidation, userId: number) 
 };
 
 const getPendingProducts = async () => {
-  const result = await prisma.product.findMany({ where: { status: "PENDING" } });
+  const result = await prisma.product.findMany({
+    where: { status: "PENDING" },
+    select: {
+      uniqueId: true,
+      productName: true,
+      status: true,
+      price: true,
+      sku: true,
+      stock: true,
+      categories: {
+        where: {
+          category: {
+            level: "COLLECTION",
+          },
+        },
+        select: {
+          category: {
+            select: {
+              categoryName: true,
+              level: true,
+            },
+          },
+        },
+      },
+      seller: {
+        select: { shopName: true, userId: true, logo: { select: { fileUrl: true } } },
+      },
+      images: { take: 1, select: { file: { select: { fileSecureUrl: true, fileUrl: true } } } },
+    },
+  });
   return result;
 };
 

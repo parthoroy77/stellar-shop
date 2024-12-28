@@ -6,7 +6,7 @@ export * from "./auth";
 export * from "./brand";
 export * from "./cart";
 export * from "./category";
-export * from "./deliveryMethod";
+export * from "./delivery-and-shipping";
 export * from "./file";
 export * from "./global";
 export * from "./order";
