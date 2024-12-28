@@ -22,6 +22,7 @@ export const parseProductData = (body: Record<string, any>, files: Express.Multe
         stock: parseInt(variant.stock, 10),
         variantAttributes: JSON.parse(variant.variantAttributes),
         variantImage: variantFile || null,
+        isDefault: JSON.parse(variant.isDefault),
       };
     });
 

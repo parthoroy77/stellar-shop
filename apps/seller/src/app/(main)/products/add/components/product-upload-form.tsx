@@ -36,6 +36,7 @@ const defaultValues: TCreateProductValidation = {
       price: 30,
       sku: "DKJFDJF",
       stock: 50,
+      isDefault: true,
       // variantImage: max 1
     },
     {
@@ -45,6 +46,7 @@ const defaultValues: TCreateProductValidation = {
       sku: "DKJFDJF",
       stock: 50,
       // variantImage: max 1
+      isDefault: false,
     },
   ],
   attributes: [

@@ -127,12 +127,23 @@ const create = async (payload: TCreateProductValidation, userId: number) => {
       });
 
       if (payload.variants && payload.variants.length > 0) {
+        let isDefaultSet = false;
         for (const variant of payload.variants) {
+          if (variant.isDefault) {
+            if (isDefaultSet) {
+              // If a default variant has already been set, make this one false
+              variant.isDefault = false;
+            } else {
+              // Mark that we've set the default variant
+              isDefaultSet = true;
+            }
+          }
           const variantImage = await uploadFileToCloudinaryAndCreateRecord(
             variant.variantImage.path,
             "variants",
             userId
           );
+
           uploadedImagesPublicIds.push(variantImage.fileRecord.filePublicId);
 
           variantsData.push({
@@ -142,6 +153,7 @@ const create = async (payload: TCreateProductValidation, userId: number) => {
             price: variant.price,
             stock: variant.stock,
             sku: variant.sku,
+            isDefault: variant.isDefault,
             attributes: {
               createMany: {
                 data: variant.variantAttributes.flatMap((attr) =>

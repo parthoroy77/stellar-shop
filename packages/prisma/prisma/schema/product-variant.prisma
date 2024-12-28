@@ -8,6 +8,7 @@ model ProductVariant {
   stock       Int
   sku         String?              @unique
   status      ProductVariantStatus @default(ACTIVE)
+  isDefault   Boolean              @default(false)
 
   // timestamps
   createdAt DateTime @default(now())

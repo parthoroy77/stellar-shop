@@ -19,6 +19,7 @@ const productVariantValidation = z.object({
   variantImage: imageFileSchema,
   variantAttributes: z.array(attributeSchema),
   stock: z.number().positive("Stcok must be greater than 0"),
+  isDefault: z.boolean().default(false),
 });
 
 export const createProductValidationSchema = z.object({

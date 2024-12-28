@@ -14,7 +14,7 @@ export const generateProductVariants = ({ productName, attributes }: Props) => {
   const combinations = cartesian(...attributes.map((attr) => attr.attributeValues.map((x) => x.name)));
 
   // Map combinations to variants
-  const variants = combinations.map((combination) => {
+  const variants = combinations.map((combination, index) => {
     // Map the combination to the relevant attributes
     const variantAttributes = attributes.map((attribute) => ({
       ...attribute,
@@ -28,6 +28,7 @@ export const generateProductVariants = ({ productName, attributes }: Props) => {
       variantImage: null,
       variantAttributes, // Include only relevant attributes
       stock: 0,
+      isDefault: index === 0,
     };
   });
 

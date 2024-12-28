@@ -10,6 +10,7 @@ import {
   FormItem,
   Input,
   ShadTable,
+  Switch,
   TableBody,
   TableCell,
   TableHead,
@@ -59,6 +60,11 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
     // Update the specific field while preserving all other properties
     update(index, { ...currentVariant, [field]: value });
   };
+
+  const handleDefaultVariant = (index: number) => {
+    const updatedVariants = variants.map((variant, idx) => ({ ...variant, isDefault: index === idx }));
+    form.setValue("variants", updatedVariants, { shouldDirty: true, shouldValidate: true });
+  };
   return (
     <div className="w-full rounded-md border">
       <ShadTable>
@@ -70,6 +76,7 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
             <TableHead>Price of Variant</TableHead>
             <TableHead>Stock</TableHead>
             <TableHead>SKU</TableHead>
+            <TableHead className="truncate">Default Variant</TableHead>
             <TableHead className="w-fit text-end">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -144,6 +151,14 @@ const VariantManager = ({ form }: { form: UseFormReturn<TCreateProductValidation
                   className="h-8 w-36 text-xs"
                   placeholder="Write Here"
                 />
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center justify-center">
+                  <Switch
+                    checked={variant.isDefault}
+                    onCheckedChange={(checked) => checked && handleDefaultVariant(index)}
+                  />
+                </div>
               </TableCell>
               <TableCell>
                 <div className="flex items-center justify-end">

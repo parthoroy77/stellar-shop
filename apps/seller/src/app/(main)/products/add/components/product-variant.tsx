@@ -48,6 +48,10 @@ const ProductVariant = ({ form }: { form: UseFormReturn<TCreateProductValidation
             After that upload variant image, in case want to delete or modify then reorder the attributes and generate
             again!
           </p>
+          <p className="text-accent-foreground text-xs">
+            You need to select one default variant. One product can have only one default! By default your first variant
+            is default.
+          </p>
         </div>
         <AppButton
           loading={loading}
