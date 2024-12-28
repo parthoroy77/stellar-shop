@@ -1,4 +1,4 @@
-import ProductCard from "../ui/product-card";
+import DemoProductCard from "../ui/demo-product-card";
 
 const ProductSuggestion = () => {
   return (
@@ -6,7 +6,7 @@ const ProductSuggestion = () => {
       <h5 className="font-medium">Suggested Product</h5>
       <div className="flex flex-col gap-3">
         {Array.from({ length: 5 }).map((_x, i) => (
-          <ProductCard key={i} />
+          <DemoProductCard key={i} />
         ))}
       </div>
     </div>

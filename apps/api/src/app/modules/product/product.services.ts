@@ -251,7 +251,7 @@ const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
         images: {
           take: 1,
           select: {
-            file: { select: { fileUrl: true } },
+            file: { select: { fileUrl: true, fileSecureUrl: true } },
           },
         },
       },

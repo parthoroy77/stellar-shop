@@ -1,7 +1,7 @@
 import { Button } from "@repo/ui";
 import { BsArrowRight } from "react-icons/bs";
 import CustomPagination from "../ui/custom-pagination";
-import ProductCard from "../ui/product-card";
+import DemoProductCard from "../ui/demo-product-card";
 
 const BestSellers = () => {
   return (
@@ -14,7 +14,7 @@ const BestSellers = () => {
       </div>
       <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-5">
         {Array.from({ length: 5 }).map((_x, index) => (
-          <ProductCard key={index} />
+          <DemoProductCard key={index} />
         ))}
       </div>
       <div className="flex justify-center">

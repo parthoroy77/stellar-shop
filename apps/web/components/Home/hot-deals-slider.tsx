@@ -4,7 +4,7 @@ import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "../../styles/slider.css";
-import ProductCard from "../ui/product-card";
+import DemoProductCard from "../ui/demo-product-card";
 const HotDealsSlider = () => {
   return (
     <Swiper
@@ -37,7 +37,7 @@ const HotDealsSlider = () => {
     >
       {Array.from({ length: 6 }).map((_x, index) => (
         <SwiperSlide key={index}>
-          <ProductCard />
+          <DemoProductCard />
         </SwiperSlide>
       ))}
     </Swiper>

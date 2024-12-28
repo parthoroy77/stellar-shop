@@ -1,22 +1,16 @@
 import { Badge, Button } from "@repo/ui";
-import { TProduct } from "@repo/utils/types";
 import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
 import { BsHeart } from "react-icons/bs";
 import { GoStarFill } from "react-icons/go";
 import { HiArrowPath, HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoEyeOutline } from "react-icons/io5";
 import TooltipComponent from "./tooltip-component";
-interface Props {
-  product: TProduct;
-}
-const ProductCard: FC<Props> = ({ product }) => {
-  const { price, productName, urlSlug, images, comparePrice } = product;
-  const avgDiscount = Math.round(((comparePrice - price) / comparePrice) * 100);
+
+const DemoProductCard = () => {
   return (
     // Link to the product page
-    <Link href={`/products/${urlSlug}`}>
+    <Link href={"/products/item"}>
       <div className="group relative flex flex-col justify-between divide-y rounded-md border duration-300 *:p-2 md:*:p-3">
         {/* Product Image */}
         <div className="relative flex justify-center">
@@ -24,8 +18,8 @@ const ProductCard: FC<Props> = ({ product }) => {
             width={100}
             height={100}
             className="size-[110px] lg:size-[150px]"
-            src={images[0]?.file.fileSecureUrl!}
-            alt={productName + " " + "Image"}
+            src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/product1-300x300.jpeg"
+            alt="Product Image"
           />
         </div>
         <div className="visible absolute right-0 top-0 flex flex-col gap-1 text-xs opacity-100 duration-300 group-hover:visible group-hover:opacity-100 md:text-sm lg:invisible lg:text-xl lg:opacity-0">
@@ -60,7 +54,7 @@ const ProductCard: FC<Props> = ({ product }) => {
 
         {/* Product Information (Name, Stock, Rating, Sold count) */}
         <div className="space-y-2">
-          <h5 className="text-pretty text-xs font-medium lg:text-sm">{productName}</h5>
+          <h5 className="text-pretty text-xs font-medium lg:text-sm">DNA Motoring TOOLS-00266 Green</h5>
 
           {/* Stock, Rating, and Sold Badges */}
           <div className="hidden flex-wrap justify-between gap-2 lg:flex">
@@ -92,8 +86,8 @@ const ProductCard: FC<Props> = ({ product }) => {
         <div className="flex flex-row items-center justify-between gap-2">
           {/* Price section */}
           <p className="flex items-end gap-2 text-xs font-medium lg:text-sm">
-            <span className="text-primary text-base font-semibold lg:text-xl">${price}</span>
-            <strike className="text-gray-400">${comparePrice}</strike>
+            <span className="text-primary text-base font-semibold lg:text-xl">$9.99</span>
+            <strike className="text-gray-400">$9.99</strike>
           </p>
 
           {/* Add to Cart Button */}
@@ -109,11 +103,11 @@ const ProductCard: FC<Props> = ({ product }) => {
 
         {/* Discount Label (7% Off) */}
         <span className="text-muted-foreground absolute left-1 top-1 rounded-md bg-green-800 !px-2 !py-1 text-xs font-semibold uppercase">
-          {avgDiscount}% Off
+          7% Off
         </span>
       </div>
     </Link>
   );
 };
 
-export default ProductCard;
+export default DemoProductCard;
