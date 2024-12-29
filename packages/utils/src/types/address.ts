@@ -20,3 +20,19 @@ export interface IAddress {
   createdAt: Date;
   updatedAt?: Date;
 }
+
+export interface IShippingAddress {
+  id: number;
+  userId: number; // Foreign key referencing User
+  fullName: string;
+  phoneNumber: string;
+  fullAddress: string;
+  country: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  type: "HOME" | "WORK";
+  isPrimary: boolean;
+  createdAt: Date;
+  updatedAt?: Date;
+}
