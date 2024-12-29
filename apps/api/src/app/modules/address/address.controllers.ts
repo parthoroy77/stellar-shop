@@ -16,6 +16,44 @@ const createUserAddress = asyncHandler(async (req, res) => {
   });
 });
 
+const getAllUserAddresses = asyncHandler(async (req, res) => {
+  const result = await AddressServices.getAllAddress(req.user.id!);
+
+  ApiResponse(res, {
+    statusCode: StatusCodes.OK,
+    data: result,
+    message: "Address retrieved successfully!",
+    success: true,
+  });
+});
+
+const deleteUserAddress = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  await AddressServices.deleteAddress(+id!);
+
+  ApiResponse(res, {
+    statusCode: StatusCodes.OK,
+    data: null,
+    message: "Address deleted successfully!",
+    success: true,
+  });
+});
+
+const updateUserAddress = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const payload = req.body;
+
+  const result = await AddressServices.updateAddress(+id!, { ...payload, userId: +req.user.id! });
+
+  ApiResponse(res, {
+    statusCode: StatusCodes.OK,
+    data: result,
+    message: "Address updated successfully!",
+    success: true,
+  });
+});
+
 const createUserShippingAddress = asyncHandler(async (req, res) => {
   const payload = req.body;
 
@@ -25,17 +63,6 @@ const createUserShippingAddress = asyncHandler(async (req, res) => {
     statusCode: StatusCodes.CREATED,
     data: result,
     message: "Shipping Address added successfully!",
-    success: true,
-  });
-});
-
-const getAllUserAddresses = asyncHandler(async (req, res) => {
-  const result = await AddressServices.getAllAddress(req.user.id!);
-
-  ApiResponse(res, {
-    statusCode: StatusCodes.OK,
-    data: result,
-    message: "Address retrieved successfully!",
     success: true,
   });
 });
@@ -51,9 +78,43 @@ const getAllUserShippingAddresses = asyncHandler(async (req, res) => {
   });
 });
 
+const updateUserShippingAddress = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const payload = req.body;
+
+  const result = await AddressServices.updateShippingAddress(+id!, {
+    ...payload,
+    userId: +req.user.id!,
+  });
+
+  ApiResponse(res, {
+    statusCode: StatusCodes.OK,
+    data: result,
+    message: "Shipping Address updated successfully!",
+    success: true,
+  });
+});
+
+const deleteUserShippingAddress = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  await AddressServices.deleteShippingAddress(+id!);
+
+  ApiResponse(res, {
+    statusCode: StatusCodes.OK,
+    data: null,
+    message: "Shipping Address deleted successfully!",
+    success: true,
+  });
+});
+
 export const AddressControllers = {
   createUserAddress,
-  createUserShippingAddress,
   getAllUserAddresses,
+  updateUserAddress,
+  deleteUserAddress,
+  createUserShippingAddress,
   getAllUserShippingAddresses,
+  updateUserShippingAddress,
+  deleteUserShippingAddress,
 };
