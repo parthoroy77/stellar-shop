@@ -15,7 +15,6 @@ export * from "./product";
 export * from "./productReviewRatings";
 export * from "./seller";
 export * from "./shipment";
-export * from "./shipping";
 export * from "./tag";
 export * from "./transaction";
 export * from "./user";

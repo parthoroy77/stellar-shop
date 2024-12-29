@@ -11,6 +11,7 @@ const ProductInventoryDetails = ({ form }: { form: UseFormReturn<TCreateProductV
   // Form values and derived states
   const variants = form.watch("variants") || [];
   const attributes = form.getValues("attributes") || [];
+  const stock = form.getValues("stock") || 0;
   const hasAttributes = attributes.some((attr) => attr.attributeId && attr.attributeValues.length > 0);
   const totalStock = variants.reduce((acc, variant) => acc + (variant.stock || 0), 0);
   const hasVariants = variants.length > 0 && hasAttributes;
@@ -74,7 +75,7 @@ const ProductInventoryDetails = ({ form }: { form: UseFormReturn<TCreateProductV
             </FormItem>
           )}
         />
-        {form.watch("stock") > 0 && (
+        {stock > 0 && (
           <MessageBox type="success" message="You've set your initial stock. Your inventory setup is completed!" />
         )}
       </div>
