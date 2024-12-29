@@ -11,12 +11,13 @@ const updateProfile = async (payload: TUpdateProfileInput, userId: number) => {
   }
 
   const updateUserArg: Prisma.UserUpdateInput = {};
-  if (payload.fullName) {
+  if (payload.fullName !== userExist.fullName) {
     updateUserArg.fullName = payload.fullName;
   }
 
-  if (payload.phoneNumber) {
+  if (payload.phoneNumber && payload.phonePrefixCode && payload.phoneNumber !== userExist.phoneNumber) {
     updateUserArg.phoneNumber = payload.phoneNumber;
+    updateUserArg.phonePrefixCode = payload.phonePrefixCode;
   }
 
   await prisma.user.update({

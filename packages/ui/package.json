@@ -49,6 +49,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.0",
     "cmdk": "1.0.0",
+    "libphonenumber-js": "^1.11.17",
     "lucide-react": "^0.462.0",
     "react-phone-number-input": "^3.4.10",
     "tailwind-merge": "^2.2.1",

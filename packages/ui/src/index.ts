@@ -39,3 +39,4 @@ export * from "./components/ui/table-skeleton";
 export * from "./components/ui/tabs";
 export * from "./components/ui/textarea";
 export * from "./components/ui/tooltip";
+export * from "./lib/getCountryCode";
