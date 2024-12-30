@@ -1,8 +1,10 @@
 "use client";
+import { addShippingAddress } from "@/actions/address";
 import { useForm } from "@repo/utils/hook-form";
 import { TShippingAddressValidation } from "@repo/utils/validations";
 import {
   AppButton,
+  Checkbox,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -18,50 +20,53 @@ import {
   FormMessage,
   Input,
   PhoneInput,
+  RadioGroup,
+  RadioGroupItem,
 } from "@ui/index";
 import { useState, useTransition } from "react";
 import { LuPin, LuPlus } from "react-icons/lu";
 import { toast } from "sonner";
 
+const defaultValues: TShippingAddressValidation = {
+  fullAddress: "",
+  fullName: "",
+  country: "",
+  state: "",
+  city: "",
+  zipCode: "",
+  phoneNumber: "",
+  type: "HOME",
+  isPrimary: false,
+};
+
+// TODO: if possible add country dropdown list
 const AddShippingAddressModalForm = () => {
-  const form = useForm<TShippingAddressValidation>({
-    defaultValues: {},
-  });
   const [open, setOpen] = useState(false);
+  const form = useForm<TShippingAddressValidation>({
+    defaultValues: { ...defaultValues },
+  });
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = (data: TShippingAddressValidation) => {
-    const toastId = toast.loading("Sending request to upload!", { duration: 2000 });
-
-    // startTransition(async () => {
-    //   const result = await createBrand(formData);
-    //   if (result.success) {
-    //     toast.success(result.message, { id: toastId });
-    //     if (result.success && result.data) {
-    //       // set updated data
-    //       handleSetNewBrand(result.data.id.toString());
-
-    //       // close the modal
-    //       onClose();
-
-    //       // Invalidate and refetch the brands query
-    //       queryClient.invalidateQueries({ queryKey: ["brands"] });
-
-    //       // reset form
-    //       form.reset();
-    //     }
-    //   } else {
-    //     toast.error(result.message, { id: toastId });
-    //   }
-    // });
+    const toastId = toast.loading("Sending request to process!", { duration: 2000 });
+    startTransition(async () => {
+      const result = await addShippingAddress(data);
+      if (result.success) {
+        toast.success(result.message, { id: toastId });
+        if (result.success && result.data) {
+          setOpen(false);
+          form.reset();
+        }
+      } else {
+        toast.error(result.message, { id: toastId });
+      }
+    });
   };
-  console.log(form.watch("country"));
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <AppButton variant={"accent"} size={"icon"} className="size-8 rounded-full border">
-          <LuPlus />
-        </AppButton>
+      <DialogTrigger className="bg-accent/40 flex size-8 items-center justify-center rounded-full border">
+        <LuPlus />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] lg:max-w-xl">
         <DialogHeader>
@@ -112,6 +117,47 @@ const AddShippingAddressModalForm = () => {
               )}
             />
             <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Type</FormLabel>
+                  <FormControl>
+                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex gap-3">
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="HOME" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Home</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="WORK" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Work</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isPrimary"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Check if this will be your primary address</FormLabel>
+                  <FormControl>
+                    <div className="flex items-center gap-2">
+                      <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                      <h5 className="text-sm">Is Primary</h5>
+                    </div>
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
               name="fullAddress"
               control={form.control}
               render={({ field }) => (
@@ -129,9 +175,81 @@ const AddShippingAddressModalForm = () => {
                 </FormItem>
               )}
             />
-            <DialogFooter>
+            <FormField
+              name="country"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Country</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="e.g. Bangladesh"
+                      type="text"
+                      className="bg-accent/40 focus:border-secondary h-10 w-full rounded-md placeholder:text-xs focus:border"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="state"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>State</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="e.g. Dhaka Division"
+                      type="text"
+                      className="bg-accent/40 focus:border-secondary h-10 w-full rounded-md placeholder:text-xs focus:border"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="city"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="e.g. Munshiganj"
+                      type="text"
+                      className="bg-accent/40 focus:border-secondary h-10 w-full rounded-md placeholder:text-xs focus:border"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="zipCode"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Zip Code</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="e.g. 1234"
+                      type="text"
+                      className="bg-accent/40 focus:border-secondary h-10 w-full rounded-md placeholder:text-xs focus:border"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter className="col-span-2">
               <AppButton loading={isPending} type="submit" size={"sm"} variant={"secondary"} className="border">
-                Upload Brand
+                Add Address
               </AppButton>
             </DialogFooter>
           </form>

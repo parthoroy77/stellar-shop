@@ -25,7 +25,7 @@ const ManageAddresses = async () => {
           <div className="text-accent-foreground col-span-2 text-center">No address added yet!</div>
         )}
       </div>
-      <div className="col-span-2 flex justify-end">
+      <div className="col-span-2 flex items-start justify-end">
         <AddShippingAddressModalForm />
       </div>
     </div>
