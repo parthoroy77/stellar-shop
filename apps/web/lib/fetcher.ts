@@ -5,7 +5,7 @@ import { revalidateTag } from "next/cache";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
-interface FetcherOptions<TBody = unknown> {
+export interface FetcherOptions<TBody = unknown> {
   method?: HttpMethod;
   headers?: HeadersInit;
   body?: TBody;

@@ -24,4 +24,4 @@ export const shippingAddressValidationSchema = z.object({
   type: z.enum(["HOME", "WORK"]),
 });
 
-export type TShippingAddressValidation = z.infer<typeof addressValidationSchema>;
+export type TShippingAddressValidation = z.infer<typeof shippingAddressValidationSchema>;
