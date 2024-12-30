@@ -1,17 +1,19 @@
-import AddShippingAddressModalForm from "@/components/Forms/Profile/add-shipping-address-modal-form";
+import { addShippingAddress } from "@/actions/address";
+import AddShippingAddressModalForm from "@/components/Forms/Profile/shipping-address-modal-form";
 import EditableShippingAddressCard from "@/components/ui/shipping-address-cards/editable-shipping-address-card";
 import { serverFetcher } from "@/lib/server-fetcher";
 import { IShippingAddress } from "@repo/utils/types";
 
 const getAllShippingAddresses = async () => {
   const result = await serverFetcher<IShippingAddress[]>("/addresses/shippings", {
-    next: { tags: ["shipping-addresses"] },
+    next: { tags: ["shipping-addresses"], revalidate: 200 },
   });
   return result.data || [];
 };
 
 const ManageAddresses = async () => {
   const addresses = await getAllShippingAddresses();
+
   return (
     <div className="grid flex-grow grid-cols-12 gap-3">
       <div className="col-span-3">
@@ -26,7 +28,7 @@ const ManageAddresses = async () => {
         )}
       </div>
       <div className="col-span-2 flex items-start justify-end">
-        <AddShippingAddressModalForm />
+        <AddShippingAddressModalForm submitHandler={addShippingAddress} isUpdate={false} />
       </div>
     </div>
   );

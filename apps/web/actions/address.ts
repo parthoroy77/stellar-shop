@@ -19,3 +19,11 @@ export const deleteShippingAddress = async (id: number) => {
   }
   return result;
 };
+
+export const updateShippingAddress = async (id: number, data: TShippingAddressValidation) => {
+  const result = await serverFetcher("/addresses/shippings/" + id, { method: "PATCH", body: data });
+  if (result.success) {
+    revalidateTag("shipping-options");
+  }
+  return result;
+};

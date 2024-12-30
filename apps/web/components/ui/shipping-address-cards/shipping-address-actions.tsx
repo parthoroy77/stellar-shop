@@ -1,16 +1,18 @@
 "use client";
-import { deleteShippingAddress } from "@/actions/address";
-import { AppButton, Button } from "@ui/index";
+import { deleteShippingAddress, updateShippingAddress } from "@/actions/address";
+import AddShippingAddressModalForm from "@/components/Forms/Profile/shipping-address-modal-form";
+import { IShippingAddress } from "@repo/utils/types";
+import { AppButton } from "@ui/index";
 import { useTransition } from "react";
-import { LuPenLine, LuTrash2 } from "react-icons/lu";
+import { LuTrash2 } from "react-icons/lu";
 import { toast } from "sonner";
 
-const ShippingAddressActions = ({ id }: { id: number }) => {
+const ShippingAddressActions = ({ address }: { address: IShippingAddress }) => {
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = () => {
     startTransition(async () => {
-      const result = await deleteShippingAddress(id);
+      const result = await deleteShippingAddress(address.id);
       if (result.success) {
         toast.success(result.message);
       } else {
@@ -18,9 +20,8 @@ const ShippingAddressActions = ({ id }: { id: number }) => {
       }
     });
   };
-
   return (
-    <div className="space-x-2">
+    <>
       <AppButton
         onClick={handleDelete}
         loading={isPending}
@@ -31,10 +32,12 @@ const ShippingAddressActions = ({ id }: { id: number }) => {
       >
         <LuTrash2 size={17} />
       </AppButton>
-      <Button variant={"ghost"} size={"icon"} className="size-8 rounded-full border">
-        <LuPenLine size={17} />
-      </Button>
-    </div>
+      <AddShippingAddressModalForm
+        submitHandler={(data) => updateShippingAddress(address.id, data)}
+        addressData={address}
+        isUpdate
+      />
+    </>
   );
 };
 

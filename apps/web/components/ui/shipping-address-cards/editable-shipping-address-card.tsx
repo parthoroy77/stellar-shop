@@ -15,8 +15,8 @@ const EditableShippingAddressCard = ({ address }: { address: IShippingAddress })
         <PhoneDisplay value={address.phoneNumber} className="text-sm font-medium" />
         <h5 className="text-xs">{address.fullAddress}</h5>
       </div>
-      <div className="absolute -top-0.5 right-2 space-x-2">
-        <ShippingAddressActions id={address.id} />
+      <div className="absolute -top-0.5 right-2 flex gap-2">
+        <ShippingAddressActions address={address} />
       </div>
     </div>
   );

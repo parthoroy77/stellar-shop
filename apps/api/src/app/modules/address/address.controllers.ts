@@ -81,7 +81,6 @@ const getAllUserShippingAddresses = asyncHandler(async (req, res) => {
 const updateUserShippingAddress = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const payload = req.body;
-
   const result = await AddressServices.updateShippingAddress(+id!, {
     ...payload,
     userId: +req.user.id!,

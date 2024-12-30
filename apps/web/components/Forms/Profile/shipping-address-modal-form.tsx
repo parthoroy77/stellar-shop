@@ -1,6 +1,6 @@
 "use client";
-import { addShippingAddress } from "@/actions/address";
 import { useForm } from "@repo/utils/hook-form";
+import { IApiResponse, IShippingAddress } from "@repo/utils/types";
 import { TShippingAddressValidation } from "@repo/utils/validations";
 import {
   AppButton,
@@ -23,34 +23,27 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from "@ui/index";
-import { useState, useTransition } from "react";
-import { LuPin, LuPlus } from "react-icons/lu";
+import { FC, useEffect, useState, useTransition } from "react";
+import { LuPenLine, LuPin, LuPlus } from "react-icons/lu";
 import { toast } from "sonner";
 
-const defaultValues: TShippingAddressValidation = {
-  fullAddress: "",
-  fullName: "",
-  country: "",
-  state: "",
-  city: "",
-  zipCode: "",
-  phoneNumber: "",
-  type: "HOME",
-  isPrimary: false,
-};
+interface Props {
+  submitHandler: (data: TShippingAddressValidation) => Promise<IApiResponse<unknown>>;
+  addressData?: IShippingAddress;
+  isUpdate: boolean;
+}
 
-// TODO: if possible add country dropdown list
-const AddShippingAddressModalForm = () => {
+const AddShippingAddressModalForm: FC<Props> = ({ submitHandler, addressData = {}, isUpdate = true }) => {
   const [open, setOpen] = useState(false);
   const form = useForm<TShippingAddressValidation>({
-    defaultValues: { ...defaultValues },
+    defaultValues: { ...defaultValues, ...addressData },
   });
   const [isPending, startTransition] = useTransition();
 
-  const onSubmit = (data: TShippingAddressValidation) => {
+  const handleSubmit = (data: TShippingAddressValidation) => {
     const toastId = toast.loading("Sending request to process!", { duration: 2000 });
     startTransition(async () => {
-      const result = await addShippingAddress(data);
+      const result = await submitHandler(data);
       if (result.success) {
         toast.success(result.message, { id: toastId });
         setOpen(false);
@@ -60,23 +53,33 @@ const AddShippingAddressModalForm = () => {
       }
     });
   };
+  console.log(addressData);
+  useEffect(() => {
+    if (Object.keys(addressData).length > 0) {
+      form.reset({ ...defaultValues, ...addressData });
+    }
+  }, [addressData, form]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="bg-accent/40 flex size-8 items-center justify-center rounded-full border">
-        <LuPlus />
+        {isUpdate ? <LuPenLine /> : <LuPlus />}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px] lg:max-w-xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <LuPin size={17} />
-            Add Address
+            {isUpdate ? "Update Address" : " Add Address"}
           </DialogTitle>
-          <DialogDescription>Add your address it will use at the time of order placement!</DialogDescription>
+          <DialogDescription>
+            {addressData
+              ? "Update your address details below."
+              : "Add your address; it will be used at the time of order placement!"}
+          </DialogDescription>
         </DialogHeader>
         <hr />
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-2 gap-3">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="grid grid-cols-2 gap-3">
             <FormField
               name="fullName"
               control={form.control}
@@ -247,7 +250,7 @@ const AddShippingAddressModalForm = () => {
             />
             <DialogFooter className="col-span-2">
               <AppButton loading={isPending} type="submit" size={"sm"} variant={"secondary"} className="border">
-                Add Address
+                {isUpdate ? "Update Address" : "Add Address"}
               </AppButton>
             </DialogFooter>
           </form>
@@ -258,3 +261,15 @@ const AddShippingAddressModalForm = () => {
 };
 
 export default AddShippingAddressModalForm;
+
+const defaultValues: TShippingAddressValidation = {
+  fullAddress: "",
+  fullName: "",
+  country: "",
+  state: "",
+  city: "",
+  zipCode: "",
+  phoneNumber: "",
+  type: "HOME",
+  isPrimary: false,
+};

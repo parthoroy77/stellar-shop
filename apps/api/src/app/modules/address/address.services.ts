@@ -97,6 +97,7 @@ const getAllShippingAddress = async (userId: number) => {
       state: true,
       city: true,
       type: true,
+      zipCode: true,
       isPrimary: true,
     },
   });
