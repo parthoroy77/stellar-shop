@@ -11,3 +11,11 @@ export const addShippingAddress = async (data: TShippingAddressValidation) => {
   }
   return result;
 };
+
+export const deleteShippingAddress = async (id: number) => {
+  const result = await serverFetcher("/addresses/shippings/" + id, { method: "DELETE" });
+  if (result.success) {
+    revalidateTag("shipping-options");
+  }
+  return result;
+};

@@ -53,10 +53,8 @@ const AddShippingAddressModalForm = () => {
       const result = await addShippingAddress(data);
       if (result.success) {
         toast.success(result.message, { id: toastId });
-        if (result.success && result.data) {
-          setOpen(false);
-          form.reset();
-        }
+        setOpen(false);
+        form.reset();
       } else {
         toast.error(result.message, { id: toastId });
       }

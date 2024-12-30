@@ -1,5 +1,5 @@
 import AddShippingAddressModalForm from "@/components/Forms/Profile/add-shipping-address-modal-form";
-import EditableShippingAddressCard from "@/components/ui/editable-shipping-address-card";
+import EditableShippingAddressCard from "@/components/ui/shipping-address-cards/editable-shipping-address-card";
 import { serverFetcher } from "@/lib/server-fetcher";
 import { IShippingAddress } from "@repo/utils/types";
 
@@ -20,7 +20,7 @@ const ManageAddresses = async () => {
       </div>
       <div className="col-span-7 grid gap-3 lg:grid-cols-2">
         {addresses.length > 0 ? (
-          addresses.map((address) => <EditableShippingAddressCard key={address.id} />)
+          addresses.map((address) => <EditableShippingAddressCard address={address} key={address.id} />)
         ) : (
           <div className="text-accent-foreground col-span-2 text-center">No address added yet!</div>
         )}
