@@ -1,4 +1,5 @@
 import { StatusCodes } from "http-status-codes";
+import { ApiError } from "../../handlers/ApiError";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
 import { CartServices } from "./cart.services";
@@ -34,8 +35,23 @@ const clearUserAllCartItems = asyncHandler(async (req, res) => {
   });
 });
 
+const deleteUserCartItem = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Cart item id not found!");
+  }
+  await CartServices.deleteUserCartItem(+id, req.user.id!);
+  ApiResponse(res, {
+    data: {},
+    message: "User cart cleared successfully!",
+    success: true,
+    statusCode: StatusCodes.OK,
+  });
+});
+
 export const CartControllers = {
   manageAddProductToCart,
   getUserAllCartItems,
   clearUserAllCartItems,
+  deleteUserCartItem,
 };

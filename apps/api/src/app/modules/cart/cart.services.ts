@@ -135,4 +135,8 @@ const clearUserCart = async (userId: number) => {
   await prisma.cart.delete({ where: { userId } });
 };
 
-export const CartServices = { addToCart, getUserCart, clearUserCart };
+const deleteUserCartItem = async (carItemId: number, userId: number) => {
+  await prisma.cartItem.delete({ where: { id: carItemId, userId } });
+};
+
+export const CartServices = { addToCart, getUserCart, clearUserCart, deleteUserCartItem };
