@@ -53,7 +53,7 @@ const AddShippingAddressModalForm: FC<Props> = ({ submitHandler, addressData = {
       }
     });
   };
-  console.log(addressData);
+
   useEffect(() => {
     if (Object.keys(addressData).length > 0) {
       form.reset({ ...defaultValues, ...addressData });
@@ -72,7 +72,7 @@ const AddShippingAddressModalForm: FC<Props> = ({ submitHandler, addressData = {
             {isUpdate ? "Update Address" : " Add Address"}
           </DialogTitle>
           <DialogDescription>
-            {addressData
+            {isUpdate
               ? "Update your address details below."
               : "Add your address; it will be used at the time of order placement!"}
           </DialogDescription>

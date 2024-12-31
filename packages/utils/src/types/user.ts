@@ -33,6 +33,7 @@ export interface IUser {
   phonePrefixCode: string; // Country code
   emailVerified: boolean;
   phoneVerified: boolean;
+  profilePhoto: string;
   status: TUserActivationStatus;
   createdAt: Date;
   updatedAt?: Date;

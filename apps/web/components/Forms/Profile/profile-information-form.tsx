@@ -45,7 +45,7 @@ const ProfileInformationForm = () => {
   }, [session, form]);
 
   if (loading) {
-    <ProfileFieldsSkeleton />;
+    return <ProfileFieldsSkeleton />;
   }
 
   const onSubmit = (data: TUserProfileValidation) => {
