@@ -14,5 +14,8 @@ router.post(
   CartControllers.manageAddProductToCart
 );
 
+router.get("/", authMiddleware(UserRole.BUYER), CartControllers.getUserAllCartItems);
+router.delete("/", authMiddleware(UserRole.BUYER), CartControllers.clearUserAllCartItems);
+
 const CartRoutes = router;
 export default CartRoutes;

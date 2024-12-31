@@ -20,6 +20,8 @@ model ProductVariant {
   images                   VariantFile[]
   inventoryLogs            InventoryLog[]
   restockInventoryRequests RestockInventoryRequest[]
+  cartItems                CartItem[]
+  wishlistItems            WishlistItem[]
 
   @@index([productId])
   @@map("ProductVariants")

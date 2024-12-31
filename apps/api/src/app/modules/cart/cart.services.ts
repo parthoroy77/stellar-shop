@@ -11,6 +11,11 @@ const addToCart = async ({ userId, quantity, productId, variantId }: TAddToCartI
   if (!user) {
     throw new ApiError(StatusCodes.NOT_FOUND, "User not found!");
   }
+  const cart = await prisma.cart.upsert({
+    where: { userId },
+    update: {},
+    create: { userId },
+  });
 
   const product = await prisma.product.findUnique({
     where: { id: productId },
@@ -79,12 +84,7 @@ const addToCart = async ({ userId, quantity, productId, variantId }: TAddToCartI
         userId,
         quantity,
         productVariantId,
-        cart: {
-          connectOrCreate: {
-            where: { userId },
-            create: { userId },
-          },
-        },
+        cartId: cart.id,
       },
     });
 
@@ -95,4 +95,44 @@ const addToCart = async ({ userId, quantity, productId, variantId }: TAddToCartI
   }
 };
 
-export const CartServices = { addToCart };
+const getUserCart = async (userId: number) => {
+  const result = await prisma.cart.findUnique({
+    where: {
+      userId,
+    },
+    select: {
+      cartItems: {
+        select: {
+          quantity: true,
+          product: {
+            select: {
+              id: true,
+              uniqueId: true,
+              urlSlug: true,
+              productName: true,
+              images: {
+                take: 1,
+              },
+            },
+          },
+          productVariant: {
+            select: {
+              id: true,
+              uniqueId: true,
+              variantName: true,
+              attributes: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return result;
+};
+
+const clearUserCart = async (userId: number) => {
+  await prisma.cart.delete({ where: { userId } });
+};
+
+export const CartServices = { addToCart, getUserCart, clearUserCart };

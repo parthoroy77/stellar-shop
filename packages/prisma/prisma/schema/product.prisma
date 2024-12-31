@@ -29,6 +29,8 @@ model Product {
   restockInventoryRequests RestockInventoryRequest[]
   tags                     ProductTag[]
   categories               ProductCategory[]
+  cartItems                CartItem[]
+  wishlistItems            WishlistItem[]
 
   @@index([urlSlug, productName])
   @@map("Products")

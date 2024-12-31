@@ -25,7 +25,9 @@ model WishlistItem {
   updatedAt DateTime @updatedAt
 
   // references
-  wishlist Wishlist @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+  wishlist       Wishlist        @relation(fields: [wishlistId], references: [id], onDelete: Cascade)
+  product        Product         @relation(fields: [productId], references: [id])
+  productVariant ProductVariant? @relation(fields: [productVariantId], references: [id])
 
   @@map("WishlistItems")
 }
