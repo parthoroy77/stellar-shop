@@ -34,6 +34,7 @@ model File {
   logoForSellers   Seller[]       @relation("LogoForSellers")
   bannerForSellers Seller[]       @relation("BannerForSellers")
   brands           Brand[]
+  avatar           User?          @relation("AvatarFile")
 
   @@map("Files")
 }

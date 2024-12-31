@@ -14,7 +14,8 @@ const ManageProfilePhoto = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { session, loading } = useClientSession();
-  const userImage = useMemo(() => session?.user?.profilePhoto ?? "/user-mock.webp", [session?.user?.profilePhoto]);
+
+  const userImage = useMemo(() => session?.user?.avatarUrl ?? "/user-mock.webp", [session, loading]);
 
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -42,12 +43,10 @@ const ManageProfilePhoto = () => {
     }
     startTransition(async () => {
       const formData = new FormData();
-      formData.append("photo", file);
+      formData.append("avatar", file);
+
       const result = await updateUserPhoto(formData);
       toast[result.success ? "success" : "error"](result.message);
-      if (result.success) {
-        setFile(null); // Clear file after successful save
-      }
     });
   };
 
@@ -76,6 +75,7 @@ const ManageProfilePhoto = () => {
       <div className="col-span-2 flex justify-end gap-3">
         <AppButton
           loading={isPending}
+          disabled={isPending}
           onClick={handleDelete}
           variant={"destructive"}
           size={"sm"}
@@ -85,6 +85,7 @@ const ManageProfilePhoto = () => {
         </AppButton>
         <AppButton
           loading={isPending}
+          disabled={isPending}
           onClick={handleSave}
           variant={"accent"}
           size={"sm"}

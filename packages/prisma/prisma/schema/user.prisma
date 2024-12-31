@@ -8,14 +8,16 @@ model User {
   phoneNumber     String?       @unique @db.VarChar(20)
   emailVerified   Boolean       @default(false)
   phoneVerified   Boolean       @default(false)
-  profilePhoto    String?       @db.VarChar(255)
+  avatarUrl       String?       @db.VarChar(255)
+  avatarId        Int?          @unique
   status          UserStatus    @default(INACTIVE)
 
   // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // referrences
+  // references
+  avatar          File?             @relation("AvatarFile", references: [id], fields: [avatarId])
   oAuthAccounts   OAuthAccount[]
   sessions        Session[]
   addresses       Address[]

@@ -27,12 +27,11 @@ export async function fetcher<TResponse, TBody = unknown>(
   const fetchOptions: RequestInit & { next?: NextFetchRequestConfig } = {
     method,
     headers: {
-      "Content-Type": "application/json",
       ...headers,
     },
-    body: body ? JSON.stringify(body) : undefined,
     credentials: "include",
   };
+
   // Only add cache or next options if they are provided
   if (cache) fetchOptions.cache = cache;
   if (next) fetchOptions.next = next;
@@ -45,6 +44,17 @@ export async function fetcher<TResponse, TBody = unknown>(
     };
   }
 
+  // Handle body based on its type
+  if (body instanceof FormData) {
+    fetchOptions.body = body;
+    // Don't set Content-Type for FormData, browser will set it automatically
+  } else if (body) {
+    fetchOptions.body = JSON.stringify(body);
+    fetchOptions.headers = {
+      ...fetchOptions.headers,
+      "Content-Type": "application/json",
+    };
+  }
   try {
     const response = await fetch(url, fetchOptions);
     const result = await response.json();

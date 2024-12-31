@@ -6,7 +6,7 @@ import { IShippingAddress } from "@repo/utils/types";
 
 const getAllShippingAddresses = async () => {
   const result = await serverFetcher<IShippingAddress[]>("/addresses/shippings", {
-    next: { tags: ["shipping-addresses"], revalidate: 200 },
+    next: { tags: ["shipping-addresses"] },
   });
   return result.data || [];
 };
