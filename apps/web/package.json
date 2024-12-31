@@ -12,6 +12,7 @@
   "dependencies": {
     "@repo/ui": "*",
     "@repo/utils": "*",
+    "@repo/tanstack-query": "*",
     "next": "14.2.21",
     "next-auth": "^4.24.8",
     "react": "^18.3.1",
