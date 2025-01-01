@@ -6,7 +6,7 @@ import Link from "next/link";
 import { PiShoppingCartSimple } from "react-icons/pi";
 
 const CartHoverMenu = () => {
-  const { cartItemCount } = useCartContext();
+  const { cartItemCount, cartItems } = useCartContext();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -19,24 +19,31 @@ const CartHoverMenu = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[300px] p-2">
         <div className="space-y-3">
-          <div className="custom-scrollbar h-[300px] space-y-2 overflow-hidden overflow-y-scroll">
-            {Array.from({ length: 8 }).map((_x, i) => (
-              <div key={i} className="flex w-full items-center gap-1 border p-1">
-                <Image
-                  src={"https://klbtheme.com/bevesi/wp-content/uploads/2024/04/1-23.jpg"}
-                  alt="Product Image"
-                  width={50}
-                  height={50}
-                />
-                <div className="text-xs">
-                  <span className="font-medium">100% Apple Juice – 64 fl oz Bottle</span>
-                  <div className="flex">
-                    <span>2x</span>
-                    <span className="text-primary font-semibold">$7.99</span>
+          <div className="custom-scrollbar max-h-[300px] min-h-[120px] space-y-2 overflow-hidden overflow-y-scroll">
+            {cartItems.length > 0 ? (
+              cartItems.map((item, i) => (
+                <div key={i} className="flex w-full items-center gap-1.5 rounded-md border p-1">
+                  <Image
+                    className="rounded-md"
+                    src={item.product?.images![0]?.file.fileSecureUrl!}
+                    alt={item.product?.productName!}
+                    width={50}
+                    height={50}
+                  />
+                  <div className="text-xs">
+                    <span className="font-medium">{item.product?.productName}</span>
+                    <div className="flex">
+                      <span>{item.quantity}x</span>
+                      <span className="text-primary font-semibold">${item.product?.price}</span>
+                    </div>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div className="text-accent-foreground flex h-[120px] items-center justify-center text-sm">
+                <p>No item added yet!</p>
               </div>
-            ))}
+            )}
           </div>
           <DropdownMenuSeparator />
           <div className="flex gap-1 text-sm font-medium">

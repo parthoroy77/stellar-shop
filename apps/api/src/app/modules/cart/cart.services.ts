@@ -113,6 +113,8 @@ const getUserCart = async (userId: number) => {
               uniqueId: true,
               urlSlug: true,
               productName: true,
+              price: true,
+              stock: true,
               images: {
                 take: 1,
                 select: {

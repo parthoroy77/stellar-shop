@@ -1,12 +1,13 @@
+import { getMyCart } from "@/actions/cart";
 import CartActions from "@/components/Cart/cart-actions";
 import CartItem from "@/components/Cart/cart-item";
 import CartSummary from "@/components/Cart/cart-summary";
 import FreeShippingBanner from "@/components/Cart/free-shipping-banner";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
-import { products } from "@/dummyData/products";
-import { TProduct } from "@repo/utils/types";
+import { TCartItem } from "@repo/utils/types";
 
 const CartPage = async () => {
+  const cartItems = await getMyCart();
   return (
     <section className="space-y-3 py-5">
       <BreadcrumbMenu items={[{ label: "Cart", href: "/cart" }]} />
@@ -16,8 +17,8 @@ const CartPage = async () => {
           {/* promotion for free delivery */}
           <CartActions />
           <div className="divide-primary last:border-b-primary divide-y last:border-b">
-            {products.slice(0, 3).map((product, i) => (
-              <CartItem key={i} product={product as unknown as TProduct} />
+            {cartItems.map((cartItem, i) => (
+              <CartItem key={i} cartItem={cartItem as TCartItem} />
             ))}
           </div>
         </div>
