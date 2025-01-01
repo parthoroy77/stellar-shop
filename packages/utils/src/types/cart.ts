@@ -13,8 +13,8 @@ export interface ICartItem {
   id: number;
   userId: number; // Foreign key referencing User
   cartId: number; // Foreign key referencing Cart
-  productId?: number; // Nullable Foreign key referencing Product
-  productVariantId?: number; // Nullable Foreign key referencing ProductVariant
+  productId?: number | null; // Nullable Foreign key referencing Product
+  productVariantId?: number | null; // Nullable Foreign key referencing ProductVariant
   quantity: number;
   dateAdded: Date;
 }
@@ -23,7 +23,7 @@ export type TCart = ICart & {
   cartItems: TCartItem[];
 };
 
-export type TCartItem = ICartItem & {
-  product: Partial<TProduct>;
+export type TCartItem = Partial<ICartItem> & {
+  product?: Partial<TProduct>;
   productVariant?: Partial<TProductVariant>;
 };

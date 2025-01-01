@@ -1,26 +1,27 @@
 "use server";
 import { getServerAuth } from "@/lib/auth-utils";
-import { fetcher } from "@/lib/fetcher";
 import { serverFetcher } from "@/lib/server-fetcher";
 import { TCart } from "@repo/utils/types";
+import { revalidateTag } from "next/cache";
 
 export const addToCart = async ({
   productId,
   quantity = 1,
-  variantId,
+  productVariantId,
 }: {
   productId: number;
   quantity?: number;
-  variantId?: number;
+  productVariantId?: number;
 }) => {
-  const { session } = await getServerAuth();
-  const result = await fetcher<{}>("/carts/", {
+  const result = await serverFetcher<{}>("/carts/", {
     method: "POST",
     cache: "no-cache",
-    session,
-    body: { productId, variantId, quantity },
+    body: { productId, productVariantId, quantity },
   });
   // TODO: later on invalidate carts data
+  if (result.success) {
+    revalidateTag("my-cart");
+  }
   return result;
 };
 
@@ -33,4 +34,14 @@ export const getMyCart = async () => {
     next: { tags: ["my-cart"], revalidate: 30 },
   });
   return result.data?.cartItems || [];
+};
+
+export const clearUserCart = async () => {
+  const result = await serverFetcher("/carts", { method: "DELETE" });
+
+  if (result.success) {
+    revalidateTag("my-cart");
+  }
+
+  return result;
 };

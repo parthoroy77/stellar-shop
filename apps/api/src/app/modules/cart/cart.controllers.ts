@@ -19,7 +19,7 @@ const getUserAllCartItems = asyncHandler(async (req, res) => {
   const result = await CartServices.getUserCart(req.user.id!);
   ApiResponse(res, {
     data: result,
-    message: "User cart retrieved successfully!",
+    message: "Cart retrieved successfully!",
     success: true,
     statusCode: StatusCodes.OK,
   });
@@ -29,7 +29,7 @@ const clearUserAllCartItems = asyncHandler(async (req, res) => {
   await CartServices.clearUserCart(req.user.id!);
   ApiResponse(res, {
     data: {},
-    message: "User cart cleared successfully!",
+    message: "Cart list cleared successfully!",
     success: true,
     statusCode: StatusCodes.OK,
   });

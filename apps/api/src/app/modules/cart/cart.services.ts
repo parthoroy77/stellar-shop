@@ -103,7 +103,10 @@ const getUserCart = async (userId: number) => {
     select: {
       cartItems: {
         select: {
+          id: true,
           quantity: true,
+          productId: true,
+          productVariantId: true,
           product: {
             select: {
               id: true,

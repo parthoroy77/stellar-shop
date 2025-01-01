@@ -1,11 +1,10 @@
 "use client";
 
-import { addToCart } from "@/actions/cart";
 import { useCartContext } from "@/contexts/cart-context";
 import { useClientSession } from "@/lib/auth-utils";
 import { AppButton } from "@ui/index";
 import { useRouter } from "next/navigation";
-import { FC, MouseEvent, useCallback, useMemo, useTransition } from "react";
+import { FC, MouseEvent, useCallback, useMemo } from "react";
 import { BsCartCheck } from "react-icons/bs";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { toast } from "sonner";
@@ -17,8 +16,7 @@ interface Props {
 const AddToCartButton: FC<Props> = ({ productId }) => {
   const router = useRouter();
   const { isAuthenticated } = useClientSession();
-  const { isInCart } = useCartContext();
-  const [isPending, startTransition] = useTransition();
+  const { isInCart, updateCart } = useCartContext();
 
   const inCart = useMemo(() => isInCart(productId), [isInCart, productId]);
 
@@ -36,33 +34,18 @@ const AddToCartButton: FC<Props> = ({ productId }) => {
         toast.info("Please log in first!");
         router.push("/login");
         return;
+      } else {
+        // actually update cart
+        updateCart({ productId });
       }
-
-      const toastId = toast.loading("Processing your request...");
-      startTransition(async () => {
-        try {
-          const result = await addToCart({ productId });
-          toast.dismiss(toastId);
-          if (result.success) {
-            toast.success(result.message);
-          } else {
-            toast.error(result.message);
-          }
-        } catch (error) {
-          toast.dismiss(toastId);
-          toast.error("Something went wrong. Please try again.");
-        }
-      });
     },
-    [inCart, isAuthenticated, productId, router, startTransition]
+    [inCart, isAuthenticated, productId, router]
   );
 
   return (
     <div onClick={handleClick}>
       <AppButton
         asChild
-        loading={isPending}
-        hideElement={isPending}
         size="sm"
         variant={inCart ? "success" : "accent"}
         className="group/button flex h-fit w-fit items-center justify-center gap-2 rounded-full p-[5px] font-normal transition-all duration-300 lg:rounded-md lg:p-2"
