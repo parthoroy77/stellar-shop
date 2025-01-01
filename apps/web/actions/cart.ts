@@ -1,6 +1,8 @@
 "use server";
 import { getServerAuth } from "@/lib/auth-utils";
 import { fetcher } from "@/lib/fetcher";
+import { serverFetcher } from "@/lib/server-fetcher";
+import { TCart } from "@repo/utils/types";
 
 export const addToCart = async ({
   productId,
@@ -20,4 +22,15 @@ export const addToCart = async ({
   });
   // TODO: later on invalidate carts data
   return result;
+};
+
+export const getMyCart = async () => {
+  const { isAuthenticated } = await getServerAuth();
+  if (!isAuthenticated) {
+    return [];
+  }
+  const result = await serverFetcher<TCart>("/carts", {
+    next: { tags: ["my-cart"], revalidate: 30 },
+  });
+  return result.data?.cartItems || [];
 };

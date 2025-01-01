@@ -1,3 +1,5 @@
+import { TProduct, TProductVariant } from "./product";
+
 // Cart
 export interface ICart {
   id: number;
@@ -16,3 +18,12 @@ export interface ICartItem {
   quantity: number;
   dateAdded: Date;
 }
+
+export type TCart = ICart & {
+  cartItems: TCartItem[];
+};
+
+export type TCartItem = ICartItem & {
+  product: Partial<TProduct>;
+  productVariant?: Partial<TProductVariant>;
+};

@@ -1,52 +1,83 @@
 "use client";
+
 import { addToCart } from "@/actions/cart";
+import { useCartContext } from "@/contexts/cart-context";
 import { useClientSession } from "@/lib/auth-utils";
 import { AppButton } from "@ui/index";
 import { useRouter } from "next/navigation";
-import { FC, MouseEvent, useTransition } from "react";
+import { FC, MouseEvent, useCallback, useMemo, useTransition } from "react";
+import { BsCartCheck } from "react-icons/bs";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { toast } from "sonner";
 
 interface Props {
   productId: number;
 }
-// TODO: use optimistic
+
 const AddToCartButton: FC<Props> = ({ productId }) => {
   const router = useRouter();
   const { isAuthenticated } = useClientSession();
+  const { isInCart } = useCartContext();
   const [isPending, startTransition] = useTransition();
 
-  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!isAuthenticated) {
-      router.push("/login");
-      toast.info("Please log in first!");
-    } else {
-      const toastId = toast.loading("Sending request to process!", { duration: 2000 });
+  const inCart = useMemo(() => isInCart(productId), [isInCart, productId]);
+
+  const handleClick = useCallback(
+    (e: MouseEvent<HTMLDivElement>) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (inCart) {
+        router.push("/cart");
+        return;
+      }
+
+      if (!isAuthenticated) {
+        toast.info("Please log in first!");
+        router.push("/login");
+        return;
+      }
+
+      const toastId = toast.loading("Processing your request...");
       startTransition(async () => {
-        const result = await addToCart({ productId });
-        console.log(result);
-        if (result.success) {
-          toast.success(result.message, { id: toastId });
-        } else {
-          toast.error(result.message, { id: toastId });
+        try {
+          const result = await addToCart({ productId });
+          toast.dismiss(toastId);
+          if (result.success) {
+            toast.success(result.message);
+          } else {
+            toast.error(result.message);
+          }
+        } catch (error) {
+          toast.dismiss(toastId);
+          toast.error("Something went wrong. Please try again.");
         }
       });
-    }
-  };
+    },
+    [inCart, isAuthenticated, productId, router, startTransition]
+  );
+
   return (
     <div onClick={handleClick}>
       <AppButton
         asChild
         loading={isPending}
         hideElement={isPending}
-        size={"sm"}
-        variant={"accent"}
+        size="sm"
+        variant={inCart ? "success" : "accent"}
         className="group/button flex h-fit w-fit items-center justify-center gap-2 rounded-full p-[5px] font-normal transition-all duration-300 lg:rounded-md lg:p-2"
       >
-        <HiOutlineShoppingBag className="text-base lg:text-lg" />
-        <span className="hidden lg:block">Add To Cart</span>
+        {inCart ? (
+          <>
+            <BsCartCheck color="white" className="text-base lg:text-lg" />
+            <span className="hidden lg:block">View Cart</span>
+          </>
+        ) : (
+          <>
+            <HiOutlineShoppingBag className="text-base lg:text-lg" />
+            <span className="hidden lg:block">Add To Cart</span>
+          </>
+        )}
       </AppButton>
     </div>
   );

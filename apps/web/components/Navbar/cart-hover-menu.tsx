@@ -1,17 +1,19 @@
 "use client";
+import { useCartContext } from "@/contexts/cart-context";
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from "@ui/index";
 import Image from "next/image";
 import Link from "next/link";
 import { PiShoppingCartSimple } from "react-icons/pi";
 
 const CartHoverMenu = () => {
+  const { cartItemCount } = useCartContext();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div className="relative cursor-pointer">
           <PiShoppingCartSimple size={23} aria-label="Shopping Cart" />
-          <div className="bg-primary absolute -right-3 -top-2 flex size-[14px] items-center justify-center rounded-full text-center text-[9px] text-xs text-white">
-            <span>6</span>
+          <div className="bg-primary absolute -right-3.5 -top-2.5 flex size-4 items-center justify-center rounded-full text-center text-xs text-white">
+            <span>{cartItemCount}</span>
           </div>
         </div>
       </DropdownMenuTrigger>
