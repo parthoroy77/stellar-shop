@@ -3,7 +3,7 @@ import fs from "fs";
 
 export function getFilePath(req: Request, fieldName: string): string | undefined {
   // Check if req.files is an object with field names
-  if (req.files && Array.isArray(req.files as Record<string, Express.Multer.File[]>)) {
+  if (req.files) {
     return (req.files as Record<string, Express.Multer.File[]>)[fieldName]?.[0]?.path;
   }
 

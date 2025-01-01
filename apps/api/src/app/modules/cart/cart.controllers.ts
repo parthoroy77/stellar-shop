@@ -16,9 +16,9 @@ const manageAddProductToCart = asyncHandler(async (req, res) => {
 });
 
 const getUserAllCartItems = asyncHandler(async (req, res) => {
-  await CartServices.getUserCart(req.user.id!);
+  const result = await CartServices.getUserCart(req.user.id!);
   ApiResponse(res, {
-    data: {},
+    data: result,
     message: "User cart retrieved successfully!",
     success: true,
     statusCode: StatusCodes.OK,
@@ -43,7 +43,7 @@ const deleteUserCartItem = asyncHandler(async (req, res) => {
   await CartServices.deleteUserCartItem(+id, req.user.id!);
   ApiResponse(res, {
     data: {},
-    message: "User cart cleared successfully!",
+    message: "Cart item deleted successfully!",
     success: true,
     statusCode: StatusCodes.OK,
   });

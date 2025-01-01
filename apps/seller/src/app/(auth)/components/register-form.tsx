@@ -121,7 +121,7 @@ const RegisterForm = () => {
           />
         </div>
         <AppButton disabled={isPending} loading={isPending} variant={"secondary"} type="submit" className="w-full">
-          Login
+          Register
         </AppButton>
         <div className="flex justify-center gap-1">
           <span className="text-accent-foreground text-xs font-medium">Already have an account?</span>

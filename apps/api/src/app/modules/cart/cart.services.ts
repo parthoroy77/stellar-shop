@@ -112,6 +112,9 @@ const getUserCart = async (userId: number) => {
               productName: true,
               images: {
                 take: 1,
+                select: {
+                  file: { select: { fileSecureUrl: true } },
+                },
               },
             },
           },
@@ -120,7 +123,7 @@ const getUserCart = async (userId: number) => {
               id: true,
               uniqueId: true,
               variantName: true,
-              attributes: true,
+              attributes: { select: { attributeValue: { select: { value: true } } } },
             },
           },
         },
