@@ -2,7 +2,7 @@ import { Button, Input } from "@ui/index";
 
 const CartSummary = () => {
   return (
-    <div className="h-fit rounded-md border p-5 lg:w-[25%]">
+    <div className="h-fit rounded-md border-2 p-4 shadow-sm lg:w-[25%] lg:p-5">
       <h5 className="text-sm font-medium uppercase">Cart Summary</h5>
       <div className="text-accent-foreground divide-y text-sm font-medium *:py-3">
         <div className="flex items-center justify-between">

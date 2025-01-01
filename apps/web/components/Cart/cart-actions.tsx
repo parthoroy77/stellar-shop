@@ -6,7 +6,7 @@ import { HiXMark } from "react-icons/hi2";
 const CartActions = () => {
   const { cartItemCount, clearCart } = useCartContext();
   return (
-    <div className="text-accent-foreground flex items-center justify-between rounded-md border px-6 py-3 text-sm">
+    <div className="text-accent-foreground flex items-center justify-between rounded-md text-sm">
       {/* Select All */}
       <div className="flex items-center gap-2 font-medium capitalize text-black">
         <span>Your Cart ({cartItemCount} Items)</span>

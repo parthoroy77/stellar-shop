@@ -13,14 +13,12 @@ const CartPage = async () => {
       <BreadcrumbMenu items={[{ label: "Cart", href: "/cart" }]} />
       <FreeShippingBanner currentTotal={100} freeShippingThreshold={200} />
       <div className="flex w-full flex-col gap-8 *:rounded-md lg:flex-row">
-        <div className="lg:w-[75%]">
+        <div className="h-fit divide-y-2 border-2 shadow-sm *:px-4 *:py-3 lg:w-[75%] *:lg:px-6">
           {/* promotion for free delivery */}
           <CartActions />
-          <div className="divide-primary last:border-b-primary divide-y last:border-b">
-            {cartItems.map((cartItem, i) => (
-              <CartItem key={i} cartItem={cartItem as TCartItem} />
-            ))}
-          </div>
+          {cartItems.map((cartItem, i) => (
+            <CartItem key={i} cartItem={cartItem as TCartItem} />
+          ))}
         </div>
         <CartSummary />
       </div>
