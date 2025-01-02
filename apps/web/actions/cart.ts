@@ -18,7 +18,6 @@ export const addToCart = async ({
     cache: "no-cache",
     body: { productId, productVariantId, quantity },
   });
-  // TODO: later on invalidate carts data
   if (result.success) {
     revalidateTag("my-cart");
   }
@@ -43,5 +42,13 @@ export const clearUserCart = async () => {
     revalidateTag("my-cart");
   }
 
+  return result;
+};
+
+export const deleteCartItem = async (cartItemId: number) => {
+  const result = await serverFetcher(`/carts/${cartItemId}`, { method: "DELETE" });
+  if (result.success) {
+    revalidateTag("my-cart");
+  }
   return result;
 };

@@ -1,9 +1,9 @@
 import { TCartItem } from "@repo/utils/types";
-import { AppButton, Badge } from "@ui/index";
+import { Badge } from "@ui/index";
 import Image from "next/image";
-import { RiDeleteBinLine } from "react-icons/ri";
 import { TbCurrencyTaka } from "react-icons/tb";
 import ProductQuantitySelection from "../ProductDetail/product-quantity-selection";
+import DeleteCartItem from "./delete-cart-item";
 
 type CartItemProps = {
   cartItem: TCartItem;
@@ -46,9 +46,7 @@ const CartItem = ({ cartItem }: CartItemProps) => {
             <span>{cartItem!.product!.price!}</span>
           </div>
           <div className="flex items-center">
-            <AppButton variant={"accent"} size={"sm"} className="h-fit w-fit border p-1 lg:p-2">
-              <RiDeleteBinLine className="text-sm lg:text-xl" />
-            </AppButton>
+            <DeleteCartItem cartItemId={cartItem.id!} />
           </div>
         </div>
       </div>

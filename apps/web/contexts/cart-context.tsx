@@ -16,6 +16,7 @@ type TCartContext = {
   cartItemCount: number;
   clearCart: () => void;
   updateCart: (payload: TUpdateCartPayload) => void;
+  invalidateCart: Promise<void>;
 };
 
 const CartContext = createContext<TCartContext | null>(null);
@@ -27,6 +28,8 @@ const CartContextProvider = ({ children }: { children: ReactNode }) => {
     staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
     refetchOnWindowFocus: false, // Prevent unnecessary refetch
   });
+
+  const invalidateCart = queryClient.invalidateQueries({ queryKey: ["user-cart"] });
 
   // Check if a product is in the cart
   const isInCart = (productId: number) => cartItems.some((item) => item.productId === productId);
@@ -99,7 +102,7 @@ const CartContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, isInCart, cartItemCount, clearCart, updateCart }}>
+    <CartContext.Provider value={{ cartItems, isInCart, cartItemCount, clearCart, updateCart, invalidateCart }}>
       {children}
     </CartContext.Provider>
   );
