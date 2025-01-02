@@ -1,14 +1,15 @@
 "use client";
 import { useCartContext } from "@/contexts/cart-context";
-import { AppButton } from "@ui/index";
+import { AppButton, Checkbox } from "@ui/index";
 import { HiXMark } from "react-icons/hi2";
 
 const CartActions = () => {
   const { cartItemCount, clearCart } = useCartContext();
   return (
-    <div className="text-accent-foreground flex items-center justify-between rounded-md text-sm">
+    <div className="text-accent-foreground flex items-center justify-between rounded-md border-2 px-4 py-3 text-sm lg:px-6">
       {/* Select All */}
       <div className="flex items-center gap-2 font-medium capitalize text-black">
+        <Checkbox />
         <span>Your Cart ({cartItemCount} Items)</span>
       </div>
       {/* Delete Action */}

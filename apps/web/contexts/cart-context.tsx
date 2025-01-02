@@ -76,7 +76,7 @@ const CartContextProvider = ({ children }: { children: ReactNode }) => {
     // create a snapshot of prev state
     const prevState = queryClient.getQueryData<TCartItem[]>(["user-cart"]) || [];
 
-    const updatedState: TCartItem[] = [
+    const updatedState: Partial<TCartItem>[] = [
       ...prevState,
       {
         quantity,

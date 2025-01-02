@@ -53,7 +53,7 @@ export const columns: ColumnDef<TSeller>[] = [
             alt={`${row.getValue("shopName")} Shop Image`}
           />
           <div className="flex flex-col">
-            <span className="text-xs font-medium lg:text-sm">{row.getValue("shopName")}</span>
+            <span className="truncate text-xs font-medium lg:text-sm">{row.getValue("shopName")}</span>
             <span className="text-accent-foreground truncate text-[10px] lg:text-xs">
               {row?.original?.shopDescription}
             </span>

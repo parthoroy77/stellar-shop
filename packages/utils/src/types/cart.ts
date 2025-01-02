@@ -23,7 +23,7 @@ export type TCart = ICart & {
   cartItems: TCartItem[];
 };
 
-export type TCartItem = Partial<ICartItem> & {
-  product?: Partial<TProduct>;
-  productVariant?: Partial<TProductVariant>;
+export type TCartItem = Pick<ICartItem, "id" | "quantity" | "productId" | "productVariantId"> & {
+  product: Pick<TProduct, "id" | "uniqueId" | "urlSlug" | "price" | "stock" | "productName" | "images" | "seller">;
+  productVariant?: Pick<TProductVariant, "id" | "uniqueId" | "price" | "stock" | "variantName" | "attributes">;
 };

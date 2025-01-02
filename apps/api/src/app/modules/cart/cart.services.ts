@@ -121,6 +121,13 @@ const getUserCart = async (userId: number) => {
                   file: { select: { fileSecureUrl: true } },
                 },
               },
+              seller: {
+                select: {
+                  id: true,
+                  shopName: true,
+                  logo: { select: { fileSecureUrl: true } },
+                },
+              },
             },
           },
           productVariant: {
@@ -128,6 +135,8 @@ const getUserCart = async (userId: number) => {
               id: true,
               uniqueId: true,
               variantName: true,
+              price: true,
+              stock: true,
               attributes: { select: { attributeValue: { select: { value: true } } } },
             },
           },
