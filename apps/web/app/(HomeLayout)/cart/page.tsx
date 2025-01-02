@@ -39,11 +39,9 @@ const CartPage = async () => {
                     <h5> {groupedItem.seller.shopName}</h5>
                   </div>
                 </div>
-                <div>
-                  {groupedItem.items.map((cartItem, i) => (
-                    <CartItem key={i} cartItem={cartItem as TCartItem} />
-                  ))}
-                </div>
+                {groupedItem.items.map((cartItem, i) => (
+                  <CartItem key={i} cartItem={cartItem as TCartItem} />
+                ))}
               </div>
             ))}
           </div>

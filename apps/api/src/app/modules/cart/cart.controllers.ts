@@ -49,9 +49,21 @@ const deleteUserCartItem = asyncHandler(async (req, res) => {
   });
 });
 
+const updateUserCartItem = asyncHandler(async (req, res) => {
+  const payload = req.body;
+  await CartServices.updateCartItem(payload, req.user.id!);
+  ApiResponse(res, {
+    data: {},
+    message: "Cart item updated successfully!",
+    success: true,
+    statusCode: StatusCodes.OK,
+  });
+});
+
 export const CartControllers = {
   manageAddProductToCart,
   getUserAllCartItems,
   clearUserAllCartItems,
   deleteUserCartItem,
+  updateUserCartItem,
 };

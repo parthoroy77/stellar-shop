@@ -1,4 +1,5 @@
 import prisma from "@repo/prisma/client";
+import { TUpdateCartPayload } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
 import { TAddToCartInput } from "./cart.types";
@@ -156,4 +157,50 @@ const deleteUserCartItem = async (carItemId: number, userId: number) => {
   await prisma.cartItem.delete({ where: { id: carItemId, userId } });
 };
 
-export const CartServices = { addToCart, getUserCart, clearUserCart, deleteUserCartItem };
+const updateCartItem = async (payload: TUpdateCartPayload, userId: number) => {
+  // Find the cart item
+  const cartItem = await prisma.cartItem.findUnique({ where: { id: payload.cartItemId, userId } });
+
+  if (!cartItem) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Cart item not found!");
+  }
+
+  const product = cartItem.productVariantId
+    ? await prisma.productVariant.findUnique({ where: { id: cartItem.productVariantId } })
+    : await prisma.product.findUnique({ where: { id: cartItem.productId } });
+
+  if (!product) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Product or variant not found!");
+  }
+
+  // Validate stock availability for increment action
+  if (payload.action === "INC" && cartItem.quantity + payload.quantity > product.stock) {
+    throw new ApiError(StatusCodes.CONFLICT, "Product out of stock!");
+  }
+
+  // Validate decrement action for quantity limits
+  if (payload.action === "DEC" && cartItem.quantity < payload.quantity) {
+    throw new ApiError(StatusCodes.CONFLICT, "Cannot reduce quantity below 1!");
+  }
+
+  // Determine the update operation based on the action
+  let updateData;
+
+  if (payload.action === "INC") {
+    updateData = { quantity: { increment: payload.quantity } };
+  } else if (payload.action === "DEC") {
+    updateData = { quantity: { decrement: payload.quantity } };
+  } else {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid action specified!");
+  }
+
+  // Update the cart item
+  await prisma.cartItem.update({
+    where: { id: payload.cartItemId },
+    data: updateData,
+  });
+
+  return;
+};
+
+export const CartServices = { addToCart, getUserCart, clearUserCart, deleteUserCartItem, updateCartItem };

@@ -27,3 +27,11 @@ export type TCartItem = Pick<ICartItem, "id" | "quantity" | "productId" | "produ
   product: Pick<TProduct, "id" | "uniqueId" | "urlSlug" | "price" | "stock" | "productName" | "images" | "seller">;
   productVariant?: Pick<TProductVariant, "id" | "uniqueId" | "price" | "stock" | "variantName" | "attributes">;
 };
+
+export type TCartActionType = "INC" | "DEC";
+
+export type TUpdateCartPayload = {
+  cartItemId: number;
+  quantity: number;
+  action: TCartActionType;
+};

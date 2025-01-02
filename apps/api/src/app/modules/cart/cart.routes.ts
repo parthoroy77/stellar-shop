@@ -15,6 +15,7 @@ router.post(
 );
 
 router.get("/", authMiddleware(UserRole.BUYER), CartControllers.getUserAllCartItems);
+router.patch("/", authMiddleware(UserRole.BUYER), CartControllers.updateUserCartItem);
 router.delete("/", authMiddleware(UserRole.BUYER), CartControllers.clearUserAllCartItems);
 router.delete("/:id", authMiddleware(UserRole.BUYER), CartControllers.deleteUserCartItem);
 
