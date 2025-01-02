@@ -45,7 +45,6 @@ const AddToCartButton: FC<Props> = ({ productId }) => {
   return (
     <div onClick={handleClick}>
       <AppButton
-        asChild
         size="sm"
         variant={inCart ? "success" : "accent"}
         className="group/button flex h-fit w-fit items-center justify-center gap-2 rounded-full p-[5px] font-normal transition-all duration-300 lg:rounded-md lg:p-2"
