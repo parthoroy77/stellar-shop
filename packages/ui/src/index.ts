@@ -25,6 +25,7 @@ export * from "./components/ui/phone-display";
 export * from "./components/ui/phone-input";
 export * from "./components/ui/popover";
 export * from "./components/ui/progress";
+export * from "./components/ui/quantity-selection";
 export * from "./components/ui/radio-group";
 export * from "./components/ui/scroll-area";
 export * from "./components/ui/select";

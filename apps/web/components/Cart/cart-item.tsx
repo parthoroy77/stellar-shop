@@ -2,7 +2,7 @@ import { TCartItem } from "@repo/utils/types";
 import { Badge, Checkbox } from "@ui/index";
 import Image from "next/image";
 import { TbCurrencyTaka } from "react-icons/tb";
-import ProductQuantitySelection from "../ProductDetail/product-quantity-selection";
+import CartItemQuantitySelection from "./cart-item-quantity-selection";
 import DeleteCartItem from "./delete-cart-item";
 
 type CartItemProps = {
@@ -28,18 +28,16 @@ const CartItem = ({ cartItem }: CartItemProps) => {
           <div className="w-full space-y-1">
             <h5 className="truncate text-sm font-medium">{cartItem!.product!.productName!}</h5>
             <div className="space-x-2">
-              {attributes?.map((attr) => (
-                <Badge variant={"accent"} className="rounded-md">
+              {attributes?.map((attr, idx) => (
+                <Badge key={idx} variant={"accent"} className="rounded-md">
                   {attr.name}
                 </Badge>
               ))}
             </div>
           </div>
           <div className="flex-row- flex justify-between gap-5 lg:flex-row lg:items-center">
-            <ProductQuantitySelection
-              className="h-fit w-[120px] flex-row-reverse lg:min-w-[150px]"
-              buttonClass="text-xs lg:p-2 p-1 lg:text-sm"
-              labelClass="text-xs"
+            <CartItemQuantitySelection
+              cartItemId={cartItem.id}
               stock={cartItem?.product!.stock!}
               initialQuantity={cartItem.quantity}
             />

@@ -142,6 +142,9 @@ const getUserCart = async (userId: number) => {
             },
           },
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       },
     },
   });
@@ -174,12 +177,12 @@ const updateCartItem = async (payload: TUpdateCartPayload, userId: number) => {
   }
 
   // Validate stock availability for increment action
-  if (payload.action === "INC" && cartItem.quantity + payload.quantity > product.stock) {
+  if (payload.action === "INC" && cartItem.quantity === product.stock) {
     throw new ApiError(StatusCodes.CONFLICT, "Product out of stock!");
   }
 
   // Validate decrement action for quantity limits
-  if (payload.action === "DEC" && cartItem.quantity < payload.quantity) {
+  if (payload.action === "DEC" && cartItem.quantity === 1) {
     throw new ApiError(StatusCodes.CONFLICT, "Cannot reduce quantity below 1!");
   }
 
@@ -187,9 +190,9 @@ const updateCartItem = async (payload: TUpdateCartPayload, userId: number) => {
   let updateData;
 
   if (payload.action === "INC") {
-    updateData = { quantity: { increment: payload.quantity } };
+    updateData = { quantity: { increment: 1 } };
   } else if (payload.action === "DEC") {
-    updateData = { quantity: { decrement: payload.quantity } };
+    updateData = { quantity: { decrement: 1 } };
   } else {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid action specified!");
   }

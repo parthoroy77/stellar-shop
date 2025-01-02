@@ -13,7 +13,5 @@ export const addToWishlistValidationSchema = z.object({
 
 export const updateCartItemValidationSchema = z.object({
   cartItemId: z.number(),
-  productId: z.number(),
-  quantity: z.number().positive(),
   action: z.enum(["INC", "DEC"]),
 });

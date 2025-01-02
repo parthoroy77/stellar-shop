@@ -12,7 +12,7 @@ const DeleteCartItem = ({ cartItemId }: { cartItemId: number }) => {
     startTransition(async () => {
       const result = await deleteCartItem(cartItemId);
       if (result.success) {
-        await invalidateCart;
+        await invalidateCart();
         toast.success(result.message);
       } else {
         toast.error(result.message);

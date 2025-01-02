@@ -1,10 +1,10 @@
-import { addToCart, clearUserCart, getMyCart } from "@/actions/cart";
+import { addToCart, clearUserCart, getMyCart, updateCartItemAction } from "@/actions/cart";
 import { useQueryClient, useQueryData } from "@repo/tanstack-query";
-import { TCartItem } from "@repo/utils/types";
+import { TCartItem, TUpdateCartPayload } from "@repo/utils/types";
 import { createContext, ReactNode, useContext, useMemo } from "react";
 import { toast } from "sonner";
 
-type TUpdateCartPayload = {
+type TAddCartPayload = {
   productId: number;
   quantity?: number;
   productVariantId?: number;
@@ -15,8 +15,9 @@ type TCartContext = {
   isInCart: (productId: number) => boolean;
   cartItemCount: number;
   clearCart: () => void;
-  updateCart: (payload: TUpdateCartPayload) => void;
-  invalidateCart: Promise<void>;
+  addProductToCart: (payload: TAddCartPayload) => void;
+  updateCartItem: (payload: TUpdateCartPayload) => void;
+  invalidateCart: () => Promise<void>;
 };
 
 const CartContext = createContext<TCartContext | null>(null);
@@ -29,7 +30,9 @@ const CartContextProvider = ({ children }: { children: ReactNode }) => {
     refetchOnWindowFocus: false, // Prevent unnecessary refetch
   });
 
-  const invalidateCart = queryClient.invalidateQueries({ queryKey: ["user-cart"] });
+  const invalidateCart = async () => {
+    await queryClient.invalidateQueries({ queryKey: ["user-cart"] });
+  };
 
   // Check if a product is in the cart
   const isInCart = (productId: number) => cartItems.some((item) => item.productId === productId);
@@ -68,8 +71,8 @@ const CartContextProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  // add product to cart
-  const updateCart = async ({ productId, productVariantId, quantity = 1 }: TUpdateCartPayload) => {
+  // Add product to cart
+  const addProductToCart = async ({ productId, productVariantId, quantity = 1 }: TAddCartPayload) => {
     // cancel ongoing query
     await queryClient.cancelQueries({ queryKey: ["user-cart"] });
 
@@ -101,8 +104,23 @@ const CartContextProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  // Update Cart Item
+  const updateCartItem = async (payload: TUpdateCartPayload) => {
+    const result = await updateCartItemAction(payload);
+
+    if (result.success) {
+      // if success invalidate query
+      queryClient.invalidateQueries({ queryKey: ["user-cart"] });
+      toast.success(result.message);
+    } else {
+      toast.error(result.message);
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ cartItems, isInCart, cartItemCount, clearCart, updateCart, invalidateCart }}>
+    <CartContext.Provider
+      value={{ cartItems, isInCart, cartItemCount, clearCart, addProductToCart, invalidateCart, updateCartItem }}
+    >
       {children}
     </CartContext.Provider>
   );

@@ -16,7 +16,7 @@ interface Props {
 const AddToCartButton: FC<Props> = ({ productId }) => {
   const router = useRouter();
   const { isAuthenticated } = useClientSession();
-  const { isInCart, updateCart } = useCartContext();
+  const { isInCart, addProductToCart } = useCartContext();
 
   const inCart = useMemo(() => isInCart(productId), [isInCart, productId]);
 
@@ -36,7 +36,7 @@ const AddToCartButton: FC<Props> = ({ productId }) => {
         return;
       } else {
         // actually update cart
-        updateCart({ productId });
+        addProductToCart({ productId });
       }
     },
     [inCart, isAuthenticated, productId, router]

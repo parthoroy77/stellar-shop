@@ -32,6 +32,5 @@ export type TCartActionType = "INC" | "DEC";
 
 export type TUpdateCartPayload = {
   cartItemId: number;
-  quantity: number;
   action: TCartActionType;
 };
