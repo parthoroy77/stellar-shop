@@ -1,10 +1,10 @@
 import AddToCartButton from "@/components/ui/add-to-cart-button";
 import { TWishlistItem } from "@repo/utils/types";
-import { AppButton, Badge, ShadTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/index";
+import { Badge, ShadTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/index";
 import Image from "next/image";
 import Link from "next/link";
 import { LuDollarSign } from "react-icons/lu";
-import { RiDeleteBinLine } from "react-icons/ri";
+import RemoveWishlistButton from "./remove-wishlist-button";
 
 export const getAttributes = (wishlistItem: TWishlistItem) => {
   const attributes = wishlistItem.productVariant?.attributes?.map((attr) => ({
@@ -88,9 +88,11 @@ const WishlistWebView = ({ wishlistItems }: { wishlistItems: TWishlistItem[] }) 
                   <AddToCartButton productId={wishlistItem.product.id} />
                 </TableCell>
                 <TableCell>
-                  <AppButton variant={"accent"} size={"sm"} className="h-fit w-fit border p-1.5">
-                    <RiDeleteBinLine size={20} />
-                  </AppButton>
+                  <RemoveWishlistButton
+                    isMobile={false}
+                    productId={wishlistItem.productId}
+                    productVariantId={wishlistItem.productVariantId || undefined}
+                  />
                 </TableCell>
               </TableRow>
             ))

@@ -1,10 +1,10 @@
 import AddToCartButton from "@/components/ui/add-to-cart-button";
 import { TWishlistItem } from "@repo/utils/types";
-import { AppButton, Badge, Button } from "@ui/index";
+import { Badge, Button } from "@ui/index";
 import Image from "next/image";
 import Link from "next/link";
 import { LuDollarSign } from "react-icons/lu";
-import { RiDeleteBinLine } from "react-icons/ri";
+import RemoveWishlistButton from "./remove-wishlist-button";
 import { getAttributes } from "./wishlist-web-view";
 
 const WishlistMobileView = ({ wishlistItems }: { wishlistItems: TWishlistItem[] }) => {
@@ -46,9 +46,11 @@ const WishlistMobileView = ({ wishlistItems }: { wishlistItems: TWishlistItem[] 
                   </Badge>
                 </div>
                 <div className="flex items-center justify-between gap-2 text-xs">
-                  <AppButton variant={"ghost"} size={"icon"} className="h-fit w-fit rounded-full border p-1">
-                    <RiDeleteBinLine size={17} />
-                  </AppButton>
+                  <RemoveWishlistButton
+                    productId={wishlistItem.productId}
+                    isMobile
+                    productVariantId={wishlistItem.productVariantId || undefined}
+                  />
                   <AddToCartButton productId={wishlistItem.product.id} />
                 </div>
               </div>
