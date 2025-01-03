@@ -3,7 +3,7 @@
 import { getMyWishlist, toggleUserWishlist } from "@/actions/wishlist";
 import { useQueryClient, useQueryData } from "@repo/tanstack-query";
 import { TToggleWishlistPayload, TWishlistItem } from "@repo/utils/types";
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useMemo } from "react";
 import { toast } from "sonner";
 
 type TWishlistContext = {
@@ -11,6 +11,7 @@ type TWishlistContext = {
   isInWishlist: (productId: number) => boolean;
   invalidateWishlist: () => Promise<void>;
   toggleWishlist: (payload: TToggleWishlistPayload) => Promise<void>;
+  wishlistCount: number;
 };
 
 const WishlistContext = createContext<TWishlistContext | null>(null);
@@ -23,6 +24,9 @@ const WishlistContextProvider = ({ children }: { children: ReactNode }) => {
     staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
     refetchOnWindowFocus: false, // Prevent unnecessary refetch
   });
+
+  // Calculate cart item count
+  const wishlistCount = useMemo(() => wishlistItems.length, [wishlistItems]);
 
   // Invalidate wishlist
   const invalidateWishlist = async () => {
@@ -65,7 +69,9 @@ const WishlistContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <WishlistContext.Provider value={{ wishlistItems, isInWishlist, invalidateWishlist, toggleWishlist }}>
+    <WishlistContext.Provider
+      value={{ wishlistItems, isInWishlist, invalidateWishlist, toggleWishlist, wishlistCount }}
+    >
       {children}
     </WishlistContext.Provider>
   );

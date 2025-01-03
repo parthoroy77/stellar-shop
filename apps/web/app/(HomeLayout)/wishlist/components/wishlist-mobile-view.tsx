@@ -23,13 +23,13 @@ const WishlistMobileView = ({ wishlistItems }: { wishlistItems: TWishlistItem[] 
                   className="w-full rounded-md object-cover"
                 />
               </div>
-              <div className="w-[70%] space-y-1.5">
+              <div className="w-[70%] space-y-1">
                 <h5 className="truncate font-medium">{wishlistItem.product.productName}</h5>
                 {/* If has variant then show here */}
                 {getAttributes.length > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {getAttributes(wishlistItem)?.map((attr, idx) => (
-                      <span key={idx} className="rounded-md text-xs font-medium">
+                      <span key={idx} className="bg-accent/40 rounded-md border px-3 py-0.5 text-xs font-medium">
                         {attr.name}
                       </span>
                     ))}

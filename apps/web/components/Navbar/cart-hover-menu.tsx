@@ -30,10 +30,10 @@ const CartHoverMenu = () => {
                     width={50}
                     height={50}
                   />
-                  <div className="text-xs">
-                    <span className="font-medium">{item.product?.productName}</span>
-                    <div className="flex">
-                      <span>{item.quantity}x</span>
+                  <div className="space-y-0.5 text-xs">
+                    <h6 className="w-[200px] truncate font-medium">{item.product?.productName}</h6>
+                    <div className="flex gap-1">
+                      <span>{item.quantity} x</span>
                       <span className="text-primary font-semibold">${item.product?.price}</span>
                     </div>
                   </div>

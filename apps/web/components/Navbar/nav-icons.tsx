@@ -1,7 +1,7 @@
 import { HiArrowPath } from "react-icons/hi2";
-import { SlHeart } from "react-icons/sl";
 import CartHoverMenu from "./cart-hover-menu";
 import NavProfileMenu from "./nav-profile-menu";
+import NavWishlistButton from "./nav-wishlist-button";
 
 const NavIcons = () => {
   return (
@@ -13,12 +13,7 @@ const NavIcons = () => {
           <span>2</span>
         </div>
       </div>
-      <div className="relative cursor-pointer">
-        <SlHeart size={23} aria-label="Wishlists" />
-        <div className="bg-primary absolute -right-3.5 -top-2.5 flex size-4 items-center justify-center rounded-full text-center text-xs text-white">
-          <span>4</span>
-        </div>
-      </div>
+      <NavWishlistButton />
       <NavProfileMenu />
     </div>
   );
