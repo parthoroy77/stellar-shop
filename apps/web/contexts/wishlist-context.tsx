@@ -19,7 +19,7 @@ const WishlistContextProvider = ({ children }: { children: ReactNode }) => {
   const queryClient = useQueryClient();
 
   // Fetch wishlist items
-  const { data: wishlistItems = [] } = useQueryData(["my-wishlist"], getMyWishlist, {
+  const { data: wishlistItems = [] } = useQueryData(["my-wishlist"], () => getMyWishlist(), {
     staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
     refetchOnWindowFocus: false, // Prevent unnecessary refetch
   });

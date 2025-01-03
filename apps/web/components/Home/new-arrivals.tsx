@@ -5,7 +5,7 @@ import ProductShowcase from "./product-showcase";
 import SideBanner from "./side-banner";
 
 const NewArrivals = async () => {
-  const result = await fetcher<TProduct[]>("/products/new-arrivals", { cache: "no-cache" });
+  const result = await fetcher<TProduct[]>("/products/new-arrivals", { next: { revalidate: 300 } });
   const products = result.data || [];
 
   return (

@@ -3,11 +3,11 @@ import { TProduct } from "@repo/utils/types";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
-import { BsHeart } from "react-icons/bs";
 import { GoStarFill } from "react-icons/go";
 import { HiArrowPath } from "react-icons/hi2";
 import { IoEyeOutline } from "react-icons/io5";
 import AddToCartButton from "./add-to-cart-button";
+import ToggleWishlistButton from "./toggle-wishlist-button";
 import TooltipComponent from "./tooltip-component";
 interface Props {
   product: TProduct;
@@ -30,11 +30,7 @@ const ProductCard: FC<Props> = ({ product }) => {
           />
         </div>
         <div className="visible absolute right-0 top-0 flex flex-col gap-1 text-xs opacity-100 duration-300 group-hover:visible group-hover:opacity-100 md:text-sm lg:invisible lg:text-xl lg:opacity-0">
-          <TooltipComponent tooltipContent="Add To Wishlist">
-            <span className="bg-muted-foreground flex size-5 items-center justify-center rounded-full md:size-6 lg:size-8">
-              <BsHeart aria-label="Wishlist" />
-            </span>
-          </TooltipComponent>
+          <ToggleWishlistButton productId={id} />
           <TooltipComponent tooltipContent="Add To Compare">
             <span className="bg-muted-foreground flex size-5 items-center justify-center rounded-full md:size-6 lg:size-8">
               <HiArrowPath aria-label="Compare" />

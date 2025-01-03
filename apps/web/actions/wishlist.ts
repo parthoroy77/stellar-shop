@@ -14,7 +14,7 @@ export const getMyWishlist = async () => {
 };
 
 export const toggleUserWishlist = async (payload: TToggleWishlistPayload) => {
-  const result = await serverFetcher("/wishlist", { body: payload, cache: "no-cache" });
+  const result = await serverFetcher("/wishlists/toggle", { body: payload, cache: "no-cache", method: "POST" });
   if (result.success) {
     revalidateTag("my-wishlist");
   }
