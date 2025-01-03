@@ -24,7 +24,7 @@ const CartContext = createContext<TCartContext | null>(null);
 
 const CartContextProvider = ({ children }: { children: ReactNode }) => {
   const queryClient = useQueryClient();
-  // Fetch cart items using tanstack-query
+  // Fetch cart items
   const { data: cartItems = [] } = useQueryData<TCartItem[]>(["user-cart"], () => getMyCart(), {
     staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
     refetchOnWindowFocus: false, // Prevent unnecessary refetch
