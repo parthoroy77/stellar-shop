@@ -1,16 +1,19 @@
+import { getMyWishlist } from "@/actions/wishlist";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 import WishlistMobileView from "./components/wishlist-mobile-view";
 import WishlistWebView from "./components/wishlist-web-view";
 
-const WishlistPage = () => {
+const WishlistPage = async () => {
+  const wishlistItems = await getMyWishlist();
+
   return (
     <section className="space-y-3 py-5">
       <BreadcrumbMenu items={[{ label: "Wishlist", href: "/wishlist" }]} />
       <div className="mx-auto">
         {/* Desktop View */}
-        <WishlistWebView />
+        <WishlistWebView wishlistItems={wishlistItems} />
         {/* Mobile View */}
-        <WishlistMobileView />
+        <WishlistMobileView wishlistItems={wishlistItems} />
       </div>
     </section>
   );
