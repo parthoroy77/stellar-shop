@@ -7,8 +7,8 @@ model Wishlist {
   updatedAt DateTime @updatedAt
 
   // references
-  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  cartItems WishlistItem[]
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wishlistItems WishlistItem[]
 
   @@map("Wishlists")
 }

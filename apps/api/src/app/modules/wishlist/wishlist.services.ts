@@ -12,6 +12,8 @@ const toggleWishlist = async ({ userId, productId, variantId }: TAddToWishlistIn
     throw new ApiError(StatusCodes.NOT_FOUND, "User not found!");
   }
 
+  const wishlist = await prisma.wishlist.upsert({ where: { userId }, create: { userId }, update: {} });
+
   const product = await prisma.product.findUnique({
     where: { id: productId },
     select: {
@@ -72,12 +74,7 @@ const toggleWishlist = async ({ userId, productId, variantId }: TAddToWishlistIn
         productId,
         userId,
         productVariantId,
-        wishlist: {
-          connectOrCreate: {
-            where: { userId },
-            create: { userId },
-          },
-        },
+        wishlistId: wishlist.id,
       },
     });
 
@@ -88,6 +85,57 @@ const toggleWishlist = async ({ userId, productId, variantId }: TAddToWishlistIn
   }
 };
 
+const getUserWishlist = async (userId: number) => {
+  const result = await prisma.wishlist.findUnique({
+    where: { userId },
+    select: {
+      wishlistItems: {
+        select: {
+          id: true,
+          productId: true,
+          productVariantId: true,
+          product: {
+            select: {
+              id: true,
+              uniqueId: true,
+              urlSlug: true,
+              productName: true,
+              price: true,
+              stock: true,
+              images: {
+                take: 1,
+                select: {
+                  file: { select: { fileSecureUrl: true } },
+                },
+              },
+            },
+          },
+          productVariant: {
+            select: {
+              id: true,
+              uniqueId: true,
+              variantName: true,
+              price: true,
+              stock: true,
+              attributes: { select: { attributeValue: { select: { value: true } } } },
+            },
+          },
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
+  });
+  return result;
+};
+
+const deleteWishlistItem = async (itemId: number, userId: number) => {
+  await prisma.wishlistItem.delete({ where: { id: itemId, userId } });
+};
+
 export const WishlistServices = {
   toggleWishlist,
+  getUserWishlist,
+  deleteWishlistItem,
 };

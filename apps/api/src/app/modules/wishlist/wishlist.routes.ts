@@ -14,5 +14,8 @@ router.post(
   WishlistControllers.manageAddProductToWishlist
 );
 
+router.get("/", authMiddleware(UserRole.BUYER), WishlistControllers.getUserAllWishlistItems);
+router.delete("/:id", authMiddleware(UserRole.BUYER), WishlistControllers.deleteUserWishlistItem);
+
 const WishlistRoutes = router;
 export default WishlistRoutes;
