@@ -9,12 +9,10 @@ const WishlistPage = async () => {
   return (
     <section className="space-y-3 py-5">
       <BreadcrumbMenu items={[{ label: "Wishlist", href: "/wishlist" }]} />
-      <div className="mx-auto">
-        {/* Desktop View */}
-        <WishlistWebView wishlistItems={wishlistItems} />
-        {/* Mobile View */}
-        <WishlistMobileView wishlistItems={wishlistItems} />
-      </div>
+      {/* Desktop View */}
+      <WishlistWebView wishlistItems={wishlistItems} />
+      {/* Mobile View */}
+      <WishlistMobileView wishlistItems={wishlistItems} />
     </section>
   );
 };
