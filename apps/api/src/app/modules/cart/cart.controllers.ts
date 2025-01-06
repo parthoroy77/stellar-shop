@@ -60,10 +60,25 @@ const updateUserCartItem = asyncHandler(async (req, res) => {
   });
 });
 
+const calculateCartSummary = asyncHandler(async (req, res) => {
+  const payload = req.body.items as string[];
+  const result = await CartServices.cartSummary(
+    payload.map((id) => +id),
+    req.user.id!
+  );
+  ApiResponse(res, {
+    data: result,
+    message: "Cart summary retrieved successfully!",
+    success: true,
+    statusCode: StatusCodes.OK,
+  });
+});
+
 export const CartControllers = {
   manageAddProductToCart,
   getUserAllCartItems,
   clearUserAllCartItems,
   deleteUserCartItem,
   updateUserCartItem,
+  calculateCartSummary,
 };

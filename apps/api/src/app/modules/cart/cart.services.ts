@@ -206,4 +206,105 @@ const updateCartItem = async (payload: TUpdateCartPayload, userId: number) => {
   return;
 };
 
-export const CartServices = { addToCart, getUserCart, clearUserCart, deleteUserCartItem, updateCartItem };
+const cartSummary = async (payload: number[], userId: number) => {
+  /**
+   * Calculate cart summary based on the given payload.
+   * If cart item products are from the same seller, their delivery charge will be applied only once.
+   */
+
+  // Fetch cart items
+  const cartItems = await prisma.cartItem.findMany({
+    where: {
+      id: {
+        in: payload,
+      },
+      userId,
+    },
+    select: {
+      id: true,
+      quantity: true,
+      product: {
+        select: {
+          price: true,
+          stock: true,
+          sellerId: true,
+          shippingOptions: {
+            select: {
+              option: {
+                select: {
+                  charge: true,
+                  id: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      productVariant: {
+        select: {
+          price: true,
+          stock: true,
+        },
+      },
+    },
+  });
+
+  // Validate cart items existence
+  if (!cartItems || cartItems.some((item) => !payload.includes(item.id))) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Invalid request: items not found!");
+  }
+
+  // Validate stock availability
+  if (
+    cartItems.some((item) => {
+      const stock = item.productVariant ? item.productVariant.stock : item.product.stock;
+      return item.quantity > stock;
+    })
+  ) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "One or more products are out of stock!");
+  }
+
+  // Calculate summary
+  const summary = cartItems.reduce(
+    (acc, current) => {
+      const product = current.product;
+      const variant = current.productVariant;
+
+      const price = variant ? variant.price : product.price;
+
+      acc.subTotal += current.quantity * price;
+      acc.totalItem += current.quantity;
+
+      // Group shipping fees by seller
+      const sellerId = product.sellerId;
+      if (!acc.sellers[sellerId]) {
+        const shippingFee = product.shippingOptions[0]?.option.charge || 0;
+        acc.shippingFee += shippingFee;
+        acc.sellers[sellerId] = true;
+      }
+
+      return acc;
+    },
+    { subTotal: 0, totalItem: 0, shippingFee: 0, total: 0, sellers: {} as Record<string, boolean> }
+  );
+
+  // Calculate total
+  summary.total = summary.subTotal + summary.shippingFee;
+
+  // Return cart summary
+  return {
+    subTotal: summary.subTotal,
+    totalItem: summary.totalItem,
+    shippingFee: summary.shippingFee,
+    total: summary.total,
+  };
+};
+
+export const CartServices = {
+  addToCart,
+  getUserCart,
+  clearUserCart,
+  deleteUserCartItem,
+  updateCartItem,
+  cartSummary,
+};
