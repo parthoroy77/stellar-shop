@@ -1,6 +1,8 @@
 import { TCartItem } from "@repo/utils/types";
 
-export type TGroupedCartItem = Record<string, { seller: TCartItem["product"]["seller"]; items: TCartItem[] }>;
+export type TGroupItem = { seller: TCartItem["product"]["seller"]; items: TCartItem[] };
+
+export type TGroupedCartItem = Record<string, TGroupItem>;
 
 export const groupCartItemsBySeller = (item: TCartItem[]) => {
   const grouped = item.reduce((acc, item) => {

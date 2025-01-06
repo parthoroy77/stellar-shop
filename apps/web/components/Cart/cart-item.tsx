@@ -7,15 +7,21 @@ import DeleteCartItem from "./delete-cart-item";
 
 type CartItemProps = {
   cartItem: TCartItem;
+  onSelect: (checked: boolean) => void;
+  isChecked: boolean;
 };
 
-const CartItem = ({ cartItem }: CartItemProps) => {
+const CartItem = ({ cartItem, onSelect, isChecked }: CartItemProps) => {
   const attributes = cartItem.productVariant?.attributes?.map((attr) => ({
     name: attr.attributeValue.value,
   }));
   return (
     <div className="flex w-full items-center gap-3">
-      <Checkbox />
+      <Checkbox
+        className="data-[state=checked]:bg-primary-foreground"
+        checked={isChecked}
+        onCheckedChange={(checked) => onSelect(checked as boolean)}
+      />
       <div className="flex w-full items-start justify-between gap-3 lg:items-center">
         <Image
           width={70}
