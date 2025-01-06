@@ -62,7 +62,7 @@ const CartContextProvider = ({ children }: { children: ReactNode }) => {
 
     if (result.success) {
       // if success invalidate query
-      queryClient.invalidateQueries({ queryKey: ["user-cart"] });
+      await invalidateCart();
       toast.success(result.message);
     } else {
       // if fails set prev state
@@ -95,7 +95,8 @@ const CartContextProvider = ({ children }: { children: ReactNode }) => {
 
     if (result.success) {
       // if success invalidate query
-      queryClient.invalidateQueries({ queryKey: ["user-cart"] });
+      await invalidateCart();
+      queryClient.invalidateQueries({ queryKey: ["car-summary"] });
       toast.success(result.message);
     } else {
       // if fails set prev state
@@ -110,7 +111,8 @@ const CartContextProvider = ({ children }: { children: ReactNode }) => {
 
     if (result.success) {
       // if success invalidate query
-      queryClient.invalidateQueries({ queryKey: ["user-cart"] });
+      await invalidateCart();
+      queryClient.invalidateQueries({ predicate: (queryKey) => queryKey.queryKey[0] === "cart-summary" });
       toast.success(result.message);
     } else {
       toast.error(result.message);

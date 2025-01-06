@@ -34,3 +34,10 @@ export type TUpdateCartPayload = {
   cartItemId: number;
   action: TCartActionType;
 };
+
+export type TCartSummary = {
+  subTotal: number;
+  totalItem: number;
+  shippingFee: number;
+  total: number;
+};

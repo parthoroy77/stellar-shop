@@ -15,6 +15,8 @@ const CartItem = ({ cartItem, onSelect, isChecked }: CartItemProps) => {
   const attributes = cartItem.productVariant?.attributes?.map((attr) => ({
     name: attr.attributeValue.value,
   }));
+
+  const price = cartItem.productVariant ? cartItem.productVariant.price : cartItem.product.price || 0;
   return (
     <div className="flex w-full items-center gap-3">
       <Checkbox
@@ -49,7 +51,7 @@ const CartItem = ({ cartItem, onSelect, isChecked }: CartItemProps) => {
             />
             <div className="flex items-center justify-start text-sm font-medium text-black md:min-w-24 lg:justify-center lg:text-lg">
               <TbCurrencyTaka />
-              <span>{cartItem!.product!.price!}</span>
+              <span>{price}</span>
             </div>
             <div className="flex items-center">
               <DeleteCartItem cartItemId={cartItem.id!} />

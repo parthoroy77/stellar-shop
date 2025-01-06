@@ -1,7 +1,7 @@
 "use server";
 import { getServerAuth } from "@/lib/auth-utils";
 import { serverFetcher } from "@/lib/server-fetcher";
-import { TCart, TUpdateCartPayload } from "@repo/utils/types";
+import { TCart, TCartSummary, TUpdateCartPayload } from "@repo/utils/types";
 import { revalidateTag } from "next/cache";
 
 export const addToCart = async ({
@@ -20,6 +20,7 @@ export const addToCart = async ({
   });
   if (result.success) {
     revalidateTag("my-cart");
+    revalidateTag("cart-summary");
   }
   return result;
 };
@@ -40,6 +41,7 @@ export const clearUserCart = async () => {
 
   if (result.success) {
     revalidateTag("my-cart");
+    revalidateTag("cart-summary");
   }
 
   return result;
@@ -49,6 +51,7 @@ export const deleteCartItem = async (cartItemId: number) => {
   const result = await serverFetcher(`/carts/${cartItemId}`, { method: "DELETE" });
   if (result.success) {
     revalidateTag("my-cart");
+    revalidateTag("cart-summary");
   }
   return result;
 };
@@ -57,6 +60,17 @@ export const updateCartItemAction = async (payload: TUpdateCartPayload) => {
   const result = await serverFetcher(`/carts/`, { method: "PATCH", body: payload });
   if (result.success) {
     revalidateTag("my-cart");
+    revalidateTag("cart-summary");
   }
   return result;
+};
+
+export const getCartSummary = async (payload: number[]) => {
+  const result = await serverFetcher<TCartSummary>("/carts/summary", {
+    method: "POST",
+    body: { items: payload },
+    next: { tags: ["cart-summary"] },
+  });
+
+  return result.data;
 };

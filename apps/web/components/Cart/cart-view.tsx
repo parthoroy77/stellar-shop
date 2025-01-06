@@ -103,7 +103,7 @@ const CartView = ({ cartItems }: { cartItems: TCartItem[] }) => {
           </div>
         ))}
       </div>
-      <CartSummary />
+      <CartSummary selectedItemIds={Array.from(selectedCartItemIds)} />
     </div>
   );
 };
