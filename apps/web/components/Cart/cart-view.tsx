@@ -9,57 +9,79 @@ import CartItem from "./cart-item";
 import CartSummary from "./cart-summary";
 
 const CartView = ({ cartItems }: { cartItems: TCartItem[] }) => {
-  const [selectedCartItems, setSelectedCartItems] = useState<TCartItem[]>([]);
+  // Use a Set for selected cart items for efficient lookup
+  const [selectedCartItemIds, setSelectedCartItemIds] = useState<Set<number>>(new Set());
 
-  // Group cart items if they are from same seller/shop
+  // Memoize grouped cart items
   const groupedItems = useMemo(() => groupCartItemsBySeller(cartItems), [cartItems]);
 
-  // Handle selecting/deselecting all items from a seller
-  const handleShopSelection = (isSelected: boolean, groupItem: TGroupItem) => {
-    if (isSelected) {
-      setSelectedCartItems((prevSelectedItems) => [
-        ...prevSelectedItems,
-        ...groupItem.items.filter((item) => !prevSelectedItems.some((selected) => selected.id === item.id)),
-      ]);
-    } else {
-      setSelectedCartItems((prevSelectedItems) =>
-        prevSelectedItems.filter((cartItem) => !groupItem.items.some((item) => item.id === cartItem.id))
-      );
-    }
-  };
+  // Check if all items are selected
+  const allSelected = useMemo(
+    () => cartItems.every((item) => selectedCartItemIds.has(item.id)),
+    [cartItems, selectedCartItemIds]
+  );
 
-  // Handle selecting/deselecting a single item
-  const handleItemSelection = (item: TCartItem, isSelected: boolean) => {
-    if (isSelected) {
-      setSelectedCartItems((prev) => [...prev, item]);
-    } else {
-      setSelectedCartItems((prev) => prev.filter((selectedItem) => selectedItem.id !== item.id));
-    }
-  };
+  // Handler toggle select all
+  const toggleSelectAll = useCallback(
+    (checked: boolean) => {
+      if (checked) {
+        setSelectedCartItemIds(new Set(cartItems.map((item) => item.id)));
+      } else {
+        setSelectedCartItemIds(new Set());
+      }
+    },
+    [cartItems]
+  );
 
-  // Check if all items from a seller are selected
-  const isSellerFullySelected = useCallback((shopId: number) => {
-    const shopItems = groupedItems[shopId]?.items || [];
-    return shopItems.every((item) => selectedCartItems.some((selectedItem) => selectedItem.id === item.id));
+  // Handle toggle all products in a seller
+  const toggleSellerItems = useCallback((checked: boolean, groupItem: TGroupItem) => {
+    setSelectedCartItemIds((prev) => {
+      const updatedSet = new Set(prev);
+      groupItem.items.forEach((item) => {
+        if (checked) {
+          updatedSet.add(item.id);
+        } else {
+          updatedSet.delete(item.id);
+        }
+      });
+      return updatedSet;
+    });
   }, []);
 
-  // Check if an individual item is selected
-  const isItemSelected = useCallback((itemId: number) => {
-    return selectedCartItems.some((item) => item.id === itemId);
+  // Handle toggle one item
+  const toggleItemSelection = useCallback((itemId: number, isSelected: boolean) => {
+    setSelectedCartItemIds((prev) => {
+      const updatedSet = new Set(prev);
+      if (isSelected) {
+        updatedSet.add(itemId);
+      } else {
+        updatedSet.delete(itemId);
+      }
+      return updatedSet;
+    });
   }, []);
+
+  // Check all product of a seller are selected
+  const isSellerFullySelected = useCallback(
+    (sellerId: number) => {
+      const shopItems = groupedItems[sellerId]?.items || [];
+      return shopItems.every((item) => selectedCartItemIds.has(item.id));
+    },
+    [groupedItems, selectedCartItemIds]
+  );
+
   return (
     <div className="flex w-full flex-col gap-5 *:rounded-md lg:flex-row">
       <div className="h-fit space-y-3 lg:w-[75%]">
-        <CartActions />
+        <CartActions handleSelectAll={toggleSelectAll} allSelected={allSelected} />
         {Object.values(groupedItems).map((groupedItem, idx) => (
           <div key={idx} className="divide-y-2 rounded-md border-2 *:px-4 *:py-3 *:lg:px-6">
             <div className="flex items-center gap-2">
               <Checkbox
                 className="data-[state=checked]:bg-primary"
                 checked={isSellerFullySelected(groupedItem.seller.id)}
-                onCheckedChange={(checked) => handleShopSelection(checked as boolean, groupedItem)}
+                onCheckedChange={(checked) => toggleSellerItems(checked as boolean, groupedItem)}
               />
-              {/* TODO: Redirect to seller  */}
               <div className="flex items-center gap-2">
                 <Image
                   width={30}
@@ -67,15 +89,15 @@ const CartView = ({ cartItems }: { cartItems: TCartItem[] }) => {
                   alt={groupedItem.seller.shopName}
                   src={groupedItem.seller.logo.fileSecureUrl}
                 />
-                <h5> {groupedItem.seller.shopName}</h5>
+                <h5>{groupedItem.seller.shopName}</h5>
               </div>
             </div>
-            {groupedItem.items.map((cartItem, i) => (
+            {groupedItem.items.map((cartItem) => (
               <CartItem
-                key={i}
+                key={cartItem.id}
                 cartItem={cartItem}
-                isChecked={isItemSelected(cartItem.id)}
-                onSelect={(checked) => handleItemSelection(cartItem, checked)}
+                isChecked={selectedCartItemIds.has(cartItem.id)}
+                onSelect={(checked) => toggleItemSelection(cartItem.id, checked)}
               />
             ))}
           </div>
