@@ -17,7 +17,7 @@ const ShippingAndBilling = () => {
         <h3 className="text-primary-foreground text-lg font-medium">Select Shipping & Billing Address</h3>
         <AddShippingAddressModalForm isUpdate={false} submitHandler={(data) => addShippingAddress(data)} />
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
         {!isFetching ? (
           data?.length > 0 ? (
             data?.map((address) => (

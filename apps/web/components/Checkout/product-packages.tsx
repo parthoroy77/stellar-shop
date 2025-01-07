@@ -9,7 +9,7 @@ const ProductPackages = () => {
       <h3 className="text-primary-foreground text-lg font-medium">Total Package Packages 2</h3>
       {Array.from({ length: 2 }).map((_x, i) => (
         <div key={i} className="space-y-4 rounded-lg border bg-white p-3.5">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col items-start lg:items-center lg:justify-between">
             <h4 className="font-medium">Package 1</h4>
             <div className="flex items-center justify-end gap-2">
               <h6 className="text-accent-foreground text-xs font-medium">Seller & Shipped By</h6>
@@ -28,7 +28,7 @@ const ProductPackages = () => {
           </div>
           <div className="flex flex-col gap-3">
             <span className="text-sm font-medium">Available Shipping Option</span>
-            <RadioGroup className="grid grid-cols-3 gap-3">
+            <RadioGroup className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
               <div className="flex items-start gap-2 rounded-md border px-3 py-1.5">
                 <RadioGroupItem value="default" id="r1" className="mt-1" />
                 <div className="text-accent-foreground w-full space-y-1 text-sm">
@@ -73,7 +73,7 @@ const ProductPackages = () => {
               </div>
             </RadioGroup>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-3 lg:grid-cols-2">
             {Array.from({ length: 2 }).map((_x, i) => (
               <PackagedProductCard key={i} />
             ))}
@@ -86,7 +86,7 @@ const ProductPackages = () => {
 
 const PackagedProductCard = () => {
   return (
-    <div className="bg-accent/30 flex w-full items-start justify-between gap-3 rounded-md border px-2 py-1 lg:items-center">
+    <div className="bg-accent/30 flex w-full items-start justify-between gap-3 rounded-md border px-2 py-2 lg:items-center lg:py-1">
       <Image
         width={60}
         height={60}
@@ -94,7 +94,7 @@ const PackagedProductCard = () => {
         src={"https://res.cloudinary.com/dx0iiqjf4/image/upload/v1735808264/shopMedia/nrpn006yyxcdjm8skkzn.png"}
         alt={"Name"}
       />
-      <div className="flex w-full flex-col justify-between gap-2 lg:flex-row lg:items-center">
+      <div className="flex w-full flex-col justify-between gap-1 lg:flex-row lg:items-center lg:gap-2">
         <div className="w-full">
           <h5 className="truncate text-sm font-medium">{"Name"}</h5>
           <div className="space-x-2">
@@ -105,7 +105,7 @@ const PackagedProductCard = () => {
             ))}
           </div>
         </div>
-        <div className="flex-row- flex items-center justify-between gap-5">
+        <div className="flex items-end justify-between gap-5">
           <div className="flex items-center justify-start gap-1 text-xs font-medium text-black lg:justify-center">
             <span>Qty: </span>
             <span> {"2"}</span>
