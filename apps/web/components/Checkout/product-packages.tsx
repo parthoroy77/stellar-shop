@@ -1,4 +1,4 @@
-import { AppButton, Label, RadioGroup, RadioGroupItem } from "@ui/index";
+import { AppButton, RadioGroup, RadioGroupItem } from "@ui/index";
 import Image from "next/image";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { TbCurrencyTaka } from "react-icons/tb";
@@ -26,26 +26,50 @@ const ProductPackages = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-wrap justify-between gap-3">
+          <div className="flex flex-col gap-3">
             <span className="text-sm font-medium">Available Shipping Option</span>
-            <RadioGroup className="flex flex-wrap gap-3">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="default" id="r1" />
-                <Label className="font-medium text-black" htmlFor="r1">
-                  Standard Shipping <b>($10.99)</b>
-                </Label>
+            <RadioGroup className="grid grid-cols-3 gap-3">
+              <div className="flex items-start gap-2 rounded-md border px-3 py-1.5">
+                <RadioGroupItem value="default" id="r1" className="mt-1" />
+                <div className="text-accent-foreground w-full space-y-1 text-sm">
+                  <h5 className="text-primary-foreground text-sm font-semibold">{"Standard Shipping"}</h5>
+                  <div className="flex justify-between text-xs font-medium">
+                    <span>
+                      Cost: <b>$10.99</b>
+                    </span>
+                    <span>
+                      Estimated Days: <b>3 - 4 Days</b>
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="comfortable" id="r2" />
-                <Label className="font-medium text-black" htmlFor="r2">
-                  Express Shipping <b>($10.99)</b>
-                </Label>
+              <div className="flex items-start gap-2 rounded-md border px-3 py-1.5">
+                <RadioGroupItem value="default" id="r1" className="mt-1" />
+                <div className="text-accent-foreground w-full space-y-1 text-sm">
+                  <h5 className="text-primary-foreground text-sm font-semibold">{"Standard Shipping"}</h5>
+                  <div className="flex justify-between text-xs font-medium">
+                    <span>
+                      Cost: <b>$10.99</b>
+                    </span>
+                    <span>
+                      Estimated Days: <b>3 - 4 Days</b>
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="compact" id="r3" />
-                <Label className="font-medium text-black" htmlFor="r3">
-                  Same Day Shipping <b>($10.99)</b>
-                </Label>
+              <div className="flex items-start gap-2 rounded-md border px-3 py-1.5">
+                <RadioGroupItem value="default" id="r1" className="mt-1" />
+                <div className="text-accent-foreground w-full space-y-1 text-sm">
+                  <h5 className="text-primary-foreground text-sm font-semibold">{"Standard Shipping"}</h5>
+                  <div className="flex justify-between text-xs font-medium">
+                    <span>
+                      Cost: <b>$10.99</b>
+                    </span>
+                    <span>
+                      Estimated Days: <b>3 - 4 Days</b>
+                    </span>
+                  </div>
+                </div>
               </div>
             </RadioGroup>
           </div>

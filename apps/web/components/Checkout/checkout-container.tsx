@@ -1,3 +1,5 @@
+import OrderSummary from "./order-summary";
+import PaymentMethod from "./payment-method";
 import ProductPackages from "./product-packages";
 import ShippingAndBilling from "./shipping-and-billing";
 
@@ -8,7 +10,10 @@ const CheckoutContainer = () => {
         <ShippingAndBilling />
         <ProductPackages />
       </div>
-      <div className="h-full w-[30%] space-y-5 *:p-4"></div>
+      <aside className="space-y-3 lg:w-[30%]">
+        <PaymentMethod />
+        <OrderSummary />
+      </aside>
     </div>
   );
 };
