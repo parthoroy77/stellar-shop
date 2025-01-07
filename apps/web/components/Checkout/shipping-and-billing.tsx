@@ -12,7 +12,7 @@ const ShippingAndBilling = () => {
     staleTime: 60 * 1000,
   });
   return (
-    <div className="space-y-3 bg-neutral-50">
+    <div className="space-y-1">
       <div className="flex justify-between">
         <h3 className="text-primary-foreground text-lg font-medium">Select Shipping & Billing Address</h3>
         <AddShippingAddressModalForm isUpdate={false} submitHandler={(data) => addShippingAddress(data)} />
