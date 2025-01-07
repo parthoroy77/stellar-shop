@@ -1,15 +1,6 @@
-import { addShippingAddress } from "@/actions/address";
+import { addShippingAddress, getAllShippingAddresses } from "@/actions/address";
 import AddShippingAddressModalForm from "@/components/Forms/Profile/shipping-address-modal-form";
 import EditableShippingAddressCard from "@/components/ui/shipping-address-cards/editable-shipping-address-card";
-import { serverFetcher } from "@/lib/server-fetcher";
-import { IShippingAddress } from "@repo/utils/types";
-
-const getAllShippingAddresses = async () => {
-  const result = await serverFetcher<IShippingAddress[]>("/addresses/shippings", {
-    next: { tags: ["shipping-addresses"] },
-  });
-  return result.data || [];
-};
 
 const ManageAddresses = async () => {
   const addresses = await getAllShippingAddresses();

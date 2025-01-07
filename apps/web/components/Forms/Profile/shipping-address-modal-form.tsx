@@ -1,4 +1,5 @@
 "use client";
+import { useQueryClient } from "@repo/tanstack-query";
 import { useForm } from "@repo/utils/hook-form";
 import { IApiResponse, IShippingAddress } from "@repo/utils/types";
 import { TShippingAddressValidation } from "@repo/utils/validations";
@@ -35,6 +36,7 @@ interface Props {
 
 const AddShippingAddressModalForm: FC<Props> = ({ submitHandler, addressData = {}, isUpdate = true }) => {
   const [open, setOpen] = useState(false);
+  const queryClient = useQueryClient();
   const form = useForm<TShippingAddressValidation>({
     defaultValues: { ...defaultValues, ...addressData },
   });
@@ -46,6 +48,7 @@ const AddShippingAddressModalForm: FC<Props> = ({ submitHandler, addressData = {
       const result = await submitHandler(data);
       if (result.success) {
         toast.success(result.message, { id: toastId });
+        queryClient.invalidateQueries({ queryKey: ["shipping-addresses"] });
         setOpen(false);
         form.reset();
       } else {

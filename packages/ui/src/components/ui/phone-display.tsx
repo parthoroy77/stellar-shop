@@ -23,9 +23,9 @@ const PhoneDisplay: React.FC<PhoneDisplayProps> = ({ value, className }) => {
   const formattedNumber = phoneNumber?.formatInternational() || value;
 
   return (
-    <div className={cn("flex items-center gap-2", className)}>
+    <div className={cn("flex items-center gap-2 text-sm", className)}>
       {country && <FlagComponent country={country} countryName={country} />}
-      <span className="text-sm">{formattedNumber}</span>
+      <span>{formattedNumber}</span>
     </div>
   );
 };
@@ -34,7 +34,7 @@ const FlagComponent = ({ country, countryName }: RPNInput.FlagProps) => {
   const Flag = flags[country];
 
   return (
-    <span className="bg-foreground/20 flex h-4 w-6 overflow-hidden rounded-sm" aria-label={`Flag of ${countryName}`}>
+    <span className="bg-foreground/20 flex h-3.5 w-5 overflow-hidden rounded-sm" aria-label={`Flag of ${countryName}`}>
       {Flag && <Flag title={countryName} />}
     </span>
   );
