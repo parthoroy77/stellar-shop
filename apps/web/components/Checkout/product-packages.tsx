@@ -9,7 +9,7 @@ const ProductPackages = () => {
       <h3 className="text-primary-foreground text-lg font-medium">Total Package Packages 2</h3>
       {Array.from({ length: 2 }).map((_x, i) => (
         <div key={i} className="space-y-4 rounded-lg border bg-white p-3.5">
-          <div className="flex flex-col items-start lg:items-center lg:justify-between">
+          <div className="flex flex-col items-start lg:flex-row lg:items-center lg:justify-between">
             <h4 className="font-medium">Package 1</h4>
             <div className="flex items-center justify-end gap-2">
               <h6 className="text-accent-foreground text-xs font-medium">Seller & Shipped By</h6>
