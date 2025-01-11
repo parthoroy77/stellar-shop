@@ -1,5 +1,6 @@
 "use client";
 import { Container } from "@repo/ui";
+import Link from "next/link";
 import { useState } from "react";
 import { RiUser3Line } from "react-icons/ri";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -18,7 +19,9 @@ const MobileNav = () => {
         <div className="flex items-center justify-between">
           <RxHamburgerMenu onClick={() => setIsOpen((prev) => !prev)} className="text-2xl" />
           <Logo />
-          <RiUser3Line className="block text-2xl" />
+          <Link href={"/profile"} className="cursor-pointer">
+            <RiUser3Line className="block text-2xl" />
+          </Link>
         </div>
       </Container>
       <MobileSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
