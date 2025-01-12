@@ -5,8 +5,10 @@ import { redirect } from "next/navigation";
 import { CiInboxOut } from "react-icons/ci";
 import SendNewEmail from "./components/send-new-email";
 
-const VerificationPage = async ({ searchParams }: { searchParams: { email: string } }) => {
-  const email = searchParams.email;
+type SearchParams = Promise<{ email: string | undefined }>;
+
+const VerificationPage = async ({ searchParams }: { searchParams: SearchParams }) => {
+  const email = (await searchParams).email;
 
   if (!email) {
     redirect("/register");

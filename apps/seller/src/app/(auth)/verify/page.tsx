@@ -2,8 +2,10 @@ import { getServerAuth } from "@/lib/auth-utils";
 import { redirect } from "next/navigation";
 import VerifyView from "./components/verify-view";
 
-const VerifyPage = async ({ searchParams }: { searchParams: { token: string } }) => {
-  const token = searchParams.token;
+type SearchParams = Promise<{ token: string | undefined }>;
+
+const VerifyPage = async ({ searchParams }: { searchParams: SearchParams }) => {
+  const token = (await searchParams).token;
   const { isAuthenticated } = await getServerAuth();
 
   // If already authenticated redirect to "/".
