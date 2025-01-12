@@ -1,6 +1,5 @@
 "use client";
 
-import { getSellerProfile } from "@/actions/seller.action";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { loginSchema, TLoginValidation } from "@repo/utils/validations";
@@ -42,15 +41,9 @@ const LoginFormContent = () => {
 
       if (result?.ok) {
         // Get seller profile and determine onboarding completion
-        const result = await getSellerProfile();
-
-        if (result && result.status === "ACTIVE") {
-          router.push(callbackUrl);
-        } else {
-          router.push("/onboarding");
-        }
-
         toast.success("User logged in successfully", { id: toastId });
+        // redirect to callback url or dashboard
+        router.push(callbackUrl);
         // reset form
         form.reset({ email: "", password: "" });
       } else {

@@ -62,6 +62,7 @@ const login = async (payload: TLoginPayload): Promise<{ session: Session; refres
   const isUserExists = await prisma.user.findUnique({
     where: {
       email: payload.email,
+      role: payload.role,
     },
     include: {
       password: {
