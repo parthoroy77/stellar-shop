@@ -1,5 +1,6 @@
 "use client";
 
+import { getSellerProfile } from "@/actions/seller.action";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { loginSchema, TLoginValidation } from "@repo/utils/validations";
@@ -31,26 +32,41 @@ const LoginFormContent = () => {
       duration: 2000,
     });
     startTransition(async () => {
+      // Next auth signin method
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
         callbackUrl,
         redirect: false,
       });
-      if (!result?.ok) {
+
+      if (result?.ok) {
+        // Get seller profile and determine onboarding completion
+        const result = await getSellerProfile();
+
+        if (result && result.status === "ACTIVE") {
+          router.push(callbackUrl);
+        } else {
+          router.push("/onboarding");
+        }
+
+        toast.success("User logged in successfully", { id: toastId });
+        // reset form
+        form.reset({ email: "", password: "" });
+      } else {
+        // Parse the error sent from auth option
         const parsedError: { message: string; status: number } = JSON.parse(result?.error!);
+        // If account not verified send for verification
         if (parsedError.status === 406) {
           toast.info(parsedError.message, { id: toastId });
           router.push(`/verification-request?email=${data.email}`);
         }
+        // If invalid cred
         if (parsedError.status === 401) {
           toast.info(parsedError.message, { id: toastId });
         }
+        // Or show the error directly!
         toast.error(parsedError.message, { id: toastId });
-      } else {
-        toast.success("User logged in successfully", { id: toastId });
-        router.push(callbackUrl);
-        form.reset({ email: "", password: "" });
       }
     });
   };

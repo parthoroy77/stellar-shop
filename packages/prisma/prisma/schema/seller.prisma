@@ -26,4 +26,5 @@ model Seller {
 enum SellerStatus {
   ACTIVE
   INACTIVE
+  BLOCKED
 }
