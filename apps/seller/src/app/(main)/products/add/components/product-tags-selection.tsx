@@ -1,4 +1,4 @@
-import { getAllTags } from "@/lib/api";
+import { getAllTags } from "@/actions/tag.action";
 import { useQueryData } from "@repo/tanstack-query";
 import { UseFormReturn } from "@repo/utils/hook-form";
 import { TCreateProductValidation } from "@repo/utils/validations";

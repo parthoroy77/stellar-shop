@@ -1,4 +1,4 @@
-import { getAllCategories } from "@/lib/api/categories";
+import { getAllCategories } from "@/actions/category.action";
 import { useQueryData } from "@repo/tanstack-query";
 import { UseFormReturn } from "@repo/utils/hook-form";
 import { TCreateProductValidation } from "@repo/utils/validations";

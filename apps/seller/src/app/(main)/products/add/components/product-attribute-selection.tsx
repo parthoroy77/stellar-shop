@@ -1,6 +1,6 @@
 "use client";
 
-import { getAllAttributesWithValues } from "@/lib/api/attributes";
+import { getAllAttributesWithValues } from "@/actions/attribute.action";
 import { useQueryData } from "@repo/tanstack-query";
 import { useFieldArray, UseFormReturn } from "@repo/utils/hook-form";
 import { TCreateProductValidation } from "@repo/utils/validations";
@@ -32,9 +32,8 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
     name: "attributes",
   });
 
-  const { data: attributesData = [], isFetching } = useQueryData(
-    ["attributes-with-values"],
-    getAllAttributesWithValues
+  const { data: attributesData = [], isFetching } = useQueryData(["attributes-with-values"], () =>
+    getAllAttributesWithValues()
   );
 
   const attributes = useMemo(() => attributesData?.map(({ attributeValues, ...rest }) => rest) || [], [attributesData]);

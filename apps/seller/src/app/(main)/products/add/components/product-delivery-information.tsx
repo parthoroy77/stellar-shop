@@ -1,4 +1,4 @@
-import { getAllShippingOptions } from "@/lib/api";
+import { getAllShippingOptions } from "@/actions/shipping.action";
 import { useQueryData } from "@repo/tanstack-query";
 import { UseFormReturn } from "@repo/utils/hook-form";
 import { TCreateProductValidation } from "@repo/utils/validations";

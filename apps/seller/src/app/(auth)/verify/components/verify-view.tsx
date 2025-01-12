@@ -7,7 +7,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 import { MdError, MdVerified } from "react-icons/md";
 import { toast } from "sonner";
 
-const VerifyView = ({ token }: { token: string }) => {
+const VerifyView = ({ token }: { token?: string }) => {
   const [verificationStatus, setVerificationStatus] = useState<"loading" | "verified" | "error" | null>("loading");
 
   useEffect(() => {

@@ -1,5 +1,4 @@
-import { createBrand } from "@/actions/brand.action";
-import { getAllBrands } from "@/lib/api/brands";
+import { createBrand, getAllBrands } from "@/actions/brand.action";
 import { useQueryClient, useQueryData } from "@repo/tanstack-query";
 import { useForm, UseFormReturn } from "@repo/utils/hook-form";
 import { TCreateBrandValidation, TCreateProductValidation } from "@repo/utils/validations";
