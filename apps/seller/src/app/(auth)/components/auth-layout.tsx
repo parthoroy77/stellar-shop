@@ -1,7 +1,7 @@
 import { Button, Container } from "@ui/index";
-import { ReactNode } from "react";
-import AuthSidebar from "./components/auth-sidebar";
 import Link from "next/link";
+import { ReactNode } from "react";
+import AuthSidebar from "./auth-sidebar";
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
   return (
