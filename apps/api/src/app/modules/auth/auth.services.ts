@@ -7,6 +7,7 @@ import { TLoginPayload, TLogoutPayload, TRegistrationPayload } from "./auth.type
 import {
   comparePassword,
   generateSessionAndRefreshToken,
+  getUserOrigin,
   hashPassword,
   sendVerificationEmail,
   verifyToken,
@@ -47,7 +48,7 @@ const register = async (payload: TRegistrationPayload): Promise<void> => {
 
   // send verification email
   if (config.NODE_ENV === "production" || role !== "ADMIN") {
-    sendVerificationEmail(email, newUser.id);
+    sendVerificationEmail(email, newUser.id, getUserOrigin(role) ?? "");
   }
 
   return;
@@ -232,13 +233,16 @@ const resendVerificationEmail = async (payload: string): Promise<void> => {
     },
     select: {
       id: true,
+      role: true,
     },
   });
+
   if (!isUserExists) {
     throw new ApiError(StatusCodes.CONFLICT, "User doesn't exists or verified");
   }
+
   // send verification email
-  sendVerificationEmail(payload, Number(isUserExists.id));
+  sendVerificationEmail(payload, isUserExists.id, getUserOrigin(isUserExists.role) ?? "");
 
   return;
 };

@@ -1,5 +1,5 @@
 import { defaultTemplate } from "@repo/email-service";
-import prisma from "@repo/prisma/client";
+import prisma, { UserRole } from "@repo/prisma/client";
 import { compare, hash } from "bcryptjs";
 import { endOfDay, startOfDay } from "date-fns";
 import { StatusCodes } from "http-status-codes";
@@ -72,11 +72,11 @@ const verifyToken = async (token: string, secret: string): Promise<JWTPayload | 
   }
 };
 
-const sendVerificationEmail = async (email: string, userId: number) => {
+const sendVerificationEmail = async (email: string, userId: number, url: string) => {
   // generate verification token
   const token = await generateToken({ userId }, config.jwt_access_secret as string, "1h");
   // Verification email template
-  const link = `${config.client_url}/verify?token=${token}`;
+  const link = `${url}/verify?token=${token}`;
   const html = defaultTemplate(link);
   // send mail
   await sendEmail(email, "Account Verification Request", html);
@@ -110,12 +110,26 @@ const checkOtpRequestLimit = async (email: string, purpose: "LOGIN" | "RESET_PAS
   return false; // User has not exceeded the limit
 };
 
+const getUserOrigin = (role: UserRole) => {
+  switch (role) {
+    case "BUYER":
+      return config.origin_url_1;
+    case "ADMIN":
+      return config.origin_url_2;
+    case "SELLER":
+      return config.origin_url_3;
+    default:
+      break;
+  }
+};
+
 export {
   checkOtpRequestLimit,
   comparePassword,
   generateOtp,
   generateSessionAndRefreshToken,
   generateToken,
+  getUserOrigin,
   hashPassword,
   sendVerificationEmail,
   verifyToken,

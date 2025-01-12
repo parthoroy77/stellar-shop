@@ -77,5 +77,5 @@ export const logoutUser = async () => {
 };
 
 export const resendVerificationEmail = async (email: string) => {
-  return await fetcher("/auth/resend-verification", { method: "POST", body: email });
+  return await fetcher("/auth/resend-verification", { method: "POST", body: { email } });
 };

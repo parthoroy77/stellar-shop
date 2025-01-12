@@ -9,6 +9,7 @@ const SendNewEmail = ({ email }: { email: string }) => {
   const handleRequestNewEmail = async () => {
     startTransition(async () => {
       const result = await resendVerificationEmail(email);
+      console.log(result);
       if (result.success) {
         toast.success(result.message);
       } else if (result.error) {

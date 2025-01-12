@@ -12,6 +12,7 @@ export interface FetcherOptions<TBody = unknown> {
   cache?: RequestCache;
   next?: NextFetchRequestConfig;
   session?: Session | null;
+  signal?: AbortSignal | null;
 }
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
