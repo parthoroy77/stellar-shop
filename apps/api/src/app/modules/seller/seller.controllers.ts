@@ -77,4 +77,21 @@ const sellerApproval = asyncHandler(async (req, res) => {
   });
 });
 
-export const SellerControllers = { sellerOnboarding, sellerOnboardingStatus, getAllSellers, sellerApproval };
+const getMySellerProfile = asyncHandler(async (req, res) => {
+  const result = await SellerServices.getByUserId(req.user.id!);
+
+  ApiResponse(res, {
+    data: result,
+    statusCode: StatusCodes.CREATED,
+    success: true,
+    message: "Seller profile fetched successfully!",
+  });
+});
+
+export const SellerControllers = {
+  sellerOnboarding,
+  sellerOnboardingStatus,
+  getAllSellers,
+  sellerApproval,
+  getMySellerProfile,
+};

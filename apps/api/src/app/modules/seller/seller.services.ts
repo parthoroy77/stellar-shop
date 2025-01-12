@@ -154,4 +154,22 @@ const sellerApproval = async (sellerId: number) => {
   return;
 };
 
-export const SellerServices = { onboarding, onboardingStatus, getAll, sellerApproval };
+const getByUserId = async (userId: number) => {
+  const result = await prisma.seller.findUnique({
+    where: {
+      userId,
+    },
+    include: {
+      logo: {
+        select: { fileSecureUrl: true },
+      },
+
+      banner: {
+        select: { fileSecureUrl: true },
+      },
+    },
+  });
+  return result;
+};
+
+export const SellerServices = { onboarding, onboardingStatus, getAll, sellerApproval, getByUserId };

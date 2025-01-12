@@ -8,6 +8,8 @@ import { SellerControllers } from "./seller.controllers";
 
 const router = Router();
 
+router.get("/", authMiddleware(UserRole.SELLER), SellerControllers.getMySellerProfile);
+
 router.post(
   "/onboarding",
   authMiddleware(UserRole.SELLER),

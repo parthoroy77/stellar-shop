@@ -18,3 +18,5 @@ export const sellerOnboarding = async (data: FormData) => {
 
   return result;
 };
+
+export const getSellerProfile = async () => {};
