@@ -62,7 +62,7 @@ const CategoryDeleteAction = ({ categoryId }: { categoryId: number }) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger disabled={isLoading} asChild>
-        <button className="flex items-center gap-2 px-2 text-sm">
+        <button className="hover:bg-accent/40 flex w-full items-center gap-2 rounded-md px-2 py-1 text-sm">
           <AiOutlineDelete className="text-base lg:text-lg" />
           <span>Delete category</span>
         </button>

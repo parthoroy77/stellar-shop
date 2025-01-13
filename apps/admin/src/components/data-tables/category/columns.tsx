@@ -71,6 +71,28 @@ export const columns: ColumnDef<TCategory>[] = [
     ),
   },
   {
+    accessorKey: "level",
+    header: () => {
+      return (
+        <div className="text-center">
+          <span>Status</span>
+        </div>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="text-center">
+        <Badge
+          variant={
+            row.original.level === "COLLECTION" ? "default" : row.original.level === "CATEGORY" ? "secondary" : "accent"
+          }
+          className="rounded-md"
+        >
+          {(row.getValue("level") as string)?.replace("_", " ")}
+        </Badge>
+      </div>
+    ),
+  },
+  {
     accessorKey: "status",
     header: () => {
       return (
