@@ -1,9 +1,10 @@
 "use client";
 
 import { getMyWishlist, toggleUserWishlist } from "@/actions/wishlist";
+import { useClientSession } from "@/lib/auth-utils";
 import { useQueryClient, useQueryData } from "@repo/tanstack-query";
 import { TToggleWishlistPayload, TWishlistItem } from "@repo/utils/types";
-import { createContext, ReactNode, useContext, useMemo } from "react";
+import { createContext, ReactNode, useContext, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 
 type TWishlistContext = {
@@ -18,12 +19,20 @@ const WishlistContext = createContext<TWishlistContext | null>(null);
 
 const WishlistContextProvider = ({ children }: { children: ReactNode }) => {
   const queryClient = useQueryClient();
-
+  const { isAuthenticated } = useClientSession();
   // Fetch wishlist items
-  const { data: wishlistItems = [] } = useQueryData(["my-wishlist"], () => getMyWishlist(), {
+  const { data: wishlistItems = [], refetch } = useQueryData(["my-wishlist"], () => getMyWishlist(), {
     staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
     refetchOnWindowFocus: false, // Prevent unnecessary refetch
+    enabled: isAuthenticated,
   });
+
+  // When user authenticated fetch wishlist
+  useEffect(() => {
+    if (isAuthenticated) {
+      refetch();
+    }
+  }, [isAuthenticated]);
 
   // Calculate cart item count
   const wishlistCount = useMemo(() => wishlistItems.length, [wishlistItems]);

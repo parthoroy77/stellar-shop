@@ -1,5 +1,4 @@
 "use server";
-import { getServerAuth } from "@/lib/auth-utils";
 import { serverFetcher } from "@/lib/server-fetcher";
 import { TCart, TCartSummary, TUpdateCartPayload } from "@repo/utils/types";
 import { revalidateTag } from "next/cache";
@@ -26,10 +25,6 @@ export const addToCart = async ({
 };
 
 export const getMyCart = async () => {
-  const { isAuthenticated } = await getServerAuth();
-  if (!isAuthenticated) {
-    return [];
-  }
   const result = await serverFetcher<TCart>("/carts", {
     next: { tags: ["my-cart"], revalidate: 30 },
   });

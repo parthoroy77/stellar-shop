@@ -1,7 +1,8 @@
 import { addToCart, clearUserCart, getMyCart, updateCartItemAction } from "@/actions/cart";
+import { useClientSession } from "@/lib/auth-utils";
 import { useQueryClient, useQueryData } from "@repo/tanstack-query";
 import { TCartItem, TUpdateCartPayload } from "@repo/utils/types";
-import { createContext, ReactNode, useContext, useMemo } from "react";
+import { createContext, ReactNode, useContext, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 
 type TAddCartPayload = {
@@ -24,10 +25,12 @@ const CartContext = createContext<TCartContext | null>(null);
 
 const CartContextProvider = ({ children }: { children: ReactNode }) => {
   const queryClient = useQueryClient();
+  const { isAuthenticated } = useClientSession();
   // Fetch cart items
-  const { data: cartItems = [] } = useQueryData<TCartItem[]>(["user-cart"], () => getMyCart(), {
+  const { data: cartItems = [], refetch } = useQueryData<TCartItem[]>(["user-cart"], () => getMyCart(), {
     staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
     refetchOnWindowFocus: false, // Prevent unnecessary refetch
+    enabled: isAuthenticated,
   });
 
   const invalidateCart = async () => {
@@ -118,6 +121,13 @@ const CartContextProvider = ({ children }: { children: ReactNode }) => {
       toast.error(result.message);
     }
   };
+
+  // When user authenticated fetch cart
+  useEffect(() => {
+    if (isAuthenticated) {
+      refetch();
+    }
+  }, [isAuthenticated]);
 
   return (
     <CartContext.Provider

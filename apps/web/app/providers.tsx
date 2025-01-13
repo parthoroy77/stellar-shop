@@ -8,10 +8,10 @@ const queryClient = new QueryClient();
 
 export const Providers = ({ children }: { children: ReactNode }) => {
   return (
-    <TanstackProvider client={queryClient}>
-      <SessionProvider refetchInterval={300}>
+    <SessionProvider refetchInterval={300}>
+      <TanstackProvider client={queryClient}>
         <ContextProviders>{children}</ContextProviders>
-      </SessionProvider>
-    </TanstackProvider>
+      </TanstackProvider>
+    </SessionProvider>
   );
 };
