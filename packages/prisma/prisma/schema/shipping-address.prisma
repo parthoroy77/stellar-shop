@@ -20,8 +20,3 @@ model ShippingAddress {
 
   @@map("ShippingAddresses")
 }
-
-enum ShippingAddressType {
-  HOME
-  WORK
-}

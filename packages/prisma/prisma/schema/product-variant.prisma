@@ -22,6 +22,7 @@ model ProductVariant {
   restockInventoryRequests RestockInventoryRequest[]
   cartItems                CartItem[]
   wishlistItems            WishlistItem[]
+  orderItems               OrderItem[]
 
   @@index([productId])
   @@map("ProductVariants")

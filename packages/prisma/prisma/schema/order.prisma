@@ -1,14 +1,17 @@
+// TODO: Later on add shipment model to accommodate shipping carrier and information
 model Order {
   id             Int                @id @default(autoincrement())
   uniqueId       String             @unique
   userId         Int
-  totalAmount    Float
-  discountAmount Float
-  grossAmount    Float
-  shippingCost   Float
+  totalAmount    Float // Sub total of order
+  discountAmount Float // Discount applied to the order
+  grossAmount    Float // Amount after discount but before shipping
+  shippingAmount Float // Shipping cost  
+  netAmount      Float // Final amount after all adjustments
   orderNote      String?
   status         OrderStatus        @default(PLACED)
   paymentStatus  OrderPaymentStatus @default(UNPAID)
+  // TODO: Add Payment type if needed
 
   // timestamps
   orderPlacedAt    DateTime
@@ -16,6 +19,11 @@ model Order {
   orderDeliveredAt DateTime?
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
+
+  // references
+  user                 User                   @relation(fields: [userId], references: [id])
+  orderShippingAddress OrderShippingAddress[]
+  orderItems           OrderItem[]
 
   @@index([uniqueId, userId, id])
   @@map("Orders")
@@ -30,11 +38,16 @@ model OrderItem {
   attributes       Json // Store product attributes statically  
   price            Float
   quantity         Int
-  totalAmount      Float
+  totalAmount      Float // Total amount for this order item
 
   // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // references
+  order          Order           @relation(fields: [orderId], references: [id])
+  product        Product         @relation(fields: [productId], references: [id])
+  productVariant ProductVariant? @relation(fields: [productVariantId], references: [id])
 
   @@index([orderId, productId, productVariantId])
   @@map("OrderItems")
@@ -61,4 +74,28 @@ enum OrderPaymentStatus {
   PENDING
   PAID
   UNPAID
+}
+
+// Statically Store the shipping address 
+model OrderShippingAddress {
+  id          Int         @id @default(autoincrement())
+  orderId     Int
+  fullName    String
+  phoneNumber String
+  fullAddress String
+  country     String
+  state       String
+  city        String
+  zipCode     String      @db.VarChar(20)
+  type        AddressType
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@index([orderId])
+  @@map("OrderShippingAddress")
 }
