@@ -1,0 +1,64 @@
+model Order {
+  id             Int                @id @default(autoincrement())
+  uniqueId       String             @unique
+  userId         Int
+  totalAmount    Float
+  discountAmount Float
+  grossAmount    Float
+  shippingCost   Float
+  orderNote      String?
+  status         OrderStatus        @default(PLACED)
+  paymentStatus  OrderPaymentStatus @default(UNPAID)
+
+  // timestamps
+  orderPlacedAt    DateTime
+  orderShippedAt   DateTime?
+  orderDeliveredAt DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([uniqueId, userId, id])
+  @@map("Orders")
+}
+
+model OrderItem {
+  id               Int    @id @default(autoincrement())
+  orderId          Int
+  productId        Int
+  productVariantId Int?
+  productName      String
+  attributes       Json // Store product attributes statically  
+  price            Float
+  quantity         Int
+  totalAmount      Float
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([orderId, productId, productVariantId])
+  @@map("OrderItems")
+}
+
+enum OrderStatus {
+  PLACED
+  PROCESSING
+  PACKED
+  SHIPPED
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  DELIVERY_FAILED
+  RETURN_INITIATED
+  RETURN_RECEIVED
+  REPLACEMENT_INITIATED
+  REFUND_INITIATED
+  REFUND_COMPLETED
+  CANCELED
+}
+
+enum OrderPaymentStatus {
+  PENDING
+  PAID
+  UNPAID
+}
