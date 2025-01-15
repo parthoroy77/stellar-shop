@@ -1,3 +1,5 @@
+import { Prisma } from "@repo/prisma/client";
+
 export const parseProductData = (body: Record<string, any>, files: Express.Multer.File[]) => {
   const productImages: Express.Multer.File[] = [];
 
@@ -39,4 +41,73 @@ export const parseProductData = (body: Record<string, any>, files: Express.Multe
     productImages,
     variants: transformedVariants || [],
   };
+};
+
+export const getProductDetailSelectOptions = () => {
+  const selectOptions: Prisma.ProductSelect = {
+    id: true,
+    productName: true,
+    urlSlug: true,
+    description: true,
+    sku: true,
+    price: true,
+    comparePrice: true,
+    stock: true,
+    sellerId: true,
+
+    images: {
+      select: {
+        file: { select: { fileSecureUrl: true } },
+      },
+    },
+    attributes: {
+      select: {
+        attributeValue: {
+          select: { value: true, attribute: { select: { name: true } } },
+        },
+      },
+    },
+    variants: {
+      where: { status: "ACTIVE" },
+      select: {
+        variantName: true,
+        description: true,
+        price: true,
+        stock: true,
+        isDefault: true,
+        images: {
+          select: {
+            file: { select: { fileSecureUrl: true } },
+          },
+        },
+        attributes: {
+          select: {
+            attributeValue: {
+              select: { value: true, attribute: { select: { name: true } } },
+            },
+          },
+        },
+      },
+    },
+    brand: {
+      select: { name: true, file: { select: { fileSecureUrl: true } } },
+    },
+    seller: {
+      select: { shopName: true, shopDescription: true, logo: { select: { fileSecureUrl: true } } },
+    },
+    shippingOptions: {
+      select: {
+        option: { select: { name: true, estimateDays: true, charge: true } },
+      },
+    },
+    deliveryInfo: {
+      select: {
+        packageHeight: true,
+        packageLength: true,
+        packageWeight: true,
+        packageWidth: true,
+      },
+    },
+  };
+  return selectOptions;
 };

@@ -8,6 +8,7 @@ import calculatePagination, { TPaginateOption } from "../../utils/calculatePagin
 import { deleteFromCloudinary } from "../../utils/cloudinary";
 import { generateUniqueSlug } from "../../utils/generateUniqueSlug";
 import { NEWLY_ARRIVAL_TIME_PERIOD } from "./product.constants";
+import { getProductDetailSelectOptions } from "./product.utils";
 
 const create = async (payload: TCreateProductValidation, userId: number) => {
   const uploadedImagesPublicIds: string[] = [];
@@ -290,9 +291,18 @@ const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
   };
 };
 
+const getBySlug = async (slug: string) => {
+  const result = await prisma.product.findUnique({
+    where: { urlSlug: slug, status: "ACTIVE" },
+    select: getProductDetailSelectOptions(),
+  });
+  return result;
+};
+
 export const ProductServices = {
   create,
   getPendingProducts,
   productApproval,
   getNewlyArrived,
+  getBySlug,
 };

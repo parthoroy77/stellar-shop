@@ -1,6 +1,7 @@
 import { createProductValidationSchema } from "@repo/utils/validations";
 import { StatusCodes } from "http-status-codes";
 import { PAGINATION_KEYS } from "../../constants";
+import { ApiError } from "../../handlers/ApiError";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
 import pick from "../../utils/pick";
@@ -52,9 +53,27 @@ const getAllNewlyArrivedProducts = asyncHandler(async (req, res) => {
   });
 });
 
+const getProductBySlug = asyncHandler(async (req, res) => {
+  const { slug } = req.params;
+
+  if (!slug) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Product slug not found!");
+  }
+
+  const result = await ProductServices.getBySlug(slug);
+
+  ApiResponse(res, {
+    data: result,
+    message: "Product retrieved successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+  });
+});
+
 export const ProductControllers = {
   createProduct,
   getAllPendingProducts,
   approveProduct,
   getAllNewlyArrivedProducts,
+  getProductBySlug,
 };
