@@ -3,7 +3,7 @@ import { Button } from "@ui/index";
 import { FC, useState } from "react";
 
 interface Props {
-  attributes: TAttribute[];
+  attributes: Partial<TAttribute>[];
 }
 
 const ProductAttributeSelection: FC<Props> = ({ attributes }) => {
@@ -16,7 +16,7 @@ const ProductAttributeSelection: FC<Props> = ({ attributes }) => {
   );
 };
 
-const ProductAttributeCard = ({ attribute }: { attribute: TAttribute }) => {
+const ProductAttributeCard = ({ attribute }: { attribute: Partial<TAttribute> }) => {
   const [selectedAttribute, setSelectedAttribute] = useState<null | number>(null);
 
   const handleAttributeSelection = (id: number) => {

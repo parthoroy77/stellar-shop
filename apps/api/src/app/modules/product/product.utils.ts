@@ -56,18 +56,33 @@ export const getProductDetailSelectOptions = () => {
     sellerId: true,
     images: {
       select: {
-        file: { select: { fileSecureUrl: true } },
+        file: {
+          select: {
+            fileSecureUrl: true,
+          },
+        },
       },
     },
     attributes: {
       select: {
         attributeValue: {
-          select: { value: true, attribute: { select: { name: true } } },
+          select: {
+            id: true,
+            value: true,
+            attribute: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
         },
       },
     },
     variants: {
-      where: { status: "ACTIVE" },
+      where: {
+        status: "ACTIVE",
+      },
       select: {
         variantName: true,
         description: true,
@@ -76,13 +91,24 @@ export const getProductDetailSelectOptions = () => {
         isDefault: true,
         images: {
           select: {
-            file: { select: { fileSecureUrl: true } },
+            file: {
+              select: {
+                fileSecureUrl: true,
+              },
+            },
           },
         },
         attributes: {
           select: {
             attributeValue: {
-              select: { value: true, attribute: { select: { name: true } } },
+              select: {
+                value: true,
+                attribute: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
             },
           },
         },
@@ -94,20 +120,51 @@ export const getProductDetailSelectOptions = () => {
           select: {
             categoryName: true,
             level: true,
-            images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
+            images: {
+              take: 1,
+              select: {
+                file: {
+                  select: {
+                    fileSecureUrl: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
     },
     brand: {
-      select: { name: true, file: { select: { fileSecureUrl: true } } },
+      select: {
+        id: true,
+        name: true,
+        file: {
+          select: {
+            fileSecureUrl: true,
+          },
+        },
+      },
     },
     seller: {
-      select: { shopName: true, shopDescription: true, logo: { select: { fileSecureUrl: true } } },
+      select: {
+        shopName: true,
+        shopDescription: true,
+        logo: {
+          select: {
+            fileSecureUrl: true,
+          },
+        },
+      },
     },
     shippingOptions: {
       select: {
-        option: { select: { name: true, estimateDays: true, charge: true } },
+        option: {
+          select: {
+            name: true,
+            estimateDays: true,
+            charge: true,
+          },
+        },
       },
     },
     deliveryInfo: {
@@ -116,6 +173,16 @@ export const getProductDetailSelectOptions = () => {
         packageLength: true,
         packageWeight: true,
         packageWidth: true,
+      },
+    },
+    tags: {
+      select: {
+        tag: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
       },
     },
   };

@@ -6,12 +6,14 @@ import { GoStarFill } from "react-icons/go";
 import { SlHeart } from "react-icons/sl";
 
 interface Props {
-  tags?: ITag[];
+  tags?: Partial<ITag>[];
   averageRating?: number;
   totalReview?: number;
+  discount: number;
+  lowStock: boolean;
 }
 
-const ProductRatingTags: FC<Props> = ({ tags, totalReview, averageRating }) => {
+const ProductRatingTags: FC<Props> = ({ tags, totalReview, averageRating, discount, lowStock }) => {
   return (
     <div className="flex items-start justify-between gap-3">
       <div className="flex flex-wrap gap-3">
@@ -27,11 +29,11 @@ const ProductRatingTags: FC<Props> = ({ tags, totalReview, averageRating }) => {
             <span className="text-xs font-medium uppercase">{totalReview} Reviews</span>
           </div>
         )}
-        <Badge className="rounded-md uppercase">30% OFF</Badge>
-        <Badge className="rounded-md uppercase">LOW STOCK</Badge>
-        <Badge className="rounded-md uppercase">SALE</Badge>
+        {discount && <Badge className="rounded-md uppercase">{discount}% OFF</Badge>}
+        {lowStock && <Badge className="rounded-md uppercase">LOW STOCK</Badge>}
+        {/* <Badge className="rounded-md uppercase">SALE</Badge> */}
         {tags?.map((tag) => (
-          <Badge key={tag.id} variant={"accent"} className="rounded-md uppercase">
+          <Badge key={tag.id} variant={"accent"} className="rounded-md capitalize">
             {tag.name}
           </Badge>
         ))}

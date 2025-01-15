@@ -58,8 +58,8 @@ const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
           {/* Right Section */}
           <section className="col-span-3 flex flex-col gap-5">
             <ProductDeliveryInfo />
-            <PaymentInfo />
             <ProductSellerInfo />
+            <PaymentInfo />
             <hr />
             <ProductSuggestion />
           </section>
