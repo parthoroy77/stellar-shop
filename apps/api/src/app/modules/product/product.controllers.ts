@@ -60,7 +60,24 @@ const getProductBySlug = asyncHandler(async (req, res) => {
     throw new ApiError(StatusCodes.NOT_FOUND, "Product slug not found!");
   }
 
-  const result = await ProductServices.getBySlug(slug);
+  const result = await ProductServices.getProductDetails({ slug });
+
+  ApiResponse(res, {
+    data: result,
+    message: "Product retrieved successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+  });
+});
+
+const getProductById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Product id not found!");
+  }
+
+  const result = await ProductServices.getProductDetails({ productId: +id });
 
   ApiResponse(res, {
     data: result,
@@ -76,4 +93,5 @@ export const ProductControllers = {
   approveProduct,
   getAllNewlyArrivedProducts,
   getProductBySlug,
+  getProductById,
 };

@@ -291,11 +291,26 @@ const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
   };
 };
 
-const getBySlug = async (slug: string) => {
+// Function to get product details
+export const getProductDetails = async (params: { slug?: string; productId?: number }) => {
+  const { slug, productId } = params;
+
+  // Determine the `where` condition dynamically
+  const whereClause: any = {};
+  if (slug) whereClause.urlSlug = slug;
+  if (productId) whereClause.id = productId;
+
+  // Ensure at least one condition is provided
+  if (!Object.keys(whereClause).length) {
+    throw new Error("Either 'slug' or 'productId' must be provided.");
+  }
+
+  // Perform the query
   const result = await prisma.product.findUnique({
-    where: { urlSlug: slug, status: "ACTIVE" },
+    where: whereClause,
     select: getProductDetailSelectOptions(),
   });
+
   return result;
 };
 
@@ -304,5 +319,5 @@ export const ProductServices = {
   getPendingProducts,
   productApproval,
   getNewlyArrived,
-  getBySlug,
+  getProductDetails,
 };
