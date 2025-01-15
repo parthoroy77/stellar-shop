@@ -12,7 +12,7 @@ interface ProductInfoProps {
 }
 
 const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
-  const { tags, ratingAverage, reviews, price, comparePrice, attributes, stockQuantity } = product || {};
+  const { tags, ratingAverage, reviews, price, comparePrice, attributes, stock } = product || {};
   const [productPrice] = useState<number>(price);
   return (
     <div className="divide-y *:py-3 lg:p-4">
@@ -26,7 +26,7 @@ const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
       <ProductPrice comparePrice={comparePrice} price={productPrice} />
       <ProductAttributeSelection attributes={attributes} />
       <div>
-        <ProductQuantitySelection className="" stock={stockQuantity} />
+        <ProductQuantitySelection className="" stock={stock} />
       </div>
       <ProductActionButtons />
     </div>

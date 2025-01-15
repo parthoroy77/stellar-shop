@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { CSSProperties, MouseEvent, useState } from "react";
+import { CSSProperties, FC, MouseEvent, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
@@ -9,32 +9,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Swiper as SwiperType } from "swiper/types";
 import "../../styles/slider.css";
 
-const sliderImages = [
-  {
-    id: 1,
-    image:
-      "https://d2v5dzhdg4zhx3.cloudfront.net/web-assets/images/storypages/primary/ProductShowcasesampleimages/JPEG/Product+Showcase-1.jpg",
-  },
-  {
-    id: 2,
-    image: "https://img.freepik.com/free-photo/sports-shoe-pair-design-illustration-generated-by-ai_188544-19642.jpg",
-  },
-  {
-    id: 3,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuyrCsfhzIIe00rnzImB5PupVfAyJmTwohUlPYaZNVqqk3UcDfI8oWtDKByjSzLwQznDU&usqp=CAU",
-  },
-  {
-    id: 4,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCZpMd2aojWdZnfdBKHhERdqJ_Xk_D4wJtV-jdZMjfXDSoWQhOTFhpd_MPnzXI1dyZ974&usqp=CAU",
-  },
-  {
-    id: 5,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCZpMd2aojWdZnfdBKHhERdqJ_Xk_D4wJtV-jdZMjfXDSoWQhOTFhpd_MPnzXI1dyZ974&usqp=CAU",
-  },
-];
+interface Props {
+  images: { fileSecureUrl: string }[];
+  productName: string;
+}
 
 type ZoomStyles = {
   display: string;
@@ -42,7 +20,7 @@ type ZoomStyles = {
   zoomY: string;
 };
 
-const ProductImageGallery = () => {
+const ProductImageGallery: FC<Props> = ({ images, productName }) => {
   const [activeThumb, setActiveThumb] = useState<SwiperType | null>(null);
   const [zoomStyles, setZoomStyles] = useState<ZoomStyles>({
     display: "none",
@@ -84,8 +62,8 @@ const ProductImageGallery = () => {
           pauseOnMouseEnter: true,
         }}
       >
-        {sliderImages.map((image, index) => (
-          <SwiperSlide key={image.id}>
+        {images.map((image, index) => (
+          <SwiperSlide key={index}>
             <div
               className="relative w-full cursor-zoom-in overflow-hidden rounded-sm"
               style={
@@ -93,7 +71,7 @@ const ProductImageGallery = () => {
                   "--display": zoomStyles.display,
                   "--zoom-x": zoomStyles.zoomX,
                   "--zoom-y": zoomStyles.zoomY,
-                  "--url": `url(${image.image})`,
+                  "--url": `url(${image.fileSecureUrl})`,
                 } as CSSProperties
               }
               onMouseMove={(event) => handleMouseMove(event)}
@@ -102,9 +80,9 @@ const ProductImageGallery = () => {
               <Image
                 height={400}
                 width={400}
-                src={image.image}
+                src={image.fileSecureUrl}
                 className="aspect-auto h-[400px] w-full rounded-sm object-cover object-top"
-                alt={`Product image ${index + 1}`}
+                alt={`${productName} image ${index + 1}`}
               />
               <div
                 className="absolute inset-0"
@@ -112,7 +90,7 @@ const ProductImageGallery = () => {
                   {
                     display: zoomStyles.display,
                     backgroundColor: "black",
-                    backgroundImage: `url(${image.image})`,
+                    backgroundImage: `url(${image.fileSecureUrl})`,
                     backgroundSize: "250%",
                     backgroundPosition: `${zoomStyles.zoomX} ${zoomStyles.zoomY}`,
                   } as CSSProperties
@@ -147,15 +125,15 @@ const ProductImageGallery = () => {
           },
         }}
       >
-        {sliderImages.map((image, index) => (
-          <SwiperSlide key={image.id}>
+        {images.map((image, index) => (
+          <SwiperSlide key={index}>
             <div className="border-primary flex size-[90px] cursor-pointer items-center justify-center rounded-md border-2 border-none p-1">
               <Image
                 width={90}
                 height={90}
-                src={image.image}
+                src={image.fileSecureUrl}
                 className="h-full w-full rounded-sm object-fill object-center"
-                alt={`Thumbnail image ${index + 1}`}
+                alt={`${productName} image ${index + 1}`}
               />
             </div>
           </SwiperSlide>

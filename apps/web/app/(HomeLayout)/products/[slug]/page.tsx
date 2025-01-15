@@ -1,3 +1,4 @@
+import { getProductDetailBySlug } from "@/actions/product";
 import PaymentInfo from "@/components/ProductDetail/payment-info";
 import ProductDeliveryInfo from "@/components/ProductDetail/product-delivery-info";
 import ProductDescription from "@/components/ProductDetail/product-description";
@@ -10,6 +11,9 @@ import ProductTabNavigation from "@/components/ProductDetail/product-tab-navigat
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 import { products } from "@/dummyData/products";
 import { TProduct } from "@repo/utils/types";
+
+/* TODO: Remove as unknown */
+
 const items = [
   { href: "#", label: "Categories" },
   { href: "#", label: "Fashion" },
@@ -17,8 +21,17 @@ const items = [
   { href: "#", label: "Kids Accessories" },
   { href: "#", label: "Comfortable and Fashionable Exclusive T-shirt" },
 ];
-const ProductDetailPage = () => {
-  const product = products[0];
+
+const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
+  const slug = params.slug;
+  // For current purpose we have dummy products.
+
+  const product = slug === "item" ? products[0] : await getProductDetailBySlug(slug);
+
+  if (!product) {
+    return <div> Product not found</div>;
+  }
+
   return (
     <section className="space-y-5 py-5">
       <BreadcrumbMenu items={items} />
@@ -29,7 +42,10 @@ const ProductDetailPage = () => {
           <section className="col-span-9 grid h-fit grid-cols-12 gap-5">
             <div className="col-span-12 grid h-fit grid-cols-12 gap-4">
               <div className="col-span-6 flex h-fit flex-col space-y-5">
-                <ProductImageGallery />
+                <ProductImageGallery
+                  productName={product?.productName}
+                  images={product.images.map((image) => ({ fileSecureUrl: image.file.fileSecureUrl }))}
+                />
               </div>
               <div className="col-span-6 flex h-fit flex-col gap-5">
                 <ProductInfoPanel product={product as unknown as TProduct} />
@@ -51,7 +67,10 @@ const ProductDetailPage = () => {
 
         {/* Mobile Layout */}
         <div className="space-y-5 lg:hidden">
-          <ProductImageGallery />
+          <ProductImageGallery
+            productName={product?.productName}
+            images={product.images.map((image) => ({ fileSecureUrl: image.file.fileSecureUrl }))}
+          />
           <ProductInfoPanel product={product as unknown as TProduct} />
           <ProductReviewContainer product={product as unknown as TProduct} />
           <ProductSellerInfo />

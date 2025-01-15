@@ -54,7 +54,6 @@ export const getProductDetailSelectOptions = () => {
     comparePrice: true,
     stock: true,
     sellerId: true,
-
     images: {
       select: {
         file: { select: { fileSecureUrl: true } },
@@ -85,6 +84,17 @@ export const getProductDetailSelectOptions = () => {
             attributeValue: {
               select: { value: true, attribute: { select: { name: true } } },
             },
+          },
+        },
+      },
+    },
+    categories: {
+      select: {
+        category: {
+          select: {
+            categoryName: true,
+            level: true,
+            images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
           },
         },
       },
