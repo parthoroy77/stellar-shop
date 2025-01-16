@@ -47,7 +47,7 @@ function formatAttributes(data: any[]): Partial<TAttribute>[] {
 }
 
 const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
-  const { tags, price, comparePrice, attributes, stock, brand } = product || {};
+  const { tags, price, comparePrice, attributes, stock, brand, id } = product || {};
   const simplifiedTags = tags?.map((tag) => ({ name: tag.tag.name, id: tag.tag.id })) || [];
   const avgDiscount = Math.round(((comparePrice - price) / comparePrice) * 100);
   // Simplified attributes into desired format
@@ -57,7 +57,7 @@ const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
     <div className="divide-y *:py-2.5 lg:p-4">
       {/* name */}
       <h1 className="text-pretty text-2xl font-medium">{product.productName}</h1>
-      <ProductRating averageRating={4.5} totalReview={0} />
+      <ProductRating averageRating={4.5} totalReview={0} productId={id} />
       {!!simplifiedTags.length && <ProductTags tags={simplifiedTags} discount={avgDiscount} lowStock={stock < 10} />}
       <ProductBrand brand={brand} />
       <ProductPrice comparePrice={comparePrice} price={price} />

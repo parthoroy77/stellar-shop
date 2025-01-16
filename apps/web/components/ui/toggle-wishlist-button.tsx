@@ -2,13 +2,14 @@
 import { useWishlistContext } from "@/contexts/wishlist-context";
 import { useClientSession } from "@/lib/auth-utils";
 import { AppButton } from "@ui/index";
+import { ClassValue, cn } from "@ui/lib/utils";
 import { useRouter } from "next/navigation";
 import { MouseEvent, useCallback, useMemo } from "react";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { toast } from "sonner";
 import TooltipComponent from "./tooltip-component";
 
-const ToggleWishlistButton = ({ productId }: { productId: number }) => {
+const ToggleWishlistButton = ({ productId, className }: { productId: number; className?: ClassValue }) => {
   const router = useRouter();
   const { isAuthenticated } = useClientSession();
   const { isInWishlist, toggleWishlist } = useWishlistContext();
@@ -35,7 +36,12 @@ const ToggleWishlistButton = ({ productId }: { productId: number }) => {
   return (
     <div onClick={handleClick}>
       <TooltipComponent tooltipContent="Add to wishlist">
-        <AppButton className="bg-muted-foreground flex size-5 items-center justify-center rounded-full p-0 text-black md:size-6 lg:size-8 lg:text-[20px]">
+        <AppButton
+          className={cn(
+            "bg-muted-foreground flex size-5 items-center justify-center rounded-full p-0 text-black md:size-6 lg:size-8 lg:text-[20px]",
+            className
+          )}
+        >
           {inWishlist ? <BsHeartFill aria-label="Wishlist" color="red" /> : <BsHeart aria-label="Wishlist" />}
         </AppButton>
       </TooltipComponent>
