@@ -1,5 +1,5 @@
 import { IAttribute, IAttributeValue } from "./attribute";
-import { IBrand } from "./brand";
+import { IBrand, TBrand } from "./brand";
 import { ICategory } from "./category";
 import { IProductDeliveryInfo, IProductShippingOption } from "./delivery-and-shipping";
 import { IFile, IProductFile, IVariantFile } from "./file";
@@ -96,7 +96,7 @@ export interface IProduct {
 export type TProduct = IProduct & {
   // relations
   seller: TSeller;
-  brand: IBrand;
+  brand: TBrand;
   attributes: IProductAttribute &
     {
       attributeValue: IAttributeValue & {
