@@ -1,7 +1,7 @@
 import { IAttribute, IAttributeValue } from "./attribute";
-import { IBrand, TBrand } from "./brand";
+import { TBrand } from "./brand";
 import { ICategory } from "./category";
-import { IProductDeliveryInfo, IProductShippingOption } from "./delivery-and-shipping";
+import { IProductDeliveryInfo, TProductShippingOption } from "./delivery-and-shipping";
 import { IFile, IProductFile, IVariantFile } from "./file";
 import { IInventoryLogs, IRestockInventoryRequest } from "./inventoryLogs";
 import { IProductRatingAverage, IProductReview } from "./productReviewRatings";
@@ -115,7 +115,7 @@ export type TProduct = IProduct & {
   categories: IProductCategory[];
 
   deliveryInfo: IProductDeliveryInfo;
-  shippingOptions: IProductShippingOption[];
+  shippingOptions: TProductShippingOption[];
   inventoryLogs: IInventoryLogs[];
   restockInventoryRequests: IRestockInventoryRequest[];
 

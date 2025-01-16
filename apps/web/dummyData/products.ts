@@ -1,5 +1,21 @@
 export const products = [
   {
+    shippingOptions: [
+      {
+        option: {
+          name: "Standard Shipping",
+          estimateDays: "3 - 7 days",
+          charge: 10.99,
+        },
+      },
+      {
+        option: {
+          name: "Express Shipping",
+          estimateDays: "1 - 3 days",
+          charge: 15.99,
+        },
+      },
+    ],
     id: 1,
     productName: "Comfortable and Fashionable Exclusive T-shirt",
     urlSlug: "comfortable-and-fashionable-exclusive-t-shirt",
@@ -342,6 +358,22 @@ export const products = [
     },
   },
   {
+    shippingOptions: [
+      {
+        option: {
+          name: "Standard Shipping",
+          estimateDays: "3 - 7 days",
+          charge: 10.99,
+        },
+      },
+      {
+        option: {
+          name: "Express Shipping",
+          estimateDays: "1 - 3 days",
+          charge: 15.99,
+        },
+      },
+    ],
     id: 2,
     productName: "Women's Leather Jacket",
     urlSlug: "womens-leather-jacket",
@@ -562,6 +594,22 @@ export const products = [
     },
   },
   {
+    shippingOptions: [
+      {
+        option: {
+          name: "Standard Shipping",
+          estimateDays: "3 - 7 days",
+          charge: 10.99,
+        },
+      },
+      {
+        option: {
+          name: "Express Shipping",
+          estimateDays: "1 - 3 days",
+          charge: 15.99,
+        },
+      },
+    ],
     id: 3,
     productName: "Wireless Earbuds",
     urlSlug: "wireless-earbuds",
@@ -753,6 +801,22 @@ export const products = [
     },
   },
   {
+    shippingOptions: [
+      {
+        option: {
+          name: "Standard Shipping",
+          estimateDays: "3 - 7 days",
+          charge: 10.99,
+        },
+      },
+      {
+        option: {
+          name: "Express Shipping",
+          estimateDays: "1 - 3 days",
+          charge: 15.99,
+        },
+      },
+    ],
     id: 4,
     productName: "Smart Watch",
     urlSlug: "smart-watch",
@@ -944,6 +1008,22 @@ export const products = [
     },
   },
   {
+    shippingOptions: [
+      {
+        option: {
+          name: "Standard Shipping",
+          estimateDays: "3 - 7 days",
+          charge: 10.99,
+        },
+      },
+      {
+        option: {
+          name: "Express Shipping",
+          estimateDays: "1 - 3 days",
+          charge: 15.99,
+        },
+      },
+    ],
     id: 5,
     productName: "Eco-Friendly Yoga Mat",
     urlSlug: "eco-friendly-yoga-mat",

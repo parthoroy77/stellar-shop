@@ -1,16 +1,16 @@
 import { getProductDetailBySlug } from "@/actions/product";
 import PaymentInfo from "@/components/ProductDetail/payment-info";
-import ProductDeliveryInfo from "@/components/ProductDetail/product-delivery-info";
 import ProductDescription from "@/components/ProductDetail/product-description";
 import ProductImageGallery from "@/components/ProductDetail/product-image-gallery";
 import ProductInfoPanel from "@/components/ProductDetail/product-info-panel";
 import ProductReviewContainer from "@/components/ProductDetail/product-review-container";
 import ProductSellerInfo from "@/components/ProductDetail/product-seller-info";
+import ProductShippingInfo from "@/components/ProductDetail/product-shipping-info";
 import ProductSuggestion from "@/components/ProductDetail/product-suggestions";
 import ProductTabNavigation from "@/components/ProductDetail/product-tab-navigation";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 import { products } from "@/dummyData/products";
-import { TProduct, TSeller } from "@repo/utils/types";
+import { TProduct, TProductShippingOption, TSeller } from "@repo/utils/types";
 
 /* TODO: Remove as unknown */
 
@@ -57,7 +57,7 @@ const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
           </section>
           {/* Right Section */}
           <section className="col-span-3 flex flex-col gap-5">
-            <ProductDeliveryInfo />
+            <ProductShippingInfo shippingOptions={product.shippingOptions as TProductShippingOption[]} />
             <ProductSellerInfo seller={product.seller as unknown as TSeller} />
             <PaymentInfo />
             <hr />
