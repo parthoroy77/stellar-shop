@@ -26,7 +26,7 @@ const QuantitySelection = ({
   disableDecBtn,
 }: QuantitySelectionProps) => {
   return (
-    <div className={cn("bg-accent/40 flex w-[60%] items-center justify-between rounded-md p-1 lg:w-[35%]", className)}>
+    <div className={cn("bg-accent/40 flex w-[60%] items-center justify-between rounded-md p-1 lg:w-[45%]", className)}>
       <Button
         disabled={disableIncBtn}
         onClick={incrementFn}

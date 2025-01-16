@@ -10,7 +10,7 @@ import ProductSuggestion from "@/components/ProductDetail/product-suggestions";
 import ProductTabNavigation from "@/components/ProductDetail/product-tab-navigation";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 import { products } from "@/dummyData/products";
-import { TProduct } from "@repo/utils/types";
+import { TProduct, TSeller } from "@repo/utils/types";
 
 /* TODO: Remove as unknown */
 
@@ -24,8 +24,8 @@ const items = [
 
 const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
   const slug = params.slug;
-  // For current purpose we have dummy products.
 
+  // For current purpose we have dummy products.
   const product = slug === "item" ? products[0] : await getProductDetailBySlug(slug);
 
   if (!product) {
@@ -58,7 +58,7 @@ const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
           {/* Right Section */}
           <section className="col-span-3 flex flex-col gap-5">
             <ProductDeliveryInfo />
-            <ProductSellerInfo />
+            <ProductSellerInfo seller={product.seller as unknown as TSeller} />
             <PaymentInfo />
             <hr />
             <ProductSuggestion />
@@ -73,7 +73,7 @@ const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
           />
           <ProductInfoPanel product={product as unknown as TProduct} />
           <ProductReviewContainer product={product as unknown as TProduct} />
-          <ProductSellerInfo />
+          <ProductSellerInfo seller={product.seller as unknown as TSeller} />
           <FAQ />
           <Specification />
           <ProductDescription description={product?.description ?? ""} />

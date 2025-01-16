@@ -6,7 +6,8 @@ import ProductAttributeSelection from "./product-attribute-selection";
 import ProductBrand from "./product-brand";
 import ProductPrice from "./product-price";
 import ProductQuantitySelection from "./product-quantity-selection";
-import ProductRatingTags from "./product-rating-tag";
+import ProductRating from "./product-rating";
+import ProductTags from "./product-tags";
 
 interface ProductInfoProps {
   product: TProduct;
@@ -56,13 +57,8 @@ const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
     <div className="divide-y *:py-2.5 lg:p-4">
       {/* name */}
       <h1 className="text-pretty text-2xl font-medium">{product.productName}</h1>
-      <ProductRatingTags
-        tags={simplifiedTags}
-        discount={avgDiscount}
-        lowStock={stock < 10}
-        averageRating={4.5}
-        totalReview={10}
-      />
+      <ProductRating averageRating={4.5} totalReview={0} />
+      {!!simplifiedTags.length && <ProductTags tags={simplifiedTags} discount={avgDiscount} lowStock={stock < 10} />}
       <ProductBrand brand={brand} />
       <ProductPrice comparePrice={comparePrice} price={price} />
       {!!simplifiedAttributes.length && <ProductAttributeSelection attributes={simplifiedAttributes} />}
