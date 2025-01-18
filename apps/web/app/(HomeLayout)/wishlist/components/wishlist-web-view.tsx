@@ -30,8 +30,8 @@ const WishlistWebView = ({ wishlistItems }: { wishlistItems: TWishlistItem[] }) 
             wishlistItems.map((wishlistItem, idx) => (
               <TableRow key={idx} className="*:py-2">
                 <TableCell>
-                  <Link href="#">
-                    <div className="flex items-center gap-4">
+                  <Link href={`/products/${wishlistItem.product.urlSlug}`}>
+                    <div className="flex items-center gap-3">
                       <div className="relative h-20 w-20 flex-none">
                         <Image
                           src={

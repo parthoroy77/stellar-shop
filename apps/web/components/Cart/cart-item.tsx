@@ -1,6 +1,7 @@
 import { TCartItem } from "@repo/utils/types";
 import { Badge, Checkbox } from "@ui/index";
 import Image from "next/image";
+import Link from "next/link";
 import { TbCurrencyTaka } from "react-icons/tb";
 import CartItemQuantitySelection from "./cart-item-quantity-selection";
 import DeleteCartItem from "./delete-cart-item";
@@ -17,6 +18,10 @@ const CartItem = ({ cartItem, onSelect, isChecked }: CartItemProps) => {
   }));
 
   const price = cartItem.productVariant ? cartItem.productVariant.price : cartItem.product.price || 0;
+  const productName = cartItem.product?.productName || "Unnamed Product";
+  const productUrl = cartItem.product?.urlSlug ? `/products/${cartItem.product.urlSlug}` : "#";
+  const productImage = cartItem.product?.images?.[0]?.file?.fileSecureUrl;
+
   return (
     <div className="flex w-full items-center gap-3">
       <Checkbox
@@ -25,24 +30,28 @@ const CartItem = ({ cartItem, onSelect, isChecked }: CartItemProps) => {
         onCheckedChange={(checked) => onSelect(checked as boolean)}
       />
       <div className="flex w-full items-start justify-between gap-3 lg:items-center">
-        <Image
-          width={70}
-          height={70}
-          className="size-[70px] rounded-md border"
-          src={cartItem!.product!.images![0]?.file.fileSecureUrl! as string}
-          alt={cartItem!.product!.productName!}
-        />
+        <Link href={productUrl} className="block aspect-square size-[70px]">
+          <Image
+            width={70}
+            height={70}
+            className="size-[70px] rounded-md border"
+            src={productImage as string}
+            alt={productName}
+          />
+        </Link>
         <div className="flex w-full flex-col justify-between gap-2 lg:flex-row lg:items-center">
-          <div className="w-full space-y-1">
-            <h5 className="truncate text-sm font-medium">{cartItem!.product!.productName!}</h5>
-            <div className="space-x-2">
-              {attributes?.map((attr, idx) => (
-                <Badge key={idx} variant={"accent"} className="rounded-md">
-                  {attr.name}
-                </Badge>
-              ))}
+          <Link href={productUrl}>
+            <div className="w-full space-y-1">
+              <h5 className="truncate text-sm font-medium">{productName}</h5>
+              <div className="space-x-2">
+                {attributes?.map((attr, idx) => (
+                  <Badge key={idx} variant={"accent"} className="rounded-md">
+                    {attr.name}
+                  </Badge>
+                ))}
+              </div>
             </div>
-          </div>
+          </Link>
           <div className="flex-row- flex justify-between gap-5 lg:flex-row lg:items-center">
             <CartItemQuantitySelection
               cartItemId={cartItem.id}

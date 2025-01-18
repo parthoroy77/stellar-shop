@@ -14,17 +14,21 @@ const WishlistMobileView = ({ wishlistItems }: { wishlistItems: TWishlistItem[] 
         wishlistItems.map((wishlistItem, idx) => (
           <div key={idx} className="space-y-1.5 px-2">
             <div className="flex items-start gap-3">
-              <div className="w-[30%] rounded-md border p-1">
-                <Image
-                  width={70}
-                  height={70}
-                  src={wishlistItem.product.images[0]?.file.fileSecureUrl!}
-                  alt={wishlistItem.product.productName}
-                  className="w-full rounded-md object-cover"
-                />
-              </div>
-              <div className="w-[70%] space-y-1">
-                <h5 className="truncate font-medium">{wishlistItem.product.productName}</h5>
+              <Link href={`/products/${wishlistItem.product.urlSlug}`} className="block w-[30%]">
+                <div className="w-full rounded-md border p-1">
+                  <Image
+                    width={70}
+                    height={70}
+                    src={wishlistItem.product.images[0]?.file.fileSecureUrl!}
+                    alt={wishlistItem.product.productName}
+                    className="w-full rounded-md object-cover"
+                  />
+                </div>
+              </Link>
+              <div className="flex h-full w-[70%] flex-col justify-between space-y-1">
+                <Link href={`/products/${wishlistItem.product.urlSlug}`}>
+                  <h5 className="truncate font-medium">{wishlistItem.product.productName}</h5>
+                </Link>
                 {/* If has variant then show here */}
                 {getAttributes.length > 0 && (
                   <div className="flex flex-wrap gap-2">
