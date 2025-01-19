@@ -10,7 +10,9 @@ import ProductSuggestion from "@/components/ProductDetail/product-suggestions";
 import ProductTabNavigation from "@/components/ProductDetail/product-tab-navigation";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 import { products } from "@/dummyData/products";
+import { processProductImages } from "@/utils/product-utils";
 import { TProduct, TProductShippingOption, TSeller } from "@repo/utils/types";
+import { notFound } from "next/navigation";
 
 /* TODO: Remove as unknown */
 
@@ -26,26 +28,26 @@ const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
   const slug = params.slug;
 
   // For current purpose we have dummy products.
-  const product = slug === "item" ? products[0] : await getProductDetailBySlug(slug);
+  const product: TProduct | null =
+    slug === "item" ? (products[0] as unknown as TProduct) : await getProductDetailBySlug(slug);
 
   if (!product) {
-    return <div> Product not found</div>;
+    notFound();
   }
+
+  const productImages = processProductImages(product);
 
   return (
     <section className="space-y-5 py-5">
       <BreadcrumbMenu items={items} />
-      <div className="">
+      <div>
         {/* Web Layout */}
         <div className="hidden grid-cols-12 gap-4 lg:grid">
           {/* left section */}
           <section className="col-span-9 grid h-fit grid-cols-12 gap-5">
             <div className="col-span-12 grid h-fit grid-cols-12 gap-4">
               <div className="col-span-6 flex h-fit flex-col space-y-5">
-                <ProductImageGallery
-                  productName={product?.productName}
-                  images={product.images.map((image) => ({ fileSecureUrl: image.file.fileSecureUrl }))}
-                />
+                <ProductImageGallery productName={product?.productName} images={productImages} />
               </div>
               <div className="col-span-6 flex h-fit flex-col gap-5">
                 <ProductInfoPanel product={product as unknown as TProduct} />
@@ -67,10 +69,7 @@ const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
 
         {/* Mobile Layout */}
         <div className="space-y-5 lg:hidden">
-          <ProductImageGallery
-            productName={product?.productName}
-            images={product.images.map((image) => ({ fileSecureUrl: image.file.fileSecureUrl }))}
-          />
+          <ProductImageGallery productName={product?.productName} images={productImages} />
           <ProductInfoPanel product={product as unknown as TProduct} />
           <ProductReviewContainer product={product as unknown as TProduct} />
           <ProductSellerInfo seller={product.seller as unknown as TSeller} />
@@ -85,4 +84,5 @@ const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
 
 const FAQ = () => <div>FAQ</div>;
 const Specification = () => <div>Specification</div>;
+
 export default ProductDetailPage;

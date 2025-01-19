@@ -125,9 +125,10 @@ export type TProduct = IProduct & {
 
 export type TProductVariant = IProductVariant & {
   // relations
-  images: IVariantFile & {
-    file: IFile[];
-  };
+  images: IVariantFile &
+    {
+      file: IFile;
+    }[];
   attributes: IProductVariantAttribute &
     {
       attributeValue: IAttributeValue & {

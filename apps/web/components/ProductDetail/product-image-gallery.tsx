@@ -1,4 +1,5 @@
 "use client";
+import { IFile } from "@repo/utils/types";
 import Image from "next/image";
 import { CSSProperties, FC, MouseEvent, useState } from "react";
 import "swiper/css";
@@ -10,7 +11,7 @@ import { Swiper as SwiperType } from "swiper/types";
 import "../../styles/slider.css";
 
 interface Props {
-  images: { fileSecureUrl: string }[];
+  images: Pick<IFile, "fileSecureUrl">[];
   productName: string;
 }
 

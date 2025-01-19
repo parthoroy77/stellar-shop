@@ -1,5 +1,6 @@
 "use client";
-import { TAttribute, TProduct } from "@repo/utils/types";
+import { formatAttributes } from "@/utils/product-utils";
+import { TProduct } from "@repo/utils/types";
 import { FC } from "react";
 import ProductActionButtons from "./product-action-buttons";
 import ProductAttributeSelection from "./product-attribute-selection";
@@ -12,43 +13,10 @@ import ProductTags from "./product-tags";
 interface ProductInfoProps {
   product: TProduct;
 }
-// Function to format attributes
-function formatAttributes(data: any[]): Partial<TAttribute>[] {
-  const attributeMap = new Map<number, Partial<TAttribute>>();
-
-  data.forEach((item) => {
-    const {
-      attributeValue: {
-        id: valueId,
-        value,
-        attribute: { id: attributeId, name, ...restAttr },
-        ...restAttrValue
-      },
-    } = item;
-
-    if (!attributeMap.has(attributeId)) {
-      attributeMap.set(attributeId, {
-        id: attributeId,
-        name,
-        attributeValues: [],
-        ...restAttr,
-      });
-    }
-
-    attributeMap.get(attributeId)?.attributeValues?.push({
-      id: valueId,
-      value,
-      attributeId,
-      ...restAttrValue,
-    });
-  });
-
-  return Array.from(attributeMap.values());
-}
 
 const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
   const { tags, price, comparePrice, attributes, stock, brand, id } = product || {};
-  const simplifiedTags = tags?.map((tag) => ({ name: tag.tag.name, id: tag.tag.id })) || [];
+  const simplifiedTags = tags?.map((tag) => ({ name: tag?.tag?.name, id: tag?.tag?.id })) || [];
   const avgDiscount = Math.round(((comparePrice - price) / comparePrice) * 100);
   // Simplified attributes into desired format
   const simplifiedAttributes = formatAttributes(attributes);
