@@ -6,12 +6,12 @@ import { ProductControllers } from "./product.controllers";
 
 const router = Router();
 
-router.get("/:id", ProductControllers.getProductById);
-router.get("/slug/:slug", ProductControllers.getProductBySlug);
 router.get("/new-arrivals", ProductControllers.getAllNewlyArrivedProducts);
 router.get("/pending", authMiddleware(UserRole.ADMIN), ProductControllers.getAllPendingProducts);
 router.post("/", authMiddleware(UserRole.ADMIN, UserRole.SELLER), upload.any(), ProductControllers.createProduct);
 router.post("/approve/:productId", authMiddleware(UserRole.ADMIN), ProductControllers.approveProduct);
+router.get("/id/:id", ProductControllers.getProductById);
+router.get("/slug/:slug", ProductControllers.getProductBySlug);
 
 const ProductRoutes = router;
 

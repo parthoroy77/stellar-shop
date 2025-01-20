@@ -4,6 +4,7 @@ import {
   MAX_FILE_PER_UPLOAD,
   MAX_IMAGE_SIZE,
 } from "@repo/utils/constants";
+import { generateUniqueId } from "@repo/utils/functions";
 import { Request } from "express";
 import { StatusCodes } from "http-status-codes";
 import multer, { diskStorage, FileFilterCallback } from "multer";
@@ -23,7 +24,8 @@ const storage = diskStorage({
   filename: (_req: Request, file: Express.Multer.File, cb) => {
     // Example: prepend current timestamp to filename to make it unique
     const timestamp = Date.now();
-    cb(null, `${timestamp}-${file.originalname}`);
+    const uniquerId = generateUniqueId("IMG");
+    cb(null, `${uniquerId}-${timestamp}-${file.originalname}`);
   },
 });
 

@@ -128,7 +128,7 @@ export const columns: ColumnDef<TProduct>[] = [
     },
     cell: ({ row }) => {
       return (
-        <div className="flex gap-3 pl-2 capitalize lg:items-center">
+        <div className="capitalize">
           <span className="text-accent-foreground rounded-md text-xs font-bold uppercase lg:text-sm">
             {row?.original.sku}
           </span>
