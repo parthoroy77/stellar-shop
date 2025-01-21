@@ -1,3 +1,4 @@
+import { BreadcrumbMenuProps } from "@/components/ui/breadcrumb-menu";
 import { TAttribute, TProduct } from "@repo/utils/types";
 
 export function processProductImages(product: TProduct) {
@@ -49,4 +50,22 @@ export function formatAttributes(data: any[]): Partial<TAttribute>[] {
   });
 
   return Array.from(attributeMap.values());
+}
+
+export function formatProductBreadcrumb(data: TProduct["categories"]) {
+  let breadcrumb: BreadcrumbMenuProps[] = [];
+
+  const sortedData = data.sort((a, b) => {
+    const levelOrder = { COLLECTION: 1, CATEGORY: 2, SUB_CATEGORY: 3 };
+    return levelOrder[a.category.level] - levelOrder[b.category.level];
+  });
+
+  sortedData.forEach((item) => {
+    breadcrumb.push({
+      label: item.category.categoryName,
+      href: "/categories/" + item.category.urlSlug,
+    });
+  });
+
+  return breadcrumb;
 }

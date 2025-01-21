@@ -119,17 +119,8 @@ export const getProductDetailSelectOptions = () => {
         category: {
           select: {
             categoryName: true,
+            urlSlug: true,
             level: true,
-            images: {
-              take: 1,
-              select: {
-                file: {
-                  select: {
-                    fileSecureUrl: true,
-                  },
-                },
-              },
-            },
           },
         },
       },

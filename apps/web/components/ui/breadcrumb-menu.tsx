@@ -2,7 +2,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbS
 import React from "react";
 import { HiMiniHome } from "react-icons/hi2";
 
-interface BreadcrumbMenuProps {
+export interface BreadcrumbMenuProps {
   label: string;
   href: string;
 }

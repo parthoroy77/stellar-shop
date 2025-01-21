@@ -24,7 +24,7 @@ const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
   return (
     <div className="divide-y *:py-2.5 lg:p-4">
       {/* name */}
-      <h1 className="text-pretty text-2xl font-medium">{product.productName}</h1>
+      <h1 className="text-pretty !pt-0 text-2xl font-medium">{product.productName}</h1>
       <ProductRating averageRating={4.5} totalReview={0} productId={id} />
       {!!simplifiedTags.length && <ProductTags tags={simplifiedTags} discount={avgDiscount} lowStock={stock < 10} />}
       <ProductBrand brand={brand} />

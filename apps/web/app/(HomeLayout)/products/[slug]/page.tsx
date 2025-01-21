@@ -10,14 +10,13 @@ import ProductSuggestion from "@/components/ProductDetail/product-suggestions";
 import ProductTabNavigation from "@/components/ProductDetail/product-tab-navigation";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 import { products } from "@/dummyData/products";
-import { processProductImages } from "@/utils/product-utils";
+import { formatProductBreadcrumb, processProductImages } from "@/utils/product-utils";
 import { TProduct, TProductShippingOption, TSeller } from "@repo/utils/types";
 import { notFound } from "next/navigation";
 
 /* TODO: Remove as unknown */
 
 const items = [
-  { href: "#", label: "Categories" },
   { href: "#", label: "Fashion" },
   { href: "#", label: "Kids Clothings" },
   { href: "#", label: "Kids Accessories" },
@@ -37,9 +36,11 @@ const ProductDetailPage = async ({ params }: { params: { slug: string } }) => {
 
   const productImages = processProductImages(product);
 
+  const breadcrumbs = formatProductBreadcrumb(product.categories);
+
   return (
     <section className="space-y-5 py-5">
-      <BreadcrumbMenu items={items} />
+      <BreadcrumbMenu items={breadcrumbs || items} />
       <div>
         {/* Web Layout */}
         <div className="hidden grid-cols-12 gap-4 lg:grid">

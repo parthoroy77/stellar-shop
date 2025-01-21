@@ -15,7 +15,7 @@ const ProductRating: FC<Props> = ({ totalReview, productId }) => {
         <div className="flex w-fit items-center gap-3 rounded-md">
           <div className="flex">
             {Array.from({ length: 5 }).map((_x, idx) => (
-              <GoStarFill kernelMatrix={idx} size={18} className="text-yellow-400" />
+              <GoStarFill key={idx} size={18} className="text-yellow-400" />
             ))}
           </div>
           <span className="text-sm font-semibold capitalize">{totalReview === 0 ? "No" : totalReview} Reviews</span>
