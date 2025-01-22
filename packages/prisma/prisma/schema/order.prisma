@@ -1,29 +1,36 @@
 // TODO: Later on add shipment model to accommodate shipping carrier and information
 model Order {
-  id             Int                @id @default(autoincrement())
-  uniqueId       String             @unique
-  userId         Int
-  totalAmount    Float // Sub total of order
-  discountAmount Float // Discount applied to the order
-  grossAmount    Float // Amount after discount but before shipping
-  shippingAmount Float // Shipping cost  
-  netAmount      Float // Final amount after all adjustments
-  orderNote      String?
-  status         OrderStatus        @default(PLACED)
-  paymentStatus  OrderPaymentStatus @default(UNPAID)
-  // TODO: Add Payment type if needed
+  id              Int                @id @default(autoincrement())
+  uniqueId        String             @unique
+  userId          Int
+  totalAmount     Float // Sub total of order
+  discountAmount  Float // Discount applied to the order
+  grossAmount     Float // Amount after discount but before shipping
+  shippingAmount  Float // Shipping cost  
+  netAmount       Float // Final amount after all adjustments
+  orderNote       String?
+  status          OrderStatus        @default(PLACED)
+  paymentStatus   OrderPaymentStatus @default(UNPAID)
+  paymentMethodId Int
+  paymentId       Int?               @unique
 
   // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Status timestamps
   orderPlacedAt    DateTime
+  orderPackedAt    DateTime?
   orderShippedAt   DateTime?
   orderDeliveredAt DateTime?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  orderCanceledAt  DateTime?
 
   // references
   user                 User                   @relation(fields: [userId], references: [id])
   orderShippingAddress OrderShippingAddress[]
   orderItems           OrderItem[]
+  payment              Payment?
+  paymentMethod        PaymentMethod          @relation(fields: [paymentMethodId], references: [id])
 
   @@index([uniqueId, userId, id])
   @@map("Orders")

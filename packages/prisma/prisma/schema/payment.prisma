@@ -1,0 +1,49 @@
+model PaymentMethod {
+  id          Int                 @id @default(autoincrement())
+  methodName  String
+  description String?
+  status      PaymentMethodStatus @default(ACTIVE)
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  payments Payment[]
+  orders   Order[]
+
+  @@map("PaymentMethods")
+}
+
+model Payment {
+  id                   Int           @id @default(autoincrement())
+  uniqueId             String        @unique
+  orderId              Int           @unique
+  paymentMethodId      Int
+  gatewayTransactionId String        @unique
+  amount               Float
+  status               PaymentStatus @default(PROCESSING)
+
+  // timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // references
+  order  Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  method PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+
+  @@map("Payments")
+}
+
+enum PaymentStatus {
+  PROCESSING
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethodStatus {
+  ACTIVE
+  INACTIVE
+}
