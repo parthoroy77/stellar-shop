@@ -109,11 +109,11 @@ const ProductImageGallery: FC<Props> = ({ images, productName }) => {
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
-        slidesPerView={3}
+        slidesPerView={4}
         spaceBetween={5}
         breakpoints={{
           640: {
-            slidesPerView: 3,
+            slidesPerView: 4,
             spaceBetween: 5,
           },
           768: {
@@ -121,14 +121,14 @@ const ProductImageGallery: FC<Props> = ({ images, productName }) => {
             spaceBetween: 5,
           },
           1024: {
-            slidesPerView: 4,
+            slidesPerView: 5,
             spaceBetween: 5,
           },
         }}
       >
         {images.map((image, index) => (
           <SwiperSlide key={index}>
-            <div className="border-primary flex size-[90px] cursor-pointer items-center justify-center rounded-md border-2 border-none p-1">
+            <div className="border-primary flex size-[85px] cursor-pointer items-center justify-center rounded-md border-2 border-none p-1">
               <Image
                 width={90}
                 height={90}
