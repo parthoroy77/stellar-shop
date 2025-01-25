@@ -42,7 +42,7 @@ const CartItem = ({ cartItem, onSelect, isChecked }: CartItemProps) => {
         <div className="flex w-full flex-col justify-between gap-2 lg:flex-row lg:items-center">
           <Link href={productUrl}>
             <div className="w-full space-y-1">
-              <h5 className="truncate text-sm font-medium">{productName}</h5>
+              <h5 className="w-[16rem] truncate text-sm font-medium lg:w-[24rem]">{productName}</h5>
               <div className="space-x-2">
                 {attributes?.map((attr, idx) => (
                   <Badge key={idx} variant={"accent"} className="rounded-md">
