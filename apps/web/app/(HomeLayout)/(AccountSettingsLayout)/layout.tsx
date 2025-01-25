@@ -5,7 +5,7 @@ const AccountSettingsLayout = ({ children }: { children: ReactNode }) => {
   return (
     <section className="flex gap-8 py-10">
       <ProfileSidebar />
-      <div className="h-full w-[80%]">{children}</div>
+      <div className="h-full lg:w-[80%]">{children}</div>
     </section>
   );
 };

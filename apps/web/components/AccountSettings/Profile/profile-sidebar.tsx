@@ -44,7 +44,7 @@ const profileMenus = [
 const ProfileSidebar = () => {
   const pathname = usePathname();
   return (
-    <aside className="h-full w-[20%] space-y-3">
+    <aside className="hidden h-full w-[20%] space-y-3 lg:block">
       <h2 className="text-xl font-bold">Account Settings</h2>
       <div className="space-y-3">
         {profileMenus.map((menu, idx) => (

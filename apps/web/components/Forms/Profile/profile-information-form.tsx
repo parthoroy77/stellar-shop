@@ -34,7 +34,7 @@ const ProfileInformationForm = () => {
     },
     disabled: !isEdit,
   });
-
+  console.log(session?.user);
   useEffect(() => {
     if (session?.user) {
       form.reset({
@@ -69,16 +69,18 @@ const ProfileInformationForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid flex-grow grid-cols-12 gap-3">
-        <div className="col-span-3">
-          <h3 className="text-lg font-medium">Personal Information</h3>
-          <span className="text-accent-foreground text-wrap text-sm">Here update your personal information</span>
+        <div className="col-span-12 lg:col-span-3">
+          <h3 className="text-sm font-medium lg:text-lg">Personal Information</h3>
+          <span className="text-accent-foreground text-wrap text-xs lg:text-sm">
+            Here update your personal information
+          </span>
         </div>
-        <div className="col-span-7 grid grid-cols-2 gap-3">
+        <div className="col-span-10 grid gap-3 lg:col-span-7 lg:grid-cols-2">
           <FormField
             control={form.control}
             name="fullName"
             render={({ field }) => (
-              <FormItem className="col-span-2">
+              <FormItem className="lg:col-span-2">
                 <FormLabel>Full Name</FormLabel>
                 <FormControl>
                   <Input
@@ -120,7 +122,7 @@ const ProfileInformationForm = () => {
             )}
           />
         </div>
-        <div className="col-span-2 flex justify-end gap-3">
+        <div className="col-span-2 flex flex-col items-end gap-3 lg:flex-row lg:items-start lg:justify-end">
           <Button
             onClick={() => setIsEdit((prev) => !prev)}
             type="button"

@@ -56,12 +56,12 @@ const ManageProfilePhoto = () => {
 
   return (
     <div className="grid flex-grow grid-cols-12 gap-3">
-      <div className="col-span-3">
+      <div className="col-span-12 lg:col-span-3">
         <h3 className="text-lg font-medium">Your Photo</h3>
         <span className="text-accent-foreground text-wrap text-sm">This will display on your profile.</span>
       </div>
-      <div className="col-span-7 flex items-center justify-between">
-        <div className="w-full">
+      <div className="col-span-9 flex items-center justify-between lg:col-span-7">
+        <div className="flex w-full justify-center">
           <Image
             src={file?.preview || userImage}
             alt="User image"
@@ -72,7 +72,7 @@ const ManageProfilePhoto = () => {
         </div>
         <input ref={inputRef} hidden type="file" onChange={onFileChange} />
       </div>
-      <div className="col-span-2 flex justify-end gap-3">
+      <div className="col-span-3 flex flex-col items-end gap-3 lg:col-span-2 lg:flex-row lg:items-start lg:justify-end">
         <AppButton
           loading={isPending}
           disabled={isPending}
