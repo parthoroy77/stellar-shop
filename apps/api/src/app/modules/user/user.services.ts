@@ -5,27 +5,59 @@ import { uploadFileToCloudinaryAndCreateRecord } from "../../handlers/handleClou
 import { deleteFromCloudinary } from "../../utils/cloudinary";
 import { TUpdateProfileInput } from "./user.types";
 
-const updateProfile = async (payload: TUpdateProfileInput, userId: number) => {
-  const userExist = await prisma.user.findUnique({ where: { id: userId, status: "ACTIVE" } });
+const updateProfile = async ({ fullName, phoneNumber, phonePrefixCode }: TUpdateProfileInput, userId: number) => {
+  const userExist = await prisma.user.findUnique({
+    where: { id: userId },
+    select: {
+      id: true,
+      status: true,
+      fullName: true,
+      phoneNumber: true,
+      phonePrefixCode: true,
+    },
+  });
 
   if (!userExist) {
     throw new ApiError(StatusCodes.NOT_FOUND, "User not found!");
   }
 
   const updateUserArg: Prisma.UserUpdateInput = {};
-  if (payload.fullName !== userExist.fullName) {
-    updateUserArg.fullName = payload.fullName;
+
+  if (fullName !== userExist.fullName) {
+    updateUserArg.fullName = fullName;
   }
 
-  if (payload.phoneNumber && payload.phonePrefixCode && payload.phoneNumber !== userExist.phoneNumber) {
-    updateUserArg.phoneNumber = payload.phoneNumber;
-    updateUserArg.phonePrefixCode = payload.phonePrefixCode;
+  if (
+    phoneNumber &&
+    phonePrefixCode &&
+    (phoneNumber !== userExist.phoneNumber || phonePrefixCode !== userExist.phonePrefixCode)
+  ) {
+    if (phoneNumber && !/^[0-9]{7,20}$/.test(phoneNumber)) {
+      return {
+        message: "Invalid phone number format.",
+        statusCode: StatusCodes.NOT_ACCEPTABLE,
+      };
+    }
+
+    updateUserArg.phoneNumber = phoneNumber;
+    updateUserArg.phonePrefixCode = phonePrefixCode;
   }
 
+  // Check if there is anything to update
+  if (Object.keys(updateUserArg).length === 0) {
+    return { message: "No changes to update", statusCode: StatusCodes.OK };
+  }
+
+  // Update the user record
   await prisma.user.update({
     where: { id: userId },
-    data: updateUserArg,
+    data: {
+      ...(fullName && { fullName }),
+      ...(phoneNumber && { phoneNumber }),
+      ...(phonePrefixCode && { fullName }),
+    },
   });
+  return { message: "Profile updated successfully", statusCode: StatusCodes.OK };
 };
 
 /**
