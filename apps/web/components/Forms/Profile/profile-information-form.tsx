@@ -1,4 +1,5 @@
 "use client";
+
 import { updateUserProfile } from "@/actions/user";
 import ProfileFieldsSkeleton from "@/components/AccountSettings/Profile/profile-fields-skeleton";
 import { useClientSession } from "@/lib/auth-utils";
@@ -27,34 +28,37 @@ const ProfileInformationForm = () => {
   const { session, loading } = useClientSession();
   const [isEdit, setIsEdit] = useState(false);
   const [isPending, startTransition] = useTransition();
+
   const form = useForm<TUserProfileValidation>({
     defaultValues: {
-      fullName: "",
-      phoneNumber: "",
+      fullName: session?.user?.fullName || "",
+      phoneNumber: session?.user?.phoneNumber || "",
     },
-    disabled: !isEdit,
   });
-  console.log(session?.user);
+
+  // Sync form with session data when session changes
   useEffect(() => {
     if (session?.user) {
       form.reset({
         fullName: session.user.fullName || "",
-        phoneNumber: "+" + session.user.phonePrefixCode + session.user.phoneNumber || "",
+        phoneNumber: session.user.phoneNumber ? "+" + session.user.phonePrefixCode + session.user.phoneNumber : "",
       });
     }
   }, [session, form]);
 
-  if (loading) {
-    return <ProfileFieldsSkeleton />;
-  }
-
-  const onSubmit = (data: TUserProfileValidation) => {
-    const toastId = toast.loading("Sending request to process!", { duration: 2000 });
-    const { phoneNumber, fullName } = data;
-    let phonePrefixCode: string;
-    if (phoneNumber) {
-      phonePrefixCode = getCountryCode(phoneNumber) || "";
+  const onSubmit = ({ phoneNumber, fullName }: TUserProfileValidation) => {
+    const phonePrefixCode = phoneNumber ? getCountryCode(phoneNumber) || "" : "";
+    phoneNumber = phoneNumber?.replace(`+${phonePrefixCode}`, "");
+    // Check if the fields are unchanged
+    if (
+      session?.user?.fullName === fullName &&
+      session?.user?.phonePrefixCode === phonePrefixCode &&
+      session?.user?.phoneNumber === phoneNumber
+    ) {
+      toast.info("No changes detected!");
+      return;
     }
+    const toastId = toast.loading("Sending request to process!", { duration: 2000 });
     startTransition(async () => {
       const result = await updateUserProfile({ fullName, phonePrefixCode, phoneNumber });
       if (result.success) {
@@ -66,6 +70,10 @@ const ProfileInformationForm = () => {
     });
   };
 
+  if (loading) {
+    return <ProfileFieldsSkeleton />;
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid flex-grow grid-cols-12 gap-3">
@@ -76,6 +84,7 @@ const ProfileInformationForm = () => {
           </span>
         </div>
         <div className="col-span-10 grid gap-3 lg:col-span-7 lg:grid-cols-2">
+          {/* Full Name Field */}
           <FormField
             control={form.control}
             name="fullName"
@@ -87,21 +96,24 @@ const ProfileInformationForm = () => {
                     {...field}
                     placeholder="e.g. John Doe"
                     className="bg-accent/40 h-10 w-full border px-5 placeholder:text-xs"
+                    disabled={!isEdit}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+          {/* Email Field */}
           <div className="relative space-y-1">
             <Label>Email</Label>
             <Input className="border-none px-6 font-semibold" disabled value={session?.user.email} />
-            {session?.user.emailVerified && session?.user.emailVerified ? (
+            {session?.user.emailVerified ? (
               <VscVerifiedFilled size={20} color="green" className="absolute bottom-3" />
             ) : (
-              <VscUnverified size={20} color="green" className="absolute bottom-3" />
+              <VscUnverified size={20} color="red" className="absolute bottom-3" />
             )}
           </div>
+          {/* Phone Number Field */}
           <FormField
             control={form.control}
             name="phoneNumber"
@@ -110,11 +122,13 @@ const ProfileInformationForm = () => {
                 <FormLabel>Phone Number</FormLabel>
                 <FormControl>
                   <PhoneInput
+                    {...field}
                     placeholder="e.g. +880 1XXXXXXXX"
                     className="*:bg-accent/40 h-10 w-full placeholder:text-xs"
-                    {...field}
                     international
                     defaultCountry="BD"
+                    disabled={!isEdit}
+                    onChange={(value) => form.setValue("phoneNumber", value)}
                   />
                 </FormControl>
                 <FormMessage />
@@ -139,6 +153,7 @@ const ProfileInformationForm = () => {
             variant={"accent"}
             size={"icon"}
             className="rounded-full border"
+            disabled={isPending || !form.formState.isDirty}
           >
             <LuSave size={20} />
           </AppButton>
