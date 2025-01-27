@@ -37,7 +37,7 @@ const TodayHotDeals = () => {
           </div>
         </div>
         <div className="w-full space-y-5">
-          <ProductShowcase />
+          <ProductShowcase isDemo products={[]} />
           <CustomPagination />
         </div>
       </div>

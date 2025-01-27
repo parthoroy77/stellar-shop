@@ -21,7 +21,7 @@ const PopularProducts = () => {
             Check All Products <BsArrowRight />
           </Button>
         </div>
-        <ProductShowcase />
+        <ProductShowcase isDemo products={[]} />
         <CustomPagination />
       </div>
     </div>

@@ -13,7 +13,7 @@ const FeatureProducts = () => {
         />
       </div>
       <div className="w-full space-y-5 lg:w-[80%]">
-        <ProductShowcase />
+        <ProductShowcase isDemo products={[]} />
         <CustomPagination />
       </div>
     </div>
