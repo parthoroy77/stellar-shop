@@ -98,7 +98,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       // Step 4: Fetch the latest user data
-      const result = await fetcher<{ user: TUser }>("/auth/get-me", {
+      const result = await fetcher<{ user: TUser }>("/auth/me", {
         headers: {
           Cookie: `session_token=${token.sessionToken}`,
         },

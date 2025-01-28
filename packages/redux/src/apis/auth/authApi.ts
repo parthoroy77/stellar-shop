@@ -6,7 +6,7 @@ const authApi = baseApi.injectEndpoints({
     // queries
     getAuth: builder.query<IApiResponse<TUser>, undefined>({
       query: () => ({
-        url: "/auth/get-me",
+        url: "/auth/me",
       }),
       keepUnusedDataFor: 300,
       providesTags: ["auth"],

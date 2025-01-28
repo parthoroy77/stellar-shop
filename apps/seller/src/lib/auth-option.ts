@@ -102,7 +102,7 @@ export const authOptions: NextAuthOptions = {
 
     async session({ token, session }) {
       // fetch the auth user from backend
-      const result = await fetcher<{ user: TUser }>("/auth/get-me", {
+      const result = await fetcher<{ user: TUser }>("/auth/me", {
         cache: "force-cache",
         headers: {
           Cookie: `session_token=${token.sessionToken}`,

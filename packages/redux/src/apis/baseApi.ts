@@ -46,7 +46,7 @@ const axiosBaseQuery =
 
 // Variables for managing token refresh
 let isRefreshing = false;
-let hasMadeFirstRequest = false;
+const hasMadeFirstRequest = sessionStorage.getItem("hasMadeFirstRequest") === "true";
 let failedQueue: Array<{
   resolve: (value?: unknown) => void;
   reject: (reason?: any) => void;
@@ -73,7 +73,9 @@ const shouldAttemptRefresh = (url: string): boolean => {
 // Add a response interceptor to handle token refresh
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
-    hasMadeFirstRequest = true;
+    if (!hasMadeFirstRequest) {
+      sessionStorage.setItem("hasMadeFirstRequest", "true");
+    }
     return response;
   },
   async (error: AxiosError) => {
