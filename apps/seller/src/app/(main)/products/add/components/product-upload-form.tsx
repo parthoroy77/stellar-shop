@@ -159,15 +159,15 @@ const ProductUploadForm = () => {
             </div>
           </div>
           <hr />
-          <div className="[&_input]:bg-accent/30 flex h-full w-full *:*:space-y-3 *:divide-y *:*:px-5 *:*:py-5 [&_h3]:text-base [&_h3]:leading-none [&_input]:border-2">
-            <div className="w-[70%] border-r">
+          <div className="[&_input]:bg-accent/30 flex h-full w-full flex-col *:*:space-y-3 *:divide-y *:*:px-5 *:*:py-5 lg:flex-row [&_h3]:text-base [&_h3]:leading-none [&_input]:border-2">
+            <div className="border-r lg:w-[70%]">
               <ProductMediaUpload form={form} />
               <ProductInformationFields form={form} />
               <ProductAttributeSelection form={form} />
               <ProductVariant form={form} />
               <ProductInventoryDetails form={form} />
             </div>
-            <div className="h-full w-[30%]">
+            <div className="h-full lg:w-[30%]">
               <ProductClassifications form={form} />
               <ProductDeliveryInformation form={form} />
             </div>

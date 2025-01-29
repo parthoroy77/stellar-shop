@@ -61,7 +61,7 @@ const ProductAttributeSelection = ({ form }: ProductAttributeSelectionProps) => 
 
   return (
     <div className="space-y-4">
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col items-end justify-between gap-3 lg:flex-row lg:items-start">
         <div className="space-y-1">
           <h3 className="text-lg">Product Attributes</h3>
           <p className="text-accent-foreground text-xs">

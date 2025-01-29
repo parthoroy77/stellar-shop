@@ -38,7 +38,7 @@ const ProductVariant = ({ form }: { form: UseFormReturn<TCreateProductValidation
 
   return (
     <div>
-      <div className="flex items-start justify-between">
+      <div className="flex flex-col items-end justify-between gap-3 lg:flex-row lg:items-start">
         <div className="space-y-1">
           <h3>Product Variants</h3>
           <p className="text-accent-foreground text-xs">
