@@ -71,7 +71,7 @@ const CategoryListTable = <TData, TValue>({ data, columns, isLoading }: Category
           value={(table.getColumn("categoryName")?.getFilterValue() as string) ?? ""}
           onChange={(event) => table.getColumn("categoryName")?.setFilterValue(event.target.value)}
         />
-        <CategoryLevel />
+        <CategoryLevel onChange={(value) => table.getColumn("level")?.setFilterValue(value)} />
       </div>
       <div className="rounded-md border">
         <ShadTable>
@@ -134,9 +134,9 @@ const CategoryListTable = <TData, TValue>({ data, columns, isLoading }: Category
   );
 };
 
-const CategoryLevel = () => {
+const CategoryLevel = ({ onChange }: { onChange: (value: string) => void }) => {
   return (
-    <Select>
+    <Select onValueChange={onChange}>
       <SelectTrigger className="w-[100px] text-xs lg:w-[180px]">
         <SelectValue placeholder="Category Level" />
       </SelectTrigger>
