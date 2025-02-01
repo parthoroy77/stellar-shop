@@ -14,10 +14,11 @@ model Seller {
   updatedAt DateTime @updatedAt
 
   // references
-  user     User      @relation(fields: [userId], references: [id])
-  logo     File      @relation("LogoForSellers", fields: [shopLogoId], references: [id])
-  banner   File      @relation("BannerForSellers", fields: [shopBannerId], references: [id])
-  products Product[]
+  user         User       @relation(fields: [userId], references: [id])
+  logo         File       @relation("LogoForSellers", fields: [shopLogoId], references: [id])
+  banner       File       @relation("BannerForSellers", fields: [shopBannerId], references: [id])
+  products     Product[]
+  sellerOrders SubOrder[]
 
   @@index([shopName])
   @@map("Sellers")
