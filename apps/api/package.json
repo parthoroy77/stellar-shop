@@ -18,6 +18,7 @@
     "@repo/email-service": "*",
     "@repo/prisma": "*",
     "@repo/utils": "*",
+    "@repo/redis-config": "*",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",
     "colors": "^1.4.0",
