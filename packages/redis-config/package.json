@@ -1,0 +1,17 @@
+{
+  "name": "@repo/redis-config",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "@types/node": "^22.13.0",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "ioredis": "^5.4.2"
+  }
+}
