@@ -2,9 +2,11 @@ import prisma from "@repo/prisma/client";
 import { TProduct } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
-import { TCheckoutInitiatePayload, TCheckoutSession, TPackage } from "./checkout.types";
+import { TCheckoutInitiatePayload, TCheckoutSession } from "./checkout.types";
+import { initialCheckoutProductSelectArgs } from "./checkout.utils";
 
 const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePayload, userId: number) => {
+  // Initialize the checkout session with default values
   const checkoutSession: TCheckoutSession = {
     order: {
       totalAmount: 0,
@@ -18,80 +20,17 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
     shippingAddress: null,
   };
 
-  if (cartItemIds?.length) {
-    // Fetch cart items based on provided IDs
-    const cartItems = await prisma.cartItem.findMany({
-      where: {
-        id: { in: cartItemIds.map(Number) },
-        userId,
-      },
-    });
-
-    if (!cartItems.length) {
-      throw new ApiError(StatusCodes.NOT_FOUND, "Cart items not found!");
-    }
-
-    // Fetch products related to cart items
-    const cartProducts = await prisma.product.findMany({
-      where: {
-        id: { in: cartItems.map((item) => item.productId) },
-        status: "ACTIVE",
-      },
-      select: {
-        id: true,
-        stock: true,
-        price: true,
-        sellerId: true,
-        shippingOptions: {
-          select: {
-            option: {
-              select: {
-                charge: true,
-                id: true,
-                name: true,
-                estimateDays: true,
-              },
-            },
-          },
-        },
-        variants: {
-          where: {
-            OR: cartItems.flatMap((item) => [
-              item.productVariantId
-                ? {
-                    id: +item.productVariantId,
-                  }
-                : {
-                    isDefault: true,
-                  },
-            ]),
-          },
-          select: {
-            id: true,
-            price: true,
-            stock: true,
-            isDefault: true,
-          },
-        },
-        seller: {
-          select: {
-            shopName: true,
-            logo: {
-              select: {
-                fileSecureUrl: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    if (cartProducts.some((product) => !cartItemIds.includes(product.id))) {
-      throw new ApiError(StatusCodes.NOT_FOUND, "Some products in the cart are unavailable!");
-    }
-
-    const isStockOut = cartProducts.some((product) => {
-      const cartItem = cartItems.find((item) => item.productId === product.id);
+  /**
+   * Processes the checkout products and updates the checkout session.
+   * @param payload - Array of products to process
+   * @param products - Array of fetched product details
+   */
+  const processCheckoutProduct = (
+    payload: { productId: number; quantity: number; productVariantId?: number | null }[],
+    products: TProduct[]
+  ) => {
+    const isStockOut = products.some((product) => {
+      const cartItem = payload.find((item) => item.productId === product.id);
       if (!cartItem) return false;
       const selectedVariant = product.variants.find((variant) =>
         cartItem.productVariantId ? variant.id === cartItem.productVariantId : variant.isDefault
@@ -104,8 +43,8 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
       throw new ApiError(StatusCodes.CONFLICT, "Some products are out of stock!");
     }
 
-    cartItems.forEach((cart) => {
-      const product = cartProducts.find((product) => product.id === cart.productId);
+    payload.forEach((cart) => {
+      const product = products.find((product) => product.id === cart.productId);
 
       if (!product) return;
 
@@ -142,6 +81,62 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
       }
       checkoutSession.packages = checkoutSession.packages.filter((p) => p.shippingOptions.length > 0);
     });
+  };
+
+  // Handle checkout from cart
+  if (cartItemIds?.length) {
+    // Fetch cart items based on provided IDs
+    const cartItems = await prisma.cartItem.findMany({
+      where: {
+        id: { in: cartItemIds.map(Number) },
+        userId,
+      },
+    });
+
+    if (!cartItems.length) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Cart items not found!");
+    }
+
+    // Fetch products related to cart items
+    const cartProducts = await prisma.product.findMany({
+      where: {
+        id: { in: cartItems.map((item) => item.productId) },
+        status: "ACTIVE",
+      },
+      select: initialCheckoutProductSelectArgs({
+        OR: cartItems.flatMap((item) => [
+          item.productVariantId
+            ? {
+                id: +item.productVariantId,
+              }
+            : {
+                isDefault: true,
+              },
+        ]),
+      }),
+    });
+
+    if (cartProducts.some((product) => !cartItemIds.includes(product.id))) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Some products in the cart are unavailable!");
+    }
+
+    processCheckoutProduct(
+      cartItems.map((cart) => {
+        if (cart.productVariantId) {
+          return {
+            quantity: cart.quantity,
+            productId: cart.productId,
+            productVariantId: cart.productVariantId,
+          };
+        } else {
+          return {
+            quantity: cart.quantity,
+            productId: cart.productId,
+          };
+        }
+      }),
+      cartProducts as unknown as TProduct[]
+    );
   } else if (checkoutProduct) {
     // Validate checkout product input
     if (!checkoutProduct.productId || !checkoutProduct.quantity) {
@@ -151,80 +146,32 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
     // Fetch a single product for direct checkout
     const product = await prisma.product.findUnique({
       where: { id: +checkoutProduct.productId, status: "ACTIVE" },
-      select: {
-        id: true,
-        stock: true,
-        price: true,
-        sellerId: true,
-        shippingOptions: {
-          select: {
-            option: {
-              select: {
-                name: true,
-                estimateDays: true,
-                charge: true,
-                id: true,
-              },
-            },
-          },
-        },
-        variants: {
-          where: checkoutProduct.productVariantId
-            ? {
-                id: +checkoutProduct.productVariantId,
-              }
-            : {
-                isDefault: true,
-              },
-          select: {
-            id: true,
-            isDefault: true,
-            price: true,
-            stock: true,
-          },
-        },
-        seller: {
-          select: {
-            shopName: true,
-            logo: {
-              select: {
-                fileSecureUrl: true,
-              },
-            },
-          },
-        },
-      },
+      select: initialCheckoutProductSelectArgs(
+        checkoutProduct.productVariantId
+          ? {
+              id: +checkoutProduct.productVariantId,
+            }
+          : {
+              isDefault: true,
+            }
+      ),
     });
 
     if (!product) {
       throw new ApiError(StatusCodes.NOT_FOUND, "Product not found!");
     }
 
-    const selectedVariant = product.variants[0];
+    processCheckoutProduct(
+      [
+        {
+          quantity: +checkoutProduct.quantity,
+          productId: +checkoutProduct.productId,
+          productVariantId: checkoutProduct.productVariantId ? +checkoutProduct.productVariantId : null,
+        },
+      ],
+      [product as unknown as TProduct]
+    );
 
-    if (checkoutProduct.productVariantId) {
-      // Check stock for the selected variant or the default variant
-      if (!selectedVariant || selectedVariant.stock < +checkoutProduct.quantity) {
-        throw new ApiError(StatusCodes.CONFLICT, "Product is out of stock!");
-      }
-    } else {
-      if (product.stock < +checkoutProduct.quantity) {
-        throw new ApiError(StatusCodes.CONFLICT, "Product is out of stock!");
-      }
-    }
-
-    checkoutSession.order.totalAmount +=
-      (checkoutProduct.productVariantId ? selectedVariant?.price! : product.price) * +checkoutProduct.quantity;
-
-    const sellerPackage: TPackage = {
-      sellerId: product.sellerId,
-      ...product.seller,
-      shippingOptions: product.shippingOptions.map((pso) => pso.option),
-      items: [{ quantity: +checkoutProduct.quantity, ...(product as unknown as TProduct) }],
-      selectedShippingOption: null,
-    };
-
-    checkoutSession.packages = [sellerPackage];
     const { totalAmount, discountAmount } = checkoutSession.order;
     checkoutSession.order.grossAmount += totalAmount + discountAmount;
   } else {
