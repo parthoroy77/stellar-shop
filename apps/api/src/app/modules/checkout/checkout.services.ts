@@ -177,6 +177,8 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
   } else {
     throw new ApiError(StatusCodes.NOT_FOUND, "Invalid checkout request!");
   }
+
+  return checkoutSession;
 };
 
 export const CheckoutServices = { initiateCheckout };

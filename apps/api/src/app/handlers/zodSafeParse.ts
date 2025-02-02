@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 import asyncHandler from "./asyncHandler";
 
 const zodSafeParse = (schema: AnyZodObject) => {
-  return asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  return asyncHandler(async (req: Request, _res: Response, next: NextFunction) => {
     await schema.parseAsync({
       ...req.body,
       ...req.cookies,
@@ -14,7 +14,7 @@ const zodSafeParse = (schema: AnyZodObject) => {
 };
 
 export const zodCookieParse = (schema: AnyZodObject) => {
-  return asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+  return asyncHandler(async (req: Request, _res: Response, next: NextFunction) => {
     await schema.parseAsync({
       cookies: req.cookies,
     });

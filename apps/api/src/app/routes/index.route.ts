@@ -5,6 +5,7 @@ import AuthRoutes from "../modules/auth/auth.routes";
 import BrandRoutes from "../modules/brand/brand.routes";
 import CartRoutes from "../modules/cart/cart.routes";
 import CategoryRoutes from "../modules/category/category.routes";
+import CheckoutRoutes from "../modules/checkout/checkout.routes";
 import ProductRoutes from "../modules/product/product.routes";
 import SellerRoutes from "../modules/seller/seller.routes";
 import ShippingRoutes from "../modules/shipping/shipping.routes";
@@ -67,6 +68,10 @@ const routerModules: TRouteModule[] = [
   {
     path: "/users",
     route: UserRoutes,
+  },
+  {
+    path: "/checkout",
+    route: CheckoutRoutes,
   },
 ];
 
