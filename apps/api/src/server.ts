@@ -10,7 +10,7 @@ import logger from "./app/logger";
 import pingServer from "./app/utils/pingServer";
 
 let server: Server;
-let redis: Redis | null = null;
+export let redisInstance: Redis | null = null;
 
 async function main() {
   try {
@@ -20,13 +20,13 @@ async function main() {
     // TODO: Write proper redis config and uses (For current development it's fine.)
     if (config.use_redis) {
       // Initialize Redis
-      redis = createRedisClient();
+      redisInstance = createRedisClient();
 
-      redis.on("connect", () => {
+      redisInstance.on("connect", () => {
         logger.info(colors.green.bold("Redis connected successfully ✔️"));
       });
 
-      redis.on("error", (err) => {
+      redisInstance.on("error", (err) => {
         logger.error(colors.red.bold("Redis connection error:"), err);
       });
     }
@@ -69,8 +69,8 @@ process.on("uncaughtException", (error) => {
 });
 
 function cleanup() {
-  if (redis) {
-    redis.disconnect();
+  if (redisInstance) {
+    redisInstance.disconnect();
   }
   prisma.$disconnect();
   process.exit(1);
