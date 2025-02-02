@@ -8,11 +8,12 @@ export type TCheckoutInitiatePayload = {
     productVariantId?: string | number;
   };
 };
+
 export type TPackage = {
   sellerId: number;
   logo: { fileSecureUrl: string };
   shopName: string;
-  items: TProduct[];
+  items: Array<Partial<TProduct> & { quantity: number }>;
   shippingOptions: Partial<IShippingOption>[];
   selectedShippingOption: number | null;
 };

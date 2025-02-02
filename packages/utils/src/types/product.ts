@@ -70,6 +70,7 @@ export interface IProductVariant {
   stock: number;
   sku?: string;
   status: TVariantActivationStatus;
+  isDefault: boolean;
   createdAt: Date;
   updatedAt?: Date;
 }

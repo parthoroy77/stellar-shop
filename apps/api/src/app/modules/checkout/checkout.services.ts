@@ -1,12 +1,10 @@
-import prisma, { CartItem } from "@repo/prisma/client";
+import prisma from "@repo/prisma/client";
 import { TProduct } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
 import { TCheckoutInitiatePayload, TCheckoutSession, TPackage } from "./checkout.types";
 
 const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePayload, userId: number) => {
-  let products: Partial<TProduct>[] = [];
-  let cartItems: CartItem[] = [];
   const checkoutSession: TCheckoutSession = {
     order: {
       totalAmount: 0,
@@ -19,9 +17,10 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
     paymentMethodId: null,
     shippingAddress: null,
   };
+
   if (cartItemIds?.length) {
     // Fetch cart items based on provided IDs
-    cartItems = await prisma.cartItem.findMany({
+    const cartItems = await prisma.cartItem.findMany({
       where: {
         id: { in: cartItemIds.map(Number) },
         userId,
@@ -105,7 +104,44 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
       throw new ApiError(StatusCodes.CONFLICT, "Some products are out of stock!");
     }
 
-    products.push(...(cartProducts as unknown as TProduct[]));
+    cartItems.forEach((cart) => {
+      const product = cartProducts.find((product) => product.id === cart.productId);
+
+      if (!product) return;
+
+      const variant = cart.productVariantId ? product?.variants.find((v) => v.id === cart.productVariantId) : null;
+
+      if (variant) {
+        checkoutSession.order.totalAmount += variant.price * cart.quantity;
+      } else {
+        checkoutSession.order.totalAmount += product.price * cart.quantity;
+      }
+
+      let sellerPackage = checkoutSession.packages.find((p) => p.sellerId === product.sellerId);
+      if (!sellerPackage) {
+        sellerPackage = {
+          ...product.seller,
+          sellerId: product.sellerId,
+          items: [],
+          shippingOptions: [],
+          selectedShippingOption: null,
+        };
+        checkoutSession.packages.push(sellerPackage);
+        sellerPackage.items.push({
+          ...(product as unknown as TProduct),
+          quantity: cart.quantity,
+        });
+      }
+
+      if (sellerPackage.shippingOptions.length === 0) {
+        sellerPackage.shippingOptions = product.shippingOptions.map((pso) => pso.option);
+      } else {
+        sellerPackage.shippingOptions = sellerPackage.shippingOptions.filter((existingOption) =>
+          product.shippingOptions.some((productOption) => productOption.option.id === existingOption.id)
+        );
+      }
+      checkoutSession.packages = checkoutSession.packages.filter((p) => p.shippingOptions.length > 0);
+    });
   } else if (checkoutProduct) {
     // Validate checkout product input
     if (!checkoutProduct.productId || !checkoutProduct.quantity) {
@@ -184,7 +220,7 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
       sellerId: product.sellerId,
       ...product.seller,
       shippingOptions: product.shippingOptions.map((pso) => pso.option),
-      items: [product as unknown as TProduct],
+      items: [{ quantity: +checkoutProduct.quantity, ...(product as unknown as TProduct) }],
       selectedShippingOption: null,
     };
 
