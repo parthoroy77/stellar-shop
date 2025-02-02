@@ -33,4 +33,10 @@ export default {
   cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME as string,
   cloudinary_api_key: process.env.CLOUDINARY_API_KEY as string,
   cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET as string,
+
+  // redis
+  redis_host: process.env.REDIS_HOST as string,
+  redis_port: process.env.REDIS_PORT as string,
+  redis_password: process.env.REDIS_PASSWORD as string,
+  use_redis: (process.env.USE_REDIS === "true") as boolean,
 };

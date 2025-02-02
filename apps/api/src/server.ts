@@ -17,16 +17,19 @@ async function main() {
     // Connect to the database
     await prisma.$connect();
 
-    // Initialize Redis
-    redis = createRedisClient();
+    // TODO: Write proper redis config and uses (For current development it's fine.)
+    if (config.use_redis) {
+      // Initialize Redis
+      redis = createRedisClient();
 
-    redis.on("connect", () => {
-      logger.info(colors.green.bold("Redis connected successfully ✔️"));
-    });
+      redis.on("connect", () => {
+        logger.info(colors.green.bold("Redis connected successfully ✔️"));
+      });
 
-    redis.on("error", (err) => {
-      logger.error(colors.red.bold("Redis connection error:"), err);
-    });
+      redis.on("error", (err) => {
+        logger.error(colors.red.bold("Redis connection error:"), err);
+      });
+    }
 
     // Start the server
     server = app.listen(config.port, () => {
