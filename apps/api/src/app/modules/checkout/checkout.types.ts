@@ -1,4 +1,4 @@
-import { IShippingAddress, TProduct } from "@repo/utils/types";
+import { IShippingAddress, IShippingOption, TProduct } from "@repo/utils/types";
 
 export type TCheckoutInitiatePayload = {
   cartItemIds?: (string | number)[];
@@ -8,7 +8,14 @@ export type TCheckoutInitiatePayload = {
     productVariantId?: string | number;
   };
 };
-
+export type TPackage = {
+  sellerId: number;
+  logo: { fileSecureUrl: string };
+  shopName: string;
+  items: TProduct[];
+  shippingOptions: Partial<IShippingOption>[];
+  selectedShippingOption: number | null;
+};
 export type TCheckoutSession = {
   order: {
     totalAmount: number;
@@ -17,14 +24,7 @@ export type TCheckoutSession = {
     shippingAmount: number;
     netAmount: number;
   };
-  packages: {
-    sellerId: number;
-    logo: { fileSecureUrl: string };
-    shopName: string;
-    items: TProduct[];
-    shippingOptions: [];
-    selectedShippingOption: number;
-  }[];
-  shippingAddress: Partial<IShippingAddress>;
-  paymentMethodId: number;
+  packages: TPackage[];
+  shippingAddress: Partial<IShippingAddress> | null;
+  paymentMethodId: number | null;
 };

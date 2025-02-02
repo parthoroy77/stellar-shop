@@ -2,12 +2,12 @@ import prisma, { CartItem } from "@repo/prisma/client";
 import { TProduct } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
-import { TCheckoutInitiatePayload, TCheckoutSession } from "./checkout.types";
+import { TCheckoutInitiatePayload, TCheckoutSession, TPackage } from "./checkout.types";
 
-const initiate = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePayload, userId: number) => {
+const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePayload, userId: number) => {
   let products: Partial<TProduct>[] = [];
   let cartItems: CartItem[] = [];
-  const checkoutSession: Partial<TCheckoutSession> = {
+  const checkoutSession: TCheckoutSession = {
     order: {
       totalAmount: 0,
       grossAmount: 0,
@@ -16,6 +16,8 @@ const initiate = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePaylo
       discountAmount: 0,
     },
     packages: [],
+    paymentMethodId: null,
+    shippingAddress: null,
   };
   if (cartItemIds?.length) {
     // Fetch cart items based on provided IDs
@@ -47,6 +49,8 @@ const initiate = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePaylo
               select: {
                 charge: true,
                 id: true,
+                name: true,
+                estimateDays: true,
               },
             },
           },
@@ -116,10 +120,42 @@ const initiate = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePaylo
         stock: true,
         price: true,
         sellerId: true,
-        shippingOptions: { select: { option: { select: { charge: true, id: true } } } },
+        shippingOptions: {
+          select: {
+            option: {
+              select: {
+                name: true,
+                estimateDays: true,
+                charge: true,
+                id: true,
+              },
+            },
+          },
+        },
         variants: {
-          where: checkoutProduct.productVariantId ? { id: +checkoutProduct.productVariantId } : { isDefault: true },
-          select: { id: true, isDefault: true, price: true, stock: true },
+          where: checkoutProduct.productVariantId
+            ? {
+                id: +checkoutProduct.productVariantId,
+              }
+            : {
+                isDefault: true,
+              },
+          select: {
+            id: true,
+            isDefault: true,
+            price: true,
+            stock: true,
+          },
+        },
+        seller: {
+          select: {
+            shopName: true,
+            logo: {
+              select: {
+                fileSecureUrl: true,
+              },
+            },
+          },
         },
       },
     });
@@ -128,9 +164,9 @@ const initiate = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePaylo
       throw new ApiError(StatusCodes.NOT_FOUND, "Product not found!");
     }
 
-    if (checkoutProduct.productVariantId) {
-      const selectedVariant = product.variants[0]; // Assuming the variant returned is the one we want
+    const selectedVariant = product.variants[0];
 
+    if (checkoutProduct.productVariantId) {
       // Check stock for the selected variant or the default variant
       if (!selectedVariant || selectedVariant.stock < +checkoutProduct.quantity) {
         throw new ApiError(StatusCodes.CONFLICT, "Product is out of stock!");
@@ -141,8 +177,23 @@ const initiate = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePaylo
       }
     }
 
-    products.push(product as unknown as TProduct);
+    checkoutSession.order.totalAmount +=
+      (checkoutProduct.productVariantId ? selectedVariant?.price! : product.price) * +checkoutProduct.quantity;
+
+    const sellerPackage: TPackage = {
+      sellerId: product.sellerId,
+      ...product.seller,
+      shippingOptions: product.shippingOptions.map((pso) => pso.option),
+      items: [product as unknown as TProduct],
+      selectedShippingOption: null,
+    };
+
+    checkoutSession.packages = [sellerPackage];
+    const { totalAmount, discountAmount } = checkoutSession.order;
+    checkoutSession.order.grossAmount += totalAmount + discountAmount;
   } else {
     throw new ApiError(StatusCodes.NOT_FOUND, "Invalid checkout request!");
   }
 };
+
+export const CheckoutServices = { initiateCheckout };
