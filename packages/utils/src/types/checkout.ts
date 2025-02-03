@@ -1,4 +1,6 @@
+import { IShippingAddress } from "./address";
 import { IShippingOption } from "./delivery-and-shipping";
+import { IPaymentMethod } from "./payment";
 import { TProduct, TProductVariant } from "./product";
 
 export type TCheckoutInitiatePayload = {
@@ -28,6 +30,6 @@ export type TPackage = {
 
 export type TCheckoutSessionData = {
   packages: TPackage[];
-  shippingAddress: number | null;
-  paymentMethodId: number | null;
+  shippingAddress: Partial<IShippingAddress> | null;
+  paymentMethod: Pick<IPaymentMethod, "id" | "methodName"> | null;
 };

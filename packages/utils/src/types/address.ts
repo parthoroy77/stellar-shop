@@ -31,7 +31,7 @@ export interface IShippingAddress {
   city: string;
   state: string;
   zipCode: string;
-  type: "HOME" | "WORK";
+  type: "HOME" | "WORK" | "BUSINESS";
   isPrimary: boolean;
   createdAt: Date;
   updatedAt?: Date;

@@ -1,4 +1,4 @@
-import prisma from "@repo/prisma/client";
+import prisma, { PaymentMethod, ShippingAddress } from "@repo/prisma/client";
 import {
   TCheckoutInitiatePayload,
   TCheckoutSessionData,
@@ -369,10 +369,25 @@ const getSession = async (userId: number): Promise<TCheckoutSessionData> => {
     }
   });
 
+  let shippingAddress: Partial<ShippingAddress> | null = null;
+  let paymentMethod: Pick<PaymentMethod, "methodName" | "id"> | null = null;
+  if (checkoutSession.shippingAddress) {
+    shippingAddress = await prisma.shippingAddress.findUnique({
+      where: { id: +checkoutSession.shippingAddress },
+      omit: { createdAt: true, updatedAt: true },
+    });
+  }
+  if (checkoutSession.paymentMethodId) {
+    paymentMethod = await prisma.paymentMethod.findUnique({
+      where: { id: +checkoutSession.paymentMethodId, status: "ACTIVE" },
+      select: { id: true, methodName: true, description: true },
+    });
+  }
+
   return {
     packages: packages,
-    shippingAddress: null,
-    paymentMethodId: null,
+    shippingAddress,
+    paymentMethod,
   };
 };
 

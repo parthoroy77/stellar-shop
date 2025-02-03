@@ -1,16 +1,20 @@
 "use client";
 import { addShippingAddress, getAllShippingAddresses } from "@/actions/address";
+import { updateUserCheckoutData } from "@/actions/checkout";
 import { useQueryData } from "@repo/tanstack-query";
 import { RadioGroup, RadioGroupItem } from "@ui/index";
 import AddShippingAddressModalForm from "../Forms/Profile/shipping-address-modal-form";
 import ShippingAddressCard from "../ui/shipping-address-cards/shipping-address-card";
 import ShippingAddressCardSkeleton from "../ui/shipping-address-cards/shipping-address-card-skeleton";
 
-const ShippingAndBilling = () => {
+const ShippingAndBilling = ({ selectedShippingAddress }: { selectedShippingAddress?: number | null }) => {
   const { data = [], isFetching } = useQueryData(["shipping-addresses"], () => getAllShippingAddresses(), {
     refetchOnWindowFocus: false,
     staleTime: 60 * 1000,
   });
+  const handleUpdate = (value: string) => {
+    updateUserCheckoutData({ type: "shippingAddressUpdate", shippingAddressId: +value });
+  };
   return (
     <div className="space-y-1">
       <div className="flex justify-between">
@@ -21,7 +25,12 @@ const ShippingAndBilling = () => {
         {!isFetching ? (
           data?.length > 0 ? (
             data?.map((address) => (
-              <RadioGroup key={address.id} className="relative">
+              <RadioGroup
+                onValueChange={handleUpdate}
+                key={address.id}
+                defaultValue={selectedShippingAddress?.toString()}
+                className="relative"
+              >
                 <ShippingAddressCard address={address} />
                 <RadioGroupItem className="absolute bottom-2 right-2" value={address.id.toString()} />
               </RadioGroup>
