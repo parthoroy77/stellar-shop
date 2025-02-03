@@ -2,10 +2,11 @@ import prisma from "@repo/prisma/client";
 import { TProduct } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
 import { redisInstance } from "../../../server";
+import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
 import { CHECKOUT_SESSION_CACHE_TIME } from "./checkout.constants";
-import { TCheckoutInitiatePayload, TCheckoutSession } from "./checkout.types";
-import { getCheckoutCacheKey, initialCheckoutProductSelectArgs } from "./checkout.utils";
+import { TCheckoutInitiatePayload, TCheckoutSession, TCheckoutSessionData, TPackage } from "./checkout.types";
+import { getCheckoutCacheKey, initialCheckoutProductSelectArgs, parseSessionData } from "./checkout.utils";
 
 const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePayload, userId: number) => {
   // Initialize the checkout session with default values
@@ -173,11 +174,199 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
     multi.hset(cacheKey, field, JSON.stringify(value));
   }
 
-  // Set expiration for the entire hash key (the checkout session)
-  multi.expire(cacheKey, CHECKOUT_SESSION_CACHE_TIME);
+  if (config.NODE_ENV === "production") {
+    // Set expiration for the entire hash key (the checkout session)
+    multi.expire(cacheKey, CHECKOUT_SESSION_CACHE_TIME);
+  }
 
   // Execute all the Redis commands (hset and expire) in one batch
   await multi.exec();
 };
 
-export const CheckoutServices = { initiateCheckout };
+const getSession = async (userId: number): Promise<TCheckoutSessionData> => {
+  // Generate a unique cache key for the user's checkout session
+  const cacheKey = getCheckoutCacheKey(userId);
+
+  if (!redisInstance) {
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Internal server error!");
+  }
+
+  // Retrieve checkout session data from Redis cache
+  const strCache = await redisInstance.hgetall(cacheKey);
+
+  if (!strCache || !Object.keys(strCache).length) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "No checkout session found!");
+  }
+
+  // Parse the session data and ensure correct structure
+  const checkoutSession = parseSessionData(strCache) as TCheckoutSession;
+
+  // Arrays to store IDs for database queries
+  const productIds: number[] = [];
+  const productVariantIds: number[] = [];
+  const shippingOptionIds: number[] = [];
+
+  // Arrays to store IDs for database queries
+  checkoutSession.packages.forEach((pack) => {
+    pack.items.forEach((item) => {
+      productIds.push(item.productId);
+      if (item.productVariantId) {
+        productVariantIds.push(item.productVariantId);
+      }
+      shippingOptionIds.push(...pack.shippingOptions);
+    });
+  });
+
+  // Fetch product details from the database
+  const products = await prisma.product.findMany({
+    where: {
+      id: {
+        in: productIds,
+      },
+    },
+    select: {
+      id: true,
+      productName: true,
+      sellerId: true,
+      images: {
+        take: 1,
+        select: { file: { select: { fileSecureUrl: true } } },
+      },
+      attributes: {
+        select: {
+          attributeValue: {
+            select: {
+              id: true,
+              value: true,
+              attribute: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      },
+      seller: {
+        select: {
+          shopName: true,
+          logo: {
+            select: {
+              fileSecureUrl: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!productIds.every((id) => products.some((p) => p.id === id))) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Products not found!");
+  }
+
+  // Fetch product variants from the database if needed
+  let variantsMap = new Map<number, any>();
+  if (productVariantIds.length) {
+    const variants = await prisma.productVariant.findMany({
+      where: {
+        id: {
+          in: productVariantIds,
+        },
+      },
+      select: {
+        id: true,
+        productId: true,
+        price: true,
+        attributes: {
+          select: {
+            attributeValue: {
+              select: {
+                id: true,
+                value: true,
+                attribute: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    // Store product variants in a map for quick lookup
+    variants.forEach((v) => {
+      variantsMap.set(v.id, v);
+    });
+  }
+
+  // Convert product list to a map for quick lookup
+  const productMap = new Map(products.map((p) => [p.id, p]));
+
+  // Fetch shipping options from the database
+  let shippingOptionsMap = new Map<number, any>();
+  if (shippingOptionIds.length) {
+    const shippingOptions = await prisma.shippingOption.findMany({
+      where: { id: { in: shippingOptionIds } },
+      select: {
+        id: true,
+        name: true,
+        charge: true,
+        estimateDays: true,
+      },
+    });
+
+    // Store shipping options in a map for quick lookup
+    shippingOptions.forEach((option) => {
+      shippingOptionsMap.set(option.id, option);
+    });
+  }
+
+  // Initialize an array to store structured package data
+  const packages: TPackage[] = [];
+
+  // Process checkout session packages and organize data
+  checkoutSession.packages.forEach((pack) => {
+    // Retrieve valid shipping options
+    const sellerPackage = packages.find((p) => p.sellerId === pack.sellerId);
+
+    const shippingOptions = pack.shippingOptions.map((id) => shippingOptionsMap.get(id)).filter(Boolean); // Ensure only valid options are included
+
+    // Check if a package for the seller already exists
+    if (!sellerPackage) {
+      // Create a new seller package if not found
+      packages.push({
+        sellerId: pack.sellerId,
+        ...productMap.get(pack.items[0]?.productId!)?.seller!, // Get seller info
+        selectedShippingOption: shippingOptions.length ? shippingOptions[0] : null, // Default to first shipping option
+        items: pack.items.map((item) => ({
+          ...item,
+          product: productMap.get(item.productId) || null,
+          variant: item.productVariantId ? variantsMap.get(item.productVariantId) : null,
+          quantity: item.quantity,
+        })),
+        shippingOptions,
+      });
+    } else {
+      // Add items to the seller package
+      sellerPackage.items.push(
+        ...pack.items.map((item) => ({
+          ...item,
+          product: productMap.get(item.productId) || null,
+          variant: item.productVariantId ? variantsMap.get(item.productVariantId) : null,
+        }))
+      );
+    }
+  });
+
+  return {
+    packages: packages,
+    shippingAddress: null,
+    paymentMethodId: null,
+  };
+};
+
+export const CheckoutServices = { initiateCheckout, getSession };

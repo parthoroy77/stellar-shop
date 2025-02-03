@@ -15,6 +15,8 @@ router.post(
   CheckoutControllers.initializeCheckout
 );
 
+router.get("/session", authMiddleware(UserRole.BUYER), CheckoutControllers.getUserCheckoutSession);
+
 const CheckoutRoutes = router;
 
 export default CheckoutRoutes;

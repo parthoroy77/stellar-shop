@@ -27,6 +27,18 @@ const initializeCheckout = asyncHandler(async (req, res) => {
   });
 });
 
+const getUserCheckoutSession = asyncHandler(async (req, res) => {
+  const result = await CheckoutServices.getSession(req.user.id!);
+
+  ApiResponse(res, {
+    data: result,
+    statusCode: StatusCodes.OK,
+    message: "Checkout session fetched successfully!",
+    success: true,
+  });
+});
+
 export const CheckoutControllers = {
   initializeCheckout,
+  getUserCheckoutSession,
 };
