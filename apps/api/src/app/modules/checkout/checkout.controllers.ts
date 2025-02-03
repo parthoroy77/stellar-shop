@@ -1,8 +1,8 @@
+import { TCheckoutInitiatePayload } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
 import { CheckoutServices } from "./checkout.services";
-import { TCheckoutInitiatePayload } from "./checkout.types";
 
 const initializeCheckout = asyncHandler(async (req, res) => {
   const body = req.body;
