@@ -1,11 +1,11 @@
 import { IShippingAddress, IShippingOption, TProduct } from "@repo/utils/types";
 
 export type TCheckoutInitiatePayload = {
-  cartItemIds?: (string | number)[];
-  checkoutProduct: {
-    productId: string | number;
-    quantity: number | string;
-    productVariantId?: string | number;
+  cartItemIds?: number[];
+  checkoutProduct?: {
+    productId: number;
+    quantity: number;
+    productVariantId?: number | null;
   };
 };
 

@@ -6,6 +6,7 @@ export const initialCheckoutProductSelectArgs = (
   return {
     id: true,
     stock: true,
+    productName: true,
     price: true,
     sellerId: true,
     images: {
