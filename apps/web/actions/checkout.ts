@@ -2,6 +2,7 @@
 
 import { serverFetcher } from "@/lib/server-fetcher";
 import { TCheckoutInitiatePayload, TCheckoutSessionData } from "@repo/utils/types";
+import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 export const initiateCheckout = async (payload: TCheckoutInitiatePayload, type: "cart" | "product") => {
@@ -14,6 +15,7 @@ export const initiateCheckout = async (payload: TCheckoutInitiatePayload, type: 
   });
 
   if (result.success) {
+    revalidateTag("checkout-session");
     redirect("/checkout");
   }
 

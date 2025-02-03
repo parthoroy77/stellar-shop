@@ -228,6 +228,7 @@ const getSession = async (userId: number): Promise<TCheckoutSessionData> => {
       id: true,
       productName: true,
       sellerId: true,
+      price: true,
       images: {
         take: 1,
         select: { file: { select: { fileSecureUrl: true } } },
@@ -341,10 +342,10 @@ const getSession = async (userId: number): Promise<TCheckoutSessionData> => {
       packages.push({
         sellerId: pack.sellerId,
         ...productMap.get(pack.items[0]?.productId!)?.seller!, // Get seller info
-        selectedShippingOption: shippingOptions.length ? shippingOptions[0] : null, // Default to first shipping option
+        selectedShippingOption: shippingOptions.length ? shippingOptions[0].id : null, // Default to first shipping option
         items: pack.items.map((item) => ({
           ...item,
-          product: productMap.get(item.productId) || null,
+          ...((productMap.get(item.productId) || null) as unknown as TProduct),
           variant: item.productVariantId ? variantsMap.get(item.productVariantId) : null,
           quantity: item.quantity,
         })),
@@ -354,9 +355,9 @@ const getSession = async (userId: number): Promise<TCheckoutSessionData> => {
       // Add items to the seller package
       sellerPackage.items.push(
         ...pack.items.map((item) => ({
-          ...item,
-          product: productMap.get(item.productId) || null,
+          ...((productMap.get(item.productId) || null) as unknown as TProduct),
           variant: item.productVariantId ? variantsMap.get(item.productVariantId) : null,
+          quantity: item.quantity,
         }))
       );
     }
