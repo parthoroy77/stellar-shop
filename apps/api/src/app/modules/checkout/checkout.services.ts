@@ -500,7 +500,7 @@ const summary = async (userId: number) => {
   let grossAmount = 0;
   let discountAmount = 0;
   let netAmount = 0;
-
+  let totalItem = 0;
   // Iterate over each package (Seller's shipment)
   for (const { shippingOptions, selectedShippingOption, items } of packages) {
     // Ensure selected shipping option exists in the package's available options
@@ -514,6 +514,7 @@ const summary = async (userId: number) => {
     // Collect product and variant IDs from package items
     for (const item of items) {
       productIds.push(item.productId);
+      totalItem += item.quantity;
       if (item.productVariantId) {
         productVariantIds.push(item.productVariantId);
       }
@@ -583,6 +584,7 @@ const summary = async (userId: number) => {
     netAmount,
     grossAmount,
     discountAmount,
+    totalItem,
   };
 };
 

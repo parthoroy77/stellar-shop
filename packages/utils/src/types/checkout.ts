@@ -33,3 +33,12 @@ export type TCheckoutSessionData = {
   shippingAddress: Partial<IShippingAddress> | null;
   paymentMethod: Pick<IPaymentMethod, "id" | "methodName"> | null;
 };
+
+export type TCheckoutSummaryResponse = {
+  totalAmount: number;
+  totalShippingFee: number;
+  netAmount: number;
+  grossAmount: number;
+  discountAmount: number;
+  totalItem: 0;
+};

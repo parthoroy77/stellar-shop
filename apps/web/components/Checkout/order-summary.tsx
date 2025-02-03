@@ -1,23 +1,27 @@
+import { getCheckoutSummary } from "@/actions/checkout";
 import { Button } from "@ui/index";
 
-const OrderSummary = () => {
-  const { subTotal, total, totalItem, shippingFee } = { subTotal: 0, total: 0, totalItem: 0, shippingFee: 0 };
-
+const OrderSummary = async () => {
+  const { totalAmount, totalShippingFee, discountAmount, netAmount, totalItem } = await getCheckoutSummary();
   return (
     <div className="h-fit rounded-md border-2 p-4 shadow-sm lg:p-5">
       <h5 className="text-sm font-medium uppercase">Order Summary</h5>
       <div className="text-accent-foreground divide-y text-sm font-medium *:py-3">
         <div className="flex items-center justify-between">
           <span>Subtotal ({totalItem} items)</span>
-          <span className="text-black">${subTotal}</span>
+          <span className="text-black">${totalAmount}</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <span>Discount</span>
+          <span className="text-black">+ ${discountAmount}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Shipping</span>
-          <span className="text-black">+ ${shippingFee}</span>
+          <span className="text-black">+ ${totalShippingFee}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Total</span>
-          <span className="text-black">${total}</span>
+          <span className="text-black">${netAmount}</span>
         </div>
       </div>
       <div>
