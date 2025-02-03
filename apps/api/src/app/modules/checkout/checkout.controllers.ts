@@ -39,7 +39,7 @@ const getUserCheckoutSession = asyncHandler(async (req, res) => {
 });
 
 const updateCheckoutSession = asyncHandler(async (req, res) => {
-  const { type, shippingAddressId, paymentMethodId, shippingOption } = req.body as TCheckoutUpdatePayload;
+  const { type, shippingAddressId, product, paymentMethodId, shippingOption } = req.body as TCheckoutUpdatePayload;
 
   const payload: TCheckoutUpdatePayload = {
     type,
@@ -49,6 +49,12 @@ const updateCheckoutSession = asyncHandler(async (req, res) => {
       shippingOption: {
         sellerId: +shippingOption!.sellerId,
         shippingOptionId: +shippingOption!.shippingOptionId,
+      },
+    }),
+    ...(type === "productDelete" && {
+      product: {
+        sellerId: +product!.sellerId,
+        productId: +product!.productId,
       },
     }),
   };

@@ -13,7 +13,7 @@ const OrderSummary = async () => {
         </div>
         <div className="flex items-center justify-between">
           <span>Discount</span>
-          <span className="text-black">+ ${discountAmount}</span>
+          <span className="text-black">- ${discountAmount}</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Shipping</span>

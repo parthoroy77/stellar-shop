@@ -13,9 +13,10 @@ export type TCheckoutInitiatePayload = {
 };
 
 export type TCheckoutUpdatePayload = {
-  type: "shippingAddressUpdate" | "shippingOptionUpdate" | "paymentMethodUpdate";
+  type: "shippingAddressUpdate" | "shippingOptionUpdate" | "paymentMethodUpdate" | "productDelete";
   shippingAddressId?: number;
   shippingOption?: { sellerId: number; shippingOptionId: number };
+  product?: { sellerId: number; productId: number };
   paymentMethodId?: number;
 };
 

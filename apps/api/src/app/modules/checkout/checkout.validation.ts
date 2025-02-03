@@ -29,4 +29,11 @@ export const checkoutUpdateValidationSchema = z.discriminatedUnion("type", [
       shippingOptionId: z.string().or(z.number()),
     }),
   }),
+  z.object({
+    type: z.literal("productDelete"),
+    product: z.object({
+      sellerId: z.string().or(z.number()),
+      productId: z.string().or(z.number()),
+    }),
+  }),
 ]);

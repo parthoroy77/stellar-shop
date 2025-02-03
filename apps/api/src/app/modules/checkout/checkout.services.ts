@@ -402,7 +402,7 @@ const getSession = async (userId: number): Promise<TCheckoutSessionData> => {
 };
 
 const update = async (
-  { type, shippingAddressId, shippingOption, paymentMethodId }: TCheckoutUpdatePayload,
+  { type, shippingAddressId, shippingOption, paymentMethodId, product }: TCheckoutUpdatePayload,
   userId: number
 ) => {
   // Generate a unique cache key for the user's checkout session
@@ -485,7 +485,34 @@ const update = async (
       }
 
       return updateRedis("packages", updatedPackages, "Shipping option updated!");
+    case "productDelete":
+      if (!product) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Payload not found!");
+      }
 
+      const isOnlyProduct = () => {
+        let product = 0;
+        checkoutSession.packages.forEach((pack) => {
+          product += pack.items.length;
+        });
+        return product === 0;
+      };
+
+      if (isOnlyProduct()) {
+        throw new ApiError(StatusCodes.CONFLICT, "You cannot delete this product!");
+      }
+
+      const newPackages = checkoutSession.packages.map((pack) => {
+        if (pack.sellerId === product.sellerId) {
+          return {
+            ...pack,
+            items: pack.items.filter((item) => item.productId !== product.productId),
+          };
+        }
+        return pack;
+      });
+
+      return updateRedis("packages", newPackages, "Package updated successfully!");
     default:
       throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid update type!");
   }
