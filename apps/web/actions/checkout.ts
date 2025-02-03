@@ -24,7 +24,7 @@ export const initiateCheckout = async (payload: TCheckoutInitiatePayload, type: 
 
 export const getUserCheckoutSession = async () => {
   const result = await serverFetcher<TCheckoutSessionData | null>("/checkout/session", {
-    next: { revalidate: 60, tags: ["checkout-session"] },
+    next: { revalidate: 30, tags: ["checkout-session"] },
   });
   return result.data;
 };

@@ -19,6 +19,9 @@ router.post(
 // Get user current checkout session
 router.get("/session", authMiddleware(UserRole.BUYER), CheckoutControllers.getUserCheckoutSession);
 
+// Get user current checkout summary
+router.get("/summary", authMiddleware(UserRole.BUYER), CheckoutControllers.getCheckoutSummary);
+
 // Update checkout session fields
 router.put(
   "/update",

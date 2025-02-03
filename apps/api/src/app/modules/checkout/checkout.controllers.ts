@@ -63,8 +63,20 @@ const updateCheckoutSession = asyncHandler(async (req, res) => {
   });
 });
 
+const getCheckoutSummary = asyncHandler(async (req, res) => {
+  const result = await CheckoutServices.summary(req.user.id!);
+
+  ApiResponse(res, {
+    data: result,
+    message: "Checkout summary fetched successfully",
+    statusCode: StatusCodes.OK,
+    success: true,
+  });
+});
+
 export const CheckoutControllers = {
   initializeCheckout,
   getUserCheckoutSession,
   updateCheckoutSession,
+  getCheckoutSummary,
 };

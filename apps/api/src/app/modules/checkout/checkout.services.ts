@@ -1,4 +1,4 @@
-import prisma, { PaymentMethod, ShippingAddress } from "@repo/prisma/client";
+import prisma, { PaymentMethod, ProductVariant, ShippingAddress } from "@repo/prisma/client";
 import {
   TCheckoutInitiatePayload,
   TCheckoutSessionData,
@@ -12,7 +12,12 @@ import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
 import { CHECKOUT_SESSION_CACHE_TIME } from "./checkout.constants";
 import { TCheckoutSession } from "./checkout.types";
-import { getCheckoutCacheKey, initialCheckoutProductSelectArgs, parseSessionData } from "./checkout.utils";
+import {
+  getCheckoutCacheKey,
+  getCheckoutSession,
+  initialCheckoutProductSelectArgs,
+  parseSessionData,
+} from "./checkout.utils";
 
 const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePayload, userId: number) => {
   // Initialize the checkout session with default values
@@ -78,6 +83,7 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
 
       if (!sellerPackage.shippingOptions.length) {
         sellerPackage.shippingOptions = product.shippingOptions.map((pso) => pso.option.id);
+        sellerPackage.selectedShippingOption = sellerPackage.shippingOptions[0] ?? null;
       } else {
         sellerPackage.shippingOptions = sellerPackage.shippingOptions.filter((existingOptionId) =>
           product.shippingOptions.some((pso) => pso.option.id === existingOptionId)
@@ -402,17 +408,8 @@ const update = async (
   // Generate a unique cache key for the user's checkout session
   const cacheKey = getCheckoutCacheKey(userId);
 
-  if (!redisInstance) {
-    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Internal server error!");
-  }
-
-  const strCache = await redisInstance.hgetall(cacheKey);
-
-  if (!strCache || !Object.keys(strCache).length) {
-    throw new ApiError(StatusCodes.NOT_FOUND, "No checkout session found!");
-  }
-
-  const checkoutSession = parseSessionData(strCache) as TCheckoutSession;
+  // Get user checkout session
+  const checkoutSession = await getCheckoutSession(userId);
 
   // Helper function to update Redis
   const updateRedis = async (field: string, value: unknown, message: string) => {
@@ -494,4 +491,99 @@ const update = async (
   }
 };
 
-export const CheckoutServices = { initiateCheckout, getSession, update };
+const summary = async (userId: number) => {
+  // Fetch the user's checkout session from Redis
+  const { packages } = await getCheckoutSession(userId);
+
+  let totalAmount = 0;
+  let totalShippingFee = 0;
+  let grossAmount = 0;
+  let discountAmount = 0;
+  let netAmount = 0;
+
+  // Iterate over each package (Seller's shipment)
+  for (const { shippingOptions, selectedShippingOption, items } of packages) {
+    // Ensure selected shipping option exists in the package's available options
+    if (!shippingOptions.includes(selectedShippingOption!)) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Selected shipping option is invalid!");
+    }
+
+    const productIds: number[] = [];
+    const productVariantIds: number[] = [];
+
+    // Collect product and variant IDs from package items
+    for (const item of items) {
+      productIds.push(item.productId);
+      if (item.productVariantId) {
+        productVariantIds.push(item.productVariantId);
+      }
+    }
+
+    // Fetch product details (price & stock) from the database
+    const products = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+      select: { id: true, price: true, stock: true },
+    });
+
+    // Fetch variant details if applicable
+    let variants: Pick<ProductVariant, "price" | "stock" | "productId" | "id">[] = [];
+    if (productVariantIds.length) {
+      variants = await prisma.productVariant.findMany({
+        where: { id: { in: productVariantIds } },
+        select: { id: true, price: true, stock: true, productId: true },
+      });
+    }
+
+    // Ensure that all variants belong to their respective products
+    if (variants.some((v) => !productIds.includes(v.productId))) {
+      throw new ApiError(StatusCodes.CONFLICT, "Invalid product variant!");
+    }
+
+    // Calculate total product cost
+    for (const item of items) {
+      const product = products.find((p) => p.id === item.productId);
+      const variant = variants.find((v) => v.id === item.productVariantId) || null;
+
+      if (!product) {
+        throw new ApiError(StatusCodes.NOT_FOUND, `Product with ID ${item.productId} not found!`);
+      }
+
+      const price = variant ? variant.price : product.price;
+      const stock = variant ? variant.stock : product.stock;
+
+      // Ensure item quantity does not exceed stock availability
+      if (item.quantity > stock) {
+        throw new ApiError(StatusCodes.CONFLICT, `Product ID ${item.productId} is out of stock!`);
+      }
+
+      totalAmount += price * item.quantity;
+    }
+
+    // Fetch shipping option details
+    const shippingOption = await prisma.shippingOption.findUnique({
+      where: { id: selectedShippingOption! },
+      select: { id: true, charge: true },
+    });
+
+    if (!shippingOption) {
+      throw new ApiError(StatusCodes.NOT_FOUND, "Shipping option not found!");
+    }
+
+    // Add shipping fee to total
+    totalShippingFee += shippingOption.charge;
+  }
+
+  // Calculate the final order amounts
+  grossAmount = totalAmount - discountAmount;
+  netAmount = grossAmount + totalShippingFee;
+
+  return {
+    totalAmount,
+    totalShippingFee,
+    netAmount,
+    grossAmount,
+    discountAmount,
+  };
+};
+
+export const CheckoutServices = { initiateCheckout, getSession, update, summary };
