@@ -12,8 +12,8 @@ const ShippingAndBilling = ({ selectedShippingAddress }: { selectedShippingAddre
     refetchOnWindowFocus: false,
     staleTime: 60 * 1000,
   });
-  const handleUpdate = (value: string) => {
-    updateUserCheckoutData({ type: "shippingAddressUpdate", shippingAddressId: +value });
+  const handleUpdate = async (value: string) => {
+    await updateUserCheckoutData({ type: "shippingAddressUpdate", shippingAddressId: +value });
   };
   return (
     <div className="space-y-1">

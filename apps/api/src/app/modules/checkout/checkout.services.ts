@@ -348,7 +348,11 @@ const getSession = async (userId: number): Promise<TCheckoutSessionData> => {
       packages.push({
         sellerId: pack.sellerId,
         ...productMap.get(pack.items[0]?.productId!)?.seller!, // Get seller info
-        selectedShippingOption: shippingOptions.length ? shippingOptions[0].id : null, // Default to first shipping option
+        selectedShippingOption: pack.selectedShippingOption
+          ? pack.selectedShippingOption // If selected shipping option is available return that.
+          : shippingOptions.length
+            ? shippingOptions[0].id
+            : null, // Default to first shipping option
         items: pack.items.map((item) => ({
           ...item,
           ...((productMap.get(item.productId) || null) as unknown as TProduct),
