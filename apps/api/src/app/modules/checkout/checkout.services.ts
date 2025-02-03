@@ -3,9 +3,9 @@ import { TProduct } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
 import { redisInstance } from "../../../server";
 import { ApiError } from "../../handlers/ApiError";
-import { CHECKOUT_SESSION_CACHE_PREFIX, CHECKOUT_SESSION_CACHE_TIME } from "./checkout.constants";
+import { CHECKOUT_SESSION_CACHE_TIME } from "./checkout.constants";
 import { TCheckoutInitiatePayload, TCheckoutSession } from "./checkout.types";
-import { initialCheckoutProductSelectArgs } from "./checkout.utils";
+import { getCheckoutCacheKey, initialCheckoutProductSelectArgs } from "./checkout.utils";
 
 const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePayload, userId: number) => {
   // Initialize the checkout session with default values
@@ -14,7 +14,7 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
     paymentMethodId: null,
     shippingAddress: null,
   };
-  const cacheKey = CHECKOUT_SESSION_CACHE_PREFIX + userId.toString();
+  const cacheKey = getCheckoutCacheKey(userId);
   if (!redisInstance) {
     throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "An error occurred while performing task!");
   }
@@ -164,8 +164,20 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
     throw new ApiError(StatusCodes.NOT_FOUND, "Invalid checkout request!");
   }
 
-  // Store the checkout session in Redis cache for 10 minutes
-  await redisInstance.setex(cacheKey, CHECKOUT_SESSION_CACHE_TIME, JSON.stringify(checkoutSession));
+  // Start a multi-batch operation
+  const multi = redisInstance.multi();
+
+  // Insert all the products and sellers into Redis as individual hash fields
+  for (const [field, value] of Object.entries(checkoutSession)) {
+    // Store each product or seller as a separate field in the hash
+    multi.hset(cacheKey, field, JSON.stringify(value));
+  }
+
+  // Set expiration for the entire hash key (the checkout session)
+  multi.expire(cacheKey, CHECKOUT_SESSION_CACHE_TIME);
+
+  // Execute all the Redis commands (hset and expire) in one batch
+  await multi.exec();
 };
 
 export const CheckoutServices = { initiateCheckout };

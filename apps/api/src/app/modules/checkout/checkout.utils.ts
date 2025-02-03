@@ -1,4 +1,5 @@
 import { Prisma } from "@repo/prisma/client";
+import { CHECKOUT_SESSION_CACHE_PREFIX } from "./checkout.constants";
 
 export const initialCheckoutProductSelectArgs = (
   variantWhere: Prisma.ProductVariantWhereInput
@@ -24,4 +25,8 @@ export const initialCheckoutProductSelectArgs = (
       },
     },
   };
+};
+
+export const getCheckoutCacheKey = (userId: number) => {
+  return CHECKOUT_SESSION_CACHE_PREFIX + userId;
 };
