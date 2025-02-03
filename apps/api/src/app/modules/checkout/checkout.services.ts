@@ -411,13 +411,35 @@ const update = async (
       if (checkoutSession.paymentMethodId === paymentMethodId) {
         defaultReturn();
       }
-      return updateRedis("paymentMethodId", paymentMethodId, "Payment method updated!");
+
+      // Validate payment method exists
+      const paymentMethod = await prisma.paymentMethod.findUnique({
+        where: { id: paymentMethodId, status: "ACTIVE" },
+        select: { id: true },
+      });
+
+      if (!paymentMethod) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Invalid payment method");
+      }
+
+      return updateRedis("paymentMethodId", paymentMethod.id, "Payment method updated!");
 
     case "shippingAddressUpdate":
       if (checkoutSession.shippingAddress === shippingAddressId) {
         defaultReturn();
       }
-      return updateRedis("shippingAddress", shippingAddressId, "Shipping address updated!");
+
+      // Validate shipping address exists
+      const shippingAddress = await prisma.shippingAddress.findUnique({
+        where: { id: shippingAddressId, userId },
+        select: { id: true },
+      });
+
+      if (!shippingAddress) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Shipping address not found!");
+      }
+
+      return updateRedis("shippingAddress", shippingAddress.id, "Shipping address updated!");
 
     case "shippingOptionUpdate":
       if (!shippingOption) {
@@ -425,10 +447,21 @@ const update = async (
       }
 
       const { sellerId, shippingOptionId } = shippingOption;
-
+      const [seller, option] = await Promise.all([
+        prisma.seller.findUnique({ where: { id: sellerId, status: "ACTIVE" }, select: { id: true } }),
+        prisma.shippingOption.findUnique({ where: { id: shippingOptionId }, select: { id: true } }),
+      ]);
       const updatedPackages = checkoutSession.packages.map((pack) =>
         pack.sellerId === sellerId ? { ...pack, selectedShippingOption: shippingOptionId } : pack
       );
+
+      if (!seller) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Seller not found!");
+      }
+
+      if (!option) {
+        throw new ApiError(StatusCodes.NOT_FOUND, "Invalid shipping option!");
+      }
 
       // If nothing changed, return early
       if (JSON.stringify(updatedPackages) === JSON.stringify(checkoutSession.packages)) {

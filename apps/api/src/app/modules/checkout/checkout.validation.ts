@@ -25,8 +25,8 @@ export const checkoutUpdateValidationSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("shippingOptionUpdate"),
     shippingOption: z.object({
-      sellerId: z.string().or(z.number()).optional(),
-      shippingOptionId: z.string().or(z.number()).optional(),
+      sellerId: z.string().or(z.number()),
+      shippingOptionId: z.string().or(z.number()),
     }),
   }),
 ]);
