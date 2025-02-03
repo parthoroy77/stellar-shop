@@ -4,10 +4,11 @@ import { Router } from "express";
 import zodSafeParse from "../../handlers/zodSafeParse";
 import authMiddleware from "../../middleware/auth.middleware";
 import { CheckoutControllers } from "./checkout.controllers";
-import { checkoutInitiateValidationSchema } from "./checkout.validation";
+import { checkoutInitiateValidationSchema, checkoutUpdateValidationSchema } from "./checkout.validation";
 
 const router = Router();
 
+// Start initiate checkout session
 router.post(
   "/initiate",
   authMiddleware(UserRole.BUYER),
@@ -15,7 +16,16 @@ router.post(
   CheckoutControllers.initializeCheckout
 );
 
+// Get user current checkout session
 router.get("/session", authMiddleware(UserRole.BUYER), CheckoutControllers.getUserCheckoutSession);
+
+// Update checkout session fields
+router.put(
+  "/update",
+  authMiddleware(UserRole.BUYER),
+  zodSafeParse(checkoutUpdateValidationSchema as unknown as AnyZodObject),
+  CheckoutControllers.updateCheckoutSession
+);
 
 const CheckoutRoutes = router;
 

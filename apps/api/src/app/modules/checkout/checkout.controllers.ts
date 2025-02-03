@@ -1,4 +1,4 @@
-import { TCheckoutInitiatePayload } from "@repo/utils/types";
+import { TCheckoutInitiatePayload, TCheckoutUpdatePayload } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
@@ -38,7 +38,33 @@ const getUserCheckoutSession = asyncHandler(async (req, res) => {
   });
 });
 
+const updateCheckoutSession = asyncHandler(async (req, res) => {
+  const { type, shippingAddressId, paymentMethodId, shippingOption } = req.body as TCheckoutUpdatePayload;
+
+  const payload: TCheckoutUpdatePayload = {
+    type,
+    ...(type === "shippingAddressUpdate" && { shippingAddressId }),
+    ...(type === "paymentMethodUpdate" && { paymentMethodId }),
+    ...(type === "shippingOptionUpdate" && {
+      shippingOption: {
+        sellerId: +shippingOption!.sellerId,
+        shippingOptionId: +shippingOption!.shippingOptionId,
+      },
+    }),
+  };
+
+  const { message, statusCode } = await CheckoutServices.update(payload, req.user.id!);
+
+  ApiResponse(res, {
+    data: {},
+    message,
+    statusCode,
+    success: true,
+  });
+});
+
 export const CheckoutControllers = {
   initializeCheckout,
   getUserCheckoutSession,
+  updateCheckoutSession,
 };

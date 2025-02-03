@@ -1,5 +1,11 @@
 import prisma from "@repo/prisma/client";
-import { TCheckoutInitiatePayload, TCheckoutSessionData, TPackage, TProduct } from "@repo/utils/types";
+import {
+  TCheckoutInitiatePayload,
+  TCheckoutSessionData,
+  TCheckoutUpdatePayload,
+  TPackage,
+  TProduct,
+} from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
 import { redisInstance } from "../../../server";
 import config from "../../config";
@@ -370,4 +376,70 @@ const getSession = async (userId: number): Promise<TCheckoutSessionData> => {
   };
 };
 
-export const CheckoutServices = { initiateCheckout, getSession };
+const update = async (
+  { type, shippingAddressId, shippingOption, paymentMethodId }: TCheckoutUpdatePayload,
+  userId: number
+) => {
+  // Generate a unique cache key for the user's checkout session
+  const cacheKey = getCheckoutCacheKey(userId);
+
+  if (!redisInstance) {
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "Internal server error!");
+  }
+
+  const strCache = await redisInstance.hgetall(cacheKey);
+
+  if (!strCache || !Object.keys(strCache).length) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "No checkout session found!");
+  }
+
+  const checkoutSession = parseSessionData(strCache) as TCheckoutSession;
+
+  // Helper function to update Redis
+  const updateRedis = async (field: string, value: unknown, message: string) => {
+    await redisInstance!.hset(cacheKey, field, JSON.stringify(value));
+    return { statusCode: StatusCodes.OK, message };
+  };
+
+  // Helper function to return up to date
+  const defaultReturn = () => {
+    return { statusCode: StatusCodes.NO_CONTENT, message: "Everything is up to date!" };
+  };
+
+  switch (type) {
+    case "paymentMethodUpdate":
+      if (checkoutSession.paymentMethodId === paymentMethodId) {
+        defaultReturn();
+      }
+      return updateRedis("paymentMethodId", paymentMethodId, "Payment method updated!");
+
+    case "shippingAddressUpdate":
+      if (checkoutSession.shippingAddress === shippingAddressId) {
+        defaultReturn();
+      }
+      return updateRedis("shippingAddress", shippingAddressId, "Shipping address updated!");
+
+    case "shippingOptionUpdate":
+      if (!shippingOption) {
+        throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid shipping option!");
+      }
+
+      const { sellerId, shippingOptionId } = shippingOption;
+
+      const updatedPackages = checkoutSession.packages.map((pack) =>
+        pack.sellerId === sellerId ? { ...pack, selectedShippingOption: shippingOptionId } : pack
+      );
+
+      // If nothing changed, return early
+      if (JSON.stringify(updatedPackages) === JSON.stringify(checkoutSession.packages)) {
+        defaultReturn();
+      }
+
+      return updateRedis("packages", updatedPackages, "Shipping option updated!");
+
+    default:
+      throw new ApiError(StatusCodes.BAD_REQUEST, "Invalid update type!");
+  }
+};
+
+export const CheckoutServices = { initiateCheckout, getSession, update };

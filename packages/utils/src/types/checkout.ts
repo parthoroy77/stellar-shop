@@ -10,6 +10,13 @@ export type TCheckoutInitiatePayload = {
   };
 };
 
+export type TCheckoutUpdatePayload = {
+  type: "shippingAddressUpdate" | "shippingOptionUpdate" | "paymentMethodUpdate";
+  shippingAddressId?: number;
+  shippingOption?: { sellerId: number; shippingOptionId: number };
+  paymentMethodId?: number;
+};
+
 export type TPackage = {
   sellerId: number;
   logo: { fileSecureUrl: string };

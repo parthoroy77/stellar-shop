@@ -12,3 +12,21 @@ export const checkoutInitiateValidationSchema = z.discriminatedUnion("type", [
     productVariantId: z.string().or(z.number()).optional(),
   }),
 ]);
+
+export const checkoutUpdateValidationSchema = z.discriminatedUnion("type", [
+  z.object({
+    type: z.literal("shippingAddressUpdate"),
+    shippingAddressId: z.string().or(z.number()),
+  }),
+  z.object({
+    type: z.literal("paymentMethodUpdate"),
+    paymentMethodId: z.string().or(z.number()),
+  }),
+  z.object({
+    type: z.literal("shippingOptionUpdate"),
+    shippingOption: z.object({
+      sellerId: z.string().or(z.number()).optional(),
+      shippingOptionId: z.string().or(z.number()).optional(),
+    }),
+  }),
+]);
