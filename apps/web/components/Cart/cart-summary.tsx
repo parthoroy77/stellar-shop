@@ -1,7 +1,9 @@
 import { getCartSummary } from "@/actions/cart";
+import { initiateCheckout } from "@/actions/checkout";
 import { useQueryData } from "@repo/tanstack-query";
-import { Button, Input } from "@ui/index";
-import { memo } from "react";
+import { AppButton, Button, Input } from "@ui/index";
+import { memo, useTransition } from "react";
+import { toast } from "sonner";
 
 const CartSummary = ({ selectedItemIds }: { selectedItemIds: number[] }) => {
   // Fetch cart summary from backend and cache data
@@ -12,7 +14,23 @@ const CartSummary = ({ selectedItemIds }: { selectedItemIds: number[] }) => {
   });
 
   const { subTotal = 0, total = 0, totalItem = 0, shippingFee = 0 } = data || {};
+  const [isPending, startTransition] = useTransition();
 
+  const handleCheckout = () => {
+    if (!selectedItemIds.length) {
+      toast.info("Please select items to checkout!");
+      return;
+    }
+
+    startTransition(async () => {
+      const result = await initiateCheckout({ cartItemIds: selectedItemIds }, "cart");
+      if (result.success) {
+        toast.success(result.message);
+      } else {
+        toast.error(result.message);
+      }
+    });
+  };
   return (
     <div
       className="h-fit rounded-md border-2 p-4 shadow-sm lg:w-[25%] lg:p-5"
@@ -47,9 +65,15 @@ const CartSummary = ({ selectedItemIds }: { selectedItemIds: number[] }) => {
         </div>
       </div>
       <div>
-        <Button size={"sm"} className="w-full">
+        <AppButton
+          loading={isPending}
+          disabled={!selectedItemIds.length || isPending}
+          onClick={handleCheckout}
+          size={"sm"}
+          className="w-full"
+        >
           Proceed To Checkout
-        </Button>
+        </AppButton>
       </div>
     </div>
   );

@@ -1,11 +1,11 @@
 import prisma from "@repo/prisma/client";
-import { TProduct } from "@repo/utils/types";
+import { TCheckoutInitiatePayload, TCheckoutSessionData, TPackage, TProduct } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
 import { redisInstance } from "../../../server";
 import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
 import { CHECKOUT_SESSION_CACHE_TIME } from "./checkout.constants";
-import { TCheckoutInitiatePayload, TCheckoutSession, TCheckoutSessionData, TPackage } from "./checkout.types";
+import { TCheckoutSession } from "./checkout.types";
 import { getCheckoutCacheKey, initialCheckoutProductSelectArgs, parseSessionData } from "./checkout.utils";
 
 const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePayload, userId: number) => {
