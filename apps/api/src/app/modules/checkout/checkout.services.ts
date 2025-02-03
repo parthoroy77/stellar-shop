@@ -3,20 +3,13 @@ import { TProduct } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
 import { redisInstance } from "../../../server";
 import { ApiError } from "../../handlers/ApiError";
-import { CHECKOUT_SESSION_CACHE_PREFIX } from "./checkout.constants";
+import { CHECKOUT_SESSION_CACHE_PREFIX, CHECKOUT_SESSION_CACHE_TIME } from "./checkout.constants";
 import { TCheckoutInitiatePayload, TCheckoutSession } from "./checkout.types";
 import { initialCheckoutProductSelectArgs } from "./checkout.utils";
 
 const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutInitiatePayload, userId: number) => {
   // Initialize the checkout session with default values
   const checkoutSession: TCheckoutSession = {
-    order: {
-      totalAmount: 0,
-      grossAmount: 0,
-      netAmount: 0,
-      shippingAmount: 0,
-      discountAmount: 0,
-    },
     packages: [],
     paymentMethodId: null,
     shippingAddress: null,
@@ -57,11 +50,6 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
 
       if (!product) return;
 
-      const variant = productVariantId ? product.variants.find((v) => v.id === productVariantId) : null;
-      const price = variant ? variant.price : product.price;
-
-      checkoutSession.order.totalAmount += price * quantity;
-
       let sellerPackage = checkoutSession.packages.find((p) => p.sellerId === product.sellerId);
 
       if (!sellerPackage) {
@@ -76,15 +64,16 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
       }
 
       sellerPackage.items.push({
-        ...product,
+        productId,
+        productVariantId: productVariantId ?? null,
         quantity,
       });
 
       if (!sellerPackage.shippingOptions.length) {
-        sellerPackage.shippingOptions = product.shippingOptions.map((pso) => pso.option);
+        sellerPackage.shippingOptions = product.shippingOptions.map((pso) => pso.option.id);
       } else {
-        sellerPackage.shippingOptions = sellerPackage.shippingOptions.filter((existingOption) =>
-          product.shippingOptions.some((productOption) => productOption.option.id === existingOption.id)
+        sellerPackage.shippingOptions = sellerPackage.shippingOptions.filter((existingOptionId) =>
+          product.shippingOptions.some((pso) => pso.option.id === existingOptionId)
         );
       }
     });
@@ -166,7 +155,7 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
 
     // Process the checkout session
     processCheckoutProduct(
-      [{ productId: +productId, quantity: +quantity, productVariantId: productVariantId ? +productVariantId : null }],
+      [{ productId: productId, quantity: quantity, productVariantId: productVariantId ? productVariantId : null }],
       [product as unknown as TProduct]
     );
   }
@@ -175,11 +164,8 @@ const initiateCheckout = async ({ cartItemIds, checkoutProduct }: TCheckoutIniti
     throw new ApiError(StatusCodes.NOT_FOUND, "Invalid checkout request!");
   }
 
-  // Update gross amount calculation
-  checkoutSession.order.grossAmount += checkoutSession.order.totalAmount + checkoutSession.order.discountAmount;
-
   // Store the checkout session in Redis cache for 10 minutes
-  await redisInstance.setex(cacheKey, 20, JSON.stringify(checkoutSession));
+  await redisInstance.setex(cacheKey, CHECKOUT_SESSION_CACHE_TIME, JSON.stringify(checkoutSession));
 };
 
 export const CheckoutServices = { initiateCheckout };

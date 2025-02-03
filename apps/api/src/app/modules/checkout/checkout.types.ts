@@ -1,5 +1,3 @@
-import { IShippingAddress, IShippingOption, TProduct } from "@repo/utils/types";
-
 export type TCheckoutInitiatePayload = {
   cartItemIds?: number[];
   checkoutProduct?: {
@@ -11,21 +9,13 @@ export type TCheckoutInitiatePayload = {
 
 export type TPackage = {
   sellerId: number;
-  logo: { fileSecureUrl: string };
-  shopName: string;
-  items: Array<Partial<TProduct> & { quantity: number }>;
-  shippingOptions: Partial<IShippingOption>[];
+  items: Array<{ productId: number; productVariantId?: number | null; quantity: number }>;
+  shippingOptions: number[];
   selectedShippingOption: number | null;
 };
+
 export type TCheckoutSession = {
-  order: {
-    totalAmount: number;
-    discountAmount: number;
-    grossAmount: number;
-    shippingAmount: number;
-    netAmount: number;
-  };
   packages: TPackage[];
-  shippingAddress: Partial<IShippingAddress> | null;
+  shippingAddress: number | null;
   paymentMethodId: number | null;
 };

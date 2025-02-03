@@ -6,31 +6,13 @@ export const initialCheckoutProductSelectArgs = (
   return {
     id: true,
     stock: true,
-    productName: true,
     price: true,
     sellerId: true,
-    images: {
-      take: 1,
-      select: { file: { select: { fileSecureUrl: true } } },
-    },
     shippingOptions: {
       select: {
         option: {
           select: {
             id: true,
-            name: true,
-            estimateDays: true,
-            charge: true,
-          },
-        },
-      },
-    },
-    seller: {
-      select: {
-        shopName: true,
-        logo: {
-          select: {
-            fileSecureUrl: true,
           },
         },
       },
@@ -39,9 +21,6 @@ export const initialCheckoutProductSelectArgs = (
       where: variantWhere,
       select: {
         id: true,
-        isDefault: true,
-        price: true,
-        stock: true,
       },
     },
   };
