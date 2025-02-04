@@ -380,7 +380,7 @@ const getSession = async (userId: number): Promise<TCheckoutSessionData> => {
   });
 
   let shippingAddress: Partial<ShippingAddress> | null = null;
-  let paymentMethod: Pick<PaymentMethod, "methodName" | "id"> | null = null;
+  let paymentMethod: Pick<PaymentMethod, "name" | "id"> | null = null;
   if (checkoutSession.shippingAddress) {
     shippingAddress = await prisma.shippingAddress.findUnique({
       where: { id: +checkoutSession.shippingAddress },
@@ -390,7 +390,7 @@ const getSession = async (userId: number): Promise<TCheckoutSessionData> => {
   if (checkoutSession.paymentMethodId) {
     paymentMethod = await prisma.paymentMethod.findUnique({
       where: { id: +checkoutSession.paymentMethodId, status: "ACTIVE" },
-      select: { id: true, methodName: true, description: true },
+      select: { id: true, name: true, description: true },
     });
   }
 

@@ -33,7 +33,7 @@ export type TPackage = {
 export type TCheckoutSessionData = {
   packages: TPackage[];
   shippingAddress: Partial<IShippingAddress> | null;
-  paymentMethod: Pick<IPaymentMethod, "id" | "methodName"> | null;
+  paymentMethod: Pick<IPaymentMethod, "id" | "name"> | null;
 };
 
 export type TCheckoutSummaryResponse = {
