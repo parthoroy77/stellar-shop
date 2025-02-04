@@ -5,6 +5,7 @@ import { redisInstance } from "../../../server";
 import { ApiError } from "../../handlers/ApiError";
 import { CheckoutServices } from "../checkout/checkout.services";
 import { getCheckoutCacheKey, getCheckoutSession } from "../checkout/checkout.utils";
+import { handlePaymentRedirect } from "./order.utils";
 
 const place = async (payload: { orderNote?: string }, userId: number) => {
   // retrieved checkout details
@@ -26,6 +27,16 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
   // Calculate updated order summary
   const orderSummary = await CheckoutServices.summary(userId);
 
+  // Fetch payment method from database
+  const paymentMethod = await prisma.paymentMethod.findUnique({
+    where: { id: paymentMethodId, status: "ACTIVE" },
+    select: { type: true, id: true },
+  });
+
+  if (!paymentMethod) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Invalid payment method!");
+  }
+
   // Fetch shipping address from database
   const shippingAddress = await prisma.shippingAddress.findUnique({ where: { id: +shippingAddressId, userId } });
 
@@ -42,7 +53,7 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
     shippingAmount: orderSummary.totalShippingFee,
     grossAmount: orderSummary.grossAmount,
     netAmount: orderSummary.netAmount,
-    paymentMethodId: paymentMethodId,
+    paymentMethodId: paymentMethod.id,
     orderNote: payload.orderNote ?? null,
     status: "PLACED",
     orderPlacedAt: orderPlacingTime,
@@ -272,6 +283,8 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
     // Clear checkout session for this user
     await redisInstance!.hdel(cacheKey);
   });
+
+  return handlePaymentRedirect(paymentMethod.type);
 };
 
 export const OrderServices = { place };
