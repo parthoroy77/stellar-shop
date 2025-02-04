@@ -24,10 +24,10 @@ export default {
 
   // domains
   client_url: process.env.CLIENT_URL as string,
-  api_domain_url: process.env.DOMAIN_URL as string,
-  buyer_origin_url: process.env.ORIGIN_URL_1 as string,
-  admin_origin_url: process.env.ORIGIN_URL_2 as string,
-  seller_origin_url: process.env.ORIGIN_URL_3 as string,
+  api_domain_url: process.env.api_domain_url as string,
+  buyer_origin_url: process.env.BUYER_ORIGIN_URL as string,
+  admin_origin_url: process.env.ADMIN_ORIGIN_URL as string,
+  seller_origin_url: process.env.SELLER_ORIGIN_URL as string,
 
   // cloudinary
   cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME as string,

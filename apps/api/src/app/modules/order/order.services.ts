@@ -281,7 +281,7 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
     });
 
     // Clear checkout session for this user
-    await redisInstance!.hdel(cacheKey);
+    await redisInstance!.del(cacheKey);
   });
 
   return handlePaymentRedirect(paymentMethod.type);

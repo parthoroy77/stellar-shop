@@ -5,8 +5,6 @@ import ProductPackages from "./product-packages";
 import ShippingAndBilling from "./shipping-and-billing";
 
 const CheckoutContainer = ({ packages, shippingAddress, paymentMethod }: TCheckoutSessionData) => {
-
-
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
       <div className="h-full space-y-2 rounded-md *:rounded-xl *:border *:bg-neutral-50 *:p-2.5 lg:w-[75%] *:lg:p-4">
