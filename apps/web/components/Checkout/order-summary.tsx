@@ -1,7 +1,8 @@
 import { getCheckoutSummary } from "@/actions/checkout";
-import { Button } from "@ui/index";
+import { TCheckoutSessionData } from "@repo/utils/types";
+import CheckoutButton from "./checkout-button";
 
-const OrderSummary = async () => {
+const OrderSummary = async ({ checkoutSession }: { checkoutSession: TCheckoutSessionData }) => {
   const { totalAmount, totalShippingFee, discountAmount, netAmount, totalItem } = await getCheckoutSummary();
   return (
     <div className="h-fit rounded-md border-2 p-4 shadow-sm lg:p-5">
@@ -24,9 +25,7 @@ const OrderSummary = async () => {
           <span className="text-black">${netAmount}</span>
         </div>
       </div>
-      <div>
-        <Button className="w-full">Checkout</Button>
-      </div>
+      <CheckoutButton {...checkoutSession} />
     </div>
   );
 };
