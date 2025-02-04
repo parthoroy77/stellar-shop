@@ -49,6 +49,7 @@ enum InventoryLogType {
   NEW_PRODUCT
   RESTOCK
   SALE
+  ORDER_CANCEL
   REFUND
 }
 
