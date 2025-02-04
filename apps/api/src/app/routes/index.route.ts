@@ -6,6 +6,7 @@ import BrandRoutes from "../modules/brand/brand.routes";
 import CartRoutes from "../modules/cart/cart.routes";
 import CategoryRoutes from "../modules/category/category.routes";
 import CheckoutRoutes from "../modules/checkout/checkout.routes";
+import PaymentMethodRoutes from "../modules/payment-method/payment-method.routes";
 import ProductRoutes from "../modules/product/product.routes";
 import SellerRoutes from "../modules/seller/seller.routes";
 import ShippingRoutes from "../modules/shipping/shipping.routes";
@@ -72,6 +73,10 @@ const routerModules: TRouteModule[] = [
   {
     path: "/checkout",
     route: CheckoutRoutes,
+  },
+  {
+    path: "/payment-methods",
+    route: PaymentMethodRoutes,
   },
 ];
 

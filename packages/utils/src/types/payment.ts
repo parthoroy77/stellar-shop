@@ -15,10 +15,19 @@ export const PaymentMethodActivationStatus = {
 export type TPaymentMethodActivationStatus =
   (typeof PaymentMethodActivationStatus)[keyof typeof PaymentMethodActivationStatus];
 
+// Payment Provider
+export interface IPaymentProvider {
+  id: string;
+  name: string;
+  active: boolean;
+  metadata: Record<string, any> | null;
+}
+
 // Payment Method
 export interface IPaymentMethod {
   id: number;
-  methodName: string;
+  providerId: number;
+  name: string;
   description?: string;
   status: TPaymentMethodActivationStatus;
   createdAt: Date;
@@ -28,9 +37,10 @@ export interface IPaymentMethod {
 // Payment
 export interface IPayment {
   id: number;
+  uniqueId: string;
   orderId: number; // Foreign key referencing Order
   paymentMethodId: number; // Foreign key referencing PaymentMethod
-  transactionId: string;
+  gatewayTransactionId: string;
   amount: number;
   status: TPaymentCompletionStatus;
   createdAt: Date;
