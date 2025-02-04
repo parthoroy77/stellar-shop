@@ -10,15 +10,15 @@ export interface IOriginConfig {
 // List of allowed origins (add multiple frontend's here)
 export const allowedOrigins: IOriginConfig[] = [
   {
-    origin: config.origin_url_1!,
+    origin: config.buyer_origin_url!,
     role: UserRole.BUYER,
   },
   {
-    origin: config.origin_url_2!,
+    origin: config.admin_origin_url!,
     role: UserRole.ADMIN,
   },
   {
-    origin: config.origin_url_3!,
+    origin: config.seller_origin_url!,
     role: UserRole.SELLER,
   },
 ];

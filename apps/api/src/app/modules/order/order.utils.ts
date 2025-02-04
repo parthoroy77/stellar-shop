@@ -9,11 +9,11 @@ import config from "../../config";
  */
 export const handlePaymentRedirect = (type: PaymentMethodType) => {
   const redirectConfig: Record<string, string> = {
-    COD: config.origin_url_1 + "/order-success",
+    COD: config.buyer_origin_url + "/order-success",
   };
 
   return {
-    redirectUrl: redirectConfig[type] || config.origin_url_1 + "/order-failed",
+    redirectUrl: redirectConfig[type] || config.buyer_origin_url + "/order-failed",
     statusCode: StatusCodes.CREATED,
     message: "Order placed successfully!",
   };

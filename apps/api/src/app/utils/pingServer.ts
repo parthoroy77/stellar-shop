@@ -6,8 +6,8 @@ import logger from "../logger";
 const pingServer = async () => {
   try {
     // Ping your own server's public URL to prevent shutdown
-    logger.info("Pinging Domain:" + config.domain_url);
-    const response = await fetch(`${config.domain_url}/ping`);
+    logger.info("Pinging Domain:" + config.api_domain_url);
+    const response = await fetch(`${config.api_domain_url}/ping`);
     if (response.statusText === "OK") {
       logger.info(colors.blue.bold(`Ping Successful Server Up & Running`));
     }

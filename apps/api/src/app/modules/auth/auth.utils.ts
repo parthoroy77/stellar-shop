@@ -113,11 +113,11 @@ const checkOtpRequestLimit = async (email: string, purpose: "LOGIN" | "RESET_PAS
 const getUserOrigin = (role: UserRole) => {
   switch (role) {
     case "BUYER":
-      return config.origin_url_1;
+      return config.buyer_origin_url;
     case "ADMIN":
-      return config.origin_url_2;
+      return config.admin_origin_url;
     case "SELLER":
-      return config.origin_url_3;
+      return config.seller_origin_url;
     default:
       break;
   }
