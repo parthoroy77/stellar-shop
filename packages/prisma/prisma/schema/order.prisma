@@ -3,11 +3,11 @@ model Order {
   id              Int                @id @default(autoincrement())
   uniqueId        String             @unique
   userId          Int
-  totalAmount     Float // Sub total of order
-  discountAmount  Float // Discount applied to the order
-  grossAmount     Float // Amount after discount but before shipping
-  shippingAmount  Float // Shipping cost  
-  netAmount       Float // Final amount after all adjustments
+  totalAmount     Decimal // Sub total of order
+  discountAmount  Decimal // Discount applied to the order
+  grossAmount     Decimal // Amount after discount but before shipping
+  shippingAmount  Decimal // Shipping cost  
+  netAmount       Decimal // Final amount after all adjustments
   orderNote       String?
   status          OrderStatus        @default(PLACED)
   paymentStatus   OrderPaymentStatus @default(UNPAID)
@@ -32,21 +32,22 @@ model Order {
   payment              Payment?
   paymentMethod        PaymentMethod          @relation(fields: [paymentMethodId], references: [id])
   subOrders            SubOrder[]
+  orderStatusHistory   OrderStatusHistory[]
 
   @@index([uniqueId, userId, id])
   @@map("Orders")
 }
 
 model OrderItem {
-  id               Int    @id @default(autoincrement())
+  id               Int     @id @default(autoincrement())
   orderId          Int
   productId        Int
   productVariantId Int?
   productName      String
   attributes       Json // Store product attributes statically  
-  price            Float
+  price            Decimal
   quantity         Int
-  totalAmount      Float // Total amount for this order item
+  totalAmount      Decimal // Total amount for this order item
 
   // timestamps
   createdAt DateTime @default(now())
@@ -82,6 +83,19 @@ enum OrderPaymentStatus {
   PENDING
   PAID
   UNPAID
+}
+
+model OrderStatusHistory {
+  id        Int         @id @default(autoincrement())
+  orderId   Int
+  status    OrderStatus
+  changedAt DateTime    @default(now())
+
+  // references
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@index([orderId, status])
+  @@map("OrderStatusHistory")
 }
 
 // Statically Store the shipping address 

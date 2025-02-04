@@ -1,6 +1,19 @@
+model PaymentProvider {
+  id       Int     @id @default(autoincrement())
+  name     String  @unique // Provider name (Stripe, PayPal, bKash, etc.)
+  active   Boolean @default(true) // If this provider is available
+  metadata Json? // Store provider-specific details (e.g., API keys, webhooks)
+
+  // references
+  paymentMethods PaymentMethod[]
+
+  @@map("PaymentProviders")
+}
+
 model PaymentMethod {
   id          Int                 @id @default(autoincrement())
-  methodName  String
+  name        String
+  providerId  Int
   description String?
   status      PaymentMethodStatus @default(ACTIVE)
 
@@ -11,6 +24,7 @@ model PaymentMethod {
   // references
   payments Payment[]
   orders   Order[]
+  provider PaymentProvider @relation(fields: [providerId], references: [id])
 
   @@map("PaymentMethods")
 }
@@ -21,7 +35,7 @@ model Payment {
   orderId              Int           @unique
   paymentMethodId      Int
   gatewayTransactionId String        @unique
-  amount               Float
+  amount               Decimal
   status               PaymentStatus @default(PROCESSING)
 
   // timestamps
