@@ -13,10 +13,11 @@ export type TCheckoutInitiatePayload = {
 };
 
 export type TCheckoutUpdatePayload = {
+  // Drop the idea of package product delete
+  // product?: { sellerId: number; productId: number };
   type: "shippingAddressUpdate" | "shippingOptionUpdate" | "paymentMethodUpdate" | "productDelete";
   shippingAddressId?: number;
   shippingOption?: { sellerId: number; shippingOptionId: number };
-  product?: { sellerId: number; productId: number };
   paymentMethodId?: number;
 };
 
