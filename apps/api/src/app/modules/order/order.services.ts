@@ -272,7 +272,6 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
     // Clear checkout session for this user
     await redisInstance!.hdel(cacheKey);
   });
-  
 };
 
 export const OrderServices = { place };

@@ -16,10 +16,11 @@ model PaymentMethod {
   providerId  Int
   description String?
   status      PaymentMethodStatus @default(ACTIVE)
-
+  type        PaymentMethodType   @default(COD)
+  
   // timestamps
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
 
   // references
   payments Payment[]
@@ -27,6 +28,13 @@ model PaymentMethod {
   provider PaymentProvider @relation(fields: [providerId], references: [id])
 
   @@map("PaymentMethods")
+}
+
+enum PaymentMethodType {
+  COD
+  CARD
+  NET_BANKING
+  WALLET
 }
 
 model Payment {
