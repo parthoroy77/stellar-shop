@@ -9,6 +9,7 @@ model ShippingOption {
   createdAt              DateTime                @default(now())
   updatedAt              DateTime                @updatedAt
   productShippingOptions ProductShippingOption[]
+  subOrders              SubOrder[]
 
   @@map("ShippingOptions")
 }

@@ -1,14 +1,15 @@
 // TODO: Later on add shipment model to accommodate shipping carrier and information
 model SubOrder {
-  id             Int            @id @default(autoincrement())
-  uniqueId       String         @unique
-  orderId        Int
-  sellerId       Int
-  totalAmount    Decimal // Sub total of order
-  discountAmount Decimal // Discount applied to the order
-  netAmount      Decimal // Final amount after all adjustments
-  orderNote      String?
-  status         SubOrderStatus @default(PROCESSING)
+  id               Int            @id @default(autoincrement())
+  uniqueId         String         @unique
+  orderId          Int
+  sellerId         Int
+  totalAmount      Decimal // Sub total of order
+  discountAmount   Decimal // Discount applied to the order
+  netAmount        Decimal // Final amount after all adjustments
+  orderNote        String?
+  status           SubOrderStatus @default(PROCESSING)
+  shippingOptionId Int
 
   // timestamps
   createdAt DateTime @default(now())
@@ -22,9 +23,10 @@ model SubOrder {
   orderCanceledAt  DateTime?
 
   // references
-  seller        Seller         @relation(fields: [sellerId], references: [id])
-  order         Order          @relation(fields: [orderId], references: [id])
-  subOrderItems SubOrderItem[]
+  seller         Seller         @relation(fields: [sellerId], references: [id])
+  order          Order          @relation(fields: [orderId], references: [id])
+  subOrderItems  SubOrderItem[]
+  shippingOption ShippingOption @relation(fields: [shippingOptionId], references: [id])
 
   @@index([uniqueId, id, orderId, status])
   @@map("SubOrders")
