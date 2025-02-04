@@ -7,7 +7,7 @@ import {
   TCheckoutSummaryResponse,
   TCheckoutUpdatePayload,
 } from "@repo/utils/types";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 export const initiateCheckout = async (payload: TCheckoutInitiatePayload, type: "cart" | "product") => {
@@ -21,6 +21,7 @@ export const initiateCheckout = async (payload: TCheckoutInitiatePayload, type: 
 
   if (result.success) {
     revalidateTag("checkout-session");
+    revalidatePath("/checkout");
     redirect("/checkout");
   }
 

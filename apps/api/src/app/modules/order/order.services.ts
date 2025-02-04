@@ -212,7 +212,7 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
   }
 
   // Execute database transactions for order placement
-  await prisma.$transaction(async (tx) => {
+  const orderId = await prisma.$transaction(async (tx) => {
     // create order
     const order = await tx.order.create({
       data: { ...orderBase, orderItems: { createMany: { data: orderItemsData } } },
@@ -282,9 +282,11 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
 
     // Clear checkout session for this user
     await redisInstance!.del(cacheKey);
+
+    return order.uniqueId;
   });
 
-  return handlePaymentRedirect(paymentMethod.type);
+  return handlePaymentRedirect(paymentMethod.type, orderId);
 };
 
 export const OrderServices = { place };

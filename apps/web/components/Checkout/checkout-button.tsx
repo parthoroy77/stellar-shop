@@ -1,5 +1,6 @@
 "use client";
 import { placeOrder } from "@/actions/order";
+import { useCartContext } from "@/contexts/cart-context";
 import { TCheckoutSessionData } from "@repo/utils/types";
 import { AppButton } from "@ui/index";
 import { useRouter } from "next/navigation";
@@ -8,6 +9,7 @@ import { toast } from "sonner";
 
 const CheckoutButton = ({ shippingAddress, paymentMethod }: TCheckoutSessionData) => {
   const [isPending, startTransition] = useTransition();
+  const { invalidateCart } = useCartContext();
   const router = useRouter();
   const handleCheckout = async () => {
     if (!shippingAddress) {
@@ -23,6 +25,7 @@ const CheckoutButton = ({ shippingAddress, paymentMethod }: TCheckoutSessionData
       const result = await placeOrder();
       if (result.success) {
         toast.success(result.message, { id: toastId });
+        await invalidateCart();
         router.push(result.data?.redirectUrl || "/");
       }
     });
