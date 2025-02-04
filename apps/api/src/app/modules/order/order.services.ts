@@ -1,12 +1,14 @@
 import prisma, { Prisma } from "@repo/prisma/client";
 import { generateUniqueId } from "@repo/utils/functions";
 import { StatusCodes } from "http-status-codes";
+import { redisInstance } from "../../../server";
 import { ApiError } from "../../handlers/ApiError";
 import { CheckoutServices } from "../checkout/checkout.services";
-import { getCheckoutSession } from "../checkout/checkout.utils";
+import { getCheckoutCacheKey, getCheckoutSession } from "../checkout/checkout.utils";
 
 const place = async (payload: { orderNote?: string }, userId: number) => {
   // retrieved checkout details
+  const cacheKey = getCheckoutCacheKey(userId);
   const { packages, paymentMethodId, shippingAddress: shippingAddressId } = await getCheckoutSession(userId);
 
   const orderPlacingTime = new Date();
@@ -266,7 +268,11 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
         quantity: { in: orderItemsData.map((item) => item.quantity) },
       },
     });
+
+    // Clear checkout session for this user
+    await redisInstance!.hdel(cacheKey);
   });
+  
 };
 
 export const OrderServices = { place };
