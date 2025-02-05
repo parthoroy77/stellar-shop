@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
 import { TAddToCartInput } from "./cart.types";
 
-const addToCart = async ({ userId, quantity, productId, variantId }: TAddToCartInput) => {
+const addToCart = async ({ userId, quantity, productId, productVariantId: variantId }: TAddToCartInput) => {
   const user = await prisma.user.findUnique({
     where: { id: userId, status: "ACTIVE" },
   });

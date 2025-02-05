@@ -1,6 +1,6 @@
 export type TAddToCartInput = {
   productId: number;
-  variantId?: number;
+  productVariantId?: number | null;
   quantity: number;
   userId: number;
 };

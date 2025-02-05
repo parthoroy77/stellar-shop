@@ -84,6 +84,7 @@ export const getProductDetailSelectOptions = () => {
         status: "ACTIVE",
       },
       select: {
+        id: true,
         variantName: true,
         description: true,
         price: true,
