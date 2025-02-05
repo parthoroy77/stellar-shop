@@ -2,7 +2,7 @@
 
 import { formatAttributes } from "@/utils/product-utils";
 import { TProductVariant } from "@repo/utils/types";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 export const useProductVariantSelector = (variants: TProductVariant[]) => {
   const [selectedAttributes, setSelectedAttributes] = useState<Record<number, number>>({});
@@ -22,20 +22,22 @@ export const useProductVariantSelector = (variants: TProductVariant[]) => {
   };
 
   // Check is valid combination
-  const isValidCombination = (attributeId: number, valuedId: number) => {
-    const updatedAttribute = { ...selectedAttributes, [attributeId]: valuedId };
-
-    variants.some((v) =>
-      // Iterate over selected attribute combination
-      Object.entries(updatedAttribute).map(([attrId, valId]) =>
-        // Check for variant this combination possible or not
-        v.attributes.some(
-          (variantAttribute) =>
-            variantAttribute.attributeValue.attributeId === +attrId && variantAttribute.attributeValue.id === valId
+  const isValidCombination = useCallback(
+    (attributeId: number, valuedId: number) => {
+      const updatedAttributes = { ...selectedAttributes, [attributeId]: valuedId };
+      return variants.some((v) =>
+        // Iterate over selected attribute combination
+        Object.entries(updatedAttributes).every(([attrId, valId]) =>
+          // Check for variant this combination possible or not
+          v.attributes.some(
+            (variantAttribute) =>
+              variantAttribute.attributeValue.attribute.id === +attrId && variantAttribute.attributeValue.id === valId
+          )
         )
-      )
-    );
-  };
+      );
+    },
+    [selectedAttributes, variants]
+  );
 
   // Find the selected variant
   const selectedVariant = useMemo(() => {
@@ -50,10 +52,19 @@ export const useProductVariantSelector = (variants: TProductVariant[]) => {
     );
   }, [selectedAttributes, variants]);
 
+  // Check is attribute select
+  const isAttributeSelected = useCallback(
+    (attributeId: number, valueId: number) => {
+      return selectedAttributes[attributeId] === valueId;
+    },
+    [selectedAttributes]
+  );
+
   return {
     availableAttrOptions,
     isValidCombination,
     selectedVariant,
     handleSelectAttribute,
+    isAttributeSelected,
   };
 };

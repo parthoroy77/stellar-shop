@@ -1,25 +1,26 @@
 "use client";
-import { formatAttributes } from "@/utils/product-utils";
 import { TProduct } from "@repo/utils/types";
 import { FC } from "react";
 import ProductActionButtons from "./product-action-buttons";
-import ProductAttributeSelection from "./product-attribute-selection";
 import ProductBrand from "./product-brand";
 import ProductPrice from "./product-price";
 import ProductQuantitySelection from "./product-quantity-selection";
 import ProductRating from "./product-rating";
 import ProductTags from "./product-tags";
+import ProductVariantSelection from "./product-variant-selection";
 
 interface ProductInfoProps {
   product: TProduct;
 }
 
 const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
-  const { tags, price, comparePrice, attributes, stock, brand, id } = product || {};
+  const { tags, variants, price, comparePrice, stock, brand, id } = product || {};
+
+  // Simplify tags in usable format
   const simplifiedTags = tags?.map((tag) => ({ name: tag?.tag?.name, id: tag?.tag?.id })) || [];
+
   const avgDiscount = Math.round(((comparePrice - price) / comparePrice) * 100);
   // Simplified attributes into desired format
-  const simplifiedAttributes = formatAttributes(attributes);
 
   return (
     <div className="divide-y *:py-2.5 lg:p-4">
@@ -29,7 +30,7 @@ const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
       {!!simplifiedTags.length && <ProductTags tags={simplifiedTags} discount={avgDiscount} lowStock={stock < 10} />}
       <ProductBrand brand={brand} />
       <ProductPrice comparePrice={comparePrice} price={price} />
-      {!!simplifiedAttributes.length && <ProductAttributeSelection attributes={simplifiedAttributes} />}
+      {!!variants.length && <ProductVariantSelection variants={variants} />}
       <div>
         <ProductQuantitySelection stock={stock} initialQuantity={0} productId={product.id} />
       </div>
