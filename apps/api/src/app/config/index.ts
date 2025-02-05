@@ -23,7 +23,6 @@ export default {
   nodemailer_password: process.env.NODEMAILER_PASS as string,
 
   // domains
-  client_url: process.env.CLIENT_URL as string,
   api_domain_url: process.env.api_domain_url as string,
   buyer_origin_url: process.env.BUYER_ORIGIN_URL as string,
   admin_origin_url: process.env.ADMIN_ORIGIN_URL as string,
