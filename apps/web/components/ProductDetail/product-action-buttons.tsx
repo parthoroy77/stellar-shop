@@ -1,10 +1,42 @@
+import { useCartContext } from "@/contexts/cart-context";
+import { useClientSession } from "@/lib/auth-utils";
 import { Button } from "@repo/ui";
-// todo: Button Animation
-const ProductActionButtons = () => {
+import { useRouter } from "next/navigation";
+import { FC, useCallback, useMemo } from "react";
+import { toast } from "sonner";
+interface Props {
+  productId: number;
+  quantity: number;
+  productVariantId: number | null;
+}
+const ProductActionButtons: FC<Props> = ({ productId, quantity, productVariantId }) => {
+  const { isAuthenticated } = useClientSession();
+  const { isInCart, addProductToCart } = useCartContext();
+  const inCart = useMemo(() => (isAuthenticated ? isInCart(productId) : false), [isInCart, productId]);
+  const router = useRouter();
+
+  const handleAddToCart = useCallback(() => {
+    if (inCart) {
+      router.push("/cart");
+      return;
+    }
+
+    if (!isAuthenticated) {
+      toast.info("Please log in first!");
+      router.push("/login");
+      return;
+    } else {
+      // actually update cart
+      addProductToCart({ productId, productVariantId, quantity });
+    }
+  }, [inCart, isAuthenticated, productId, router, quantity]);
+
   return (
     <div className="flex gap-5 *:w-full">
       <Button>Buy Now</Button>
-      <Button variant={"secondary"}>Add To Cart</Button>
+      <Button onClick={handleAddToCart} disabled={isInCart(productId)} variant={"secondary"}>
+        {inCart ? "Already in cart" : "Add To Cart"}
+      </Button>
     </div>
   );
 };

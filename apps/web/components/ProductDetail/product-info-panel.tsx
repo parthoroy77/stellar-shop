@@ -1,7 +1,7 @@
 "use client";
 import { useProductVariantSelector } from "@/hooks/use-product-variant-selector";
 import { TProduct } from "@repo/utils/types";
-import { FC } from "react";
+import { FC, useState } from "react";
 import ProductActionButtons from "./product-action-buttons";
 import ProductBrand from "./product-brand";
 import ProductPrice from "./product-price";
@@ -16,6 +16,8 @@ interface ProductInfoProps {
 
 const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
   const { tags, variants, comparePrice, brand, id } = product || {};
+
+  const [quantity, setQuantity] = useState(1);
 
   // Centralized variant selection logic
   const { selectedVariant, availableAttrOptions, handleSelectAttribute, isValidCombination, isAttributeSelected } =
@@ -47,9 +49,14 @@ const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
         />
       )}
       <div>
-        <ProductQuantitySelection stock={stock} initialQuantity={1} productId={product.id} />
+        <ProductQuantitySelection
+          stock={stock}
+          initialQuantity={quantity}
+          productId={product.id}
+          setQuantity={setQuantity}
+        />
       </div>
-      <ProductActionButtons />
+      <ProductActionButtons productId={id} productVariantId={selectedVariant?.id ?? null} quantity={quantity} />
     </div>
   );
 };
