@@ -7,9 +7,11 @@ export const checkoutInitiateValidationSchema = z.discriminatedUnion("type", [
   }),
   z.object({
     type: z.literal("product"),
-    productId: z.string().or(z.number()),
-    quantity: z.string().or(z.number()),
-    productVariantId: z.string().or(z.number()).optional(),
+    checkoutProduct: z.object({
+      productId: z.string().or(z.number()),
+      quantity: z.string().or(z.number()),
+      productVariantId: z.string().or(z.number()).nullable(),
+    }),
   }),
 ]);
 

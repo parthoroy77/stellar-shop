@@ -11,12 +11,11 @@ const initializeCheckout = asyncHandler(async (req, res) => {
     ? { cartItemIds: (body.cartItemIds as (string | number)[]).map(Number) }
     : {
         checkoutProduct: {
-          productId: +body.productId,
-          productVariantId: +body.productVariantId || null,
-          quantity: +body.quantity,
+          productId: +body.checkoutProduct.productId,
+          productVariantId: +body.checkoutProduct.productVariantId || null,
+          quantity: +body.checkoutProduct.quantity,
         },
       };
-
   await CheckoutServices.initiateCheckout(payload, req.user.id!);
 
   ApiResponse(res, {
@@ -39,7 +38,7 @@ const getUserCheckoutSession = asyncHandler(async (req, res) => {
 });
 
 const updateCheckoutSession = asyncHandler(async (req, res) => {
-  const { type, shippingAddressId, product, paymentMethodId, shippingOption } = req.body as TCheckoutUpdatePayload;
+  const { type, shippingAddressId, paymentMethodId, shippingOption } = req.body as TCheckoutUpdatePayload;
 
   const payload: TCheckoutUpdatePayload = {
     type,
@@ -49,12 +48,6 @@ const updateCheckoutSession = asyncHandler(async (req, res) => {
       shippingOption: {
         sellerId: +shippingOption!.sellerId,
         shippingOptionId: +shippingOption!.shippingOptionId,
-      },
-    }),
-    ...(type === "productDelete" && {
-      product: {
-        sellerId: +product!.sellerId,
-        productId: +product!.productId,
       },
     }),
   };

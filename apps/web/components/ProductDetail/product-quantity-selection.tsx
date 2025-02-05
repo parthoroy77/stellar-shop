@@ -11,12 +11,7 @@ interface ProductQuantitySelectionProps {
   setQuantity: Dispatch<SetStateAction<number>>;
 }
 
-const ProductQuantitySelection: FC<ProductQuantitySelectionProps> = ({
-  stock,
-  quantity,
-  className,
-  setQuantity,
-}) => {
+const ProductQuantitySelection: FC<ProductQuantitySelectionProps> = ({ stock, quantity, className, setQuantity }) => {
   const handleQuantity = (type: "INC" | "DEC") => {
     setQuantity((prev) => (type === "INC" ? prev + 1 : prev - 1));
   };
