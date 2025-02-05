@@ -18,8 +18,19 @@ export function processProductImages(product: TProduct) {
   return productImages;
 }
 
+type TAttrData = {
+  attributeValue: {
+    id: number;
+    value: string;
+    attribute: {
+      id: number;
+      name: string;
+    };
+  };
+}[];
+
 // Function to format attributes
-export function formatAttributes(data: any[]): Partial<TAttribute>[] {
+export function formatAttributes(data: TAttrData): Partial<TAttribute>[] {
   const attributeMap = new Map<number, Partial<TAttribute>>();
 
   data.forEach((item) => {
@@ -27,8 +38,7 @@ export function formatAttributes(data: any[]): Partial<TAttribute>[] {
       attributeValue: {
         id: valueId,
         value,
-        attribute: { id: attributeId, name, ...restAttr },
-        ...restAttrValue
+        attribute: { id: attributeId, name },
       },
     } = item;
 
@@ -37,16 +47,22 @@ export function formatAttributes(data: any[]): Partial<TAttribute>[] {
         id: attributeId,
         name,
         attributeValues: [],
-        ...restAttr,
       });
     }
 
-    attributeMap.get(attributeId)?.attributeValues?.push({
-      id: valueId,
-      value,
-      attributeId,
-      ...restAttrValue,
-    });
+    const existingAttribute = attributeMap.get(attributeId);
+    if (existingAttribute) {
+      // Ensure uniqueness using a Set
+      const uniqueValues = new Set(existingAttribute.attributeValues?.map((val) => val.id));
+      if (!uniqueValues.has(valueId)) {
+        //@ts-ignore (Ts ignore because we are omitting createdAt, updatedAt which cause type error)
+        existingAttribute.attributeValues?.push({
+          id: valueId,
+          value,
+          attributeId,
+        });
+      }
+    }
   });
 
   return Array.from(attributeMap.values());

@@ -102,9 +102,11 @@ export const getProductDetailSelectOptions = () => {
           select: {
             attributeValue: {
               select: {
+                id: true,
                 value: true,
                 attribute: {
                   select: {
+                    id: true,
                     name: true,
                   },
                 },
