@@ -5,7 +5,7 @@ import { Dispatch, FC, SetStateAction } from "react";
 
 interface ProductQuantitySelectionProps {
   stock: number;
-  initialQuantity: number;
+  quantity: number;
   className?: ClassValue;
   productId: number;
   setQuantity: Dispatch<SetStateAction<number>>;
@@ -13,7 +13,7 @@ interface ProductQuantitySelectionProps {
 
 const ProductQuantitySelection: FC<ProductQuantitySelectionProps> = ({
   stock,
-  initialQuantity,
+  quantity,
   className,
   setQuantity,
 }) => {
@@ -25,11 +25,11 @@ const ProductQuantitySelection: FC<ProductQuantitySelectionProps> = ({
     <QuantitySelection
       className={cn("h-fit flex-row-reverse", className)}
       stock={stock}
-      quantity={initialQuantity}
+      quantity={quantity}
       incrementFn={() => handleQuantity("INC")}
       decrementFn={() => handleQuantity("DEC")}
-      disableDecBtn={initialQuantity === 0}
-      disableIncBtn={stock === initialQuantity}
+      disableDecBtn={quantity === 0}
+      disableIncBtn={stock === quantity}
     />
   );
 };

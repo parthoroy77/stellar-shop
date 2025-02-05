@@ -8,12 +8,12 @@ import { toast } from "sonner";
 type TAddCartPayload = {
   productId: number;
   quantity?: number;
-  productVariantId?: number;
+  productVariantId?: number | null;
 };
 
 type TCartContext = {
   cartItems: TCartItem[];
-  isInCart: (productId: number) => boolean;
+  isInCart: (productId: number, productVariantId: number | null) => boolean;
   cartItemCount: number;
   clearCart: () => void;
   addProductToCart: (payload: TAddCartPayload) => void;
@@ -38,7 +38,8 @@ const CartContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // Check if a product is in the cart
-  const isInCart = (productId: number) => cartItems.some((item) => item.productId === productId);
+  const isInCart = (productId: number, productVariantId: number | null) =>
+    cartItems.some((item) => item.productId === productId && item.productVariantId === productVariantId);
 
   // Calculate cart item count
   const cartItemCount = useMemo(() => cartItems.length, [cartItems]);

@@ -5,12 +5,12 @@ import { revalidateTag } from "next/cache";
 
 export const addToCart = async ({
   productId,
-  quantity = 1,
+  quantity,
   productVariantId,
 }: {
   productId: number;
   quantity?: number;
-  productVariantId?: number;
+  productVariantId?: number | null;
 }) => {
   const result = await serverFetcher<{}>("/carts/", {
     method: "POST",

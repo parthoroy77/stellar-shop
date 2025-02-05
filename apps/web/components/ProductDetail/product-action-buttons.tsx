@@ -12,8 +12,11 @@ interface Props {
 const ProductActionButtons: FC<Props> = ({ productId, quantity, productVariantId }) => {
   const { isAuthenticated } = useClientSession();
   const { isInCart, addProductToCart } = useCartContext();
-  const inCart = useMemo(() => (isAuthenticated ? isInCart(productId) : false), [isInCart, productId]);
   const router = useRouter();
+  const inCart = useMemo(
+    () => (isAuthenticated ? isInCart(productId, productVariantId) : false),
+    [isInCart, productId, productVariantId]
+  );
 
   const handleAddToCart = useCallback(() => {
     if (inCart) {
@@ -34,7 +37,7 @@ const ProductActionButtons: FC<Props> = ({ productId, quantity, productVariantId
   return (
     <div className="flex gap-5 *:w-full">
       <Button>Buy Now</Button>
-      <Button onClick={handleAddToCart} disabled={isInCart(productId)} variant={"secondary"}>
+      <Button onClick={handleAddToCart} disabled={inCart} variant={"secondary"}>
         {inCart ? "Already in cart" : "Add To Cart"}
       </Button>
     </div>

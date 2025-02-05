@@ -49,12 +49,7 @@ const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
         />
       )}
       <div>
-        <ProductQuantitySelection
-          stock={stock}
-          initialQuantity={quantity}
-          productId={product.id}
-          setQuantity={setQuantity}
-        />
+        <ProductQuantitySelection stock={stock} quantity={quantity} productId={product.id} setQuantity={setQuantity} />
       </div>
       <ProductActionButtons productId={id} productVariantId={selectedVariant?.id ?? null} quantity={quantity} />
     </div>
