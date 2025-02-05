@@ -1,11 +1,19 @@
-import { useProductVariantSelector } from "@/hooks/use-product-variant-selector";
-import { TProduct } from "@repo/utils/types";
+import { TAttribute } from "@repo/utils/types";
 import { Button } from "@ui/index";
-import { memo } from "react";
+import { FC, memo } from "react";
+interface Props {
+  availableAttrOptions: Partial<TAttribute>[];
+  handleSelectAttribute: (attributeId: number, valueId: number) => void;
+  isValidCombination: (attributeId: number, valueId: number) => boolean;
+  isAttributeSelected: (attributeId: number, valueId: number) => boolean;
+}
 
-const ProductVariantSelection = ({ variants }: { variants: TProduct["variants"] }) => {
-  const { availableAttrOptions, handleSelectAttribute, isValidCombination, isAttributeSelected } =
-    useProductVariantSelector(variants);
+const ProductVariantSelection: FC<Props> = ({
+  availableAttrOptions,
+  handleSelectAttribute,
+  isValidCombination,
+  isAttributeSelected,
+}) => {
   return (
     <div className="space-y-3">
       {availableAttrOptions.map((attribute) => {
