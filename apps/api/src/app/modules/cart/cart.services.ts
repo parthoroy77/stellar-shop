@@ -5,7 +5,7 @@ import { ApiError } from "../../handlers/ApiError";
 import { TAddToCartInput } from "./cart.types";
 
 const addToCart = async ({ userId, quantity, productId, productVariantId: variantId }: TAddToCartInput) => {
-  const user = await prisma.user.findUnique({
+  const user = await prisma.user.findFirst({
     where: { id: userId, status: "ACTIVE" },
   });
 
@@ -42,7 +42,7 @@ const addToCart = async ({ userId, quantity, productId, productVariantId: varian
   // Case 2: Product has a variant and `variantId` is provided
   if (variantId) {
     const variantExists = await prisma.productVariant.findUnique({
-      where: { id: variantId, productId },
+      where: { id: variantId },
       select: { id: true, stock: true },
     });
 
@@ -186,7 +186,7 @@ const updateCartItem = async (payload: TUpdateCartPayload, userId: number) => {
   }
 
   // Validate stock availability for increment action
-  if (payload.action === "INC" && cartItem.quantity > product.stock) {
+  if (payload.action === "INC" && cartItem.quantity >= product.stock) {
     throw new ApiError(StatusCodes.CONFLICT, "Product out of stock!");
   }
 

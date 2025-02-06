@@ -18,7 +18,7 @@ const ProductVariantSelection: FC<Props> = ({
     <div className="space-y-3">
       {availableAttrOptions.map((attribute) => {
         return (
-          <div className="space-y-2">
+          <div className="space-y-2" key={attribute.id}>
             <h5 className="font-medium">{attribute.name}</h5>
             <div className="flex flex-wrap gap-2">
               {attribute.attributeValues?.map((value) => (
