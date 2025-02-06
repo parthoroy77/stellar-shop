@@ -6,7 +6,7 @@ import { CartServices } from "./cart.services";
 
 const manageAddProductToCart = asyncHandler(async (req, res) => {
   const payload = req.body;
-  console.log(payload);
+
   const result = await CartServices.addToCart({ ...payload, userId: req.user.id });
   ApiResponse(res, {
     data: {},

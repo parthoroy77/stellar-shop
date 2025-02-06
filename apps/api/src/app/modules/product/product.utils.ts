@@ -63,22 +63,23 @@ export const getProductDetailSelectOptions = () => {
         },
       },
     },
-    attributes: {
-      select: {
-        attributeValue: {
-          select: {
-            id: true,
-            value: true,
-            attribute: {
-              select: {
-                id: true,
-                name: true,
-              },
-            },
-          },
-        },
-      },
-    },
+    // Product attribute not needed as we are focusing only on variants
+    // attributes: {
+    //   select: {
+    //     attributeValue: {
+    //       select: {
+    //         id: true,
+    //         value: true,
+    //         attribute: {
+    //           select: {
+    //             id: true,
+    //             name: true,
+    //           },
+    //         },
+    //       },
+    //     },
+    //   },
+    // },
     variants: {
       where: {
         status: "ACTIVE",

@@ -22,31 +22,40 @@ const addToCart = async ({ userId, quantity, productId, productVariantId: varian
     where: { id: productId },
     select: {
       id: true,
-      variants: { where: { isDefault: true }, select: { id: true } },
+      stock: true,
+      variants: { where: { isDefault: true }, select: { id: true, stock: true } },
     },
   });
-
   if (!product) {
     throw new ApiError(StatusCodes.NOT_FOUND, "Product not found!");
   }
 
   let productVariantId: number | null = null;
+  let stock = product.stock;
 
   // Case 1: Product has a variant and no `variantId` is provided
   if (!variantId && product.variants.length > 0) {
     productVariantId = product.variants[0]!.id; // Default variant
+    stock = product.variants[0]!.stock;
   }
 
   // Case 2: Product has a variant and `variantId` is provided
   if (variantId) {
     const variantExists = await prisma.productVariant.findUnique({
       where: { id: variantId, productId },
+      select: { id: true, stock: true },
     });
 
     if (!variantExists) {
       throw new ApiError(StatusCodes.NOT_FOUND, "Invalid variant for the product!");
     }
-    productVariantId = variantId;
+    productVariantId = variantExists.id;
+    stock = variantExists.stock;
+  }
+
+  // Check if this product has enough stock
+  if (quantity > stock) {
+    throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "Product out of stock!");
   }
 
   // Case 3: Product does not have any variants
@@ -177,7 +186,7 @@ const updateCartItem = async (payload: TUpdateCartPayload, userId: number) => {
   }
 
   // Validate stock availability for increment action
-  if (payload.action === "INC" && cartItem.quantity === product.stock) {
+  if (payload.action === "INC" && cartItem.quantity > product.stock) {
     throw new ApiError(StatusCodes.CONFLICT, "Product out of stock!");
   }
 
