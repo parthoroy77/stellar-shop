@@ -39,7 +39,9 @@ const CartContextProvider = ({ children }: { children: ReactNode }) => {
 
   // Check if a product is in the cart
   const isInCart = (productId: number, productVariantId: number | null) =>
-    cartItems.some((item) => item.productId === productId && item.productVariantId === productVariantId);
+    cartItems.some(
+      (item) => item.productId === productId && (productVariantId ? item.productVariantId === productVariantId : true)
+    );
 
   // Calculate cart item count
   const cartItemCount = useMemo(() => cartItems.length, [cartItems]);

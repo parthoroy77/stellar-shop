@@ -18,7 +18,7 @@ const AddToCartButton: FC<Props> = ({ productId }) => {
   const { isAuthenticated } = useClientSession();
   const { isInCart, addProductToCart } = useCartContext();
 
-  const inCart = useMemo(() => isInCart(productId), [isInCart, productId]);
+  const inCart = useMemo(() => isInCart(productId, null), [isInCart, productId]);
 
   const handleClick = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
