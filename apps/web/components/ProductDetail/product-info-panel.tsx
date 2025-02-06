@@ -1,7 +1,7 @@
 "use client";
 import { useProductVariantSelector } from "@/hooks/use-product-variant-selector";
 import { TProduct } from "@repo/utils/types";
-import { FC, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import ProductActionButtons from "./product-action-buttons";
 import ProductBrand from "./product-brand";
 import ProductPrice from "./product-price";
@@ -23,13 +23,24 @@ const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
   const { selectedVariant, availableAttrOptions, handleSelectAttribute, isValidCombination, isAttributeSelected } =
     useProductVariantSelector(variants);
 
-  // Get the correct price & stock from the selected variant
-  const price = selectedVariant?.price ?? product.price;
-  const stock = selectedVariant?.stock ?? product.stock;
-  const avgDiscount = comparePrice ? Math.round(((comparePrice - product.price) / comparePrice) * 100) : 0;
+  // Memoize the price and stock to avoid re-calculating on each render
+  const price = useMemo(() => selectedVariant?.price ?? product.price, [selectedVariant, product.price]);
+  const stock = useMemo(() => selectedVariant?.stock ?? product.stock, [selectedVariant, product.stock]);
+
+  // Calculate average discount
+  const avgDiscount = useMemo(
+    () => (comparePrice ? Math.round(((comparePrice - product.price) / comparePrice) * 100) : 0),
+    [comparePrice, product.price]
+  );
+
+  // Memoize outOfStock to avoid recalculating on every render
   const outOfStock = useMemo(() => quantity >= stock, [quantity, stock]);
-  // Simplify tags for UI
-  const simplifiedTags = tags?.map((tag) => ({ name: tag?.tag?.name, id: tag?.tag?.id })) || [];
+
+  // Simplify tags for UI and memoize the result
+  const simplifiedTags = useMemo(() => tags?.map((tag) => ({ name: tag?.tag?.name, id: tag?.tag?.id })) || [], [tags]);
+
+  // Memoize quantity setter to avoid unnecessary re-renders when updating quantity
+  const handleSetQuantity = useCallback((newQuantity: number) => setQuantity(newQuantity), []);
 
   return (
     <div className="divide-y *:py-2.5 lg:p-4">
@@ -49,7 +60,12 @@ const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
         />
       )}
       <div>
-        <ProductQuantitySelection stock={stock} quantity={quantity} productId={product.id} setQuantity={setQuantity} />
+        <ProductQuantitySelection
+          stock={stock}
+          quantity={quantity}
+          productId={product.id}
+          setQuantity={handleSetQuantity}
+        />
       </div>
       <ProductActionButtons
         outOfStock={outOfStock}

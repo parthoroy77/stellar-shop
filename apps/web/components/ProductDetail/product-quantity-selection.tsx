@@ -1,19 +1,19 @@
 "use client";
 import QuantitySelection from "@ui/components/ui/quantity-selection";
 import { ClassValue, cn } from "@ui/lib/utils";
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 
 interface ProductQuantitySelectionProps {
   stock: number;
   quantity: number;
   className?: ClassValue;
   productId: number;
-  setQuantity: Dispatch<SetStateAction<number>>;
+  setQuantity: (value: number) => void;
 }
 
 const ProductQuantitySelection: FC<ProductQuantitySelectionProps> = ({ stock, quantity, className, setQuantity }) => {
   const handleQuantity = (type: "INC" | "DEC") => {
-    setQuantity((prev) => (type === "INC" ? prev + 1 : prev - 1));
+    setQuantity(type === "INC" ? quantity + 1 : quantity - 1);
   };
 
   return (
