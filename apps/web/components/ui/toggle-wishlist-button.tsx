@@ -1,9 +1,10 @@
 "use client";
 import { useWishlistContext } from "@/contexts/wishlist-context";
+import useAuthRedirect from "@/hooks/use-auth-redirect";
 import { useClientSession } from "@/lib/auth-utils";
 import { AppButton } from "@ui/index";
 import { ClassValue, cn } from "@ui/lib/utils";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MouseEvent, useCallback, useMemo } from "react";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 import { toast } from "sonner";
@@ -13,7 +14,7 @@ const ToggleWishlistButton = ({ productId, className }: { productId: number; cla
   const router = useRouter();
   const { isAuthenticated } = useClientSession();
   const { isInWishlist, toggleWishlist } = useWishlistContext();
-
+  const pathname = usePathname();
   const inWishlist = useMemo(() => isInWishlist(productId), [isInWishlist, productId]);
 
   const handleClick = useCallback(
@@ -23,7 +24,7 @@ const ToggleWishlistButton = ({ productId, className }: { productId: number; cla
 
       if (!isAuthenticated) {
         toast.info("Please log in first!");
-        router.push("/login");
+        useAuthRedirect(router, pathname);
         return;
       } else {
         // toggle wishlist

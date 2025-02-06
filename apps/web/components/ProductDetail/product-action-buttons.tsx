@@ -1,8 +1,9 @@
 import { initiateCheckout } from "@/actions/checkout";
 import { useCartContext } from "@/contexts/cart-context";
+import useAuthRedirect from "@/hooks/use-auth-redirect";
 import { useClientSession } from "@/lib/auth-utils";
 import { AppButton, Button } from "@repo/ui";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FC, useCallback, useMemo, useTransition } from "react";
 import { toast } from "sonner";
 interface Props {
@@ -16,7 +17,7 @@ const ProductActionButtons: FC<Props> = ({ productId, quantity, productVariantId
   const [isPending, startTransition] = useTransition();
   const { isInCart, addProductToCart } = useCartContext();
   const router = useRouter();
-
+  const pathname = usePathname();
   const inCart = useMemo(
     () => (isAuthenticated ? isInCart(productId, productVariantId) : false),
     [isInCart, productId, productVariantId, isAuthenticated]
@@ -25,7 +26,7 @@ const ProductActionButtons: FC<Props> = ({ productId, quantity, productVariantId
   const handleAddToCart = useCallback(() => {
     if (!isAuthenticated) {
       toast.info("Please log in first!");
-      router.push("/login");
+      useAuthRedirect(router, pathname);
       return;
     } else {
       // actually update cart
@@ -36,7 +37,7 @@ const ProductActionButtons: FC<Props> = ({ productId, quantity, productVariantId
   const handleProductBuy = useCallback(() => {
     if (!isAuthenticated) {
       toast.info("Please log in first!");
-      router.push("/login");
+      useAuthRedirect(router, pathname);
       return;
     }
 

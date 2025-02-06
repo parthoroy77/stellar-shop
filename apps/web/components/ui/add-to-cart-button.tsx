@@ -1,9 +1,10 @@
 "use client";
 
 import { useCartContext } from "@/contexts/cart-context";
+import useAuthRedirect from "@/hooks/use-auth-redirect";
 import { useClientSession } from "@/lib/auth-utils";
 import { AppButton } from "@ui/index";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FC, MouseEvent, useCallback, useMemo } from "react";
 import { BsCartCheck } from "react-icons/bs";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
@@ -15,6 +16,8 @@ interface Props {
 
 const AddToCartButton: FC<Props> = ({ productId }) => {
   const router = useRouter();
+  const pathname = usePathname();
+
   const { isAuthenticated } = useClientSession();
   const { isInCart, addProductToCart } = useCartContext();
 
@@ -32,7 +35,7 @@ const AddToCartButton: FC<Props> = ({ productId }) => {
 
       if (!isAuthenticated) {
         toast.info("Please log in first!");
-        router.push("/login");
+        useAuthRedirect(router, pathname);
         return;
       } else {
         // actually update cart
