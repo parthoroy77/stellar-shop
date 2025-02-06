@@ -9,8 +9,9 @@ interface Props {
   productId: number;
   quantity: number;
   productVariantId: number | null;
+  outOfStock: boolean;
 }
-const ProductActionButtons: FC<Props> = ({ productId, quantity, productVariantId }) => {
+const ProductActionButtons: FC<Props> = ({ productId, quantity, productVariantId, outOfStock }) => {
   const { isAuthenticated } = useClientSession();
   const [isPending, startTransition] = useTransition();
   const { isInCart, addProductToCart } = useCartContext();
@@ -39,23 +40,23 @@ const ProductActionButtons: FC<Props> = ({ productId, quantity, productVariantId
       return;
     }
 
-    if (!productVariantId || !productId || quantity === 0) {
-      toast.info("Please please select desired variant!");
+    if (outOfStock) {
+      toast.info("This product is out of stock!");
       return;
     }
 
     startTransition(async () => {
       await initiateCheckout({ checkoutProduct: { productId, productVariantId, quantity } }, "product");
     });
-  }, [isAuthenticated, productId, router, quantity, productVariantId, quantity]);
+  }, [isAuthenticated, productId, router, quantity, productVariantId, quantity, outOfStock]);
 
   return (
     <div className="flex gap-5 *:w-full">
-      <AppButton loading={isPending} onClick={handleProductBuy}>
-        Buy Now
+      <AppButton disabled={outOfStock} loading={isPending} onClick={handleProductBuy}>
+        {outOfStock ? "Out of stock" : "Buy now"}
       </AppButton>
-      <Button onClick={handleAddToCart} disabled={inCart} variant={"secondary"}>
-        {inCart ? "Already in cart" : "Add To Cart"}
+      <Button onClick={handleAddToCart} disabled={inCart || outOfStock} variant={"secondary"}>
+        {outOfStock ? "Out of stock " : inCart ? "Already in cart" : "Add To Cart"}
       </Button>
     </div>
   );

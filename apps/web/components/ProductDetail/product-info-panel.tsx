@@ -1,7 +1,7 @@
 "use client";
 import { useProductVariantSelector } from "@/hooks/use-product-variant-selector";
 import { TProduct } from "@repo/utils/types";
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import ProductActionButtons from "./product-action-buttons";
 import ProductBrand from "./product-brand";
 import ProductPrice from "./product-price";
@@ -27,7 +27,7 @@ const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
   const price = selectedVariant?.price ?? product.price;
   const stock = selectedVariant?.stock ?? product.stock;
   const avgDiscount = comparePrice ? Math.round(((comparePrice - product.price) / comparePrice) * 100) : 0;
-
+  const outOfStock = useMemo(() => quantity >= stock, [quantity, stock]);
   // Simplify tags for UI
   const simplifiedTags = tags?.map((tag) => ({ name: tag?.tag?.name, id: tag?.tag?.id })) || [];
 
@@ -51,7 +51,12 @@ const ProductInfoPanel: FC<ProductInfoProps> = ({ product }) => {
       <div>
         <ProductQuantitySelection stock={stock} quantity={quantity} productId={product.id} setQuantity={setQuantity} />
       </div>
-      <ProductActionButtons productId={id} productVariantId={selectedVariant?.id ?? null} quantity={quantity} />
+      <ProductActionButtons
+        outOfStock={outOfStock}
+        productId={id}
+        productVariantId={selectedVariant?.id ?? null}
+        quantity={quantity}
+      />
     </div>
   );
 };

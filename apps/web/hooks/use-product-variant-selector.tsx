@@ -13,6 +13,19 @@ export const useProductVariantSelector = (variants: TProductVariant[]) => {
     return formatAttributes(attributes);
   }, [variants]);
 
+  // Set Default Attributes
+  useMemo(() => {
+    const defaultVariant = variants.find((v) => v.isDefault);
+    if (defaultVariant) {
+      const attributes = formatAttributes(defaultVariant.attributes);
+      attributes.forEach(({ attributeValues, id }) => {
+        attributeValues?.forEach(({ id: valueId }) => {
+          setSelectedAttributes((prev) => ({ ...prev, [id!]: valueId }));
+        });
+      });
+    }
+  }, [variants]);
+
   // handle select attributes
   const handleSelectAttribute = (attributeId: number, valueId: number) => {
     setSelectedAttributes((prev) => ({
@@ -41,13 +54,16 @@ export const useProductVariantSelector = (variants: TProductVariant[]) => {
 
   // Find the selected variant
   const selectedVariant = useMemo(() => {
+    const isAttrSelected = Object.keys(selectedAttributes).length > 0;
     return (
       variants.find((variant) =>
-        Object.entries(selectedAttributes).every(([attrId, valueId]) =>
-          variant.attributes.some(
-            (attr) => attr.attributeValue.attribute.id === Number(attrId) && attr.attributeValue.id === valueId
-          )
-        )
+        isAttrSelected
+          ? Object.entries(selectedAttributes).every(([attrId, valueId]) =>
+              variant.attributes.some(
+                (attr) => attr.attributeValue.attribute.id === Number(attrId) && attr.attributeValue.id === valueId
+              )
+            )
+          : variant.isDefault
       ) || null
     );
   }, [selectedAttributes, variants]);
