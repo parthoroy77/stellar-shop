@@ -64,6 +64,7 @@ model OrderItem {
 
 enum OrderStatus {
   PLACED
+  CONFIRMED
   PROCESSING
   PACKED
   SHIPPED

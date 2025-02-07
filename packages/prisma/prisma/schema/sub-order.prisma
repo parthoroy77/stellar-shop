@@ -55,6 +55,7 @@ model SubOrderItem {
 }
 
 enum SubOrderStatus {
+  CONFIRMED
   PROCESSING
   PACKED
   SHIPPED
