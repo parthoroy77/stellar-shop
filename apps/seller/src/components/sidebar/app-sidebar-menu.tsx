@@ -55,7 +55,7 @@ const AppSidebarMenu = () => {
               </CollapsibleTrigger>
               {menu?.children?.length && (
                 <CollapsibleContent>
-                  <SidebarMenuSub className="border-sidebar-ring border-l-2 pl-3 pr-0">
+                  <SidebarMenuSub className="border-sidebar-ring border-l-2 pl-3 pr-0 pt-2">
                     {menu?.children?.map((subItem, i) => {
                       const subActive = pathname === subItem.href;
                       return (

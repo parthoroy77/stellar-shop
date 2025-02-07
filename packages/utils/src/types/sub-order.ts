@@ -1,5 +1,5 @@
 import { IShippingOption } from "./delivery-and-shipping";
-import { IOrder } from "./order";
+import { TOrder } from "./order";
 import { TSeller } from "./seller";
 
 export enum SubOrderStatus {
@@ -44,7 +44,7 @@ export interface ISubOrder {
 
   // References (Related Models)
   seller: TSeller;
-  order: IOrder;
+  order: TOrder;
   subOrderItems: ISubOrderItem[];
   shippingOption: IShippingOption;
 }
