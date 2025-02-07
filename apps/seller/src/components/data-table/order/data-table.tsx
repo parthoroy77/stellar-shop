@@ -11,7 +11,7 @@ import {
   VisibilityState,
 } from "@repo/ui/tanstack-table";
 import TableSkeleton from "@ui/components/ui/table-skeleton";
-import { Button, Input, ShadTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/index";
+import { Button, ShadTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/index";
 import { useState } from "react";
 
 interface Props<TData, TValue> {
@@ -47,14 +47,6 @@ const OrderDataTable = <TData, TValue>({ data, columns, isLoading }: Props<TData
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between gap-5 py-4">
-        <Input
-          placeholder="Search categories..."
-          className="max-w-[300px] text-xs lg:text-sm"
-          value={(table.getColumn("categoryName")?.getFilterValue() as string) ?? ""}
-          onChange={(event) => table.getColumn("categoryName")?.setFilterValue(event.target.value)}
-        />
-      </div>
       <div className="rounded-md border">
         <ShadTable>
           <TableHeader>

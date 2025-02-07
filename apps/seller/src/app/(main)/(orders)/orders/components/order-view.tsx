@@ -1,41 +1,54 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@ui/index";
+"use client";
+import { getAllOrders } from "@/actions/order.action";
+import { columns } from "@/components/data-table/order/column";
+import OrderDataTable from "@/components/data-table/order/data-table";
+import { useQueryData } from "@repo/tanstack-query";
+import { SubOrderStatus } from "@repo/utils/types";
+import { Tabs, TabsList, TabsTrigger } from "@ui/index";
+import { useState } from "react";
 
 const orderTabs = [
   {
-    label: "New Orders",
-    elements: <div>New Order</div>,
+    label: "Pending Orders",
+    value: SubOrderStatus.PROCESSING,
   },
   {
-    label: "Processing ",
-    elements: <div>New Order</div>,
+    label: "Confirmed Orders",
+    value: SubOrderStatus.CONFIRMED,
   },
   {
-    label: "Packed ",
-    elements: <div>New Order</div>,
+    label: "Packed Orders",
+    value: SubOrderStatus.PACKED,
   },
   {
-    label: "Shipped ",
-    elements: <div>New Order</div>,
+    label: "Shipped Orders",
+    value: SubOrderStatus.SHIPPED,
   },
 ];
 
 const OrderView = () => {
+  const [status, setStatus] = useState(SubOrderStatus.PROCESSING);
+  const { data, isFetching } = useQueryData(["orders"], () => getAllOrders(`status=${status}`), {
+    refetchOnWindowFocus: false,
+    staleTime: 60,
+  });
   return (
-    <div>
-      <Tabs defaultValue={orderTabs[0]?.label.toLocaleLowerCase()}>
-        <TabsList>
+    <div className="space-y-5">
+      <Tabs defaultValue={status}>
+        <TabsList className="h-9">
           {orderTabs.map((tab, i) => (
-            <TabsTrigger key={i} value={tab.label.toLowerCase()}>
+            <TabsTrigger
+              value={tab.value}
+              key={i}
+              onClick={() => setStatus(tab.value)}
+              className="h-7 min-w-36 text-xs"
+            >
               {tab.label}
             </TabsTrigger>
           ))}
         </TabsList>
-        {orderTabs.map((tab, i) => (
-          <TabsContent key={i} value={tab.label.toLowerCase()}>
-            {tab.elements}
-          </TabsContent>
-        ))}
       </Tabs>
+      <OrderDataTable columns={columns} isLoading={isFetching} data={data || []} />
     </div>
   );
 };
