@@ -1,5 +1,6 @@
 export * from "./components/auth-form-fallback";
 export * from "./components/image-dropzone";
+export * from "./components/notification-menu";
 export * from "./components/off-canvas";
 export * from "./components/option-selector";
 export * from "./components/ui/alert-dialog";
