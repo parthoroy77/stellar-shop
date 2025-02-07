@@ -1,48 +1,71 @@
-export const PaymentCompletionStatus = {
-  PLACED: "PLACED",
-  PROCESSING: "PROCESSING",
-  SHIPPING: "SHIPPING",
-  DELIVERED: "DELIVERED",
-} as const;
+import { IOrder } from "./order";
 
-export type TPaymentCompletionStatus = (typeof PaymentCompletionStatus)[keyof typeof PaymentCompletionStatus];
-
-export const PaymentMethodActivationStatus = {
-  ACTIVE: "ACTIVE",
-  INACTIVE: "INACTIVE",
-} as const;
-
-export type TPaymentMethodActivationStatus =
-  (typeof PaymentMethodActivationStatus)[keyof typeof PaymentMethodActivationStatus];
-
-// Payment Provider
 export interface IPaymentProvider {
-  id: string;
+  id: number;
   name: string;
   active: boolean;
-  metadata: Record<string, any> | null;
+  metadata?: Record<string, any>; // JSON type maps to Record<string, any>
+
+  // References (Related Models)
+  paymentMethods: IPaymentMethod[];
 }
 
-// Payment Method
+// TypeScript types for PaymentMethod
 export interface IPaymentMethod {
   id: number;
-  providerId: number;
   name: string;
+  providerId: number;
   description?: string;
-  status: TPaymentMethodActivationStatus;
+  status: PaymentMethodStatus;
+  type: PaymentMethodType;
+
+  // timestamps
   createdAt: Date;
-  updatedAt?: Date;
+  updatedAt: Date;
+
+  // References (Related Models)
+  provider: IPaymentProvider;
+  payments: IPayment[];
 }
 
-// Payment
+// Enum for PaymentMethodType
+export enum PaymentMethodType {
+  COD = "COD",
+  CARD = "CARD",
+  NET_BANKING = "NET_BANKING",
+  WALLET = "WALLET",
+}
+
+// TypeScript types for Payment
 export interface IPayment {
   id: number;
   uniqueId: string;
-  orderId: number; // Foreign key referencing Order
-  paymentMethodId: number; // Foreign key referencing PaymentMethod
+  orderId: number;
+  paymentMethodId: number;
   gatewayTransactionId: string;
-  amount: number;
-  status: TPaymentCompletionStatus;
+  amount: number; // Decimal type in Prisma maps to number in TypeScript
+  status: PaymentStatus;
+
+  // timestamps
   createdAt: Date;
-  updatedAt?: Date;
+  updatedAt: Date;
+
+  // References (Related Models)
+  order: IOrder;
+  method: IPaymentMethod;
+}
+
+// Enum for PaymentStatus
+export enum PaymentStatus {
+  PROCESSING = "PROCESSING",
+  PENDING = "PENDING",
+  COMPLETED = "COMPLETED",
+  FAILED = "FAILED",
+  REFUNDED = "REFUNDED",
+}
+
+// Enum for PaymentMethodStatus
+export enum PaymentMethodStatus {
+  ACTIVE = "ACTIVE",
+  INACTIVE = "INACTIVE",
 }

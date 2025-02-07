@@ -1,49 +1,60 @@
+import { TAddressTypes } from "./address";
+import { IPayment, IPaymentMethod } from "./payment";
+import { ISubOrder } from "./sub-order";
+import { TUser } from "./user";
+
 export const OrderStatus = {
   PLACED: "PLACED",
+  CONFIRMED: "CONFIRMED",
   PROCESSING: "PROCESSING",
-  SHIPPING: "SHIPPING",
+  PACKED: "PACKED",
+  SHIPPED: "SHIPPED",
+  IN_TRANSIT: "IN_TRANSIT",
+  OUT_FOR_DELIVERY: "OUT_FOR_DELIVERY",
   DELIVERED: "DELIVERED",
+  DELIVERY_FAILED: "DELIVERY_FAILED",
+  RETURN_INITIATED: "RETURN_INITIATED",
+  RETURN_RECEIVED: "RETURN_RECEIVED",
+  REPLACEMENT_INITIATED: "REPLACEMENT_INITIATED",
+  REFUND_INITIATED: "REFUND_INITIATED",
+  REFUND_COMPLETED: "REFUND_COMPLETED",
+  CANCELED: "CANCELED",
 } as const;
 
 export type TOrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
-export const PaymentStatus = {
-  PAID: "PAID",
-  NOT_PAID: "NOT_PAID",
-} as const;
-
-export type TPaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus];
-
-export const PaymentType = {
-  CARD: "CARD",
-  NET_BANKING: "NET_BANKING",
-  MFS: "MFS",
-  COD: "COD",
-} as const;
-
-export type TPaymentTypes = (typeof PaymentType)[keyof typeof PaymentType];
+export enum OrderPaymentStatus {
+  PENDING = "PENDING",
+  PAID = "PAID",
+  UNPAID = "UNPAID",
+}
 
 // Orders
 export interface IOrder {
   id: number;
-  orderNumber: string;
+  uniqueId: string;
   userId: number; // Foreign key referencing User
   totalAmount: number;
   discountAmount: number;
   grossAmount: number;
   shippingAmount: number;
   netAmount: number;
+  orderNote?: string | null;
   status: TOrderStatus;
-  paymentStatus: TPaymentStatus;
-  paymentType: TPaymentTypes;
-  paymentTransactionId: string;
-  orderNotes?: string;
-  shipmentTrackingNumber?: string;
+  paymentStatus: OrderPaymentStatus;
+  paymentMethodId: number;
+  paymentId: number | null;
+
+  // Status timestamps
+  orderPlacedAt: Date;
+  orderPackedAt: Date;
+  orderShippedAt: Date;
+  orderDeliveredAt: Date;
+  orderCanceledAt: Date;
+
+  // Timestamps
   createdAt: Date;
   updatedAt?: Date;
-  orderPlacedAt: Date;
-  orderShippedAt?: Date;
-  orderDeliveredAt?: Date;
 }
 
 // Order Items
@@ -53,23 +64,46 @@ export interface IOrderItem {
   productId: number; // Foreign key referencing Product
   productVariantId?: number; // Nullable Foreign key referencing ProductVariant
   productName: string;
-  color?: string;
-  size?: string;
+  attributes?: Record<string, any>;
   price: number;
   quantity: number;
   totalAmount: number;
-  // Store all attributes statically
+
+  createdAt: Date;
+  updatedAt?: Date;
 }
 
 // Order Shipping Addresses
 export interface IOrderShippingAddress {
   id: number;
+
   orderId: number; // Foreign key referencing Order
-  shippingAddressId: number; // Foreign key referencing Address
+  fullName: string;
+  phone: string;
   fullAddress: string;
+  country: string;
   state: string;
   city: string;
   zipCode: string;
-  country: string;
+  type: TAddressTypes;
+
   createdAt: Date;
+  updatedAt: Date;
 }
+
+export interface IOrderStatusHistory {
+  id: number;
+  orderId: number;
+  status: TOrderStatus;
+  changedAt: number;
+}
+
+export type TOrder = IOrder & {
+  user: TUser;
+  orderItems: IOrderItem[];
+  orderStatusHistory: IOrderStatusHistory[];
+  subOrders: ISubOrder;
+  orderShippingAddress: IOrderShippingAddress;
+  paymentMethod: IPaymentMethod;
+  payment: IPayment;
+};
