@@ -11,6 +11,7 @@ import PaymentMethodRoutes from "../modules/payment-method/payment-method.routes
 import ProductRoutes from "../modules/product/product.routes";
 import SellerRoutes from "../modules/seller/seller.routes";
 import ShippingRoutes from "../modules/shipping/shipping.routes";
+import SubOrderRoutes from "../modules/sub-order/sub-order.routes";
 import TagRoutes from "../modules/tag/tag.routes";
 import UserRoutes from "../modules/user/user.routes";
 import WishlistRoutes from "../modules/wishlist/wishlist.routes";
@@ -82,6 +83,10 @@ const routerModules: TRouteModule[] = [
   {
     path: "/orders",
     route: OrderRoutes,
+  },
+  {
+    path: "/sub-orders",
+    route: SubOrderRoutes,
   },
 ];
 

@@ -8,7 +8,7 @@ export type TSubOrder = ISubOrder & {
 };
 
 export const getAllOrders = async (query: string) => {
-  const result = await serverFetcher<TSubOrder[]>(`/orders/sellers?${query}`, {
+  const result = await serverFetcher<TSubOrder[]>(`/sub-orders?${query}`, {
     next: { tags: ["orders"], revalidate: 10 },
   });
   return { data: result.data, meta: result.meta };
