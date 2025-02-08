@@ -1,5 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { PAGINATION_KEYS } from "../../constants";
+import { ApiError } from "../../handlers/ApiError";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
 import pick from "../../utils/pick";
@@ -20,6 +21,22 @@ const getSellerAllOrders = asyncHandler(async (req, res) => {
   });
 });
 
+const updateSubOrderStatus = asyncHandler(async (req, res) => {
+  const payload = req.body;
+  const { id } = req.params;
+  if (!id) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Order identifier not found!");
+  }
+  const { statusCode, message } = await SubOrderServices.updateStatus(+id, payload.status, req.user.id!);
+  ApiResponse(res, {
+    data: {},
+    statusCode,
+    message,
+    success: true,
+  });
+});
+
 export const SubOrderControllers = {
   getSellerAllOrders,
+  updateSubOrderStatus,
 };
