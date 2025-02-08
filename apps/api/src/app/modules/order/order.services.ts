@@ -1,4 +1,4 @@
-import prisma, { Prisma } from "@repo/prisma/client";
+import prisma, { OrderStatus, Prisma } from "@repo/prisma/client";
 import { generateUniqueId } from "@repo/utils/functions";
 import { StatusCodes } from "http-status-codes";
 import { redisInstance } from "../../../server";
@@ -364,4 +364,45 @@ const getOrdersForAdmin = async ({ status, paymentStatus }: TOrderFilters, optio
   };
 };
 
-export const OrderServices = { place, getOrdersForAdmin};
+const updateOrderStatusForAdmin = async (orderId: number, status: OrderStatus) => {
+  // Define allowed status transitions
+  const statusTransitions: Partial<Record<OrderStatus, { previous: OrderStatus; timestampField?: string }>> = {
+    IN_TRANSIT: { previous: "SHIPPED" },
+    OUT_FOR_DELIVERY: { previous: "IN_TRANSIT" },
+    DELIVERED: { previous: "OUT_FOR_DELIVERY", timestampField: "orderDeliveredAt" },
+  };
+
+  // Ensure the requested status transition is allowed
+  const transition = statusTransitions[status];
+  if (!transition) {
+    throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "You cannot update this status!");
+  }
+
+  // Update subOrder and order status
+  const updateData: any = { status };
+  if (transition.timestampField) {
+    updateData[transition.timestampField] = new Date();
+  }
+
+  await prisma.order.update({
+    where: { id: orderId, status: transition.previous },
+    data: {
+      ...updateData,
+      status,
+      ...(transition.timestampField && { [transition.timestampField]: new Date() }),
+      orderStatusHistory: {
+        create: {
+          status,
+          changedAt: new Date(),
+        },
+      },
+    },
+  });
+
+  return {
+    statusCode: StatusCodes.OK,
+    message: `Order status now updated to ${status.toLowerCase()}`,
+  };
+};
+
+export const OrderServices = { place, getOrdersForAdmin, updateOrderStatusForAdmin };

@@ -1,5 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { PAGINATION_KEYS } from "../../constants";
+import { ApiError } from "../../handlers/ApiError";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
 import pick from "../../utils/pick";
@@ -33,7 +34,23 @@ const getAllOrdersForAdmin = asyncHandler(async (req, res) => {
   });
 });
 
+const updateOrderStatusForAdmin = asyncHandler(async (req, res) => {
+  const payload = req.body;
+  const { id } = req.params;
+  if (!id) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Order identifier not found!");
+  }
+  const { statusCode, message } = await OrderServices.updateOrderStatusForAdmin(+id, payload.status);
+  ApiResponse(res, {
+    data: {},
+    statusCode,
+    message,
+    success: true,
+  });
+});
+
 export const OrderControllers = {
   placeOrder,
   getAllOrdersForAdmin,
+  updateOrderStatusForAdmin,
 };
