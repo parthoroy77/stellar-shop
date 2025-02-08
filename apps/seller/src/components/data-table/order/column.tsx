@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage, Badge, Button } from "@ui/index";
 import { ColumnDef } from "@ui/tanstack-table";
 import moment from "moment";
 import { LuDollarSign, LuFileText } from "react-icons/lu";
-import { SlMagnifierAdd } from "react-icons/sl";
+import OrderDataTableActions from "./data-table-actions";
 
 export const columns: ColumnDef<TSubOrder>[] = [
   {
@@ -17,10 +17,8 @@ export const columns: ColumnDef<TSubOrder>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="text-accent-foreground w-32 truncate font-medium">
-        <Button className="px-0" variant={"link"}>
-          {row.original.order.uniqueId}
-        </Button>
+      <div className="w-32 truncate text-sm font-medium text-black">
+        <span>{row.original.order.uniqueId}</span>
       </div>
     ),
   },
@@ -143,7 +141,7 @@ export const columns: ColumnDef<TSubOrder>[] = [
     cell: ({ row }) => (
       <div>
         <Badge variant={"success"} className="rounded-md capitalize">
-          {(row.original.order.status as string)?.toLowerCase()}
+          {(row.original.status as string)?.toLowerCase()}
         </Badge>
       </div>
     ),
@@ -173,18 +171,8 @@ export const columns: ColumnDef<TSubOrder>[] = [
         </div>
       );
     },
-    cell: () => {
-      return (
-        <div className="flex w-fit justify-center gap-1">
-          <Button size={"sm"} className="flex h-7 w-fit gap-1" variant={"link"}>
-            <SlMagnifierAdd />
-            View
-          </Button>
-          <Button size={"sm"} className="h-7 w-fit min-w-16 border" variant={"accent"}>
-            Packed
-          </Button>
-        </div>
-      );
+    cell: ({ row }) => {
+      return <OrderDataTableActions row={row} />;
     },
   },
 ];
