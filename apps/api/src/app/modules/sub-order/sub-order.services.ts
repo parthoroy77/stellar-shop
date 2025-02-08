@@ -58,13 +58,13 @@ const getAll = async ({ status }: TSellerOrderFilters, options: TPaginateOption,
   const total = await prisma.subOrder.count({ where: finalWhereClause });
 
   // formate orders to simplify
-  const formattedOrder = orders.map((o) => ({ ...o, subOrderItems: o._count.subOrderItems }));
+  const formattedOrder = orders.map((o) => ({ ...o, totalItems: o._count.subOrderItems }));
 
   return { result: formattedOrder, meta: { skip, limit, page, sortBy, sortOrder, total } };
 };
 
 const updateStatus = async (subOrderId: number, status: SubOrderStatus, userId: number) => {
-  // Check if seller exists and is active
+  // Verify seller existence
   const seller = await prisma.seller.findFirst({
     where: { userId, status: "ACTIVE" },
     select: { id: true },
@@ -75,28 +75,32 @@ const updateStatus = async (subOrderId: number, status: SubOrderStatus, userId: 
   }
 
   // Define allowed status transitions
-  const statusUpdateFlow: Partial<Record<SubOrderStatus, SubOrderStatus>> = {
-    PROCESSING: "CONFIRMED",
-    CONFIRMED: "PACKED",
-    PACKED: "SHIPPED",
+  const statusTransitions: Partial<Record<SubOrderStatus, { previous: SubOrderStatus; timestampField?: string }>> = {
+    CONFIRMED: { previous: "PROCESSING" },
+    PACKED: { previous: "CONFIRMED", timestampField: "orderPackedAt" },
+    SHIPPED: { previous: "PACKED", timestampField: "orderShippedAt" },
   };
 
-  const previousStatus = Object.keys(statusUpdateFlow).find(
-    (key) => statusUpdateFlow[key as SubOrderStatus] === status
-  ) as SubOrderStatus | undefined;
-
-  if (!previousStatus) {
-    throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "Invalid status transition!");
+  // Ensure the requested status transition is allowed
+  const transition = statusTransitions[status];
+  if (!transition) {
+    throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "You cannot update this status!");
   }
 
   // Update subOrder and order status
-  const updatedSubOrder = await prisma.subOrder.update({
-    where: { id: subOrderId, sellerId: seller.id, status: previousStatus },
+  const updateData: any = { status };
+  if (transition.timestampField) {
+    updateData[transition.timestampField] = new Date();
+  }
+
+  await prisma.subOrder.update({
+    where: { id: subOrderId, sellerId: seller.id, status: transition.previous },
     data: {
-      status,
+      ...updateData,
       order: {
         update: {
           status,
+          ...(transition.timestampField && { [transition.timestampField]: new Date() }),
           orderStatusHistory: {
             create: {
               status,
@@ -107,10 +111,6 @@ const updateStatus = async (subOrderId: number, status: SubOrderStatus, userId: 
       },
     },
   });
-
-  if (!updatedSubOrder) {
-    throw new ApiError(StatusCodes.NOT_FOUND, "SubOrder not found or status update not allowed!");
-  }
 
   return {
     statusCode: StatusCodes.OK,

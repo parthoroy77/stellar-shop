@@ -5,7 +5,7 @@ import { ISubOrder, SubOrderStatus } from "@repo/utils/types";
 import { revalidateTag } from "next/cache";
 
 export type TSubOrder = ISubOrder & {
-  subOrderItems: number;
+  totalItems: number;
 };
 
 export const getAllOrders = async (query: string) => {

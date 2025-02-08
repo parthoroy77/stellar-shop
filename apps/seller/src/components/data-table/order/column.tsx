@@ -48,7 +48,7 @@ export const columns: ColumnDef<TSubOrder>[] = [
     },
     cell: ({ row }) => (
       <div>
-        <span className="text-accent-foreground text-sm font-medium">{row.original.subOrderItems} Item</span>
+        <span className="text-accent-foreground text-sm font-medium">{row.original.totalItems} Item</span>
       </div>
     ),
   },
