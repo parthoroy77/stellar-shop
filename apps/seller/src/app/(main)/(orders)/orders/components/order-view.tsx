@@ -5,7 +5,7 @@ import { columns } from "@/components/data-table/order/column";
 import OrderDataTable from "@/components/data-table/order/data-table";
 import { useQueryData } from "@repo/tanstack-query";
 import { SubOrderStatus } from "@repo/utils/types";
-import { Tabs, TabsList, TabsTrigger } from "@ui/index";
+import { AppPagination, Tabs, TabsList, TabsTrigger } from "@ui/index";
 import { useCallback, useState } from "react";
 
 const orderTabs = [
@@ -38,7 +38,19 @@ const OrderView = () => {
           ))}
         </TabsList>
       </Tabs>
-      <OrderDataTable columns={columns} isLoading={isFetching} data={data || []} />
+      <div className="space-y-3">
+        <OrderDataTable columns={columns} isLoading={isFetching} data={data || []} />
+        <div className="flex justify-center">
+          <AppPagination
+            totalPages={3}
+            currentPage={1}
+            maxVisiblePages={4}
+            showNextButton
+            showPrevButton
+            onPageChange={() => {}}
+          />
+        </div>
+      </div>
     </div>
   );
 };
