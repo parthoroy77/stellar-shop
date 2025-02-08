@@ -11,5 +11,5 @@ export const getAllOrders = async (query: string) => {
   const result = await serverFetcher<TSubOrder[]>(`/orders/sellers?${query}`, {
     next: { tags: ["orders"], revalidate: 10 },
   });
-  return result.data;
+  return { data: result.data, meta: result.meta };
 };

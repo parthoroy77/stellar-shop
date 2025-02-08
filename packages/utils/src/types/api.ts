@@ -2,6 +2,9 @@ export type TMeta = {
   page: number;
   limit: number;
   total: number;
+  skip: number;
+  sortBy: string;
+  sortOrder: string;
 };
 export interface IApiResponse<T> {
   data: T | null;
