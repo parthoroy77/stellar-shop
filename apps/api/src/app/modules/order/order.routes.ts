@@ -8,6 +8,9 @@ const router = Router();
 // Place an order
 router.post("/place", authMiddleware(UserRole.BUYER), OrderControllers.placeOrder);
 
+// Get orders for admin
+router.get("/", authMiddleware(UserRole.ADMIN), OrderControllers.getAllOrdersForAdmin);
+
 const OrderRoutes = router;
 
 export default OrderRoutes;

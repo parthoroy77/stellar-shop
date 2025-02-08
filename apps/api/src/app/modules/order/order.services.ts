@@ -3,8 +3,10 @@ import { generateUniqueId } from "@repo/utils/functions";
 import { StatusCodes } from "http-status-codes";
 import { redisInstance } from "../../../server";
 import { ApiError } from "../../handlers/ApiError";
+import calculatePagination, { TPaginateOption } from "../../utils/calculatePagination";
 import { CheckoutServices } from "../checkout/checkout.services";
 import { getCheckoutCacheKey, getCheckoutSession } from "../checkout/checkout.utils";
+import { TOrderFilters } from "./order.types";
 import { handlePaymentRedirect } from "./order.utils";
 
 const place = async (payload: { orderNote?: string }, userId: number) => {
@@ -289,4 +291,77 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
   return handlePaymentRedirect(paymentMethod.type, orderId);
 };
 
-export const OrderServices = { place };
+/**
+ * Only for
+ * Retrieves orders based on provided filters and options.
+ * @param {object} filters - The filtering criteria for retrieving orders.
+ * @param {object} options - Pagination and sorting options.
+ * @returns {Promise<{ results: object[], meta: TMeta }>}
+ * */
+
+const getOrdersForAdmin = async ({ status, paymentStatus }: TOrderFilters, options: TPaginateOption) => {
+  const { skip, limit, page, sortBy, sortOrder } = calculatePagination(options);
+  const andClauses: Prisma.OrderWhereInput[] = [];
+
+  if (status) {
+    andClauses.push({
+      status,
+    });
+  }
+  if (paymentStatus) {
+    andClauses.push({
+      paymentStatus,
+    });
+  }
+
+  const finalWhereClause: Prisma.OrderWhereInput = andClauses.length > 0 ? { AND: andClauses } : {};
+
+  const orders = await prisma.order.findMany({
+    where: finalWhereClause,
+    select: {
+      id: true,
+      uniqueId: true,
+      totalAmount: true,
+      discountAmount: true,
+      shippingAmount: true,
+      netAmount: true,
+      status: true,
+      paymentStatus: true,
+      paymentMethod: {
+        select: { name: true, type: true },
+      },
+      user: {
+        select: { fullName: true, avatarUrl: true },
+      },
+      _count: {
+        select: {
+          subOrders: true,
+          orderItems: true,
+        },
+      },
+    },
+    skip,
+    take: limit,
+    orderBy: { [sortBy]: sortOrder },
+  });
+
+  const total = await prisma.order.count({ where: finalWhereClause });
+
+  return {
+    result: orders.map((order) => ({
+      ...order,
+      totalSubOrders: order._count.subOrders,
+      totalOrderItems: order._count.orderItems,
+    })),
+    meta: {
+      skip,
+      limit,
+      page,
+      sortBy,
+      sortOrder,
+      total,
+    },
+  };
+};
+
+export const OrderServices = { place, getOrdersForAdmin};
