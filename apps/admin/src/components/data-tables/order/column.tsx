@@ -1,8 +1,10 @@
+import { toNormalCase } from "@repo/utils/functions";
 import { OrderPaymentStatus, TOrder } from "@repo/utils/types";
 import { Avatar, AvatarFallback, AvatarImage, Badge, Button } from "@ui/index";
 import { ColumnDef } from "@ui/tanstack-table";
 import moment from "moment";
 import { LuDollarSign, LuFileText } from "react-icons/lu";
+import OrdersDataTableActions from "./data-table-action";
 
 export type TOrderResponse = TOrder & {
   totalSubOrders: number;
@@ -207,8 +209,8 @@ export const columns: ColumnDef<TOrderResponse>[] = [
     },
     cell: ({ row }) => (
       <div>
-        <Badge variant={"success"} className="rounded-md capitalize">
-          {(row.original.status as string)?.toLowerCase()}
+        <Badge variant={"success"} className="truncate rounded-md capitalize">
+          {toNormalCase(row.original.status)}
         </Badge>
       </div>
     ),
@@ -238,8 +240,8 @@ export const columns: ColumnDef<TOrderResponse>[] = [
         </div>
       );
     },
-    cell: () => {
-      return <div />;
+    cell: ({ row }) => {
+      return <OrdersDataTableActions row={row} />;
     },
   },
 ];

@@ -5,6 +5,7 @@ export type TOrderResponse = TOrder & {
   totalSubOrders: number;
   totalOrderItems: number;
 };
+
 const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // queries
@@ -14,6 +15,17 @@ const orderApi = baseApi.injectEndpoints({
         url: `/orders/?${query}`,
       }),
       providesTags: ["orders"],
+      keepUnusedDataFor: 60,
+    }),
+
+    // mutations
+    updateOrderStatus: builder.mutation<IApiResponse<{}>, unknown>({
+      query: ({ orderId, status }) => ({
+        url: `/orders/${orderId}`,
+        method: "PUT",
+        data: { status },
+      }),
+      invalidatesTags: ["orders"],
     }),
   }),
 });
@@ -22,4 +34,5 @@ export const {
   // queries
   useGetOrdersQuery,
   // mutations
+  useUpdateOrderStatusMutation,
 } = orderApi;
