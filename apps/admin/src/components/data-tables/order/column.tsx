@@ -66,9 +66,9 @@ export const columns: ColumnDef<TOrderResponse>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="flex items-center font-semibold">
-        <LuDollarSign color="green" />
-        <span>{row.original.discountAmount} </span>
+      <div className="text-destructive flex items-center font-semibold">
+        <LuDollarSign />
+        <span className="text-destructive">{row.original.discountAmount} </span>
       </div>
     ),
   },
@@ -130,7 +130,7 @@ export const columns: ColumnDef<TOrderResponse>[] = [
     },
     cell: ({ row }) => (
       <div>
-        <span className="text-accent-foreground text-sm font-medium">{row.original.totalSubOrders} Involved</span>
+        <span className="text-accent-foreground text-sm font-medium">{row.original.totalSubOrders} Seller</span>
       </div>
     ),
   },
