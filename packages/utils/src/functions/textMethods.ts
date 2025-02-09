@@ -36,3 +36,7 @@ export function toSentenceCase(input: string) {
     .toLowerCase()
     .replace(/^\w/, (char) => char.toUpperCase());
 }
+
+export function toNormalCase(str: string) {
+  return str.replace(/[_-]/g, " ").replace(/\s+/g, " ").trim();
+}

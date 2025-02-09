@@ -47,7 +47,7 @@ export const sidebarItems: TSidebarItem[] = [
   },
   {
     label: "Orders",
-    href: "/item",
+    href: "/orders",
     Icon: CiBoxList,
   },
   {
