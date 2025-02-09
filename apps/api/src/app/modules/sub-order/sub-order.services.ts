@@ -77,6 +77,7 @@ const updateStatus = async (subOrderId: number, status: SubOrderStatus, userId: 
   // Define allowed status transitions
   const statusTransitions: Partial<Record<SubOrderStatus, { previous: SubOrderStatus; timestampField?: string }>> = {
     CONFIRMED: { previous: "PROCESSING" },
+    CANCELED: { previous: "PROCESSING" },
     PACKED: { previous: "CONFIRMED", timestampField: "orderPackedAt" },
     SHIPPED: { previous: "PACKED", timestampField: "orderShippedAt" },
   };
@@ -114,7 +115,7 @@ const updateStatus = async (subOrderId: number, status: SubOrderStatus, userId: 
 
   return {
     statusCode: StatusCodes.OK,
-    message: `Order status now updated to ${status.toLowerCase()}`,
+    message: `Order is now ${status.toLowerCase()}`,
   };
 };
 

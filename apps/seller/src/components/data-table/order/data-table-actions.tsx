@@ -25,14 +25,24 @@ const OrderDataTableActions = ({ row }: { row: Row<TSubOrder> }) => {
         View
       </Button>
       {row.original.status === SubOrderStatus.PROCESSING && (
-        <Button
-          onClick={() => handleStatus(SubOrderStatus.CONFIRMED)}
-          size={"sm"}
-          className="h-7 w-fit min-w-16 border"
-          variant={"accent"}
-        >
-          Confirm Order
-        </Button>
+        <>
+          <Button
+            onClick={() => handleStatus(SubOrderStatus.CONFIRMED)}
+            size={"sm"}
+            className="h-7 w-fit min-w-16 border"
+            variant={"accent"}
+          >
+            Confirm Order
+          </Button>
+          <Button
+            onClick={() => handleStatus(SubOrderStatus.CANCELED)}
+            size={"sm"}
+            className="h-7 w-fit min-w-16 border"
+            variant={"destructive"}
+          >
+            Cancel Order
+          </Button>
+        </>
       )}
       {row.original.status === SubOrderStatus.CONFIRMED && (
         <Button
