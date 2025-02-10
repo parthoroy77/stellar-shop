@@ -141,6 +141,20 @@ const get = async (subOrderId: number) => {
         },
       },
       subOrderItems: {
+        include: {
+          product: {
+            select: {
+              uniqueId: true,
+              images: { take: 1 },
+            },
+          },
+          productVariant: {
+            select: {
+              uniqueId: true,
+              images: { take: 1 },
+            },
+          },
+        },
         omit: { createdAt: true, updatedAt: true },
       },
       order: {
@@ -157,6 +171,9 @@ const get = async (subOrderId: number) => {
           orderShippingAddress: {
             take: 1,
             omit: { createdAt: true, updatedAt: true },
+          },
+          user: {
+            select: { fullName: true, avatarUrl: true },
           },
         },
       },

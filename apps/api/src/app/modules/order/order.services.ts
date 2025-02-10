@@ -210,6 +210,7 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
       subOrderItems: {
         createMany: { data: subOrderItems },
       },
+      orderNote: payload.orderNote ? payload.orderNote : null,
     });
   }
 
