@@ -23,6 +23,7 @@ model ProductVariant {
   cartItems                CartItem[]
   wishlistItems            WishlistItem[]
   orderItems               OrderItem[]
+  subOrderItem             SubOrderItem[]
 
   @@index([productId])
   @@map("ProductVariants")

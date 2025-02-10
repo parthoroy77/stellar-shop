@@ -48,7 +48,9 @@ model SubOrderItem {
   updatedAt DateTime @updatedAt
 
   // references
-  subOrder SubOrder @relation(fields: [subOrderId], references: [id])
+  subOrder       SubOrder        @relation(fields: [subOrderId], references: [id])
+  product        Product         @relation(fields: [productId], references: [id])
+  productVariant ProductVariant? @relation(fields: [productVariantId], references: [id])
 
   @@index([subOrderId, productId, productVariantId])
   @@map("SubOrderItems")
