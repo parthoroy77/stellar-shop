@@ -13,6 +13,9 @@ router.use(authMiddleware(UserRole.SELLER));
 // Retrieved all orders for seller
 router.get("/", SubOrderControllers.getSellerAllOrders);
 
+// Retrieved order details
+router.get("/:id", authMiddleware(UserRole.SELLER), SubOrderControllers.getSellerOrderDetails);
+
 // Update sub order status
 router.put("/:id", zodSafeParse(updateSubOrderStatusValidationSchema), SubOrderControllers.updateSubOrderStatus);
 

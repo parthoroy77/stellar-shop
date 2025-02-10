@@ -36,7 +36,19 @@ const updateSubOrderStatus = asyncHandler(async (req, res) => {
   });
 });
 
+const getSellerOrderDetails = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const result = await SubOrderServices.get(+id!);
+  ApiResponse(res, {
+    data: result,
+    success: true,
+    message: "Order details retrieved successfully!",
+    statusCode: StatusCodes.OK,
+  });
+});
+
 export const SubOrderControllers = {
   getSellerAllOrders,
   updateSubOrderStatus,
+  getSellerOrderDetails,
 };

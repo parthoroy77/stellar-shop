@@ -119,4 +119,50 @@ const updateStatus = async (subOrderId: number, status: SubOrderStatus, userId: 
   };
 };
 
-export const SubOrderServices = { getAll, updateStatus };
+/**
+ * Get Order details specially for seller
+ * @param subOrderId
+ * @returns
+ */
+const get = async (subOrderId: number) => {
+  const result = await prisma.subOrder.findUnique({
+    where: {
+      id: subOrderId,
+    },
+    select: {
+      id: true,
+      totalAmount: true,
+      discountAmount: true,
+      netAmount: true,
+      shippingOption: {
+        select: {
+          name: true,
+          estimateDays: true,
+        },
+      },
+      subOrderItems: {
+        omit: { createdAt: true, updatedAt: true },
+      },
+      order: {
+        select: {
+          uniqueId: true,
+          paymentStatus: true,
+          paymentMethod: {
+            select: {
+              name: true,
+              type: true,
+            },
+          },
+          orderStatusHistory: true,
+          orderShippingAddress: {
+            take: 1,
+            omit: { createdAt: true, updatedAt: true },
+          },
+        },
+      },
+    },
+  });
+  return result;
+};
+
+export const SubOrderServices = { getAll, updateStatus, get };
