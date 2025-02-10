@@ -1,5 +1,6 @@
 import { TAddressTypes } from "./address";
 import { IPayment, IPaymentMethod } from "./payment";
+import { TProduct, TProductVariant } from "./product";
 import { ISubOrder } from "./sub-order";
 import { TUser } from "./user";
 
@@ -71,6 +72,10 @@ export interface IOrderItem {
 
   createdAt: Date;
   updatedAt?: Date;
+
+  // references
+  product: TProduct;
+  productVariant: TProductVariant;
 }
 
 // Order Shipping Addresses

@@ -23,3 +23,11 @@ export const updateOrderStatus = async (subOrderId: number, status: SubOrderStat
 
   return result;
 };
+
+export const getOrderDetails = async (subOrderId: number) => {
+  const result = await serverFetcher<ISubOrder>(`/sub-orders/${subOrderId}`, {
+    next: { revalidate: 60, tags: ["order-details", subOrderId.toString()] },
+  });
+
+  return result.data;
+};
