@@ -67,6 +67,6 @@ export interface ISubOrderItem {
 
   // Reference (Related Model)
   subOrder: ISubOrder;
-  product: TProduct;
-  productVariant: TProductVariant;
+  product: Pick<TProduct, "uniqueId" | "images">;
+  productVariant: Pick<TProductVariant, "uniqueId" | "images">;
 }
