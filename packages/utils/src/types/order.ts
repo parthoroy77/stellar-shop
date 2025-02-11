@@ -84,7 +84,7 @@ export interface IOrderShippingAddress {
 
   orderId: number; // Foreign key referencing Order
   fullName: string;
-  phone: string;
+  phoneNumber: string;
   fullAddress: string;
   country: string;
   state: string;
@@ -108,7 +108,7 @@ export type TOrder = IOrder & {
   orderItems: IOrderItem[];
   orderStatusHistory: IOrderStatusHistory[];
   subOrders: ISubOrder;
-  orderShippingAddress: IOrderShippingAddress;
+  orderShippingAddress: IOrderShippingAddress[];
   paymentMethod: IPaymentMethod;
   payment: IPayment;
 };
