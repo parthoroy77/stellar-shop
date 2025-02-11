@@ -62,7 +62,7 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
     // Order shipping address
     orderShippingAddress: {
       create: {
-        fullName: shippingAddress.fullAddress,
+        fullName: shippingAddress.fullName,
         phoneNumber: shippingAddress?.phoneNumber,
         fullAddress: shippingAddress?.fullAddress,
         country: shippingAddress.country,

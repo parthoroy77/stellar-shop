@@ -134,6 +134,7 @@ const get = async (subOrderId: number) => {
       totalAmount: true,
       discountAmount: true,
       netAmount: true,
+      orderPlacedAt: true,
       shippingOption: {
         select: {
           name: true,
@@ -145,13 +146,13 @@ const get = async (subOrderId: number) => {
           product: {
             select: {
               uniqueId: true,
-              images: { take: 1 },
+              images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
             },
           },
           productVariant: {
             select: {
               uniqueId: true,
-              images: { take: 1 },
+              images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
             },
           },
         },
@@ -161,6 +162,7 @@ const get = async (subOrderId: number) => {
         select: {
           uniqueId: true,
           paymentStatus: true,
+          status: true,
           paymentMethod: {
             select: {
               name: true,
