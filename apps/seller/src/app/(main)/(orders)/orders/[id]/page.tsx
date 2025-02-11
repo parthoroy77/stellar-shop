@@ -1,5 +1,6 @@
 import { getOrderDetails } from "@/actions/order.action";
 import { notFound } from "next/navigation";
+import OrderActivity from "./components/order-activity";
 import OrderCustomer from "./components/order-customer";
 import OrderHeader from "./components/order-header";
 import OrderItemSummary from "./components/order-item-summary";
@@ -36,6 +37,7 @@ const OrderDetailPage = async ({ params }: { params: Promise<{ id: string }> }) 
       <section className="*:*rounded-md flex items-start gap-5 *:*:space-y-2 *:space-y-3 *:*:rounded-md *:*:border *:*:px-5 *:*:py-3">
         <div className="flex-1">
           <OrderItemSummary items={orderItems} />
+          <OrderActivity statusHistory={mainOrder.orderStatusHistory} />
         </div>
         <aside className="w-[30%]">
           <OrderNote note={subOrder.orderNote || null} />
