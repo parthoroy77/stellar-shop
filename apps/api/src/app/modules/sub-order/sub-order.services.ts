@@ -22,11 +22,12 @@ const getAll = async ({ status }: TSellerOrderFilters, options: TPaginateOption,
     });
   }
 
-  const finalWhereClause: Prisma.SubOrderWhereInput =
-    andClauses.length > 0 ? { sellerId: seller.id, AND: andClauses } : {};
-
+  const whereClause: Prisma.SubOrderWhereInput = andClauses.length > 0 ? { sellerId: seller.id, AND: andClauses } : {};
   const orders = await prisma.subOrder.findMany({
-    where: finalWhereClause,
+    where: {
+      sellerId: seller.id,
+      ...whereClause,
+    },
     select: {
       id: true,
       netAmount: true,
@@ -56,7 +57,7 @@ const getAll = async ({ status }: TSellerOrderFilters, options: TPaginateOption,
       [sortBy]: sortOrder,
     },
   });
-  const total = await prisma.subOrder.count({ where: finalWhereClause });
+  const total = await prisma.subOrder.count({ where: whereClause });
 
   // formate orders to simplify
   const formattedOrder = orders.map((o) => ({ ...o, totalItems: o._count.subOrderItems }));
