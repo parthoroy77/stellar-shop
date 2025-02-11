@@ -1,7 +1,9 @@
 import { getOrderDetails } from "@/actions/order.action";
 import { notFound } from "next/navigation";
+import OrderCustomer from "./components/order-customer";
 import OrderHeader from "./components/order-header";
 import OrderItemSummary from "./components/order-item-summary";
+import OrderNote from "./components/order-note";
 
 const OrderDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   // Get order Id
@@ -30,10 +32,13 @@ const OrderDetailPage = async ({ params }: { params: Promise<{ id: string }> }) 
         paymentStatus={mainOrder.paymentStatus}
       />
       <section className="*:*rounded-md flex items-start gap-5 *:*:space-y-2 *:space-y-3 *:*:rounded-md *:*:border *:*:px-5 *:*:py-3">
-        <div className="w-[60%]">
+        <div className="flex-1">
           <OrderItemSummary items={orderItems} />
         </div>
-        <aside className="w-[40%]"></aside>
+        <aside className="w-[30%]">
+          <OrderNote note={subOrder.orderNote || null} />
+          <OrderCustomer user={mainOrder.user} />
+        </aside>
       </section>
     </div>
   );
