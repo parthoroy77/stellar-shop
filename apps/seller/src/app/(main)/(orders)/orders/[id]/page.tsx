@@ -5,6 +5,7 @@ import OrderHeader from "./components/order-header";
 import OrderItemSummary from "./components/order-item-summary";
 import OrderNote from "./components/order-note";
 import OrderShippingAddress from "./components/order-shipping-address";
+import OrderSummary from "./components/order-summary";
 
 const OrderDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   // Get order Id
@@ -38,6 +39,12 @@ const OrderDetailPage = async ({ params }: { params: Promise<{ id: string }> }) 
         </div>
         <aside className="w-[30%]">
           <OrderNote note={subOrder.orderNote || null} />
+          <OrderSummary
+            totalItem={orderItems.length}
+            netAmount={subOrder.netAmount}
+            total={subOrder.totalAmount}
+            discount={subOrder.discountAmount}
+          />
           <OrderCustomer user={mainOrder.user} />
           <OrderShippingAddress address={mainOrder.orderShippingAddress} />
         </aside>
