@@ -15,6 +15,7 @@ import {
   Button,
 } from "@ui/index";
 import { Row } from "@ui/tanstack-table";
+import Link from "next/link";
 import { SlMagnifierAdd } from "react-icons/sl";
 import { toast } from "sonner";
 
@@ -31,10 +32,12 @@ const OrderDataTableActions = ({ row }: { row: Row<TSubOrder> }) => {
   };
   return (
     <div className="flex w-fit justify-center gap-1">
-      <Button size={"sm"} className="flex h-7 w-fit gap-1" variant={"link"}>
-        <SlMagnifierAdd />
-        View
-      </Button>
+      <Link href={`/orders/${row.original.id}`}>
+        <Button size={"sm"} className="flex h-7 w-fit gap-1" variant={"link"}>
+          <SlMagnifierAdd />
+          View
+        </Button>
+      </Link>
       {row.original.status === SubOrderStatus.PROCESSING && (
         <>
           <Button
