@@ -13,7 +13,7 @@ const attributeSchema = z.object({
 });
 
 const productVariantValidation = z.object({
-  variantName: z.string().min(1, "Variant name is required").max(70, "Variant name must be under 70 characters"),
+  variantName: z.string().min(1, "Variant name is required").max(200, "Variant name must be under 200 characters"),
   price: z.number().positive("Price must be greater than 0"),
   sku: z.string().regex(/^[a-zA-Z0-9-_]+$/, "SKU must be alphanumeric and can include dashes or underscores"),
   variantImage: imageFileSchema,
@@ -24,7 +24,7 @@ const productVariantValidation = z.object({
 
 export const createProductValidationSchema = z.object({
   // Product Information
-  productName: z.string().min(1, "Product name is required").max(100, "Product name must be under 100 characters"),
+  productName: z.string().min(1, "Product name is required").max(120, "Product name must be under 100 characters"),
   description: z.string().min(1, "Product description is required"),
   sku: z.string().regex(/^[a-zA-Z0-9-_]+$/, "SKU must be alphanumeric and can include dashes or underscores"),
   price: z.number().positive("Price must be greater than 0"),

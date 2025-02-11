@@ -18,7 +18,7 @@ const PackagedProductCard = ({ quantity, images, productName, price, variant, at
         alt={productName || "product name"}
       />
       <div className="flex-1 space-y-0.5">
-        <h5 className="w-60 truncate text-sm font-medium lg:w-full">{productName}</h5>
+        <h5 className="w-60 truncate text-sm font-medium lg:w-72">{productName}</h5>
         <div className="flex w-full flex-col justify-between gap-1 lg:flex-row lg:items-center lg:gap-2">
           {!!simplifiedAttributes.length && (
             <div className="w-full space-x-2">
