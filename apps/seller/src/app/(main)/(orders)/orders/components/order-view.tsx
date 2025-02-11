@@ -9,6 +9,7 @@ import { AppPagination, Tabs, TabsList, TabsTrigger } from "@ui/index";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 const orderTabs = [
+  { label: "All Orders", value: "" },
   { label: "Pending Orders", value: SubOrderStatus.PROCESSING },
   { label: "Confirmed Orders", value: SubOrderStatus.CONFIRMED },
   { label: "Packed Orders", value: SubOrderStatus.PACKED },
@@ -23,7 +24,7 @@ type TPagination = {
 };
 
 const OrderView = () => {
-  const [status, setStatus] = useState(SubOrderStatus.PROCESSING);
+  const [status, setStatus] = useState("");
   const [pagination, setPagination] = useState<TPagination>({ page: 1, limit: 10, total: 0, totalPages: 1 });
 
   // Fetch data using pagination parameters

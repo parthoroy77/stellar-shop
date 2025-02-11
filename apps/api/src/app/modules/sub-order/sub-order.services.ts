@@ -1,4 +1,5 @@
-import prisma, { Prisma, SubOrderStatus } from "@repo/prisma/client";
+import prisma, { Order, Prisma, SubOrderStatus } from "@repo/prisma/client";
+import { toNormalCase } from "@repo/utils/functions";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
 import calculatePagination, { TPaginateOption } from "../../utils/calculatePagination";
@@ -75,47 +76,84 @@ const updateStatus = async (subOrderId: number, status: SubOrderStatus, userId: 
   }
 
   // Define allowed status transitions
-  const statusTransitions: Partial<Record<SubOrderStatus, { previous: SubOrderStatus; timestampField?: string }>> = {
-    CONFIRMED: { previous: "PROCESSING" },
-    CANCELED: { previous: "PROCESSING" },
-    PACKED: { previous: "CONFIRMED", timestampField: "orderPackedAt" },
-    SHIPPED: { previous: "PACKED", timestampField: "orderShippedAt" },
-  };
+  const statusTransitions: Partial<Record<SubOrderStatus, { previous: SubOrderStatus; timestampField?: keyof Order }>> =
+    {
+      CONFIRMED: { previous: "PROCESSING" },
+      CANCELED: { previous: "PROCESSING" },
+      PACKED: { previous: "CONFIRMED", timestampField: "orderPackedAt" },
+      SHIPPED: { previous: "PACKED", timestampField: "orderShippedAt" },
+    };
 
-  // Ensure the requested status transition is allowed
+  // Validate status transition
   const transition = statusTransitions[status];
   if (!transition) {
-    throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "You cannot update this status!");
+    throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "Invalid status transition!");
   }
 
-  // Update subOrder and order status
-  const updateData: any = { status };
-  if (transition.timestampField) {
-    updateData[transition.timestampField] = new Date();
-  }
-
-  await prisma.subOrder.update({
+  // Fetch sub-order details
+  const subOrder = await prisma.subOrder.findFirst({
     where: { id: subOrderId, sellerId: seller.id, status: transition.previous },
-    data: {
-      ...updateData,
-      order: {
-        update: {
-          status,
-          ...(transition.timestampField && { [transition.timestampField]: new Date() }),
-          orderStatusHistory: {
-            create: {
-              status,
-              changedAt: new Date(),
-            },
+    select: { id: true, orderId: true },
+  });
+
+  if (!subOrder) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Sub-order not found or invalid status transition!");
+  }
+
+  if (!subOrder.orderId) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Associated order not found!");
+  }
+
+  const timeStamp = new Date();
+
+  // Update sub-order status
+  await prisma.subOrder.update({
+    where: { id: subOrder.id },
+    data: { status },
+  });
+
+  // Check if all sub-orders for this order are updated
+  const subOrders = await prisma.subOrder.findMany({
+    where: { orderId: subOrder.orderId },
+    select: { status: true },
+  });
+
+  // Determine the new order status
+  const allStatuses = subOrders.map((s) => s.status);
+  let newOrderStatus: SubOrderStatus | null = null;
+
+  if (allStatuses.includes("PROCESSING")) {
+    newOrderStatus = "PROCESSING"; // Keep order processing if any subOrder is processing
+  } else if (allStatuses.every((s) => s === "CONFIRMED")) {
+    newOrderStatus = "CONFIRMED";
+  } else if (allStatuses.every((s) => s === "CANCELED")) {
+    newOrderStatus = "CANCELED";
+  } else if (allStatuses.every((s) => s === "PACKED")) {
+    newOrderStatus = "PACKED";
+  } else if (allStatuses.every((s) => s === "SHIPPED")) {
+    newOrderStatus = "SHIPPED";
+  }
+
+  // Update order status only if needed
+  if (newOrderStatus) {
+    await prisma.order.update({
+      where: { id: subOrder.orderId },
+      data: {
+        status: newOrderStatus,
+        ...(transition.timestampField && { [transition.timestampField]: timeStamp }),
+        orderStatusHistory: {
+          create: {
+            status: newOrderStatus,
+            changedAt: timeStamp,
           },
         },
       },
-    },
-  });
+    });
+  }
 
   return {
     statusCode: StatusCodes.OK,
-    message: `Order is now ${status.toLowerCase()}`,
+    message: `Order status updated to ${toNormalCase(status.toLowerCase()).toLowerCase()}`,
   };
 };
 

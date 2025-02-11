@@ -76,7 +76,7 @@ const OrderDataTableActions = ({ row }: { row: Row<TSubOrder> }) => {
           className="h-7 w-fit min-w-16 border"
           variant={"accent"}
         >
-          Ready to ship
+          Product is packed
         </Button>
       )}
       {row.original.status === SubOrderStatus.PACKED && (
@@ -86,7 +86,7 @@ const OrderDataTableActions = ({ row }: { row: Row<TSubOrder> }) => {
           className="h-7 w-fit min-w-16 border"
           variant={"accent"}
         >
-          Product Shipped
+          Ready to ship
         </Button>
       )}
     </div>
