@@ -1,5 +1,5 @@
-import prisma, { OrderStatus, Prisma } from "@repo/prisma/client";
-import { generateUniqueId } from "@repo/utils/functions";
+import prisma, { OrderStatus, Prisma, SubOrderStatus } from "@repo/prisma/client";
+import { generateUniqueId, toNormalCase } from "@repo/utils/functions";
 import { StatusCodes } from "http-status-codes";
 import { redisInstance } from "../../../server";
 import { ApiError } from "../../handlers/ApiError";
@@ -365,12 +365,13 @@ const getOrdersForAdmin = async ({ status, paymentStatus }: TOrderFilters, optio
   };
 };
 
-const updateOrderStatusForAdmin = async (orderId: number, status: OrderStatus) => {
+export const updateOrderStatusForAdmin = async (orderId: number, status: OrderStatus) => {
   // Define allowed status transitions
-  const statusTransitions: Partial<Record<OrderStatus, { previous: OrderStatus; timestampField?: string }>> = {
+  const statusTransitions: Partial<Record<string, { previous: string; timestampField?: string }>> = {
     IN_TRANSIT: { previous: "SHIPPED" },
     OUT_FOR_DELIVERY: { previous: "IN_TRANSIT" },
     DELIVERED: { previous: "OUT_FOR_DELIVERY", timestampField: "orderDeliveredAt" },
+    [OrderStatus.DELIVERY_FAILED]: { previous: "OUT_FOR_DELIVERY", timestampField: "orderCanceledAt" },
   };
 
   // Ensure the requested status transition is allowed
@@ -379,30 +380,37 @@ const updateOrderStatusForAdmin = async (orderId: number, status: OrderStatus) =
     throw new ApiError(StatusCodes.NOT_ACCEPTABLE, "You cannot update this status!");
   }
 
-  // Update subOrder and order status
-  const updateData: any = { status };
+  // Prepare update data
+  const updateData: Record<string, any> = { status };
   if (transition.timestampField) {
     updateData[transition.timestampField] = new Date();
   }
 
-  await prisma.order.update({
-    where: { id: orderId, status: transition.previous },
-    data: {
-      ...updateData,
-      status,
-      ...(transition.timestampField && { [transition.timestampField]: new Date() }),
-      orderStatusHistory: {
-        create: {
-          status,
-          changedAt: new Date(),
+  // Update order and related sub-orders in a transaction
+  await prisma.$transaction(async (prisma) => {
+    // Update Order
+    const order = await prisma.order.update({
+      where: { id: orderId, status: transition.previous as OrderStatus },
+      data: {
+        ...updateData,
+        orderStatusHistory: {
+          create: { status, changedAt: new Date() },
         },
       },
-    },
+    });
+
+    // Update related SubOrders
+    await prisma.subOrder.updateMany({
+      where: { orderId, status: transition.previous as SubOrderStatus },
+      data: { ...updateData },
+    });
+
+    return order;
   });
 
   return {
     statusCode: StatusCodes.OK,
-    message: `Order status now updated to ${status.toLowerCase()}`,
+    message: `Order status updated to ${toNormalCase(status.toLowerCase())}`,
   };
 };
 
