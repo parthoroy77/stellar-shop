@@ -293,13 +293,12 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
 };
 
 /**
- * Only for
+ * Only for Admin
  * Retrieves orders based on provided filters and options.
  * @param {object} filters - The filtering criteria for retrieving orders.
  * @param {object} options - Pagination and sorting options.
  * @returns {Promise<{ results: object[], meta: TMeta }>}
  * */
-
 const getOrdersForAdmin = async ({ status, paymentStatus }: TOrderFilters, options: TPaginateOption) => {
   const { skip, limit, page, sortBy, sortOrder } = calculatePagination(options);
   const andClauses: Prisma.OrderWhereInput[] = [];
@@ -414,4 +413,80 @@ export const updateOrderStatusForAdmin = async (orderId: number, status: OrderSt
   };
 };
 
-export const OrderServices = { place, getOrdersForAdmin, updateOrderStatusForAdmin };
+const getOrdersForBuyer = async (userId: number, options: TPaginateOption, status?: TOrderFilters["status"]) => {
+  const { skip, limit, page, sortBy, sortOrder } = calculatePagination(options);
+  const andClauses: Prisma.OrderWhereInput[] = [];
+
+  if (status) {
+    andClauses.push({
+      status,
+    });
+  }
+
+  const whereClause: Prisma.OrderWhereInput = andClauses.length > 0 ? { userId, AND: andClauses } : { userId };
+
+  const orders = await prisma.order.findMany({
+    where: whereClause,
+    select: {
+      id: true,
+      uniqueId: true,
+      status: true,
+      totalAmount: true,
+      shippingAmount: true,
+      discountAmount: true,
+      grossAmount: true,
+      orderNote: true,
+      orderPlacedAt: true,
+      netAmount: true,
+      paymentStatus: true,
+      orderStatusHistory: { omit: { orderId: true } },
+      paymentMethod: {
+        select: {
+          name: true,
+          type: true,
+        },
+      },
+      subOrders: {
+        select: {
+          seller: {
+            select: { shopName: true, logo: { select: { fileSecureUrl: true } } },
+          },
+          subOrderItems: {
+            select: {
+              price: true,
+              productName: true,
+              quantity: true,
+              attributes: true,
+              totalAmount: true,
+              product: {
+                select: { images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } } },
+              },
+              productVariant: {
+                select: { images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } } },
+              },
+            },
+          },
+        },
+      },
+    },
+    skip,
+    take: limit,
+    orderBy: { [sortBy]: sortOrder },
+  });
+
+  const total = await prisma.order.count({ where: whereClause });
+
+  return {
+    result: orders,
+    meta: {
+      skip,
+      limit,
+      page,
+      sortBy,
+      sortOrder,
+      total,
+    },
+  };
+};
+
+export const OrderServices = { place, getOrdersForAdmin, updateOrderStatusForAdmin, getOrdersForBuyer };

@@ -49,8 +49,24 @@ const updateOrderStatusForAdmin = asyncHandler(async (req, res) => {
   });
 });
 
+const getAllBuyerOrders = asyncHandler(async (req, res) => {
+  const filters = pick(req.query, ORDER_FILTERABLE_KEYS) as TOrderFilters;
+  const options = pick(req.query, PAGINATION_KEYS);
+
+  const { result, meta } = await OrderServices.getOrdersForBuyer(req.user.id!, options, filters.status || undefined);
+
+  ApiResponse(res, {
+    data: result,
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Orders retrieved successfully!",
+    meta,
+  });
+});
+
 export const OrderControllers = {
   placeOrder,
   getAllOrdersForAdmin,
   updateOrderStatusForAdmin,
+  getAllBuyerOrders,
 };

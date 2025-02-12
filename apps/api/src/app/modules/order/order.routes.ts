@@ -13,6 +13,9 @@ router.get("/", authMiddleware(UserRole.ADMIN), OrderControllers.getAllOrdersFor
 // update order status
 router.put("/:id", authMiddleware(UserRole.ADMIN), OrderControllers.updateOrderStatusForAdmin);
 
+// Buyer specific routes
+router.get("/buyer", authMiddleware(UserRole.BUYER), OrderControllers.getAllBuyerOrders);
+
 const OrderRoutes = router;
 
 export default OrderRoutes;
