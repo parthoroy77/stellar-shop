@@ -107,7 +107,7 @@ export type TOrder = IOrder & {
   user: TUser;
   orderItems: IOrderItem[];
   orderStatusHistory: IOrderStatusHistory[];
-  subOrders: ISubOrder;
+  subOrders: ISubOrder[];
   orderShippingAddress: IOrderShippingAddress[];
   paymentMethod: IPaymentMethod;
   payment: IPayment;
