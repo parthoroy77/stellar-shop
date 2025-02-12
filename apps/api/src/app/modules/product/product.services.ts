@@ -248,12 +248,10 @@ const productApproval = async (productId: number) => {
 
 const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
   const { skip, limit, page } = calculatePagination(paginateOptions);
+  const whereClause: Prisma.ProductWhereInput = { status: "ACTIVE", createdAt: { gte: NEWLY_ARRIVAL_TIME_PERIOD } };
   const [result, count] = await prisma.$transaction([
     prisma.product.findMany({
-      where: {
-        status: "ACTIVE",
-        createdAt: { gte: NEWLY_ARRIVAL_TIME_PERIOD },
-      },
+      where: whereClause,
       select: {
         id: true,
         stock: true,
@@ -273,10 +271,7 @@ const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
       take: limit,
     }),
     prisma.product.count({
-      where: {
-        status: "ACTIVE",
-        createdAt: { gte: NEWLY_ARRIVAL_TIME_PERIOD },
-      },
+      where: whereClause,
     }),
   ]);
 

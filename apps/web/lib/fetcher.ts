@@ -70,6 +70,7 @@ export async function fetcher<TResponse, TBody = unknown>(
         success: true,
         message: result.message || "Request successful",
         statusCode: response.status,
+        meta: result.meta,
       };
     } else {
       return {
@@ -77,6 +78,7 @@ export async function fetcher<TResponse, TBody = unknown>(
         success: false,
         message: result.message || "Request failed",
         statusCode: response.status,
+        meta: undefined,
       };
     }
   } catch (error: unknown) {
@@ -86,6 +88,7 @@ export async function fetcher<TResponse, TBody = unknown>(
       message: getErrorMessage(error),
       error,
       statusCode: 500,
+      meta: undefined,
     };
   }
 }
