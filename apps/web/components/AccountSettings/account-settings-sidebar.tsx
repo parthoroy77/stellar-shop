@@ -14,7 +14,7 @@ const AccountSettingsSidebar = () => {
           <Link href={menu.href} key={idx} className="block">
             <div
               className={cn(
-                "text-accent-foreground flex items-center gap-2 rounded-md px-4 py-1.5 text-lg font-medium",
+                "text-accent-foreground flex items-center gap-2 rounded-md px-4 py-1.5 text-base font-medium",
                 pathname === menu.href && "bg-accent/30 border text-black"
               )}
             >

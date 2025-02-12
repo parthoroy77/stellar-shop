@@ -15,9 +15,9 @@ export const profileMenus = [
     href: "/profile#manage-address",
   },
   {
-    label: "Manage Order",
+    label: "My Orders",
     Icon: MdOutlineManageHistory,
-    href: "/",
+    href: "/my-orders",
   },
   {
     label: "My Purchases",

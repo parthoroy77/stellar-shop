@@ -27,7 +27,11 @@ const CartSummary = ({ selectedItemIds }: { selectedItemIds: number[] }) => {
       if (result.success) {
         toast.success(result.message);
       } else {
-        toast.error(result.message);
+        if (result.statusCode === 500) {
+          toast.error("An error occurred please try again later!");
+        } else {
+          toast.error(result.message);
+        }
       }
     });
   };

@@ -47,7 +47,12 @@ const ProductActionButtons: FC<Props> = ({ productId, quantity, productVariantId
     }
 
     startTransition(async () => {
-      await initiateCheckout({ checkoutProduct: { productId, productVariantId, quantity } }, "product");
+      const result = await initiateCheckout({ checkoutProduct: { productId, productVariantId, quantity } }, "product");
+      if (!result.success) {
+        if (result.statusCode === 500) {
+          toast.error("An error occurred please try again later!");
+        }
+      }
     });
   }, [isAuthenticated, productId, router, quantity, productVariantId, quantity, outOfStock]);
 
