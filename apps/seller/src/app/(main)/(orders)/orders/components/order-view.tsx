@@ -4,7 +4,7 @@ import { getAllOrders } from "@/actions/order.action";
 import { columns } from "@/components/data-table/order/column";
 import OrderDataTable from "@/components/data-table/order/data-table";
 import { useQueryData } from "@repo/tanstack-query";
-import { SubOrderStatus } from "@repo/utils/types";
+import { SubOrderStatus, TPaginationState } from "@repo/utils/types";
 import { AppPagination, Tabs, TabsList, TabsTrigger } from "@ui/index";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -16,16 +16,9 @@ const orderTabs = [
   { label: "Shipped Orders", value: SubOrderStatus.SHIPPED },
 ];
 
-type TPagination = {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-};
-
 const OrderView = () => {
   const [status, setStatus] = useState("");
-  const [pagination, setPagination] = useState<TPagination>({ page: 1, limit: 10, total: 0, totalPages: 1 });
+  const [pagination, setPagination] = useState<TPaginationState>({ page: 1, limit: 10, total: 0, totalPages: 1 });
 
   // Fetch data using pagination parameters
   const { data, isFetching } = useQueryData(

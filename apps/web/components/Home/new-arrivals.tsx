@@ -2,7 +2,7 @@
 import { getNewlyArrivedProducts } from "@/actions/product";
 import { useQueryData } from "@repo/tanstack-query";
 import { AppPagination } from "@ui/index";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import ProductShowcaseSkeleton from "../ui/product-showcase-skeleton";
 import ProductShowcase from "./product-showcase";
 import SideBanner from "./side-banner";
@@ -24,7 +24,7 @@ const NewArrivals = () => {
       refetchOnWindowFocus: false,
     }
   );
-  const products = data?.data || [];
+  const products = useMemo(() => data?.data || [], [data]);
 
   useEffect(() => {
     if (data?.meta) {

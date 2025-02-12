@@ -15,10 +15,10 @@ export const placeOrder = async () => {
   return result;
 };
 
-export const getMyOrders = async () => {
-  const result = await serverFetcher<TOrder[]>("/orders/buyer", {
+export const getMyOrders = async (query?: string) => {
+  const result = await serverFetcher<TOrder[]>(`/orders/buyer?${query}`, {
     method: "GET",
-    next: { revalidate: 30, tags: ["my-orders"] },
+    next: { revalidate: 300, tags: ["my-orders"] },
   });
 
   return { data: result.data, meta: result.meta };

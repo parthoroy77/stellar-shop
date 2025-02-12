@@ -13,3 +13,10 @@ export type TLabelValuePair = {
   label: string;
   value: string;
 };
+
+export type TPaginationState = {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+};
