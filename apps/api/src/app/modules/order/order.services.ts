@@ -364,7 +364,7 @@ const getOrdersForAdmin = async ({ status, paymentStatus }: TOrderFilters, optio
   };
 };
 
-export const updateOrderStatusForAdmin = async (orderId: number, status: OrderStatus) => {
+const updateOrderStatusForAdmin = async (orderId: number, status: OrderStatus) => {
   // Define allowed status transitions
   const statusTransitions: Partial<Record<string, { previous: string; timestampField?: string }>> = {
     IN_TRANSIT: { previous: "SHIPPED" },
@@ -489,4 +489,78 @@ const getOrdersForBuyer = async (userId: number, options: TPaginateOption, statu
   };
 };
 
-export const OrderServices = { place, getOrdersForAdmin, updateOrderStatusForAdmin, getOrdersForBuyer };
+const getDetailForAdmin = async (orderId: number) => {
+  const order = await prisma.order.findUnique({
+    where: {
+      id: orderId,
+    },
+    select: {
+      id: true,
+      uniqueId: true,
+      totalAmount: true,
+      discountAmount: true,
+      grossAmount: true,
+      shippingAmount: true,
+      netAmount: true,
+      paymentStatus: true,
+      status: true,
+      paymentMethod: {
+        select: {
+          name: true,
+          type: true,
+        },
+      },
+      orderStatusHistory: true,
+      orderShippingAddress: {
+        take: 1,
+        omit: { createdAt: true, updatedAt: true },
+      },
+      user: {
+        select: { fullName: true, avatarUrl: true },
+      },
+      subOrders: {
+        select: {
+          id: true,
+          totalAmount: true,
+          discountAmount: true,
+          netAmount: true,
+          orderPlacedAt: true,
+          shippingOption: {
+            select: {
+              name: true,
+              estimateDays: true,
+            },
+          },
+          subOrderItems: {
+            include: {
+              product: {
+                select: {
+                  uniqueId: true,
+                  images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
+                },
+              },
+              productVariant: {
+                select: {
+                  uniqueId: true,
+                  images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
+                },
+              },
+            },
+            omit: { createdAt: true, updatedAt: true },
+          },
+        },
+      },
+      _count: { select: { orderItems: true } },
+    },
+  });
+
+  return { ...order, totalOrderItems: order?._count.orderItems };
+};
+
+export const OrderServices = {
+  place,
+  getOrdersForAdmin,
+  updateOrderStatusForAdmin,
+  getOrdersForBuyer,
+  getDetailForAdmin,
+};

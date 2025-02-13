@@ -64,9 +64,27 @@ const getAllBuyerOrders = asyncHandler(async (req, res) => {
   });
 });
 
+const getOrderDetailsForAdmin = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  if (!id) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Order identifier not found!");
+  }
+
+  const result = await OrderServices.getDetailForAdmin(+id);
+
+  ApiResponse(res, {
+    data: result,
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: "Order detail retrieved successfully!",
+  });
+});
+
 export const OrderControllers = {
   placeOrder,
   getAllOrdersForAdmin,
   updateOrderStatusForAdmin,
   getAllBuyerOrders,
+  getOrderDetailsForAdmin,
 };

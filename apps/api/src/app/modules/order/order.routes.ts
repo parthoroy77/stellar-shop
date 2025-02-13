@@ -10,6 +10,8 @@ router.post("/place", authMiddleware(UserRole.BUYER), OrderControllers.placeOrde
 
 // Get orders for admin
 router.get("/", authMiddleware(UserRole.ADMIN), OrderControllers.getAllOrdersForAdmin);
+// Get order detail
+router.get("/:id", authMiddleware(UserRole.ADMIN), OrderControllers.getOrderDetailsForAdmin);
 // update order status
 router.put("/:id", authMiddleware(UserRole.ADMIN), OrderControllers.updateOrderStatusForAdmin);
 
