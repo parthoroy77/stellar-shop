@@ -47,15 +47,22 @@ const CartHoverMenu = () => {
           <div className="custom-scrollbar max-h-[300px] divide-y overflow-y-scroll *:py-2">
             {cartItems.length > 0 ? (
               cartItems.map((item, i) => (
-                <div key={i} className={cn("relative flex w-full items-start gap-1.5 overflow-hidden")}>
+                <div
+                  key={i}
+                  className={cn(
+                    "relative flex w-full items-start gap-1.5 overflow-hidden",
+                    i === 0 && "!pt-0",
+                    cartItems.length === 1 && "!py-0"
+                  )}
+                >
                   <Image
-                    className="rounded-md"
+                    className="size-[50px] rounded-md"
                     src={item.product?.images![0]?.file.fileSecureUrl!}
                     alt={item.product?.productName!}
                     width={50}
                     height={50}
                   />
-                  <div className="w-full space-y-1 text-xs">
+                  <div className="flex-1 space-y-1 text-xs">
                     <h6 className="w-[200px] truncate text-sm font-medium">{item.product?.productName}</h6>
                     <div className="flex items-center justify-between">
                       <div className="flex gap-1">
