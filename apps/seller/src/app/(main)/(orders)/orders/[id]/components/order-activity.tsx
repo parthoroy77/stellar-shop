@@ -27,9 +27,9 @@ const OrderActivity = ({ statusHistory }: { statusHistory: TOrder["orderStatusHi
               </div>
 
               {/* Content */}
-              <div className="flex flex-1 items-end justify-between">
+              <div className="flex flex-1 flex-col lg:flex-row lg:items-end lg:justify-between">
                 <div>
-                  <h3 className="text-base font-medium capitalize text-gray-900">
+                  <h3 className="font-medium capitalize text-gray-900 lg:text-base">
                     {toNormalCase(history.status.toLowerCase())}
                   </h3>
                   <p className="text-accent-foreground text-sm">

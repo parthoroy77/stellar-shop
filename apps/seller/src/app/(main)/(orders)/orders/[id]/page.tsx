@@ -34,12 +34,12 @@ const OrderDetailPage = async ({ params }: { params: Promise<{ id: string }> }) 
         status={mainOrder.status}
         paymentStatus={mainOrder.paymentStatus}
       />
-      <section className="*:*rounded-md flex items-start gap-5 *:*:space-y-2 *:space-y-3 *:*:rounded-md *:*:border *:*:px-5 *:*:py-3">
+      <section className="*:*rounded-md flex flex-col items-start gap-5 *:*:space-y-2 *:space-y-3 *:*:rounded-md *:*:border *:*:px-5 *:*:py-3">
         <div className="flex-1">
           <OrderItemSummary items={orderItems} />
           <OrderActivity statusHistory={mainOrder.orderStatusHistory} />
         </div>
-        <aside className="w-[30%]">
+        <aside className="w-full lg:w-[30%]">
           <OrderNote note={subOrder.orderNote || null} />
           <OrderSummary
             totalItem={orderItems.length}

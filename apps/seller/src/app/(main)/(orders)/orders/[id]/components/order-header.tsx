@@ -11,19 +11,19 @@ interface Props {
 }
 const OrderHeader: FC<Props> = ({ orderId, placedAt, status, paymentStatus }) => {
   return (
-    <div className="flex items-center justify-between gap-2">
-      <div>
-        <h3 className="text-lg font-medium">
+    <div className="flex flex-col gap-2 lg:items-center lg:justify-between">
+      <div className="space-y-0.5">
+        <h3 className="text-sm font-medium lg:text-lg">
           Order ID: <b className="text-secondary">{orderId}</b>
         </h3>
-        <p className="space-x-1 text-sm font-medium text-black">
+        <p className="space-x-1 text-xs font-medium text-black lg:text-sm">
           <span className="text-accent-foreground font-normal">Date: </span>
           <span>{moment(placedAt).format("MMMM D YYYY")},</span>
           <span>at</span>
           <span>{moment(placedAt).format("h:mm a")}</span>
         </p>
       </div>
-      <div className="flex flex-col items-end gap-2 text-xs font-medium">
+      <div className="flex items-end justify-between gap-2 text-xs font-medium lg:flex-col">
         <div className="flex items-center gap-1">
           <span>Order Status:</span>
           <Badge

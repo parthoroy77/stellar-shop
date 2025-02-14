@@ -11,7 +11,7 @@ const OrderItem = ({ item }: { item: ISubOrderItem }) => {
   const simplifiedAttributes = (attributes as TProduct["attributes"])?.map((attr) => ({
     name: attr.attributeValue.value,
   }));
-  console.log(attributes);
+
   return (
     <div className="flex w-full items-start justify-between gap-3 lg:items-center">
       <Image
