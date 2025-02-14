@@ -14,7 +14,7 @@ const OrderTabs: FC<Props> = ({ onChange }) => {
       onValueChange={onChange}
       className="horizontal-scrollbar overflow-hidden overflow-x-scroll"
     >
-      <TabsList className="h-9 text-xs *:h-7 *:min-w-36">
+      <TabsList className="h-9 text-xs *:h-7 *:w-20 *:lg:min-w-36">
         <TabsTrigger value="default">All</TabsTrigger>
         {Object.keys(OrderStatus).map((key, i) => (
           <TabsTrigger value={key.toLowerCase()} key={i} className="capitalize">

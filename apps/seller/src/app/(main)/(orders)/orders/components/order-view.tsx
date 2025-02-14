@@ -9,11 +9,11 @@ import { AppPagination, Tabs, TabsList, TabsTrigger } from "@ui/index";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 const orderTabs = [
-  { label: "All Orders", value: "" },
-  { label: "Pending Orders", value: SubOrderStatus.PROCESSING },
-  { label: "Confirmed Orders", value: SubOrderStatus.CONFIRMED },
-  { label: "Packed Orders", value: SubOrderStatus.PACKED },
-  { label: "Shipped Orders", value: SubOrderStatus.SHIPPED },
+  { label: "All", value: "" },
+  { label: "Pending", value: SubOrderStatus.PROCESSING },
+  { label: "Confirmed", value: SubOrderStatus.CONFIRMED },
+  { label: "Packed", value: SubOrderStatus.PACKED },
+  { label: "Shipped", value: SubOrderStatus.SHIPPED },
 ];
 
 const OrderView = () => {
@@ -58,7 +58,7 @@ const OrderView = () => {
       <Tabs defaultValue={status} onValueChange={(value) => setStatus(value as SubOrderStatus)}>
         <TabsList className="h-9">
           {orderTabs.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value} className="h-7 min-w-36 text-xs">
+            <TabsTrigger key={tab.value} value={tab.value} className="h-7 text-xs lg:min-w-36">
               {tab.label}
             </TabsTrigger>
           ))}
