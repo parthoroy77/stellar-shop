@@ -3,6 +3,7 @@ import { TOrderStatus } from "@repo/utils/types";
 import { Button } from "@ui/index";
 import { Row } from "@ui/tanstack-table";
 import { SlMagnifierAdd } from "react-icons/sl";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { TOrderResponse } from "./column";
 
@@ -10,10 +11,12 @@ const OrdersDataTableActions = ({ row }: { row: Row<TOrderResponse> }) => {
   const status = row.original.status;
   return (
     <div className="flex w-fit justify-center gap-1">
-      <Button size={"sm"} className="flex h-7 w-fit gap-1" variant={"link"}>
-        <SlMagnifierAdd />
-        View
-      </Button>
+      <Link to={`/orders/${row.original.id}`}>
+        <Button size={"sm"} className="flex h-7 w-fit gap-1" variant={"link"}>
+          <SlMagnifierAdd />
+          View
+        </Button>
+      </Link>
       <OrderStatusUpdate currentStatus={status} orderId={row.original.id} />
     </div>
   );

@@ -17,7 +17,14 @@ const orderApi = baseApi.injectEndpoints({
       providesTags: ["orders"],
       keepUnusedDataFor: 60,
     }),
-
+    // Get order details by Id
+    getOrderDetail: builder.query<IApiResponse<TOrder>, string>({
+      query: (id: string) => ({
+        url: `/orders/${id}`,
+      }),
+      providesTags: ["orders"],
+      keepUnusedDataFor: 60,
+    }),
     // mutations
     updateOrderStatus: builder.mutation<IApiResponse<{}>, unknown>({
       query: ({ orderId, status }) => ({
@@ -33,6 +40,7 @@ const orderApi = baseApi.injectEndpoints({
 export const {
   // queries
   useGetOrdersQuery,
+  useGetOrderDetailQuery,
   // mutations
   useUpdateOrderStatusMutation,
 } = orderApi;

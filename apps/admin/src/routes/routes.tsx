@@ -3,6 +3,7 @@ import PrivateRoute from "@/layouts/private-route";
 import PublicRoute from "@/layouts/public-route";
 import CategoriesPage from "@/pages/categories-page";
 import LoginPage from "@/pages/login-page";
+import OrderDetailPage from "@/pages/order-detail-page";
 import OrdersPage from "@/pages/orders-page";
 import PendingProductsPage from "@/pages/seller-management/pending-products-page";
 import SellerApprovalPage from "@/pages/seller-management/seller-approval-page";
@@ -39,6 +40,10 @@ export const routes = createBrowserRouter([
       {
         path: "/orders",
         element: <OrdersPage />,
+      },
+      {
+        path: "/orders/:orderId",
+        element: <OrderDetailPage />,
       },
     ],
   },
