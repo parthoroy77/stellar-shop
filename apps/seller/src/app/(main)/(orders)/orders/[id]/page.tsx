@@ -1,8 +1,8 @@
 import { getOrderDetails } from "@/actions/order.action";
+import { OrderHeader } from "@ui/index";
 import { notFound } from "next/navigation";
 import OrderActivity from "./components/order-activity";
 import OrderCustomer from "./components/order-customer";
-import OrderHeader from "./components/order-header";
 import OrderItemSummary from "./components/order-item-summary";
 import OrderNote from "./components/order-note";
 import OrderShippingAddress from "./components/order-shipping-address";

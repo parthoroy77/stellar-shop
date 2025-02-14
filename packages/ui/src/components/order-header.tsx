@@ -9,7 +9,7 @@ interface Props {
   status: TOrderStatus;
   paymentStatus: OrderPaymentStatus;
 }
-const OrderHeader: FC<Props> = ({ orderId, placedAt, status, paymentStatus }) => {
+export const OrderHeader: FC<Props> = ({ orderId, placedAt, status, paymentStatus }) => {
   return (
     <div className="flex flex-col gap-2 lg:items-center lg:justify-between">
       <div className="space-y-0.5">
@@ -52,5 +52,3 @@ const OrderHeader: FC<Props> = ({ orderId, placedAt, status, paymentStatus }) =>
     </div>
   );
 };
-
-export default OrderHeader;
