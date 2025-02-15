@@ -3,6 +3,7 @@ export * from "./components/image-dropzone";
 export * from "./components/notification-menu";
 export * from "./components/off-canvas";
 export * from "./components/option-selector";
+export * from "./components/order-activity-timeline";
 export * from "./components/order-header";
 export * from "./components/ui/alert-dialog";
 export * from "./components/ui/app-button";

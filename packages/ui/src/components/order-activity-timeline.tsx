@@ -3,7 +3,7 @@ import { OrderStatus, TOrder } from "@repo/utils/types";
 import { cn } from "@ui/lib/utils";
 import moment from "moment";
 
-const OrderActivity = ({ statusHistory }: { statusHistory: TOrder["orderStatusHistory"] }) => {
+export const OrderActivityTimeline = ({ statusHistory }: { statusHistory: TOrder["orderStatusHistory"] }) => {
   return (
     <div>
       <h4 className="font-medium">Order Activities</h4>
@@ -49,5 +49,3 @@ const OrderActivity = ({ statusHistory }: { statusHistory: TOrder["orderStatusHi
     </div>
   );
 };
-
-export default OrderActivity;
