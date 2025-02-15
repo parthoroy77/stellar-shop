@@ -1,4 +1,5 @@
 import OrderTotalSummary from "@/components/order/order-total-summary";
+import SubOrderItem from "@/components/order/sub-order-item";
 import { useGetOrderDetailQuery } from "@repo/redux";
 import { TOrder } from "@repo/utils/types";
 import { OrderActivityTimeline, OrderCustomerInfo, OrderHeader, OrderNote, OrderShippingAddress } from "@ui/index";
@@ -42,6 +43,10 @@ const OrderDetailPage = () => {
         <div className="col-span-5">
           <OrderActivityTimeline statusHistory={order.orderStatusHistory} />
         </div>
+      </div>
+      <hr />
+      <div className="divide-y rounded-md border *:px-4 *:py-3">
+        {order?.subOrders?.map((subOrder) => <SubOrderItem key={subOrder.id} {...subOrder} />)}
       </div>
     </div>
   );
