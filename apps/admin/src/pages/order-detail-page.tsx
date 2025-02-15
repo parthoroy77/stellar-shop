@@ -1,7 +1,7 @@
 import OrderTotalSummary from "@/components/order/order-total-summary";
 import { useGetOrderDetailQuery } from "@repo/redux";
 import { TOrder } from "@repo/utils/types";
-import { OrderActivityTimeline, OrderCustomerInfo, OrderHeader, OrderNote } from "@ui/index";
+import { OrderActivityTimeline, OrderCustomerInfo, OrderHeader, OrderNote, OrderShippingAddress } from "@ui/index";
 import { useParams } from "react-router-dom";
 type TOrderResponse = TOrder & { totalOrderItems: number };
 const OrderDetailPage = () => {
@@ -37,6 +37,7 @@ const OrderDetailPage = () => {
           />
           <OrderNote note={order.orderNote ?? null} />
           <OrderCustomerInfo user={order.user} />
+          <OrderShippingAddress address={order.orderShippingAddress} />
         </div>
         <div className="col-span-5">
           <OrderActivityTimeline statusHistory={order.orderStatusHistory} />

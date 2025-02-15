@@ -4,6 +4,7 @@ export * from "./components/notification-menu";
 export * from "./components/off-canvas";
 export * from "./components/option-selector";
 export * from "./components/order-activity-timeline";
+export * from "./components/order-shipping-address";
 export * from "./components/order-customer-info";
 export * from "./components/order-header";
 export * from "./components/order-note";
