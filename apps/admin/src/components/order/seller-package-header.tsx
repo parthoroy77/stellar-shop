@@ -8,7 +8,7 @@ interface Props {
 }
 const SellerPackageHeader: React.FC<Props> = ({ seller, status }) => {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-1 lg:flex-row lg:items-center lg:justify-between">
       <div className="flex items-center gap-2">
         <h6 className="text-accent-foreground text-xs font-medium">Seller & Shipped By</h6>
         <div className="flex items-center gap-1">

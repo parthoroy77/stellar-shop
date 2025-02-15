@@ -1,5 +1,12 @@
 import { getOrderDetails } from "@/actions/order.action";
-import { OrderActivityTimeline, OrderCustomerInfo, OrderHeader, OrderItemSummary, OrderNote, SubOrderSummary } from "@ui/index";
+import {
+  OrderActivityTimeline,
+  OrderCustomerInfo,
+  OrderHeader,
+  OrderItemSummary,
+  OrderNote,
+  SubOrderSummary,
+} from "@ui/index";
 import { notFound } from "next/navigation";
 import OrderShippingAddress from "./components/order-shipping-address";
 

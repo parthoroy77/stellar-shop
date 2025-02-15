@@ -26,8 +26,8 @@ const OrderDetailPage = () => {
         status={order.status}
       />
       <hr />
-      <div className="grid grid-cols-12 gap-3 *:space-y-3 *:*:rounded-md *:*:border *:*:px-5 *:*:py-3">
-        <div className="col-span-7">
+      <div className="gap-3 space-y-3 *:space-y-3 *:*:rounded-md *:*:border *:*:px-5 *:*:py-3 lg:grid lg:grid-cols-12 lg:space-y-0">
+        <div className="lg:col-span-7">
           <OrderTotalSummary
             totalAmount={order.totalAmount}
             grossAmount={order.grossAmount}
@@ -40,7 +40,7 @@ const OrderDetailPage = () => {
           <OrderCustomerInfo user={order.user} />
           <OrderShippingAddress address={order.orderShippingAddress} />
         </div>
-        <div className="col-span-5 *:space-y-3">
+        <div className="*:space-y-3 lg:col-span-5">
           <OrderActivityTimeline statusHistory={order.orderStatusHistory} />
         </div>
       </div>
