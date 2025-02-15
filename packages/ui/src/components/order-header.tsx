@@ -11,7 +11,7 @@ interface Props {
 }
 export const OrderHeader: FC<Props> = ({ orderId, placedAt, status, paymentStatus }) => {
   return (
-    <div className="flex flex-col gap-2 lg:items-center lg:justify-between">
+    <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
       <div className="space-y-0.5">
         <h3 className="text-sm font-medium lg:text-lg">
           Order ID: <b className="text-secondary">{orderId}</b>
