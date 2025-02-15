@@ -6,7 +6,8 @@ interface Props {
   netAmount: number;
   totalItem: number;
 }
-const OrderSummary: FC<Props> = ({ total, totalItem, netAmount, discount }) => {
+
+export const SubOrderSummary: FC<Props> = ({ total, totalItem, netAmount, discount }) => {
   return (
     <div>
       <h4 className="font-medium">Order Summary</h4>
@@ -27,5 +28,3 @@ const OrderSummary: FC<Props> = ({ total, totalItem, netAmount, discount }) => {
     </div>
   );
 };
-
-export default OrderSummary;

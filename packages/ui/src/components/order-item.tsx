@@ -1,9 +1,8 @@
 import { ISubOrderItem, TProduct } from "@repo/utils/types";
 import { Badge } from "@ui/index";
-import Image from "next/image";
 import { TbCurrencyTaka } from "react-icons/tb";
 
-const OrderItem = ({ item }: { item: ISubOrderItem }) => {
+export const OrderItem = ({ item }: { item: ISubOrderItem }) => {
   const { attributes, productName, product, productVariant, productVariantId, price, quantity } = item;
   const image = productVariantId
     ? productVariant.images[0]?.file?.fileSecureUrl
@@ -14,13 +13,7 @@ const OrderItem = ({ item }: { item: ISubOrderItem }) => {
 
   return (
     <div className="flex w-full items-start justify-between gap-3 lg:items-center">
-      <Image
-        width={50}
-        height={50}
-        className="size-[50px] rounded-md border object-cover"
-        src={image as string}
-        alt={productName}
-      />
+      <img className="size-[50px] rounded-md border object-cover" src={image as string} alt={productName} />
       <div className="flex w-full flex-col justify-between gap-2 lg:flex-row lg:items-end">
         <div className="w-full space-y-1">
           <h5 className="w-[16rem] truncate text-sm font-medium lg:w-[24rem]">{productName}</h5>
@@ -52,5 +45,3 @@ const OrderItem = ({ item }: { item: ISubOrderItem }) => {
     </div>
   );
 };
-
-export default OrderItem;

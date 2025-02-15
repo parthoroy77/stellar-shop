@@ -1,9 +1,7 @@
 import { getOrderDetails } from "@/actions/order.action";
-import { OrderActivityTimeline, OrderCustomerInfo, OrderHeader, OrderNote } from "@ui/index";
+import { OrderActivityTimeline, OrderCustomerInfo, OrderHeader, OrderItemSummary, OrderNote, SubOrderSummary } from "@ui/index";
 import { notFound } from "next/navigation";
-import OrderItemSummary from "./components/order-item-summary";
 import OrderShippingAddress from "./components/order-shipping-address";
-import OrderSummary from "./components/order-summary";
 
 const OrderDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   // Get order Id
@@ -38,7 +36,7 @@ const OrderDetailPage = async ({ params }: { params: Promise<{ id: string }> }) 
         </div>
         <aside className="w-full lg:w-[30%]">
           <OrderNote note={subOrder.orderNote || null} />
-          <OrderSummary
+          <SubOrderSummary
             totalItem={orderItems.length}
             netAmount={subOrder.netAmount}
             total={subOrder.totalAmount}
