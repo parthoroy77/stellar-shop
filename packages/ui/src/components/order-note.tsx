@@ -1,4 +1,4 @@
-const OrderNote = ({ note }: { note: null | string }) => {
+export const OrderNote = ({ note }: { note: null | string }) => {
   return (
     <div>
       <h4 className="font-medium">Order note</h4>
@@ -6,5 +6,3 @@ const OrderNote = ({ note }: { note: null | string }) => {
     </div>
   );
 };
-
-export default OrderNote;

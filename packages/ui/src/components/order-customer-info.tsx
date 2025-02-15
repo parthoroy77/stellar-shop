@@ -1,8 +1,8 @@
 import { TOrder } from "@repo/utils/types";
-import { Avatar, AvatarFallback, AvatarImage } from "@ui/index";
 import { LuUser2 } from "react-icons/lu";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
-const OrderCustomer = ({ user }: { user: TOrder["user"] }) => {
+export const OrderCustomerInfo = ({ user }: { user: TOrder["user"] }) => {
   return (
     <div>
       <h4 className="font-medium">Customer</h4>
@@ -19,5 +19,3 @@ const OrderCustomer = ({ user }: { user: TOrder["user"] }) => {
     </div>
   );
 };
-
-export default OrderCustomer;

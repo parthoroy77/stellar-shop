@@ -1,7 +1,7 @@
 import OrderTotalSummary from "@/components/order/order-total-summary";
 import { useGetOrderDetailQuery } from "@repo/redux";
 import { TOrder } from "@repo/utils/types";
-import { OrderActivityTimeline, OrderHeader } from "@ui/index";
+import { OrderActivityTimeline, OrderCustomerInfo, OrderHeader, OrderNote } from "@ui/index";
 import { useParams } from "react-router-dom";
 type TOrderResponse = TOrder & { totalOrderItems: number };
 const OrderDetailPage = () => {
@@ -25,7 +25,7 @@ const OrderDetailPage = () => {
         status={order.status}
       />
       <hr />
-      <div className="grid grid-cols-12 gap-3">
+      <div className="grid grid-cols-12 gap-3 *:space-y-3 *:*:rounded-md *:*:border *:*:px-5 *:*:py-3">
         <div className="col-span-7">
           <OrderTotalSummary
             totalAmount={order.totalAmount}
@@ -35,11 +35,11 @@ const OrderDetailPage = () => {
             totalItem={order.totalOrderItems}
             shippingAmount={order.shippingAmount}
           />
+          <OrderNote note={order.orderNote ?? null} />
+          <OrderCustomerInfo user={order.user} />
         </div>
         <div className="col-span-5">
-          <div className="rounded-md border p-4">
-            <OrderActivityTimeline statusHistory={order.orderStatusHistory} />
-          </div>
+          <OrderActivityTimeline statusHistory={order.orderStatusHistory} />
         </div>
       </div>
     </div>

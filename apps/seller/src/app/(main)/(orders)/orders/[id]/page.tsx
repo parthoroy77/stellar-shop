@@ -1,9 +1,7 @@
 import { getOrderDetails } from "@/actions/order.action";
-import { OrderActivityTimeline, OrderHeader } from "@ui/index";
+import { OrderActivityTimeline, OrderCustomerInfo, OrderHeader, OrderNote } from "@ui/index";
 import { notFound } from "next/navigation";
-import OrderCustomer from "./components/order-customer";
 import OrderItemSummary from "./components/order-item-summary";
-import OrderNote from "./components/order-note";
 import OrderShippingAddress from "./components/order-shipping-address";
 import OrderSummary from "./components/order-summary";
 
@@ -46,7 +44,7 @@ const OrderDetailPage = async ({ params }: { params: Promise<{ id: string }> }) 
             total={subOrder.totalAmount}
             discount={subOrder.discountAmount}
           />
-          <OrderCustomer user={mainOrder.user} />
+          <OrderCustomerInfo user={mainOrder.user} />
           <OrderShippingAddress address={mainOrder.orderShippingAddress} />
         </aside>
       </section>
