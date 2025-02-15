@@ -40,7 +40,7 @@ const OrderDetailPage = () => {
           <OrderCustomerInfo user={order.user} />
           <OrderShippingAddress address={order.orderShippingAddress} />
         </div>
-        <div className="col-span-5">
+        <div className="col-span-5 *:space-y-3">
           <OrderActivityTimeline statusHistory={order.orderStatusHistory} />
         </div>
       </div>

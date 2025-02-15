@@ -524,13 +524,14 @@ const getDetailForAdmin = async (orderId: number) => {
           totalAmount: true,
           discountAmount: true,
           netAmount: true,
-          orderPlacedAt: true,
           shippingOption: {
             select: {
               name: true,
               estimateDays: true,
             },
           },
+          status: true,
+          seller: { select: { shopName: true, logo: { select: { fileSecureUrl: true } } } },
           subOrderItems: {
             include: {
               product: {
