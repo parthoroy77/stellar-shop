@@ -1,4 +1,6 @@
 import { Prisma } from "@repo/prisma/client";
+import { PRODUCT_SEARCHABLE_FIELDS } from "./product.constants";
+import { TProductFilters } from "./product.types";
 
 export const parseProductData = (body: Record<string, any>, files: Express.Multer.File[]) => {
   const productImages: Express.Multer.File[] = [];
@@ -182,4 +184,22 @@ export const getProductDetailSelectOptions = () => {
     },
   };
   return selectOptions;
+};
+
+export const getProductBaseQuery = ({ query }: TProductFilters) => {
+  const whereInputs: Prisma.ProductWhereInput[] = [];
+
+  if (query) {
+    whereInputs.push({
+      OR: PRODUCT_SEARCHABLE_FIELDS.map((field) => ({
+        [field]: {
+          contains: query,
+          mode: "insensitive",
+        },
+      })),
+    });
+  }
+
+  const whereClause: Prisma.ProductWhereInput = whereInputs.length > 0 ? { AND: whereInputs } : {};
+  return whereClause;
 };
