@@ -9,7 +9,7 @@ import { deleteFromCloudinary } from "../../utils/cloudinary";
 import { generateUniqueSlug } from "../../utils/generateUniqueSlug";
 import { NEWLY_ARRIVAL_TIME_PERIOD } from "./product.constants";
 import { TProductFilters } from "./product.types";
-import { getProductBaseQuery, getProductDetailSelectOptions } from "./product.utils";
+import { getProductBaseQuery, getProductDetailSelectOptions, getProductsBaseSelectOption } from "./product.utils";
 
 const create = async (payload: TCreateProductValidation, userId: number) => {
   const uploadedImagesPublicIds: string[] = [];
@@ -253,21 +253,7 @@ const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
   const [result, count] = await prisma.$transaction([
     prisma.product.findMany({
       where: whereClause,
-      select: {
-        id: true,
-        stock: true,
-        price: true,
-        comparePrice: true,
-        productName: true,
-        urlSlug: true,
-        images: {
-          take: 1,
-          select: {
-            file: { select: { fileUrl: true, fileSecureUrl: true } },
-          },
-        },
-      },
-
+      select: getProductsBaseSelectOption(),
       skip,
       take: limit,
     }),
@@ -315,6 +301,7 @@ const getProductsBySearch = async (filters: TProductFilters, paginateOptions: TP
 
   const result = await prisma.product.findMany({
     where: getProductBaseQuery(filters),
+    select: getProductsBaseSelectOption(),
     skip,
     take: limit,
     orderBy:

@@ -186,6 +186,23 @@ export const getProductDetailSelectOptions = () => {
   return selectOptions;
 };
 
+export const getProductsBaseSelectOption = (): Prisma.ProductSelect => {
+  return {
+    id: true,
+    stock: true,
+    price: true,
+    comparePrice: true,
+    productName: true,
+    urlSlug: true,
+    images: {
+      take: 1,
+      select: {
+        file: { select: { fileUrl: true, fileSecureUrl: true } },
+      },
+    },
+  };
+};
+
 export const getProductBaseQuery = ({ query }: TProductFilters) => {
   const whereInputs: Prisma.ProductWhereInput[] = [];
 
