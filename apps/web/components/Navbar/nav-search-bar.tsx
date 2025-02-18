@@ -54,7 +54,7 @@ const NavSearchBar = () => {
       // Navigate to the selected item
       const selectedItem = searchResult[focusedIndex];
       if (selectedItem) {
-        router.push(`/products/${selectedItem.id}`);
+        router.push(`/products/${selectedItem.urlSlug}`);
         setShowResult(false);
         setFocusedIndex(-1);
         searchResultRef.current = null;
@@ -108,11 +108,13 @@ const NavSearchBar = () => {
           role="listbox"
           aria-label="Search results"
         >
-          {searchResult.map((_product, i) => (
+          {searchResult.map((product, i) => (
             <SearchResultItem
               key={i}
               isFocused={i === focusedIndex} // Pass down focus state
               onMouseEnter={() => setFocusedIndex(i)}
+              product={product}
+              isDemo={false}
             />
           ))}
         </div>

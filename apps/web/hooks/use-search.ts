@@ -1,3 +1,4 @@
+import { fetcher } from "@/lib/fetcher";
 import { throttle } from "@repo/utils/functions";
 import { TProduct } from "@repo/utils/types";
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
@@ -37,20 +38,19 @@ export function useSearch(initialQuery: string = ""): TUseSearchResult {
       // abort if there any ongoing query
       clearAbortController();
 
-      // TODO : Add your api to fetch results
       try {
-        const response = await fetch(`https://dummyjson.com/products/search?q=${searchQuery}`, {
+        const response = await fetcher<TProduct[]>(`/products/search?query=${searchQuery}`, {
           signal: abortControllerRef.current?.signal,
         });
 
-        const result = await response.json();
-
-        if (!response.ok) {
+        if (!response.success) {
           setError("Something went wrong while searching!");
         }
 
-        if (result.products) {
-          setSearchResult(result.products as TProduct[]);
+        const products = response.data;
+
+        if (products) {
+          setSearchResult(products as TProduct[]);
           setShowResult(true);
         }
       } catch (error: any) {
