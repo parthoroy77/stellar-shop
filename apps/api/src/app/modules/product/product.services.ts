@@ -8,7 +8,8 @@ import calculatePagination, { TPaginateOption } from "../../utils/calculatePagin
 import { deleteFromCloudinary } from "../../utils/cloudinary";
 import { generateUniqueSlug } from "../../utils/generateUniqueSlug";
 import { NEWLY_ARRIVAL_TIME_PERIOD } from "./product.constants";
-import { getProductDetailSelectOptions } from "./product.utils";
+import { TProductFilters } from "./product.types";
+import { getProductBaseQuery, getProductDetailSelectOptions } from "./product.utils";
 
 const create = async (payload: TCreateProductValidation, userId: number) => {
   const uploadedImagesPublicIds: string[] = [];
@@ -287,7 +288,7 @@ const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
 };
 
 // Function to get product details
-export const getProductDetails = async (params: { slug?: string; productId?: number }) => {
+const getProductDetails = async (params: { slug?: string; productId?: number }) => {
   const { slug, productId } = params;
 
   // Determine the `where` condition dynamically
@@ -309,10 +310,41 @@ export const getProductDetails = async (params: { slug?: string; productId?: num
   return result;
 };
 
+const getProductsBySearch = async (filters: TProductFilters, paginateOptions: TPaginateOption) => {
+  const { skip, limit, page, sortBy, sortOrder } = calculatePagination(paginateOptions);
+
+  const result = await prisma.product.findMany({
+    where: getProductBaseQuery(filters),
+    skip,
+    take: limit,
+    orderBy:
+      sortBy && sortOrder
+        ? {
+            [sortBy]: sortOrder,
+          }
+        : {},
+  });
+
+  const total = await prisma.product.count({ where: getProductBaseQuery(filters) });
+
+  return {
+    result,
+    meta: {
+      skip,
+      limit,
+      page,
+      sortBy,
+      sortOrder,
+      total,
+    },
+  };
+};
+
 export const ProductServices = {
   create,
   getPendingProducts,
   productApproval,
   getNewlyArrived,
   getProductDetails,
+  getProductsBySearch,
 };

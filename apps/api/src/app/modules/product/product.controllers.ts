@@ -5,7 +5,9 @@ import { ApiError } from "../../handlers/ApiError";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
 import pick from "../../utils/pick";
+import { PRODUCT_FILTERABLE_KEYS } from "./product.constants";
 import { ProductServices } from "./product.services";
+import { TProductFilters } from "./product.types";
 import { parseProductData } from "./product.utils";
 
 const createProduct = asyncHandler(async (req, res) => {
@@ -53,6 +55,19 @@ const getAllNewlyArrivedProducts = asyncHandler(async (req, res) => {
   });
 });
 
+const getAllProductsByQuery = asyncHandler(async (req, res) => {
+  const filters = pick(req.query, PRODUCT_FILTERABLE_KEYS) as TProductFilters;
+  const options = pick(req.query, PAGINATION_KEYS);
+  const { result, meta } = await ProductServices.getProductsBySearch(filters, options);
+  ApiResponse(res, {
+    data: result,
+    message: "Products retrieved successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+    meta,
+  });
+});
+
 const getProductBySlug = asyncHandler(async (req, res) => {
   const { slug } = req.params;
 
@@ -94,4 +109,5 @@ export const ProductControllers = {
   getAllNewlyArrivedProducts,
   getProductBySlug,
   getProductById,
+  getAllProductsByQuery,
 };

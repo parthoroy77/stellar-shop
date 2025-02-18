@@ -7,6 +7,7 @@ import { ProductControllers } from "./product.controllers";
 const router = Router();
 
 router.get("/new-arrivals", ProductControllers.getAllNewlyArrivedProducts);
+router.get("/search", ProductControllers.getAllProductsByQuery);
 router.get("/pending", authMiddleware(UserRole.ADMIN), ProductControllers.getAllPendingProducts);
 router.post("/", authMiddleware(UserRole.ADMIN, UserRole.SELLER), upload.any(), ProductControllers.createProduct);
 router.post("/approve/:productId", authMiddleware(UserRole.ADMIN), ProductControllers.approveProduct);
