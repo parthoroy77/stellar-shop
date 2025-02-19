@@ -1,5 +1,6 @@
 import { Prisma } from "@repo/prisma/client";
-import { PRODUCT_SEARCHABLE_FIELDS } from "./product.constants";
+import pick from "../../utils/pick";
+import { PRODUCT_FILTERABLE_KEYS, PRODUCT_SEARCHABLE_FIELDS } from "./product.constants";
 import { TProductFilters } from "./product.types";
 
 export const parseProductData = (body: Record<string, any>, files: Express.Multer.File[]) => {
@@ -203,7 +204,25 @@ export const getProductsBaseSelectOption = (): Prisma.ProductSelect => {
   };
 };
 
-export const getProductBaseQuery = ({ query }: TProductFilters) => {
+export const parseProductFilters = (query: Record<string, any>): TProductFilters => {
+  const filters = pick(query, PRODUCT_FILTERABLE_KEYS) as TProductFilters;
+
+  Object.entries(filters).forEach(([key, value]) => {
+    if (typeof value === "string") {
+      if (key === "brands" || key === "tags") {
+        filters[key] = value.split(",").map((v) => v.trim());
+      } else if (key === "inStock") {
+        filters[key] = value === "true";
+      } else if (key === "max" || key === "min") {
+        filters[key] = Number(value);
+      }
+    }
+  });
+
+  return filters;
+};
+
+export const getProductBaseQuery = ({ query, brands }: TProductFilters) => {
   const whereInputs: Prisma.ProductWhereInput[] = [];
 
   if (query) {
@@ -212,6 +231,19 @@ export const getProductBaseQuery = ({ query }: TProductFilters) => {
         [field]: {
           contains: query,
           mode: "insensitive",
+        },
+      })),
+    });
+  }
+
+  if (brands?.length) {
+    whereInputs.push({
+      OR: brands.map((b) => ({
+        brand: {
+          name: {
+            contains: b,
+            mode: "insensitive",
+          },
         },
       })),
     });
