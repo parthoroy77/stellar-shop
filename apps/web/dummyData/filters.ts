@@ -29,7 +29,7 @@ export const filtersData = [
     ],
   },
   {
-    label: "Product Status",
+    label: "status",
     options: [
       { label: "In Stock", value: "in-stock", productCount: 2 },
       { label: "On Sale", value: "on-sale", productCount: 2 },
