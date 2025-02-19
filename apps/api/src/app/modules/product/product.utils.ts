@@ -222,11 +222,25 @@ export const parseProductFilters = (query: Record<string, any>): TProductFilters
   return filters;
 };
 
-export const getProductBaseQuery = ({ query, brands }: TProductFilters) => {
-  const whereInputs: Prisma.ProductWhereInput[] = [];
+/**
+ * Prepare a Prisma query object based on the provided product filter criteria.
+ *
+ * @param {TProductFilters} filters - Object containing search filters such as query, brands, price range, tags, and stock availability.
+ * @returns {Prisma.ProductWhereInput} - A Prisma `where` clause dynamically built from the filter criteria.
+ */
+export const getProductBaseQuery = ({
+  query,
+  brands,
+  min,
+  max,
+  tags,
+  inStock,
+}: TProductFilters): Prisma.ProductWhereInput => {
+  const whereConditions: Prisma.ProductWhereInput[] = [];
 
+  // Full-text search across product filterable fields fields
   if (query) {
-    whereInputs.push({
+    whereConditions.push({
       OR: PRODUCT_SEARCHABLE_FIELDS.map((field) => ({
         [field]: {
           contains: query,
@@ -236,12 +250,13 @@ export const getProductBaseQuery = ({ query, brands }: TProductFilters) => {
     });
   }
 
+  // Filter by brand
   if (brands?.length) {
-    whereInputs.push({
-      OR: brands.map((b) => ({
+    whereConditions.push({
+      OR: brands.map((brand) => ({
         brand: {
           name: {
-            contains: b,
+            contains: brand,
             mode: "insensitive",
           },
         },
@@ -249,6 +264,54 @@ export const getProductBaseQuery = ({ query, brands }: TProductFilters) => {
     });
   }
 
-  const whereClause: Prisma.ProductWhereInput = whereInputs.length > 0 ? { AND: whereInputs } : {};
-  return whereClause;
+  // Filter by minimum price
+  if (min) {
+    whereConditions.push({
+      AND: {
+        price: {
+          gte: min,
+        },
+      },
+    });
+  }
+
+  // Filter by maximum price
+  if (max !== undefined) {
+    whereConditions.push({
+      AND: {
+        price: {
+          lte: max,
+        },
+      },
+    });
+  }
+
+  // Filter by associated tags
+  if (tags?.length) {
+    whereConditions.push({
+      OR: tags.map((tag) => ({
+        tags: {
+          some: {
+            tag: {
+              name: {
+                contains: tag,
+                mode: "insensitive",
+              },
+            },
+          },
+        },
+      })),
+    });
+  }
+
+  // Filter by stock availability
+  if (inStock !== undefined) {
+    whereConditions.push({
+      AND: {
+        stock: inStock ? { gt: 0 } : { lt: 1 },
+      },
+    });
+  }
+
+  return whereConditions.length > 0 ? { AND: whereConditions } : {};
 };
