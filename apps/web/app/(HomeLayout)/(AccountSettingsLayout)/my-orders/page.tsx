@@ -3,8 +3,9 @@ import MyOrderView from "@/components/AccountSettings/MyOrders/my-orders-view";
 
 const MyOrdersPage = async () => {
   return (
-    <div className="divide-y *:py-5">
+    <div className="space-y-5">
       <MyOrderHeader />
+      <hr />
       <MyOrderView />
     </div>
   );

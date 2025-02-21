@@ -2,13 +2,13 @@
 import { getMyOrders } from "@/actions/order";
 import { useQueryData } from "@repo/tanstack-query";
 import { TPaginationState } from "@repo/utils/types";
-import { Button } from "@ui/index";
+import { AppPagination, Button } from "@ui/index";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { GoArrowUpRight } from "react-icons/go";
 import OrderCard from "./order-card";
 const MyOrderView = () => {
-  const [{ page, limit }, setPagination] = useState<TPaginationState>({
+  const [{ page, limit, totalPages }, setPagination] = useState<TPaginationState>({
     limit: 5,
     page: 1,
     total: 0,
@@ -44,21 +44,33 @@ const MyOrderView = () => {
   }, []);
 
   return (
-    <div className="space-y-3">
-      {orders.length > 0 ? (
-        orders.map((order) => <OrderCard order={order} key={order.id} />)
-      ) : (
-        <div className="flex h-40 flex-col items-center justify-center gap-3 text-center text-lg font-medium">
-          <h3>No order placed yet</h3>
-          <Link href={"/"}>
-            <Button className="space-x-2">
-              <span>Shop Now</span>
+    <div>
+      <div className="space-y-3">
+        {orders.length > 0 ? (
+          orders.map((order) => <OrderCard order={order} key={order.id} />)
+        ) : (
+          <div className="flex h-40 flex-col items-center justify-center gap-3 text-center text-lg font-medium">
+            <h3>No order placed yet</h3>
+            <Link href={"/"}>
+              <Button className="space-x-2">
+                <span>Shop Now</span>
 
-              <GoArrowUpRight />
-            </Button>
-          </Link>
-        </div>
-      )}
+                <GoArrowUpRight />
+              </Button>
+            </Link>
+          </div>
+        )}
+      </div>
+      <div className="mt-5 flex justify-center">
+        <AppPagination
+          currentPage={page}
+          onPageChange={handlePageChange}
+          totalPages={totalPages}
+          maxVisiblePages={4}
+          showNextButton
+          showPrevButton
+        />
+      </div>
     </div>
   );
 };
