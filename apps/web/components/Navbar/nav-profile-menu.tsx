@@ -1,12 +1,13 @@
-import { getServerAuth } from "@/lib/auth-utils";
+"use client";
+import { useClientSession } from "@/lib/auth-utils";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@ui/index";
 import Link from "next/link";
 import { CiLogin, CiSettings } from "react-icons/ci";
 import { PiUserCircleLight } from "react-icons/pi";
 import NavLogoutButton from "./nav-logout-button";
 
-const NavProfileMenu = async () => {
-  const { isAuthenticated } = await getServerAuth();
+const NavProfileMenu = () => {
+  const { isAuthenticated } = useClientSession();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
