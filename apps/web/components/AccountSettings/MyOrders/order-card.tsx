@@ -9,8 +9,8 @@ import OrderItemCard from "./order-item-card";
 
 const OrderCard = ({ order }: { order: TOrder }) => {
   return (
-    <div className={cn("bg-accent/30 w-full rounded-md border p-4")}>
-      <div className="flex flex-col gap-2 pb-3 lg:flex-row lg:items-center lg:justify-between">
+    <div className={cn("bg-accent/30 w-full rounded-md border p-2 sm:p-4")}>
+      <div className="flex flex-col justify-between gap-2 pb-3 lg:flex-row lg:items-center">
         <div>
           <div className="flex items-center gap-3">
             <h3 className="text-sm font-medium lg:text-lg">
@@ -33,18 +33,21 @@ const OrderCard = ({ order }: { order: TOrder }) => {
           </p>
         </div>
         <div className="flex items-center">
-          <Button className="space-x-1" variant={"link"}>
+          <Button className="space-x-1 border" variant={"outline"}>
             <span>View Details</span>
             <GoArrowUpRight size={16} />
           </Button>
         </div>
       </div>
-      <div className="space-y-3 divide-y">
+      <div className="space-y-1 divide-y sm:space-y-3">
         {order.subOrders.map((subOrder, i) => (
-          <div key={subOrder.id} className="space-y-3 rounded-xl border bg-white px-4 py-3">
+          <div
+            key={subOrder.id}
+            className="space-y-1 rounded-xl border bg-white px-2 py-1.5 sm:space-y-3 sm:px-4 sm:py-3"
+          >
             {/* Seller Information */}
-            <div className="flex flex-col items-start lg:flex-row lg:items-center lg:justify-between">
-              <h4 className="font-medium">Package {i + 1}</h4>
+            <div className="flex flex-col items-start sm:flex-row lg:items-center lg:justify-between">
+              <span className="text-xs font-medium sm:text-base">Package {i + 1}</span>
               <div className="flex cursor-pointer items-center justify-end gap-2">
                 <h6 className="text-accent-foreground text-xs font-medium">Seller & Shipped By</h6>
                 <div className="flex items-center gap-1">
@@ -57,7 +60,9 @@ const OrderCard = ({ order }: { order: TOrder }) => {
                       "https://res.cloudinary.com/dx0iiqjf4/image/upload/v1735808264/shopMedia/nrpn006yyxcdjm8skkzn.png"
                     }
                   />
-                  <h5 className="text-primary-foreground text-sm font-semibold">{subOrder.seller.shopName}</h5>
+                  <span className="text-primary-foreground text-xs font-semibold sm:text-sm">
+                    {subOrder.seller.shopName}
+                  </span>
                 </div>
               </div>
             </div>
