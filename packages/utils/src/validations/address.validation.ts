@@ -21,7 +21,7 @@ export const shippingAddressValidationSchema = z.object({
   zipCode: z.string(),
   state: z.string(),
   isPrimary: z.boolean(),
-  type: z.enum(["HOME", "WORK"]),
+  type: z.enum(["HOME", "WORK", "BUSINESS"]),
 });
 
 export type TShippingAddressValidation = z.infer<typeof shippingAddressValidationSchema>;

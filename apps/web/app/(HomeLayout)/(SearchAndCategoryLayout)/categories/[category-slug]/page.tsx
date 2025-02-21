@@ -21,7 +21,7 @@ const CategoryPage = () => {
           {/* Top Header section */}
           <ProductHeaderSection />
           {/* Product Listings */}
-          <ProductListing />
+          <ProductListing isDemo products={[]} />
         </div>
       </div>
     </section>
