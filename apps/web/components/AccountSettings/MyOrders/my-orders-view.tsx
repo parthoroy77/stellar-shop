@@ -2,8 +2,11 @@
 import { getMyOrders } from "@/actions/order";
 import { useQueryData } from "@repo/tanstack-query";
 import { TPaginationState } from "@repo/utils/types";
+import { Button } from "@ui/index";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
-
+import { GoArrowUpRight } from "react-icons/go";
+import OrderCard from "./order-card";
 const MyOrderView = () => {
   const [{ page, limit }, setPagination] = useState<TPaginationState>({
     limit: 5,
@@ -40,7 +43,24 @@ const MyOrderView = () => {
     setPagination((prev) => ({ ...prev, page }));
   }, []);
 
-  return <div></div>;
+  return (
+    <div className="space-y-3">
+      {orders.length > 0 ? (
+        orders.map((order) => <OrderCard order={order} key={order.id} />)
+      ) : (
+        <div className="flex h-40 flex-col items-center justify-center gap-3 text-center text-lg font-medium">
+          <h3>No order placed yet</h3>
+          <Link href={"/"}>
+            <Button className="space-x-2">
+              <span>Shop Now</span>
+
+              <GoArrowUpRight />
+            </Button>
+          </Link>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default MyOrderView;
