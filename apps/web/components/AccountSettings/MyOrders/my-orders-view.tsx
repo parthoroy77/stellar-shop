@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { GoArrowUpRight } from "react-icons/go";
 import OrderCard from "./order-card";
+import OrderCardSkeleton from "./order-card-skeleton";
+
 const MyOrderView = () => {
   const [{ page, limit, totalPages }, setPagination] = useState<TPaginationState>({
     limit: 5,
@@ -46,19 +48,23 @@ const MyOrderView = () => {
   return (
     <div>
       <div className="space-y-3">
-        {orders.length > 0 ? (
-          orders.map((order) => <OrderCard order={order} key={order.id} />)
-        ) : (
-          <div className="flex h-40 flex-col items-center justify-center gap-3 text-center text-lg font-medium">
-            <h3>No order placed yet</h3>
-            <Link href={"/"}>
-              <Button className="space-x-2">
-                <span>Shop Now</span>
+        {!isFetching ? (
+          orders.length > 0 ? (
+            orders.map((order) => <OrderCard order={order} key={order.id} />)
+          ) : (
+            <div className="flex h-40 flex-col items-center justify-center gap-3 text-center text-lg font-medium">
+              <h3>No order placed yet</h3>
+              <Link href={"/"}>
+                <Button className="space-x-2">
+                  <span>Shop Now</span>
 
-                <GoArrowUpRight />
-              </Button>
-            </Link>
-          </div>
+                  <GoArrowUpRight />
+                </Button>
+              </Link>
+            </div>
+          )
+        ) : (
+          Array.from({ length: 2 }).map((_x, i) => <OrderCardSkeleton key={i} />)
         )}
       </div>
       <div className="mt-5 flex justify-center">
