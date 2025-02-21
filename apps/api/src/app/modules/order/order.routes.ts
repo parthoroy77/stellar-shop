@@ -8,15 +8,15 @@ const router = Router();
 // Place an order
 router.post("/place", authMiddleware(UserRole.BUYER), OrderControllers.placeOrder);
 
+// Buyer specific routes
+router.get("/buyer/", authMiddleware(UserRole.BUYER), OrderControllers.getAllBuyerOrders);
+
 // Get orders for admin
 router.get("/", authMiddleware(UserRole.ADMIN), OrderControllers.getAllOrdersForAdmin);
 // Get order detail
 router.get("/:id", authMiddleware(UserRole.ADMIN), OrderControllers.getOrderDetailsForAdmin);
 // update order status
 router.put("/:id", authMiddleware(UserRole.ADMIN), OrderControllers.updateOrderStatusForAdmin);
-
-// Buyer specific routes
-router.get("/buyer", authMiddleware(UserRole.BUYER), OrderControllers.getAllBuyerOrders);
 
 const OrderRoutes = router;
 
