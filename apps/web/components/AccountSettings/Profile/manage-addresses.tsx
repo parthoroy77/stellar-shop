@@ -6,7 +6,7 @@ const ManageAddresses = async () => {
   const addresses = await getAllShippingAddresses();
 
   return (
-    <div className="grid flex-grow grid-cols-12 gap-3">
+    <div id="manage-address" className="grid flex-grow grid-cols-12 gap-3">
       <div className="col-span-12 lg:col-span-3">
         <h3 className="text-lg font-medium">Manage Addresses</h3>
         <span className="text-accent-foreground text-wrap text-sm">Here you can manage all your addresses.</span>

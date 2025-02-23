@@ -1,4 +1,3 @@
-import { BiPurchaseTagAlt } from "react-icons/bi";
 import { HiOutlineReceiptRefund } from "react-icons/hi2";
 import { MdOutlineManageHistory } from "react-icons/md";
 import { RiUserLocationLine, RiUserSettingsLine } from "react-icons/ri";
@@ -19,11 +18,7 @@ export const profileMenus = [
     Icon: MdOutlineManageHistory,
     href: "/my-orders",
   },
-  {
-    label: "My Purchases",
-    Icon: BiPurchaseTagAlt,
-    href: "/",
-  },
+
   {
     label: "My Reviews",
     Icon: VscFeedback,
