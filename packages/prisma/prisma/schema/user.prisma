@@ -29,6 +29,7 @@ model User {
   OTPRequest      OTPRequest[]
   shippingAddress ShippingAddress[]
   orders          Order[]
+  reviews         ProductReview[]
 
   @@index([email, phoneNumber, fullName])
   @@map("Users")

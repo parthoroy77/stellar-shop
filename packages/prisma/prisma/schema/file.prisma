@@ -27,14 +27,15 @@ model File {
   updatedAt DateTime @updatedAt
 
   // references 
-  uploader         User           @relation(fields: [uploadedBy], references: [id])
-  categoryFiles    CategoryFile[]
-  productFiles     ProductFile[]
-  variantFiles     VariantFile[]
-  logoForSellers   Seller[]       @relation("LogoForSellers")
-  bannerForSellers Seller[]       @relation("BannerForSellers")
-  brands           Brand[]
-  avatar           User?          @relation("AvatarFile")
+  uploader            User                @relation(fields: [uploadedBy], references: [id])
+  categoryFiles       CategoryFile[]
+  productFiles        ProductFile[]
+  variantFiles        VariantFile[]
+  logoForSellers      Seller[]            @relation("LogoForSellers")
+  bannerForSellers    Seller[]            @relation("BannerForSellers")
+  brands              Brand[]
+  avatar              User?               @relation("AvatarFile")
+  productReviewImages ProductReviewFile[]
 
   @@map("Files")
 }

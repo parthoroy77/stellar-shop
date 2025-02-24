@@ -32,7 +32,8 @@ model Product {
   cartItems                CartItem[]
   wishlistItems            WishlistItem[]
   orderItems               OrderItem[]
-  subOrderItems             SubOrderItem[]
+  subOrderItems            SubOrderItem[]
+  reviews                  ProductReview[]
 
   @@index([urlSlug, productName])
   @@map("Products")
