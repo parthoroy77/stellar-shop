@@ -413,6 +413,75 @@ const updateOrderStatusForAdmin = async (orderId: number, status: OrderStatus) =
   };
 };
 
+const getDetailForAdmin = async (orderId: number) => {
+  const order = await prisma.order.findUnique({
+    where: {
+      id: orderId,
+    },
+    select: {
+      id: true,
+      uniqueId: true,
+      totalAmount: true,
+      discountAmount: true,
+      grossAmount: true,
+      shippingAmount: true,
+      netAmount: true,
+      paymentStatus: true,
+      status: true,
+      paymentMethod: {
+        select: {
+          name: true,
+          type: true,
+        },
+      },
+      orderStatusHistory: true,
+      orderShippingAddress: {
+        take: 1,
+        omit: { createdAt: true, updatedAt: true },
+      },
+      user: {
+        select: { fullName: true, avatarUrl: true },
+      },
+      subOrders: {
+        select: {
+          id: true,
+          totalAmount: true,
+          discountAmount: true,
+          netAmount: true,
+          shippingOption: {
+            select: {
+              name: true,
+              estimateDays: true,
+            },
+          },
+          status: true,
+          seller: { select: { shopName: true, logo: { select: { fileSecureUrl: true } } } },
+          subOrderItems: {
+            include: {
+              product: {
+                select: {
+                  uniqueId: true,
+                  images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
+                },
+              },
+              productVariant: {
+                select: {
+                  uniqueId: true,
+                  images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
+                },
+              },
+            },
+            omit: { createdAt: true, updatedAt: true },
+          },
+        },
+      },
+      _count: { select: { orderItems: true } },
+    },
+  });
+
+  return { ...order, totalOrderItems: order?._count.orderItems };
+};
+
 const getOrdersForBuyer = async (userId: number, options: TPaginateOption, status?: TOrderFilters["status"]) => {
   const { skip, limit, page, sortBy, sortOrder } = calculatePagination(options);
   const andClauses: Prisma.OrderWhereInput[] = [];
@@ -489,11 +558,9 @@ const getOrdersForBuyer = async (userId: number, options: TPaginateOption, statu
   };
 };
 
-const getDetailForAdmin = async (orderId: number) => {
-  const order = await prisma.order.findUnique({
-    where: {
-      id: orderId,
-    },
+const getDetailForBuyer = async (orderId: number, userId: number) => {
+  const result = await prisma.order.findFirst({
+    where: { id: orderId, userId },
     select: {
       id: true,
       uniqueId: true,
@@ -511,57 +578,40 @@ const getDetailForAdmin = async (orderId: number) => {
         },
       },
       orderStatusHistory: true,
-      orderShippingAddress: {
-        take: 1,
-        omit: { createdAt: true, updatedAt: true },
-      },
-      user: {
-        select: { fullName: true, avatarUrl: true },
-      },
-      subOrders: {
-        select: {
-          id: true,
-          totalAmount: true,
-          discountAmount: true,
-          netAmount: true,
-          shippingOption: {
+      orderItems: {
+        include: {
+          product: {
             select: {
-              name: true,
-              estimateDays: true,
+              uniqueId: true,
+              images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
             },
           },
-          status: true,
-          seller: { select: { shopName: true, logo: { select: { fileSecureUrl: true } } } },
-          subOrderItems: {
-            include: {
-              product: {
-                select: {
-                  uniqueId: true,
-                  images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
-                },
-              },
-              productVariant: {
-                select: {
-                  uniqueId: true,
-                  images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
-                },
-              },
+          productVariant: {
+            select: {
+              uniqueId: true,
+              images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
             },
-            omit: { createdAt: true, updatedAt: true },
           },
         },
+        omit: { createdAt: true, updatedAt: true, productId: true, productVariantId: true, orderId: true, id: true },
       },
-      _count: { select: { orderItems: true } },
     },
   });
 
-  return { ...order, totalOrderItems: order?._count.orderItems };
+  if (!result) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Order not found!");
+  }
+
+  return result;
 };
 
 export const OrderServices = {
   place,
+  // Admin services
   getOrdersForAdmin,
   updateOrderStatusForAdmin,
-  getOrdersForBuyer,
   getDetailForAdmin,
+  // Buyer services
+  getOrdersForBuyer,
+  getDetailForBuyer,
 };

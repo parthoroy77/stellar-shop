@@ -11,6 +11,8 @@ router.post("/place", authMiddleware(UserRole.BUYER), OrderControllers.placeOrde
 // Buyer specific routes
 router.get("/buyer/", authMiddleware(UserRole.BUYER), OrderControllers.getAllBuyerOrders);
 
+router.get("/buyer/:id", authMiddleware("BUYER"), OrderControllers.getOrderDetailsForBuyer);
+
 // Get orders for admin
 router.get("/", authMiddleware(UserRole.ADMIN), OrderControllers.getAllOrdersForAdmin);
 // Get order detail
