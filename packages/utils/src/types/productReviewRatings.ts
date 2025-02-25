@@ -1,15 +1,41 @@
+import { IFile } from "./file";
+import { TProduct } from "./product";
+import { TUser } from "./user";
+
 // Product Review
 export interface IProductReview {
   id: number;
-  productId: number; // Foreign key referencing Product
-  userId: number; // Foreign key referencing User
-  rating: number; // Rating score (e.g., 1 to 5)
-  reviewText?: string;
+  productId: number;
+  userId: number;
+  rating: number;
+  description: string | null;
+
+  // timestamps
   createdAt: Date;
   updatedAt?: Date;
+
+  images: IProductReviewFile[];
+  user: TUser;
+  product: TProduct;
 }
 
-// Product Rating Averages
+export interface IProductReviewFile {
+  id: number;
+  fileId: number;
+  productReviewId: number;
+
+  file: IFile;
+  productReview: IProductReview;
+}
+
+// product review creation payload
+export type TProductReviewPayload = {
+  productId: number;
+  rating: number;
+  description: string;
+};
+
+// Product Rating Averages (Not added right now)
 export interface IProductRatingAverage {
   id: number;
   productId: number; // Foreign key referencing Product
