@@ -1,8 +1,8 @@
-import { ISubOrderItem, TProduct } from "@repo/utils/types";
+import { IOrderItem, ISubOrderItem, TProduct } from "@repo/utils/types";
 import { Badge } from "@ui/index";
 import { TbCurrencyTaka } from "react-icons/tb";
 
-export const OrderItem = ({ item }: { item: ISubOrderItem }) => {
+export const OrderItem = ({ item }: { item: ISubOrderItem | IOrderItem }) => {
   const { attributes, productName, product, productVariant, productVariantId, price, quantity } = item;
   const image = productVariantId
     ? productVariant.images[0]?.file?.fileSecureUrl
