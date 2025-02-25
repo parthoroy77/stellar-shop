@@ -23,3 +23,12 @@ export const getMyOrders = async (query?: string) => {
 
   return { data: result.data, meta: result.meta };
 };
+
+export const getOrderDetail = async (orderId: number) => {
+  const result = await serverFetcher<TOrder>("/orders/buyer/" + orderId, {
+    method: "GET",
+    next: { revalidate: 60, tags: ["order", orderId.toString()] },
+  });
+
+  return result.data;
+};

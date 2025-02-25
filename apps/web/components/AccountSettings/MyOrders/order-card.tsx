@@ -4,6 +4,7 @@ import { Badge, Button } from "@ui/index";
 import { cn } from "@ui/lib/utils";
 import moment from "moment";
 import Image from "next/image";
+import Link from "next/link";
 import { GoArrowUpRight } from "react-icons/go";
 import OrderItemCard from "./order-item-card";
 
@@ -33,10 +34,12 @@ const OrderCard = ({ order }: { order: TOrder }) => {
           </p>
         </div>
         <div className="flex items-center">
-          <Button className="space-x-1 border" variant={"outline"}>
-            <span>View Details</span>
-            <GoArrowUpRight size={16} />
-          </Button>
+          <Link href={"/my-orders/" + order.id}>
+            <Button className="space-x-1 border" variant={"outline"}>
+              <span>View Details</span>
+              <GoArrowUpRight size={16} />
+            </Button>
+          </Link>
         </div>
       </div>
       <div className="space-y-1 divide-y sm:space-y-3">

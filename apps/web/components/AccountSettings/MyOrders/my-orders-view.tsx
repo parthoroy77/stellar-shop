@@ -50,7 +50,11 @@ const MyOrderView = () => {
       <div className="space-y-3">
         {!isFetching ? (
           orders.length > 0 ? (
-            orders.map((order) => <OrderCard order={order} key={order.id} />)
+            orders.map((order) => (
+              <Link href={"/my-orders/" + order.id} key={order.id}>
+                <OrderCard order={order} />
+              </Link>
+            ))
           ) : (
             <div className="flex h-40 flex-col items-center justify-center gap-3 text-center text-lg font-medium">
               <h3>No order placed yet</h3>
