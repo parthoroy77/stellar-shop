@@ -3,22 +3,24 @@ import { generateUniqueId } from "@repo/utils/functions";
 import { TCreateProductValidation } from "@repo/utils/validations";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
-import { uploadFileToCloudinaryAndCreateRecord } from "../../handlers/handleCloudUpload";
+import {
+  deleteFileFromCloudinaryAndRecord,
+  uploadFileToCloudinaryAndCreateRecord,
+} from "../../handlers/handleCloudUpload";
 import calculatePagination, { TPaginateOption } from "../../utils/calculatePagination";
-import { deleteFromCloudinary } from "../../utils/cloudinary";
 import { generateUniqueSlug } from "../../utils/generateUniqueSlug";
 import { NEWLY_ARRIVAL_TIME_PERIOD } from "./product.constants";
 import { TProductFilters } from "./product.types";
 import { getProductBaseQuery, getProductDetailSelectOptions, getProductsBaseSelectOption } from "./product.utils";
 
 const create = async (payload: TCreateProductValidation, userId: number) => {
-  const uploadedImagesPublicIds: string[] = [];
+  const uploadedImagesPublicIds: { recordId: number; publicId: string }[] = [];
 
   let totalStock: number = 0;
 
   const cleanup = async () => {
-    for (const publicId of uploadedImagesPublicIds) {
-      await deleteFromCloudinary(publicId, "image");
+    for (const file of uploadedImagesPublicIds) {
+      await deleteFileFromCloudinaryAndRecord(file.publicId, file.recordId);
     }
   };
 
@@ -52,7 +54,9 @@ const create = async (payload: TCreateProductValidation, userId: number) => {
     const uploadedProdImages = await Promise.all(
       payload.productImages.map((file) => uploadFileToCloudinaryAndCreateRecord(file.path, "products", userId))
     );
-    uploadedImagesPublicIds.push(...uploadedProdImages.map((img) => img.fileRecord.filePublicId));
+    uploadedImagesPublicIds.push(
+      ...uploadedProdImages.map((img) => ({ publicId: img.fileRecord.filePublicId, recordId: img.fileRecord.id }))
+    );
 
     // Generate unique slug
     const productSlug = await generateUniqueSlug(payload.productName, prisma.product, "urlSlug");
@@ -146,7 +150,10 @@ const create = async (payload: TCreateProductValidation, userId: number) => {
             userId
           );
 
-          uploadedImagesPublicIds.push(variantImage.fileRecord.filePublicId);
+          uploadedImagesPublicIds.push({
+            publicId: variantImage.fileRecord.filePublicId,
+            recordId: variantImage.fileRecord.id,
+          });
 
           variantsData.push({
             uniqueId: generateUniqueId(`${createdProduct.uniqueId}-VAR-`),

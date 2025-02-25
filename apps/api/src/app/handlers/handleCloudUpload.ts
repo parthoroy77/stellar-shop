@@ -1,7 +1,7 @@
 import prisma from "@repo/prisma/client";
 import { StatusCodes } from "http-status-codes";
 import logger from "../logger";
-import { uploadOnCloudinary } from "../utils/cloudinary";
+import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary";
 import { ApiError } from "./ApiError";
 
 export const handleCloudinaryUpload = async (filePath: string, folderName: string) => {
@@ -30,5 +30,15 @@ export const uploadFileToCloudinaryAndCreateRecord = async (filePath: string, fo
   } catch (error) {
     logger.error(`Error uploading file to Cloudinary or creating file record: ${error}`);
     throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "File upload failed.");
+  }
+};
+
+export const deleteFileFromCloudinaryAndRecord = async (publicId: string, recordId: number) => {
+  try {
+    await deleteFromCloudinary(publicId);
+    await prisma.file.delete({ where: { id: recordId } });
+  } catch (error) {
+    logger.error(`Error deleting file from  Cloudinary or deleting file record: ${error}`);
+    throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "File file delete operation failed.");
   }
 };

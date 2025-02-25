@@ -2,19 +2,21 @@ import prisma from "@repo/prisma/client";
 import { TProductReviewPayload } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
-import { uploadFileToCloudinaryAndCreateRecord } from "../../handlers/handleCloudUpload";
-import { deleteFromCloudinary } from "../../utils/cloudinary";
+import {
+  deleteFileFromCloudinaryAndRecord,
+  uploadFileToCloudinaryAndCreateRecord,
+} from "../../handlers/handleCloudUpload";
 
 const create = async (
   { productId, rating, description }: TProductReviewPayload,
   userId: number,
   imagesPaths?: string[]
 ) => {
-  const publicIds: string[] = [];
+  const publicIds: { publicId: string; recordId: number }[] = [];
 
   const cleanup = async () => {
     for (const publicId of publicIds) {
-      await deleteFromCloudinary(publicId, "image");
+      await deleteFileFromCloudinaryAndRecord(publicId.publicId, publicId.recordId);
     }
   };
 
@@ -26,7 +28,9 @@ const create = async (
         imagesPaths?.map((path) => uploadFileToCloudinaryAndCreateRecord(path, "product-review", userId))
       );
       // Store public ids to clear images if any error occurs
-      publicIds.push(...reviewImages.map((img) => img.fileRecord.filePublicId));
+      publicIds.push(
+        ...reviewImages.map((img) => ({ publicId: img.fileRecord.filePublicId, recordId: img.fileRecord.id }))
+      );
     }
 
     // Create entry of file record
