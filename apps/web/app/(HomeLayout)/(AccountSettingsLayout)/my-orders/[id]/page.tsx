@@ -1,7 +1,8 @@
 import { getOrderDetail } from "@/actions/order";
-import { OrderItemSummary } from "@ui/index";
+import { OrderActivityTimeline, OrderItemSummary } from "@ui/index";
 import { notFound } from "next/navigation";
 import Header from "./components/header";
+import PaymentInformation from "./components/payment-information";
 import Summary from "./components/summary";
 
 type TParams = { id: string };
@@ -21,11 +22,15 @@ const OrderDetailPage = async ({ params }: { params: TParams }) => {
         <div className="sh flex-1 rounded-md border *:p-4">
           <OrderItemSummary items={order.orderItems} />
         </div>
-        <div className="w-[30%] *:rounded-md *:border *:p-4">
+        <div className="w-[30%] space-y-4 *:rounded-md *:border *:p-4">
+          <PaymentInformation status={order.paymentStatus} method={order.paymentMethod} />
           <Summary order={order} />
         </div>
       </section>
       <hr />
+      <div className="rounded-md border p-4 *:*:space-y-3">
+        <OrderActivityTimeline statusHistory={order.orderStatusHistory} />
+      </div>
     </div>
   );
 };
