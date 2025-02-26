@@ -8,6 +8,7 @@ import CategoryRoutes from "../modules/category/category.routes";
 import CheckoutRoutes from "../modules/checkout/checkout.routes";
 import OrderRoutes from "../modules/order/order.routes";
 import PaymentMethodRoutes from "../modules/payment-method/payment-method.routes";
+import ProductReviewRoutes from "../modules/product-review/product-review.routes";
 import ProductRoutes from "../modules/product/product.routes";
 import SellerRoutes from "../modules/seller/seller.routes";
 import ShippingRoutes from "../modules/shipping/shipping.routes";
@@ -87,6 +88,10 @@ const routerModules: TRouteModule[] = [
   {
     path: "/sub-orders",
     route: SubOrderRoutes,
+  },
+  {
+    path: "/product-reviews",
+    route: ProductReviewRoutes,
   },
 ];
 

@@ -1,6 +1,7 @@
 import prisma from "@repo/prisma/client";
 import { TProductReviewPayload } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
+import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
 import {
   deleteFileFromCloudinaryAndRecord,
@@ -20,6 +21,18 @@ const create = async (
     }
   };
 
+  // For development purpose skip this process
+  // TODO: Remove this check when final launch of product
+  if (config.NODE_ENV === "production") {
+    const isAlreadyReviewAdded = await prisma.productReview.findFirst({
+      where: { userId, productId },
+      select: { id: true },
+    });
+
+    if (isAlreadyReviewAdded) {
+      throw new ApiError(StatusCodes.CONFLICT, "You already added review for this product!");
+    }
+  }
   try {
     let reviewImages;
     if (imagesPaths?.length) {
