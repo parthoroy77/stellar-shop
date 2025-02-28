@@ -1,3 +1,4 @@
+import AddReviewModalForm from "@/components/Forms/add-review-modal-form";
 import { toNormalCase } from "@repo/utils/functions";
 import { TOrder } from "@repo/utils/types";
 import { Badge, Button } from "@ui/index";
@@ -6,7 +7,6 @@ import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import { GoArrowUpRight } from "react-icons/go";
-import { IoStarOutline } from "react-icons/io5";
 import OrderItemCard from "./order-item-card";
 
 const OrderCard = ({ order }: { order: TOrder }) => {
@@ -35,14 +35,7 @@ const OrderCard = ({ order }: { order: TOrder }) => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {order.status === "DELIVERED" && (
-            <Link href={"/my-reviews/" + order.id}>
-              <Button className="space-x-1 border" variant={"success"}>
-                <span>Give Review</span>
-                <IoStarOutline size={16} />
-              </Button>
-            </Link>
-          )}
+          {order.status === "DELIVERED" && <AddReviewModalForm />}
           <Link href={"/my-orders/" + order.id}>
             <Button className="space-x-1 border" variant={"outline"}>
               <span>View Details</span>
