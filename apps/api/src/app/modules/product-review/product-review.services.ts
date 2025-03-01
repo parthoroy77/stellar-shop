@@ -70,6 +70,31 @@ const create = async (
   }
 };
 
+const getAllByUser = async (userId: number) => {
+  const result = await prisma.productReview.findMany({
+    where: {
+      userId,
+    },
+    select: {
+      rating: true,
+      description: true,
+      images: {
+        select: {
+          file: { select: { fileSecureUrl: true } },
+        },
+      },
+      product: {
+        select: {
+          productName: true,
+          images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
+        },
+      },
+    },
+  });
+  return result;
+};
+
 export const ProductReviewServices = {
   create,
+  getAllByUser,
 };
