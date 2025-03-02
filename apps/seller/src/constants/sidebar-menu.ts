@@ -16,7 +16,7 @@ export const menuItems: TSidebarItem[] = [
     label: "Products",
     Icon: VscSymbolMethod,
     children: [
-      { label: "Manage Products", href: "/products/manage" },
+      { label: "Manage Products", href: "/products" },
       { label: "Add New Product", href: "/products/add" },
       { label: "Inventory Management", href: "/products/inventory" },
     ],
