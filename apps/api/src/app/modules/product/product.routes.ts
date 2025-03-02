@@ -13,6 +13,7 @@ router.post("/", authMiddleware(UserRole.ADMIN, UserRole.SELLER), upload.any(), 
 router.post("/approve/:productId", authMiddleware(UserRole.ADMIN), ProductControllers.approveProduct);
 router.get("/id/:id", ProductControllers.getProductById);
 router.get("/slug/:slug", ProductControllers.getProductBySlug);
+router.get("/seller/:sellerId", authMiddleware("ADMIN", "SELLER"), ProductControllers.getAllSellerProducts);
 
 const ProductRoutes = router;
 

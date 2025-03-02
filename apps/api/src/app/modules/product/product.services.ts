@@ -334,6 +334,25 @@ const getProductsBySearch = async (filters: TProductFilters, paginateOptions: TP
   };
 };
 
+const getAllBySellerId = async (sellerId: number, options: TPaginateOption) => {
+  const { limit, skip, page, sortBy, sortOrder } = calculatePagination(options);
+  const result = await prisma.product.findMany({
+    where: { sellerId },
+    select: { ...getProductsBaseSelectOption(), createdAt: true },
+    take: limit,
+    skip,
+    orderBy: {
+      [sortBy]: sortOrder,
+    },
+  });
+
+  const count = await prisma.product.count({ where: { sellerId } });
+  return {
+    result,
+    meta: { limit, skip, page, total: count, sortOrder, sortBy },
+  };
+};
+
 export const ProductServices = {
   create,
   getPendingProducts,
@@ -341,4 +360,5 @@ export const ProductServices = {
   getNewlyArrived,
   getProductDetails,
   getProductsBySearch,
+  getAllBySellerId,
 };

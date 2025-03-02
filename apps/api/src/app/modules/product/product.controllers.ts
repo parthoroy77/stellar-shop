@@ -66,6 +66,26 @@ const getAllProductsByQuery = asyncHandler(async (req, res) => {
   });
 });
 
+const getAllSellerProducts = asyncHandler(async (req, res) => {
+  const { sellerId } = req.params;
+
+  const options = pick(req.query, PAGINATION_KEYS);
+
+  if (!sellerId) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Seller identifier not found!");
+  }
+
+  const { result, meta } = await ProductServices.getAllBySellerId(+sellerId, options);
+
+  ApiResponse(res, {
+    data: result,
+    message: "Products retrieved successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+    meta,
+  });
+});
+
 const getProductBySlug = asyncHandler(async (req, res) => {
   const { slug } = req.params;
 
@@ -108,4 +128,5 @@ export const ProductControllers = {
   getProductBySlug,
   getProductById,
   getAllProductsByQuery,
+  getAllSellerProducts,
 };
