@@ -1,9 +1,11 @@
 import { TProduct } from "@repo/utils/types";
-import { Button } from "@ui/index";
+import { Badge, Button } from "@ui/index";
 import { ColumnDef } from "@ui/tanstack-table";
+import moment from "moment";
 import { AiOutlineSortAscending } from "react-icons/ai";
 import { BsBox } from "react-icons/bs";
 import { LuDollarSign } from "react-icons/lu";
+import ProductDataTableActions from "./data-table-actions";
 
 export const columns: ColumnDef<TProduct>[] = [
   {
@@ -11,7 +13,7 @@ export const columns: ColumnDef<TProduct>[] = [
     header: "Product Id",
     cell: ({ row }) => {
       return (
-        <div className="w-fit">
+        <div className="w-fit truncate">
           <h5 className="text-secondary text-sm font-semibold">{row.original.uniqueId}</h5>
         </div>
       );
@@ -99,9 +101,7 @@ export const columns: ColumnDef<TProduct>[] = [
     cell: ({ row }) => {
       return (
         <div className="capitalize">
-          <span className="text-accent-foreground rounded-md text-xs font-bold uppercase lg:text-sm">
-            {row?.original.sku}
-          </span>
+          <span className="text-accent-foreground rounded-md text-xs font-bold uppercase">{row?.original.sku}</span>
         </div>
       );
     },
@@ -118,9 +118,50 @@ export const columns: ColumnDef<TProduct>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex w-fit items-center justify-center gap-2 rounded-md capitalize">
-          <BsBox size={15} className="mt-0.5" />
-          <span className="text-accent-foreground rounded-md text-xs font-bold uppercase lg:text-base">
+          <BsBox size={15} className="mt-0.5 block" />
+          <span className="text-accent-foreground block rounded-md text-xs font-bold uppercase lg:text-base">
             {row?.original.stock}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: () => {
+      return (
+        <div>
+          <span>Status</span>
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center gap-2 capitalize">
+          <Badge
+            className="rounded-md font-normal"
+            variant={
+              row.original.status === "ACTIVE"
+                ? "success"
+                : row.original.status === "PENDING"
+                  ? "secondary"
+                  : "destructive"
+            }
+          >
+            {row.original.status}
+          </Badge>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: "Created At",
+    cell: ({ row }) => {
+      return (
+        <div className="truncate capitalize">
+          <span className="text-accent-foreground rounded-md text-xs font-bold">
+            {moment(row.original.createdAt).format("DD MMMM YYYY")}
           </span>
         </div>
       );
@@ -135,8 +176,8 @@ export const columns: ColumnDef<TProduct>[] = [
         </div>
       );
     },
-    cell: () => {
-      return <div>{/* <PendingProductDataTableAction row={row} />; */}</div>;
+    cell: ({ row }) => {
+      return <ProductDataTableActions row={row} />;
     },
   },
 ];

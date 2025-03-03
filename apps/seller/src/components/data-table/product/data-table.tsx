@@ -57,10 +57,10 @@ const ProductDataTable = <TData, TValue>({
         <ShadTable>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="bg-accent/40 border-none">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead className="text-nowrap text-xs font-medium" key={header.id}>
+                    <TableHead className="h-fit text-nowrap py-2 text-xs font-medium" key={header.id}>
                       {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
