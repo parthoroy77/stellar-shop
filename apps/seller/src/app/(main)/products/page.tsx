@@ -1,6 +1,7 @@
 import { getAllProducts } from "@/actions/product.action";
 import { getSellerProfile } from "@/actions/seller.action";
 import { notFound } from "next/navigation";
+import ProductsView from "./components/products-view";
 
 const ProductsPage = async () => {
   const seller = await getSellerProfile();
@@ -12,7 +13,7 @@ const ProductsPage = async () => {
   return (
     <div className="divide-y *:p-5">
       <h2 className="text-xl font-medium">Products ({products.length})</h2>
-      <div></div>
+      <ProductsView products={products} />
     </div>
   );
 };

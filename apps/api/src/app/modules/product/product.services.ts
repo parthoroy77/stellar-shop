@@ -338,7 +338,7 @@ const getAllBySellerId = async (sellerId: number, options: TPaginateOption) => {
   const { limit, skip, page, sortBy, sortOrder } = calculatePagination(options);
   const result = await prisma.product.findMany({
     where: { sellerId },
-    select: { ...getProductsBaseSelectOption(), createdAt: true },
+    select: { ...getProductsBaseSelectOption(), uniqueId: true, sku: true, createdAt: true },
     take: limit,
     skip,
     orderBy: {
