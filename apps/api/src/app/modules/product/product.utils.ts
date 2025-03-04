@@ -1,4 +1,4 @@
-import { Prisma } from "@repo/prisma/client";
+import { Prisma, ProductStatus } from "@repo/prisma/client";
 import pick from "../../utils/pick";
 import { PRODUCT_FILTERABLE_KEYS, PRODUCT_SEARCHABLE_FIELDS } from "./product.constants";
 import { TProductFilters } from "./product.types";
@@ -235,6 +235,7 @@ export const getProductBaseQuery = ({
   max,
   tags,
   inStock,
+  status,
 }: TProductFilters): Prisma.ProductWhereInput => {
   const whereConditions: Prisma.ProductWhereInput[] = [];
 
@@ -309,6 +310,15 @@ export const getProductBaseQuery = ({
     whereConditions.push({
       AND: {
         stock: inStock ? { gt: 0 } : { lt: 1 },
+      },
+    });
+  }
+
+  // Filter by status
+  if (status) {
+    whereConditions.push({
+      AND: {
+        status: status.toUpperCase() as ProductStatus,
       },
     });
   }

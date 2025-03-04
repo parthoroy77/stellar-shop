@@ -4,5 +4,6 @@ export type TProductFilters = {
   tags?: string[];
   min?: number;
   max?: number;
+  status?: string;
   inStock?: boolean;
 };

@@ -233,6 +233,49 @@ const getPendingProducts = async () => {
   return result;
 };
 
+const getAll = async (filters: TProductFilters, options: TPaginateOption) => {
+  const { skip, limit, page, sortBy, sortOrder } = calculatePagination(options);
+  const baseQuery = getProductBaseQuery(filters);
+
+  const result = await prisma.product.findMany({
+    where: baseQuery,
+    skip,
+    take: limit,
+    orderBy: { [sortBy]: sortOrder },
+    select: {
+      ...getProductsBaseSelectOption(),
+      uniqueId: true,
+      sku: true,
+      categories: {
+        where: {
+          category: {
+            level: "COLLECTION",
+          },
+        },
+        select: {
+          category: {
+            select: {
+              categoryName: true,
+              level: true,
+            },
+          },
+        },
+      },
+      seller: {
+        select: { shopName: true, userId: true, logo: { select: { fileUrl: true } } },
+      },
+      images: { take: 1, select: { file: { select: { fileSecureUrl: true, fileUrl: true } } } },
+    },
+  });
+
+  const total = await prisma.product.count({ where: baseQuery });
+
+  return {
+    result,
+    meta: { skip, total, limit, page, sortBy, sortOrder },
+  };
+};
+
 /**
  * For admin only
  */
@@ -361,4 +404,5 @@ export const ProductServices = {
   getProductDetails,
   getProductsBySearch,
   getAllBySellerId,
+  getAll,
 };
