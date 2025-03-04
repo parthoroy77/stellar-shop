@@ -14,6 +14,7 @@ router.post("/approve/:productId", authMiddleware(UserRole.ADMIN), ProductContro
 router.get("/id/:id", ProductControllers.getProductById);
 router.get("/slug/:slug", ProductControllers.getProductBySlug);
 router.get("/seller/:sellerId", authMiddleware("ADMIN", "SELLER"), ProductControllers.getAllSellerProducts);
+router.get("/", authMiddleware("ADMIN"), ProductControllers.getAllProducts);
 
 const ProductRoutes = router;
 
