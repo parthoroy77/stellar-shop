@@ -5,7 +5,8 @@ import CategoriesPage from "@/pages/categories-page";
 import LoginPage from "@/pages/login-page";
 import OrderDetailPage from "@/pages/order-detail-page";
 import OrdersPage from "@/pages/orders-page";
-import PendingProductsPage from "@/pages/seller-management/pending-products-page";
+import ActiveProductsPage from "@/pages/product/active-products-page";
+import PendingProductsPage from "@/pages/product/pending-products-page";
 import SellerApprovalPage from "@/pages/seller-management/seller-approval-page";
 import { createBrowserRouter, Outlet } from "react-router-dom";
 
@@ -35,7 +36,16 @@ export const routes = createBrowserRouter([
       {
         path: "/products",
         element: <Outlet />,
-        children: [{ path: "pending", element: <PendingProductsPage /> }],
+        children: [
+          {
+            path: "active",
+            element: <ActiveProductsPage />,
+          },
+          {
+            path: "pending",
+            element: <PendingProductsPage />,
+          },
+        ],
       },
       {
         path: "/orders",

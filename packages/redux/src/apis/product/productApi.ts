@@ -13,6 +13,13 @@ const productApi = baseApi.injectEndpoints({
       }),
       providesTags: ["products"],
     }),
+    getAllProducts: builder.query<IApiResponse<TProduct[]>, unknown>({
+      query: (query) => ({
+        url: `products/?${query}`,
+        method: "GET",
+      }),
+      providesTags: ["products"],
+    }),
 
     // mutations
     // POST approve product
@@ -26,4 +33,4 @@ const productApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetPendingProductsQuery, useApproveProductMutation } = productApi;
+export const { useGetPendingProductsQuery, useGetAllProductsQuery, useApproveProductMutation } = productApi;

@@ -33,15 +33,11 @@ export const sidebarItems: TSidebarItem[] = [
     children: [
       {
         label: "Active Products",
-        href: "/item",
+        href: "/products/active",
       },
       {
         label: "Pending Products",
         href: "/products/pending",
-      },
-      {
-        label: "Add",
-        href: "/item",
       },
     ],
   },
