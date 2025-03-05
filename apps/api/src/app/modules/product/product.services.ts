@@ -2,6 +2,8 @@ import prisma, { Prisma } from "@repo/prisma/client";
 import { generateUniqueId } from "@repo/utils/functions";
 import { TCreateProductValidation } from "@repo/utils/validations";
 import { StatusCodes } from "http-status-codes";
+import { redisInstance } from "../../../server";
+import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
 import {
   deleteFileFromCloudinaryAndRecord,
@@ -9,7 +11,7 @@ import {
 } from "../../handlers/handleCloudUpload";
 import calculatePagination, { TPaginateOption } from "../../utils/calculatePagination";
 import { generateUniqueSlug } from "../../utils/generateUniqueSlug";
-import { NEWLY_ARRIVAL_TIME_PERIOD } from "./product.constants";
+import { NEWLY_ARRIVAL_TIME_PERIOD, NEWLY_ARRIVED_CACHE_TTL, PRODUCT_CACHE_BASE_KEY } from "./product.constants";
 import { TProductFilters } from "./product.types";
 import { getProductBaseQuery, getProductDetailSelectOptions, getProductsBaseSelectOption } from "./product.utils";
 
@@ -299,7 +301,19 @@ const productApproval = async (productId: number) => {
 
 const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
   const { skip, limit, page } = calculatePagination(paginateOptions);
+  const cacheKey = PRODUCT_CACHE_BASE_KEY + ":newly_arrived" + `:page_${page}` + `:limit_${limit}`;
+
+  // FOR Development purpose check redis exists
+  if (config.use_redis && redisInstance) {
+    const cacheResult = await redisInstance.get(cacheKey);
+    if (cacheResult) {
+      return JSON.parse(cacheResult);
+    }
+  }
+
+  // const cacheResult = await
   const whereClause: Prisma.ProductWhereInput = { status: "ACTIVE", createdAt: { gte: NEWLY_ARRIVAL_TIME_PERIOD } };
+
   const [result, count] = await prisma.$transaction([
     prisma.product.findMany({
       where: whereClause,
@@ -312,7 +326,7 @@ const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
     }),
   ]);
 
-  return {
+  const response = {
     result,
     meta: {
       limit,
@@ -321,6 +335,12 @@ const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
       total: count,
     },
   };
+
+  if (config.use_redis && redisInstance) {
+    await redisInstance.setex(cacheKey, NEWLY_ARRIVED_CACHE_TTL, JSON.stringify(response));
+  }
+
+  return response;
 };
 
 // Function to get product details
