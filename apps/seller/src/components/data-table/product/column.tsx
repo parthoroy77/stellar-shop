@@ -4,7 +4,7 @@ import { ColumnDef } from "@ui/tanstack-table";
 import moment from "moment";
 import { AiOutlineSortAscending } from "react-icons/ai";
 import { BsBox } from "react-icons/bs";
-import { LuDollarSign } from "react-icons/lu";
+import { LuDollarSign, LuPackage } from "react-icons/lu";
 import ProductDataTableActions from "./data-table-actions";
 
 export const columns: ColumnDef<TProduct>[] = [
@@ -100,7 +100,8 @@ export const columns: ColumnDef<TProduct>[] = [
     },
     cell: ({ row }) => {
       return (
-        <div className="capitalize">
+        <div className="flex items-center gap-2 capitalize">
+          <LuPackage size={16} />
           <span className="text-accent-foreground rounded-md text-xs font-bold uppercase">{row?.original.sku}</span>
         </div>
       );
@@ -145,10 +146,12 @@ export const columns: ColumnDef<TProduct>[] = [
                 ? "success"
                 : row.original.status === "PENDING"
                   ? "secondary"
-                  : "destructive"
+                  : row.original.stock < 10
+                    ? "destructive"
+                    : "accent"
             }
           >
-            {row.original.status}
+            {row.original.stock > 10 ? row.original.status : row.original.stock === 0 ? "Stock out" : "Low stock"}
           </Badge>
         </div>
       );
