@@ -1,17 +1,6 @@
 import TableSkeleton from "@ui/components/ui/table-skeleton";
-import { Button, ShadTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/index";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-  VisibilityState,
-} from "@ui/tanstack-table";
+import { ShadTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/index";
+import { ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, useReactTable } from "@ui/tanstack-table";
 import { useState } from "react";
 
 interface Props<TData, TValue> {
@@ -21,27 +10,15 @@ interface Props<TData, TValue> {
 }
 
 const ProductDataTable = <TData, TValue>({ data, isLoading, columns }: Props<TData, TValue>) => {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
       rowSelection,
     },
   });
@@ -85,25 +62,6 @@ const ProductDataTable = <TData, TValue>({ data, isLoading, columns }: Props<TDa
             </TableBody>
           )}
         </ShadTable>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-accent-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-          selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-            Next
-          </Button>
-        </div>
       </div>
     </div>
   );
