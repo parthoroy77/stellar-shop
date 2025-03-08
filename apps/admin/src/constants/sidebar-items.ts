@@ -52,7 +52,7 @@ export const sidebarItems: TSidebarItem[] = [
     children: [
       {
         label: "Seller List",
-        href: "/item",
+        href: "/seller-management/",
       },
       {
         label: "Seller Approval",
