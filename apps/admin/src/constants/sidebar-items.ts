@@ -23,7 +23,7 @@ export const sidebarItems: TSidebarItem[] = [
       },
       {
         label: "Attributes",
-        href: "/products",
+        href: "/attributes",
       },
     ],
   },

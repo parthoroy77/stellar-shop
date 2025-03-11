@@ -1,6 +1,7 @@
 import MainLayout from "@/layouts/main-layout";
 import PrivateRoute from "@/layouts/private-route";
 import PublicRoute from "@/layouts/public-route";
+import AttributeListPage from "@/pages/attribute-list-page";
 import CategoriesPage from "@/pages/categories-page";
 import LoginPage from "@/pages/login-page";
 import OrderDetailPage from "@/pages/order-detail-page";
@@ -42,6 +43,10 @@ export const routes = createBrowserRouter([
         element: <Outlet />,
         children: [
           {
+            index: true,
+            element: <ActiveProductsPage />,
+          },
+          {
             path: "active",
             element: <ActiveProductsPage />,
           },
@@ -58,6 +63,10 @@ export const routes = createBrowserRouter([
       {
         path: "/orders/:orderId",
         element: <OrderDetailPage />,
+      },
+      {
+        path: "/attributes",
+        element: <AttributeListPage />,
       },
     ],
   },
