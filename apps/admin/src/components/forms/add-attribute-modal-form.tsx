@@ -1,6 +1,8 @@
+import { handleApiError, useAddAttributeMutation } from "@repo/redux";
 import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { attributeValidationSchema, TAttributeValidationSchema } from "@repo/utils/validations";
 import {
+  AppButton,
   Button,
   Dialog,
   DialogContent,
@@ -18,10 +20,13 @@ import {
   Input,
   Textarea,
 } from "@ui/index";
+import { useState } from "react";
 import { LuPlus, LuTrash2 } from "react-icons/lu";
 import { TbBrandAirtable } from "react-icons/tb";
+import { toast } from "sonner";
 
 const AddAttributeModalForm = () => {
+  const [open, setOpen] = useState(false);
   const form = useForm<TAttributeValidationSchema>({
     resolver: zodResolver(attributeValidationSchema),
     defaultValues: {
@@ -30,8 +35,7 @@ const AddAttributeModalForm = () => {
       values: [""],
     },
   });
-
-  // Get the values array from the form
+  const [mutation, { isLoading }] = useAddAttributeMutation();
   const values = form.watch("values");
 
   // Function to add a new value
@@ -48,12 +52,22 @@ const AddAttributeModalForm = () => {
   };
 
   const onSubmit = async (data: TAttributeValidationSchema) => {
-    console.log(data);
-    // Handle form submission here
+    const toastId = toast.loading("Sending request to process", { duration: 3000 });
+    try {
+      const response = await mutation({ ...data, values: data.values.filter((x) => x.trim() !== "") }).unwrap();
+      if (response.success) {
+        toast.success(response.message, { id: toastId });
+        setOpen(false);
+      }
+    } catch (error) {
+      const appError = handleApiError(error);
+      toast.error(appError.message, { id: toastId });
+    }
   };
 
+  console.log(form.watch());
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="flex gap-2">
           Add Attribute <LuPlus size={17} />
@@ -76,7 +90,7 @@ const AddAttributeModalForm = () => {
               control={form.control}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name of Brand</FormLabel>
+                  <FormLabel>Name </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -101,7 +115,7 @@ const AddAttributeModalForm = () => {
                     <Textarea
                       {...field}
                       placeholder="Describe this attribute"
-                      className="bg-accent/40 focus:border-secondary min-h-24 w-full resize-none rounded-md placeholder:text-xs focus:border"
+                      className="bg-accent/40 focus:border-secondary min-h-16 w-full resize-none rounded-md placeholder:text-xs focus:border"
                     />
                   </FormControl>
                   <FormMessage />
@@ -159,7 +173,9 @@ const AddAttributeModalForm = () => {
             </div>
 
             <DialogFooter>
-              <Button type="submit">Save changes</Button>
+              <AppButton loading={isLoading} type="submit" disabled={isLoading}>
+                Add attribute
+              </AppButton>
             </DialogFooter>
           </form>
         </Form>
