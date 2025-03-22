@@ -67,18 +67,16 @@ const MyOrderView = () => {
           Array.from({ length: 2 }).map((_x, i) => <OrderCardSkeleton key={i} />)
         )}
       </div>
-      {orders.length > 1 && (
-        <div className="mt-5 flex justify-center">
-          <AppPagination
-            currentPage={page}
-            onPageChange={handlePageChange}
-            totalPages={totalPages}
-            maxVisiblePages={4}
-            showNextButton
-            showPrevButton
-          />
-        </div>
-      )}
+      <div className="mt-5 flex justify-center">
+        <AppPagination
+          currentPage={page}
+          onPageChange={handlePageChange}
+          totalPages={totalPages}
+          maxVisiblePages={4}
+          showNextButton
+          showPrevButton
+        />
+      </div>
     </div>
   );
 };
