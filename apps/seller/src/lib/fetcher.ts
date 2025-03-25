@@ -1,7 +1,7 @@
+import { revalidateAuthTag } from "@/actions/auth.action";
 import { getErrorMessage } from "@repo/utils/functions";
 import { IApiResponse } from "@repo/utils/types";
 import { Session } from "next-auth";
-import { revalidateTag } from "next/cache";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
@@ -60,7 +60,7 @@ export async function fetcher<TResponse, TBody = unknown>(
     const result = await response.json();
 
     if (!response.ok && response.status === 401) {
-      revalidateTag("auth");
+      await revalidateAuthTag();
     }
 
     if (response.ok) {

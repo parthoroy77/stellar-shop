@@ -2,6 +2,7 @@
 
 import { fetcher } from "@/lib/fetcher";
 import { TRegistrationValidation } from "@repo/utils/validations";
+import { revalidateTag } from "next/cache";
 
 export const registerUser = async (data: TRegistrationValidation) => {
   return await fetcher("/auth/seller-registration", { method: "POST", body: data, cache: "no-store" });
@@ -18,4 +19,8 @@ export const verifyAccount = async (token: string) => {
     cache: "no-cache",
   });
   return result;
+};
+
+export const revalidateAuthTag = async () => {
+  revalidateTag("auth");
 };
