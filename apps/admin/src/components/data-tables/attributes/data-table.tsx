@@ -1,6 +1,6 @@
 import TableSkeleton from "@ui/components/ui/table-skeleton";
-import { Button, ShadTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/index";
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@ui/tanstack-table";
+import { Button, Input, ShadTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/index";
+import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, useReactTable } from "@ui/tanstack-table";
 import { useState } from "react";
 
 interface Props<TData, TValue> {
@@ -17,13 +17,22 @@ const AttributeListDataTable = <TData, TValue>({ data, isLoading, columns }: Pro
     columns,
     getCoreRowModel: getCoreRowModel(),
     onRowSelectionChange: setRowSelection,
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       rowSelection,
     },
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full space-y-5">
+      <div>
+        <Input
+          placeholder="Search attributes..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
+          className="max-w-sm"
+        />
+      </div>
       <div className="rounded-md border">
         <ShadTable>
           <TableHeader>

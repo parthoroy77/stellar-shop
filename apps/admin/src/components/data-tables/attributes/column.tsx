@@ -47,15 +47,17 @@ export const column: ColumnDef<TAttribute>[] = [
       return (
         <div className="flex flex-wrap gap-4">
           {row.original.attributeValues?.length! > 0 ? (
-            <div className="flex items-end gap-0">
+            <div className="flex items-end gap-1">
               {row.original.attributeValues?.slice(0, 5)?.map((el) => (
-                <Badge variant={"accent"} key={el.id}>
+                <Badge variant={"accent"} key={el.id} className="border">
                   {el.value}
                 </Badge>
               ))}
-              <Badge className="-mr-3 border-none text-xs" variant={"outline"}>
-                ...more
-              </Badge>
+              {row.original.attributeValues?.length! > 3 && (
+                <Badge className="-mr-3 border-none text-xs" variant={"outline"}>
+                  ...more
+                </Badge>
+              )}
             </div>
           ) : (
             <span>No Values added yet</span>

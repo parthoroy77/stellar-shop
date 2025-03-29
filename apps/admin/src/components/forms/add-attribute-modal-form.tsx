@@ -58,6 +58,7 @@ const AddAttributeModalForm = () => {
       if (response.success) {
         toast.success(response.message, { id: toastId });
         setOpen(false);
+        form.reset();
       }
     } catch (error) {
       const appError = handleApiError(error);
