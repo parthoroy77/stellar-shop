@@ -1,17 +1,13 @@
 "use client";
 import TableSkeleton from "@ui/components/ui/table-skeleton";
-import { Button, ShadTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/index";
+import { Button, Input, ShadTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@ui/index";
 import {
   ColumnDef,
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
   useReactTable,
-  VisibilityState,
 } from "@ui/tanstack-table";
 import { useState } from "react";
 
@@ -26,33 +22,38 @@ const ProductDataTable = <TData, TValue>({
   isLoading = false,
   columns,
 }: PendingProductTableProps<TData, TValue>) => {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-
   const [rowSelection, setRowSelection] = useState({});
-
+  const [searchText, setSearchText] = useState("");
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
       rowSelection,
+    },
+    globalFilterFn: (row, _, filterValue) => {
+      const productName = row.getValue("productName")?.toString().toLowerCase() || "";
+      const description = row.getValue("description")?.toString().toLowerCase() || "";
+      return productName.includes(filterValue.toLowerCase()) || description.includes(filterValue.toLowerCase());
     },
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full space-y-5">
+      <div>
+        <Input
+          placeholder="Search products..."
+          value={searchText}
+          onChange={(event) => {
+            setSearchText(event.target.value);
+            table.setGlobalFilter(event.target.value);
+          }}
+          className="max-w-sm"
+        />
+      </div>
       <div className="rounded-md border">
         <ShadTable>
           <TableHeader>
@@ -91,7 +92,7 @@ const ProductDataTable = <TData, TValue>({
           )}
         </ShadTable>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-end space-x-2">
         <div className="text-accent-foreground flex-1 text-sm">
           {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
           selected.
