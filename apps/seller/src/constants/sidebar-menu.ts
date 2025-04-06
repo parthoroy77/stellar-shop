@@ -24,7 +24,7 @@ export const menuItems: TSidebarItem[] = [
   {
     label: "Orders",
     Icon: CiBoxList,
-    children: [{ label: "Manage Orders", href: "/orders" }],
+    href: "/orders",
   },
   {
     label: "Marketing & Promotions",
