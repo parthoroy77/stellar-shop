@@ -1,6 +1,7 @@
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ui/index";
 import { BiDollar } from "react-icons/bi";
 import KeyMetrics from "./components/key-metrcis";
+import RevenueSplit from "./components/revenue-split-chart";
 import SalesChart from "./components/sales-chart";
 
 const DashboardPage = () => {
@@ -19,7 +20,7 @@ const DashboardPage = () => {
       <hr />
       <div className="divide-y *:p-5">
         <KeyMetrics />
-        {/* Sales Chart & Revenue Split */}
+        {/* Sales Chart & Revenue Split Charts */}
         <div className="grid gap-5 md:grid-cols-3">
           <Card className="rounded-2xl border drop-shadow md:col-span-2">
             <CardHeader className="pb-3">
@@ -38,6 +39,15 @@ const DashboardPage = () => {
             </CardHeader>
             <CardContent>
               <SalesChart />
+            </CardContent>
+          </Card>
+          <Card className="rounded-2xl border drop-shadow">
+            <CardHeader className="pb-3">
+              <CardTitle>Revenue Split</CardTitle>
+              <CardDescription>Platform fee vs your earnings</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RevenueSplit />
             </CardContent>
           </Card>
         </div>
