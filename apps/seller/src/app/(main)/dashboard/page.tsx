@@ -1,6 +1,7 @@
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ui/index";
 import { BiDollar } from "react-icons/bi";
-import KeyMetrics from "./components/key-metrcis";
+import InventoryReview from "./components/inventory-review";
+import KeyMetrics from "./components/key-metrics";
 import RevenueSplit from "./components/revenue-split-chart";
 import SalesChart from "./components/sales-chart";
 
@@ -48,6 +49,18 @@ const DashboardPage = () => {
             </CardHeader>
             <CardContent>
               <RevenueSplit />
+            </CardContent>
+          </Card>
+        </div>
+        {/* Inventory & Recent Orders */}
+        <div className="grid gap-5 md:grid-cols-3">
+          <Card className="rounded-2xl border drop-shadow">
+            <CardHeader className="pb-3">
+              <CardTitle>Inventory</CardTitle>
+              <CardDescription>Products that need attention</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <InventoryReview />
             </CardContent>
           </Card>
         </div>
