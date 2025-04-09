@@ -4,6 +4,7 @@ import InventoryReview from "./components/inventory-review";
 import KeyMetrics from "./components/key-metrics";
 import RevenueSplit from "./components/revenue-split-chart";
 import SalesChart from "./components/sales-chart";
+import { TopProductsTable } from "./components/top-product-table";
 
 const DashboardPage = () => {
   return (
@@ -61,6 +62,15 @@ const DashboardPage = () => {
             </CardHeader>
             <CardContent>
               <InventoryReview />
+            </CardContent>
+          </Card>
+          <Card className="rounded-2xl border drop-shadow md:col-span-2">
+            <CardHeader className="pb-3">
+              <CardTitle>Top Products</CardTitle>
+              <CardDescription>Your best performing products</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <TopProductsTable />
             </CardContent>
           </Card>
         </div>
