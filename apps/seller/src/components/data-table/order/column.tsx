@@ -1,3 +1,4 @@
+"use client";
 import { TSubOrder } from "@/actions/order.action";
 import { OrderPaymentStatus } from "@repo/utils/types";
 import { Avatar, AvatarFallback, AvatarImage, Badge, Button } from "@ui/index";

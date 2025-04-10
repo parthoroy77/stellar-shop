@@ -2,6 +2,7 @@ import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } fro
 import { BiDollar } from "react-icons/bi";
 import InventoryReview from "./components/inventory-review";
 import KeyMetrics from "./components/key-metrics";
+import RecentOrders from "./components/recent-orders";
 import RevenueSplit from "./components/revenue-split-chart";
 import SalesChart from "./components/sales-chart";
 import { TopProductsTable } from "./components/top-product-table";
@@ -74,6 +75,7 @@ const DashboardPage = () => {
             </CardContent>
           </Card>
         </div>
+        <RecentOrders />
       </div>
     </div>
   );
