@@ -6,7 +6,7 @@ model Seller {
   shopBannerId    Int
   shopLogoId      Int
   contactNumber   String       @unique @db.VarChar(20)
-  businessEmail   String?      @unique @db.VarChar(20)
+  businessEmail   String?      @unique @db.VarChar(50)
   status          SellerStatus @default(INACTIVE)
 
   // timestamps
