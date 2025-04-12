@@ -127,70 +127,74 @@ const create = async (payload: TCreateProductValidation, userId: number) => {
     const variantsData: Prisma.ProductVariantCreateArgs["data"][] = [];
 
     // batch in transaction query
-    await prisma.$transaction(async (tx) => {
-      // Prepare product data
+    await prisma.$transaction(
+      async (tx) => {
+        // Prepare product data
 
-      const createdProduct = await tx.product.create({
-        data: productData,
-      });
+        const createdProduct = await tx.product.create({
+          data: productData,
+        });
 
-      if (payload.variants && payload.variants.length > 0) {
-        let isDefaultSet = false;
-        for (const variant of payload.variants) {
-          if (variant.isDefault) {
-            if (isDefaultSet) {
-              // If a default variant has already been set, make this one false
-              variant.isDefault = false;
-            } else {
-              // Mark that we've set the default variant
-              isDefaultSet = true;
+        if (payload.variants && payload.variants.length > 0) {
+          let isDefaultSet = false;
+          for (const variant of payload.variants) {
+            if (variant.isDefault) {
+              if (isDefaultSet) {
+                // If a default variant has already been set, make this one false
+                variant.isDefault = false;
+              } else {
+                // Mark that we've set the default variant
+                isDefaultSet = true;
+              }
             }
+            const variantImage = await uploadFileToCloudinaryAndCreateRecord(
+              variant.variantImage.path,
+              "variants",
+              userId
+            );
+
+            uploadedImagesPublicIds.push({
+              publicId: variantImage.fileRecord.filePublicId,
+              recordId: variantImage.fileRecord.id,
+            });
+
+            variantsData.push({
+              uniqueId: generateUniqueId(`${createdProduct.uniqueId}-VAR-`),
+              productId: createdProduct.id,
+              variantName: variant.variantName,
+              price: variant.price,
+              stock: variant.stock,
+              sku: variant.sku,
+              isDefault: variant.isDefault,
+              attributes: {
+                createMany: {
+                  data: variant.variantAttributes.flatMap((attr) =>
+                    attr.attributeValues.map((value) => ({ attributeValueId: +value.id }))
+                  ),
+                },
+              },
+              images: {
+                create: {
+                  fileId: variantImage.fileRecord.id,
+                },
+              },
+              inventoryLogs: {
+                create: {
+                  productId: createdProduct.id,
+                  quantity: +variant.stock,
+                  action: "ADDITION",
+                  type: "NEW_PRODUCT",
+                },
+              },
+            });
           }
-          const variantImage = await uploadFileToCloudinaryAndCreateRecord(
-            variant.variantImage.path,
-            "variants",
-            userId
-          );
-
-          uploadedImagesPublicIds.push({
-            publicId: variantImage.fileRecord.filePublicId,
-            recordId: variantImage.fileRecord.id,
-          });
-
-          variantsData.push({
-            uniqueId: generateUniqueId(`${createdProduct.uniqueId}-VAR-`),
-            productId: createdProduct.id,
-            variantName: variant.variantName,
-            price: variant.price,
-            stock: variant.stock,
-            sku: variant.sku,
-            isDefault: variant.isDefault,
-            attributes: {
-              createMany: {
-                data: variant.variantAttributes.flatMap((attr) =>
-                  attr.attributeValues.map((value) => ({ attributeValueId: +value.id }))
-                ),
-              },
-            },
-            images: {
-              create: {
-                fileId: variantImage.fileRecord.id,
-              },
-            },
-            inventoryLogs: {
-              create: {
-                productId: createdProduct.id,
-                quantity: +variant.stock,
-                action: "ADDITION",
-                type: "NEW_PRODUCT",
-              },
-            },
-          });
         }
-      }
-      await Promise.all(variantsData.map((data) => tx.productVariant.create({ data })));
-    });
+        await Promise.all(variantsData.map(async (data) => await tx.productVariant.create({ data })));
+      },
+      { timeout: 15000 }
+    );
   } catch (error) {
+    console.log(error);
     await cleanup();
     if (error instanceof ApiError) {
       throw error;
