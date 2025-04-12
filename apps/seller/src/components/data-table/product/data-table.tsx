@@ -36,8 +36,7 @@ const ProductDataTable = <TData, TValue>({
     },
     globalFilterFn: (row, _, filterValue) => {
       const productName = row.getValue("productName")?.toString().toLowerCase() || "";
-      const description = row.getValue("description")?.toString().toLowerCase() || "";
-      return productName.includes(filterValue.toLowerCase()) || description.includes(filterValue.toLowerCase());
+      return productName.includes(filterValue.toLowerCase());
     },
   });
 

@@ -41,9 +41,9 @@ export const columns: ColumnDef<TProduct>[] = [
       return (
         <div className="flex w-[250px] gap-3 px-1 py-1 text-sm capitalize lg:items-center">
           <img
-            className="bg-accent/40 size-9 rounded-md border object-contain object-center"
+            className="bg-accent/40 aspect-square size-9 rounded-md border object-contain object-center"
             src={
-              row?.original?.images[0]?.file?.fileUrl ||
+              row?.original?.images[0]?.file?.fileSecureUrl ||
               "https://demos.pixinvent.com/vuexy-vuejs-admin-template/demo-2/assets/product-1-CnD-btSp.png"
             }
             alt={`${row.getValue("productName")} Image`}

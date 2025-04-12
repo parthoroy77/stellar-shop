@@ -15,7 +15,7 @@ export const uploadProduct = async (data: FormData) => {
 export const getAllProducts = async (sellerId: number) => {
   const result = await serverFetcher<TProduct[]>("/products/seller/" + sellerId, {
     method: "GET",
-    next: { tags: ["products"], revalidate: 2000 },
+    next: { tags: ["products"], revalidate: 200 },
   });
   return { data: result.data, meta: result.meta };
 };
