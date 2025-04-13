@@ -135,6 +135,7 @@ const create = async (payload: TCreateProductValidation, userId: number) => {
           data: productData,
         });
 
+        // TODO: I think this section need to movie outside of transaction.
         if (payload.variants && payload.variants.length > 0) {
           let isDefaultSet = false;
           for (const variant of payload.variants) {

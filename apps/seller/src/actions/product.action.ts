@@ -19,3 +19,11 @@ export const getAllProducts = async (sellerId: number) => {
   });
   return { data: result.data, meta: result.meta };
 };
+
+export const getProductById = async (productId: number) => {
+  const result = await serverFetcher<TProduct>("/products/id/" + productId, {
+    method: "GET",
+    next: { tags: [productId.toString(), "products"], revalidate: 300 },
+  });
+  return result.data;
+};
