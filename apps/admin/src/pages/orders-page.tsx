@@ -3,7 +3,7 @@ import OrdersDataTable from "@/components/data-tables/order/data-table";
 import OrderTabs from "@/components/orders/order-tabs";
 import { useGetOrdersQuery } from "@repo/redux";
 import { TOrderStatus } from "@repo/utils/types";
-import { AppPagination } from "@ui/index";
+import { AppPagination, OrderMetrics } from "@ui/index";
 import { useCallback, useEffect, useMemo, useState } from "react";
 type TPagination = {
   page: number;
@@ -50,20 +50,21 @@ const OrdersPage = () => {
 
   return (
     <div className="space-y-5">
-      <OrderTabs onChange={(value) => setActiveTab(value as TOrderStatus)} />
-      <div className="space-y-3">
+      <OrderMetrics cardStyles="rounded-md" />
+      <div className="space-y-2">
+        <OrderTabs onChange={(value) => setActiveTab(value as TOrderStatus)} />
         <OrdersDataTable columns={columns} data={orders || []} isLoading={isFetching} />
-        <div className="flex justify-start">
-          <div>
-            <AppPagination
-              totalPages={pagination.totalPages}
-              currentPage={pagination.page}
-              maxVisiblePages={4}
-              showNextButton
-              showPrevButton
-              onPageChange={handlePageChange}
-            />
-          </div>
+      </div>
+      <div className="flex justify-center">
+        <div>
+          <AppPagination
+            totalPages={pagination.totalPages}
+            currentPage={pagination.page}
+            maxVisiblePages={4}
+            showNextButton
+            showPrevButton
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
     </div>

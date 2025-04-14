@@ -1,4 +1,4 @@
-import OrderMetrics from "./components/order-metrics";
+import { OrderMetrics } from "@ui/index";
 import OrderView from "./components/order-view";
 
 const OrdersPage = () => {

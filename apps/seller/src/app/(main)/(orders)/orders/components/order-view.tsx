@@ -54,7 +54,7 @@ const OrderView = () => {
   }, []);
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-3">
       <Tabs defaultValue={status} onValueChange={(value) => setStatus(value as SubOrderStatus)}>
         <TabsList className="h-9">
           {orderTabs.map((tab) => (

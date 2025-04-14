@@ -8,6 +8,7 @@ export * from "./components/order-customer-info";
 export * from "./components/order-header";
 export * from "./components/order-item";
 export * from "./components/order-item-summary";
+export * from "./components/order-metrics";
 export * from "./components/order-note";
 export * from "./components/order-shipping-address";
 export * from "./components/sub-order-summary";
