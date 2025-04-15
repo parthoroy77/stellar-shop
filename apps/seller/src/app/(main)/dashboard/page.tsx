@@ -1,4 +1,5 @@
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ui/index";
+import moment from "moment";
 import { BiDollar } from "react-icons/bi";
 import InventoryReview from "./components/inventory-review";
 import KeyMetrics from "./components/key-metrics";
@@ -11,10 +12,13 @@ const DashboardPage = () => {
   return (
     <div>
       <div className="flex items-center justify-between px-5 py-3">
-        <h1 className="text-xl font-medium">Dashboard</h1>
+        <div>
+          <h1 className="text-xl font-medium leading-none">Dashboard</h1>
+          <span className="text-accent-foreground text-xs font-medium">{moment(new Date()).format("LLLL")}</span>
+        </div>
 
         <div>
-          <Button className="flex items-center gap-2">
+          <Button variant={"accent"} className="flex items-center gap-2 border">
             <BiDollar size={17} />
             Withdraw Earnings
           </Button>
