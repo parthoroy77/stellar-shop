@@ -33,7 +33,7 @@ const AttributeListDataTable = <TData, TValue>({ data, isLoading, columns }: Pro
           className="max-w-sm"
         />
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-xl border bg-white drop-shadow-sm">
         <ShadTable>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

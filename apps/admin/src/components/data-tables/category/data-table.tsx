@@ -73,7 +73,7 @@ const CategoryListTable = <TData, TValue>({ data, columns, isLoading }: Category
         />
         <CategoryLevel onChange={(value) => table.getColumn("level")?.setFilterValue(value)} />
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-xl border bg-white drop-shadow-sm">
         <ShadTable>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

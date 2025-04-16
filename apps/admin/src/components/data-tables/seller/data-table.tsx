@@ -24,7 +24,7 @@ const SellerListTable = <TData, TValue>({ data, isLoading, columns }: SellerAppr
 
   return (
     <div className="w-full">
-      <div className="rounded-md border">
+      <div className="rounded-xl border bg-white drop-shadow-sm">
         <ShadTable>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

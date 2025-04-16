@@ -10,7 +10,7 @@ interface TopBarProps {
 
 export default function TopBar({ open, setOpen }: TopBarProps) {
   return (
-    <div className="sticky top-0 z-30 flex h-[50px] w-full items-center justify-between gap-5 rounded-md border bg-white px-6">
+    <div className="sticky top-0 z-30 flex h-12 w-full items-center justify-between gap-5 rounded-md border bg-white px-6 drop-shadow">
       <div className="flex items-center gap-5">
         <button type="button" onClick={() => setOpen(!open)} className="lg:hidden" aria-label="Toggle sidebar">
           <RxHamburgerMenu size={20} />

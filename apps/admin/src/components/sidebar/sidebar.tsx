@@ -31,16 +31,16 @@ export default function Sidebar({ open, setOpen }: SidebarProps) {
         onMouseEnter={() => setMouseEnter(true)}
         onMouseLeave={() => setMouseEnter(false)}
         className={cn(
-          "fixed inset-y-0 left-0 z-50 h-screen space-y-3 divide-y border bg-white transition-all duration-300 ease-in-out *:px-3 *:pt-3",
+          "fixed inset-y-0 left-0 z-50 h-screen space-y-0 divide-y border bg-white transition-all duration-300 ease-in-out *:px-3 *:pt-3",
           expanded ? "custom-scrollbar w-64" : "w-16 overflow-hidden",
           !expanded && mouseEnter && "w-64",
           "lg:relative lg:block",
           open ? "w-72 translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
-        <div className="flex h-[50px] items-center justify-between gap-3">
+        <div className="flex h-12 items-center justify-between gap-3 !pt-0">
           <div className="flex items-center gap-3">
-            <span className="bg-primary flex size-10 items-center justify-center rounded-md text-2xl text-white">
+            <span className="bg-primary flex size-7 items-center justify-center rounded-md text-lg text-white">
               <PiShoppingCart />
             </span>
             <h3

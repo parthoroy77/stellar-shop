@@ -22,7 +22,7 @@ const ProfileMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Avatar>
+        <Avatar className="size-8">
           <AvatarImage src="https://media.istockphoto.com/id/1014065698/photo/im-serious-about-success.jpg?s=612x612&w=0&k=20&c=ValIWlBiRlgncEje7UcSh-1sBxDSKuf41sKRn0e2GNg=" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
