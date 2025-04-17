@@ -3,6 +3,7 @@ import PrivateRoute from "@/layouts/private-route";
 import PublicRoute from "@/layouts/public-route";
 import AttributeListPage from "@/pages/attribute-list-page";
 import CategoriesPage from "@/pages/categories-page";
+import DashboardPage from "@/pages/dashboard-page";
 import LoginPage from "@/pages/login-page";
 import OrderDetailPage from "@/pages/order-detail-page";
 import OrdersPage from "@/pages/orders-page";
@@ -23,7 +24,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <div>Dashboard</div>,
+        element: <DashboardPage />,
       },
       {
         path: "/categories",
