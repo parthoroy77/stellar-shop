@@ -1,3 +1,4 @@
+import FinancialOverviewGraph from "@/components/dashboard/financial-overview-graph";
 import KeyMetrics from "@/components/dashboard/key-metrics";
 import RevenueGraph from "@/components/dashboard/revenue-graph";
 import { Button } from "@ui/index";
@@ -23,6 +24,7 @@ const DashboardPage = () => {
       <KeyMetrics />
       <div className="grid gap-5 lg:grid-cols-2">
         <RevenueGraph />
+        <FinancialOverviewGraph />
       </div>
     </div>
   );
