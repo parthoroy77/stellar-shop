@@ -1,4 +1,5 @@
 import KeyMetrics from "@/components/dashboard/key-metrics";
+import RevenueGraph from "@/components/dashboard/revenue-graph";
 import { Button } from "@ui/index";
 import moment from "moment";
 import { PiInvoice } from "react-icons/pi";
@@ -20,6 +21,9 @@ const DashboardPage = () => {
         </div>
       </div>
       <KeyMetrics />
+      <div className="grid gap-5 lg:grid-cols-2">
+        <RevenueGraph />
+      </div>
     </div>
   );
 };

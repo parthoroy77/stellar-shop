@@ -20,6 +20,7 @@ export * from "./components/ui/badge";
 export * from "./components/ui/breadcrumb";
 export * from "./components/ui/button";
 export * from "./components/ui/card";
+export * from "./components/ui/chart";
 export * from "./components/ui/checkbox";
 export * from "./components/ui/collapsible";
 export * from "./components/ui/combobox";
