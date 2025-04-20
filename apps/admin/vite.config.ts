@@ -24,6 +24,10 @@ export default defineConfig({
         replacement: path.resolve(__dirname, "../../packages/ui/src"),
       },
     ],
+    dedupe: ["react", "react-dom"],
+  },
+  optimizeDeps: {
+    include: ["recharts"],
   },
   build: {
     outDir: "./dist",
