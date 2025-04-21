@@ -2,9 +2,11 @@ import { columns } from "@/components/data-tables/order/column";
 import OrdersDataTable from "@/components/data-tables/order/data-table";
 import OrderTabs from "@/components/orders/order-tabs";
 import { useGetOrdersQuery } from "@repo/redux";
+import { countOrderStatuses } from "@repo/utils/functions";
 import { TOrderStatus } from "@repo/utils/types";
 import { AppPagination, OrderMetrics } from "@ui/index";
 import { useCallback, useEffect, useMemo, useState } from "react";
+
 type TPagination = {
   page: number;
   limit: number;
@@ -48,13 +50,12 @@ const OrdersPage = () => {
     setPagination((prev) => ({ ...prev, page }));
   }, []);
 
+  const counts = countOrderStatuses(orders.map((o) => o.status));
   return (
-    <div className="space-y-5">
-      <OrderMetrics cardStyles="rounded-md" />
-      <div className="space-y-2">
-        <OrderTabs onChange={(value) => setActiveTab(value as TOrderStatus)} />
-        <OrdersDataTable columns={columns} data={orders || []} isLoading={isFetching} />
-      </div>
+    <div className="space-y-3">
+      <OrderMetrics {...counts} />
+      <OrderTabs onChange={(value) => setActiveTab(value as TOrderStatus)} />
+      <OrdersDataTable columns={columns} data={orders || []} isLoading={isFetching} />
       <div className="flex justify-center">
         <div>
           <AppPagination

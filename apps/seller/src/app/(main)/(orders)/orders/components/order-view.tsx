@@ -4,8 +4,9 @@ import { getAllOrders } from "@/actions/order.action";
 import { columns } from "@/components/data-table/order/column";
 import OrderDataTable from "@/components/data-table/order/data-table";
 import { useQueryData } from "@repo/tanstack-query";
+import { countOrderStatuses } from "@repo/utils/functions";
 import { SubOrderStatus, TPaginationState } from "@repo/utils/types";
-import { AppPagination, Tabs, TabsList, TabsTrigger } from "@ui/index";
+import { AppPagination, OrderMetrics, Tabs, TabsList, TabsTrigger } from "@ui/index";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 const orderTabs = [
@@ -53,31 +54,35 @@ const OrderView = () => {
     setPagination((prev) => ({ ...prev, page }));
   }, []);
 
+  const counts = countOrderStatuses(orders.map((o) => o.status));
   return (
-    <div className="space-y-3">
-      <Tabs defaultValue={status} onValueChange={(value) => setStatus(value as SubOrderStatus)}>
-        <TabsList className="h-9">
-          {orderTabs.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value} className="h-7 text-xs lg:min-w-36">
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+    <>
+      <OrderMetrics {...counts} />
       <div className="space-y-3">
-        <OrderDataTable columns={columns} isLoading={isFetching} data={orders} />
-        <div className="flex justify-center">
-          <AppPagination
-            totalPages={pagination.totalPages}
-            currentPage={pagination.page}
-            maxVisiblePages={4}
-            showNextButton
-            showPrevButton
-            onPageChange={handlePageChange}
-          />
+        <Tabs defaultValue={status} onValueChange={(value) => setStatus(value as SubOrderStatus)}>
+          <TabsList className="h-9">
+            {orderTabs.map((tab) => (
+              <TabsTrigger key={tab.value} value={tab.value} className="h-7 text-xs lg:min-w-36">
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+        <div className="space-y-3">
+          <OrderDataTable columns={columns} isLoading={isFetching} data={orders} />
+          <div className="flex justify-center">
+            <AppPagination
+              totalPages={pagination.totalPages}
+              currentPage={pagination.page}
+              maxVisiblePages={4}
+              showNextButton
+              showPrevButton
+              onPageChange={handlePageChange}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
