@@ -3,3 +3,9 @@ export type TUpdateProfileInput = {
   phoneNumber?: string;
   phonePrefixCode?: string;
 };
+
+export type TUserFilters = {
+  query?: string;
+  role?: string;
+  status?: string;
+};

@@ -1,9 +1,11 @@
-import prisma, { Prisma } from "@repo/prisma/client";
+import prisma, { Prisma, UserRole, UserStatus } from "@repo/prisma/client";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
 import { uploadFileToCloudinaryAndCreateRecord } from "../../handlers/handleCloudUpload";
+import calculatePagination, { TPaginateOption } from "../../utils/calculatePagination";
 import { deleteFromCloudinary } from "../../utils/cloudinary";
-import { TUpdateProfileInput } from "./user.types";
+import { USER_SEARCHABLE_KEYS } from "./user.constants";
+import { TUpdateProfileInput, TUserFilters } from "./user.types";
 
 const updateProfile = async ({ fullName, phoneNumber, phonePrefixCode }: TUpdateProfileInput, userId: number) => {
   const userExist = await prisma.user.findUnique({
@@ -138,8 +140,72 @@ const deleteAvatar = async (userId: number) => {
   }
 };
 
+const getAll = async (filters: TUserFilters, options: TPaginateOption) => {
+  const andClauses: Prisma.UserWhereInput[] = [];
+  const { skip, page, limit, sortBy, sortOrder } = calculatePagination(options);
+
+  const { query, role, status } = filters;
+
+  if (query) {
+    andClauses.push({
+      OR: USER_SEARCHABLE_KEYS.map((k) => ({
+        [k]: {
+          contains: query,
+          mode: "insensitive",
+        },
+      })),
+    });
+  }
+
+  if (role) {
+    andClauses.push({
+      role: {
+        equals: role.toUpperCase() as UserRole,
+      },
+    });
+  }
+
+  if (status) {
+    andClauses.push({
+      status: {
+        equals: status.toUpperCase() as UserStatus,
+      },
+    });
+  }
+
+  const whereClause: Prisma.UserWhereInput = andClauses.length ? { AND: andClauses } : {};
+
+  const result = await prisma.user.findMany({
+    where: whereClause,
+    skip,
+    take: limit,
+    orderBy: { [sortBy]: sortOrder },
+    select: {
+      id: true,
+      fullName: true,
+      email: true,
+      role: true,
+      emailVerified: true,
+      phoneNumber: true,
+      phonePrefixCode: true,
+      phoneVerified: true,
+      avatarUrl: true,
+      createdAt: true,
+      sellerProfile: { select: { shopName: true, logo: { select: { fileSecureUrl: true } } } },
+    },
+  });
+
+  const total = await prisma.user.count({ where: whereClause });
+
+  return {
+    result,
+    meta: { skip, total, limit, page, sortBy, sortOrder },
+  };
+};
+
 export const UserServices = {
   updateProfile,
   updateAvatar,
   deleteAvatar,
+  getAll,
 };
