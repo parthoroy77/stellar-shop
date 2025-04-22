@@ -66,7 +66,7 @@ export const sidebarItems: TSidebarItem[] = [
   },
   {
     label: "Users",
-    href: "/item",
+    href: "/users",
     Icon: GoPeople,
   },
   {

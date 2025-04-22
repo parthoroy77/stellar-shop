@@ -6,3 +6,4 @@ export * from "./order";
 export * from "./parseTimeToDate";
 export * from "./textMethods";
 export * from "./throttle";
+export * from "./utils";

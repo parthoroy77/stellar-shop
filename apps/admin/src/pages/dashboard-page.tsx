@@ -29,7 +29,7 @@ const DashboardPage = () => {
         <FinancialOverviewGraph />
       </div>
       <div className="grid gap-5 lg:grid-cols-3">
-        <div className="col-span-2">
+        <div className="lg:col-span-2">
           <OrderChart />
         </div>
         <SalesByCategoryChart />

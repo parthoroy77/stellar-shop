@@ -11,6 +11,7 @@ import ActiveProductsPage from "@/pages/product/active-products-page";
 import PendingProductsPage from "@/pages/product/pending-products-page";
 import SellerApprovalPage from "@/pages/seller-management/seller-approval-page";
 import SellerListPage from "@/pages/seller-management/seller-list-page";
+import UserListPage from "@/pages/user-list-page";
 import { createBrowserRouter, Outlet } from "react-router-dom";
 
 export const routes = createBrowserRouter([
@@ -68,6 +69,10 @@ export const routes = createBrowserRouter([
       {
         path: "/attributes",
         element: <AttributeListPage />,
+      },
+      {
+        path: "/users",
+        element: <UserListPage />,
       },
     ],
   },

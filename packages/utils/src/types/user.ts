@@ -1,3 +1,5 @@
+import { TSeller } from "./seller";
+
 // user roles
 export const UserRole = {
   BUYER: "BUYER",
@@ -40,4 +42,6 @@ export interface IUser {
   updatedAt?: Date;
 }
 
-export type TUser = Omit<IUser, "password">;
+export type TUser = Omit<IUser, "password"> & {
+  sellerProfile?: TSeller;
+};
