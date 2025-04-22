@@ -9,3 +9,4 @@ export * from "./apis/category/categoryApi";
 export * from "./apis/order/orderApi";
 export * from "./apis/product/productApi";
 export * from "./apis/seller/sellerApi";
+export * from "./apis/user/userApi";
