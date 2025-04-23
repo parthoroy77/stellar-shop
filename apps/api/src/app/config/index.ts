@@ -38,4 +38,7 @@ export default {
   redis_port: process.env.REDIS_PORT as string,
   redis_password: process.env.REDIS_PASSWORD as string,
   use_redis: (process.env.USE_REDIS === "true") as boolean,
+
+  // stripe
+  stripe_api_secret: process.env.STRIPE_API_SECRET as string,
 };

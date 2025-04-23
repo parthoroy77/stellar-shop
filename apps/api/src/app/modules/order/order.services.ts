@@ -289,7 +289,7 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
     return order.uniqueId;
   });
 
-  return handlePaymentRedirect(paymentMethod.type, orderId);
+  return handlePaymentRedirect(paymentMethod.type === "COD" ? "cod" : "other", orderId);
 };
 
 /**

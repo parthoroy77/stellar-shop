@@ -10,12 +10,12 @@ import { TOrderFilters } from "./order.types";
 
 const placeOrder = asyncHandler(async (req, res) => {
   const payload = req.body;
-  const { statusCode, message, redirectUrl } = await OrderServices.place(payload, req.user.id!);
+  const { redirectUrl } = await OrderServices.place(payload, req.user.id!);
   ApiResponse(res, {
     data: { redirectUrl },
-    statusCode,
     success: true,
-    message,
+    statusCode: StatusCodes.CREATED,
+    message: "Order placed successfully!",
   });
 });
 

@@ -1,5 +1,3 @@
-import { PaymentMethodType } from "@repo/prisma/client";
-import { StatusCodes } from "http-status-codes";
 import config from "../../config";
 
 /**
@@ -8,14 +6,20 @@ import config from "../../config";
  * @param orderId - Order Id
  * @returns Redirect information including URL, status code, and message.
  */
-export const handlePaymentRedirect = (type: PaymentMethodType, orderId: string) => {
-  const redirectConfig: Record<string, string> = {
-    COD: config.buyer_origin_url + "/order-success?orderId=" + orderId,
-  };
+export const handlePaymentRedirect = (type: "cod" | "other", orderId: string) => {
+  let redirectUrl = "";
 
-  return {
-    redirectUrl: redirectConfig[type] || config.buyer_origin_url + "/",
-    statusCode: StatusCodes.CREATED,
-    message: "Order placed successfully!",
-  };
+  switch (type) {
+    case "cod":
+      redirectUrl = config.buyer_origin_url + "/order-success?orderId=" + orderId;
+      break;
+    case "other":
+      redirectUrl = config.buyer_origin_url + "/payment?orderId=" + orderId;
+      break;
+    default:
+      redirectUrl = config.buyer_origin_url + "/";
+      break;
+  }
+
+  return { redirectUrl };
 };
