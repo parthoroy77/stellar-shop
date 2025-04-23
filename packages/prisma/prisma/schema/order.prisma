@@ -24,6 +24,7 @@ model Order {
   orderShippedAt   DateTime?
   orderDeliveredAt DateTime?
   orderCanceledAt  DateTime?
+  paymentExpiresAt DateTime?
 
   // references
   user                 User                   @relation(fields: [userId], references: [id])

@@ -17,10 +17,10 @@ model PaymentMethod {
   description String?
   status      PaymentMethodStatus @default(ACTIVE)
   type        PaymentMethodType   @default(COD)
-  
+
   // timestamps
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // references
   payments Payment[]
@@ -42,13 +42,14 @@ model Payment {
   uniqueId             String        @unique
   orderId              Int           @unique
   paymentMethodId      Int
-  gatewayTransactionId String        @unique
+  gatewayTransactionId String?       @unique
   amount               Decimal
   status               PaymentStatus @default(PROCESSING)
 
   // timestamps
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  expiresAt DateTime?
 
   // references
   order  Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
