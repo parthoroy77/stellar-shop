@@ -6,6 +6,7 @@ import { ApiError } from "../../handlers/ApiError";
 import calculatePagination, { TPaginateOption } from "../../utils/calculatePagination";
 import { CheckoutServices } from "../checkout/checkout.services";
 import { getCheckoutCacheKey, getCheckoutSession } from "../checkout/checkout.utils";
+import { ORDER_EXPIRE_TIME } from "./order.constants";
 import { TOrderFilters } from "./order.types";
 import { handlePaymentRedirect } from "./order.utils";
 
@@ -15,6 +16,7 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
   const { packages, paymentMethodId, shippingAddress: shippingAddressId } = await getCheckoutSession(userId);
 
   const orderPlacingTime = new Date();
+  const orderExpirationTime = new Date(orderPlacingTime.getTime() + ORDER_EXPIRE_TIME * 60 * 1000);
 
   // Check shipping address
   if (!shippingAddressId) {
@@ -59,6 +61,7 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
     orderNote: payload.orderNote ?? null,
     status: "PLACED",
     orderPlacedAt: orderPlacingTime,
+    paymentExpiresAt: orderExpirationTime,
     // Order shipping address
     orderShippingAddress: {
       create: {
@@ -272,6 +275,19 @@ const place = async (payload: { orderNote?: string }, userId: number) => {
           },
         });
       }
+    }
+
+    // If payment other than COD, create payment
+    if (paymentMethod.type !== "COD") {
+      await tx.payment.create({
+        data: {
+          uniqueId: generateUniqueId("PAY-"),
+          orderId: order.id,
+          amount: order.netAmount,
+          paymentMethodId: paymentMethod.id,
+          expiresAt: orderExpirationTime,
+        },
+      });
     }
 
     // Clear cart item after placing order
