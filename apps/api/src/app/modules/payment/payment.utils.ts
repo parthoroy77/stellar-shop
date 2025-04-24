@@ -46,7 +46,9 @@ export const handleStripePayment = async (orderId: number) => {
     mode: "payment",
     line_items: lineItems,
     metadata: { orderId, paymentId: payment.id },
-    success_url: config.buyer_origin_url + `/?provider=stripe&paymentId=${payment.id}&session_id={CHECKOUT_SESSION_ID}`,
+    success_url:
+      config.buyer_origin_url +
+      `/payment-verify?provider=stripe&paymentId=${payment.uniqueId}&stripeSessionId={CHECKOUT_SESSION_ID}`,
     cancel_url: config.buyer_origin_url + "/payment-cancel",
   });
 
