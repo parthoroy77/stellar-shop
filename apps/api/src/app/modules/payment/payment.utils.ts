@@ -52,7 +52,10 @@ export const handleStripePayment = async (orderId: number) => {
     cancel_url: config.buyer_origin_url + "/payment-cancel",
   });
 
-  await prisma.payment.update({ data: { status: "PENDING" }, where: { id: payment.id } });
+  await prisma.$transaction(async (tx) => {
+    await tx.payment.update({ data: { status: "PENDING" }, where: { id: payment.id } });
+    await tx.order.update({ where: { id: orderId }, data: { paymentStatus: "PENDING" } });
+  });
 
   return { redirectUrl: checkoutSession.url };
 };

@@ -21,4 +21,21 @@ const initiatePayment = asyncHandler(async (req, res) => {
   });
 });
 
-export const PaymentControllers = { initiatePayment };
+const verifyStripePaymentSession = asyncHandler(async (req, res) => {
+  const { sessionId } = req.params;
+
+  if (!sessionId) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Stripe session Id not found");
+  }
+
+  const { statusCode, success, message } = await PaymentServices.verifyStripPayment(sessionId);
+
+  ApiResponse(res, {
+    data: null,
+    statusCode,
+    success,
+    message,
+  });
+});
+
+export const PaymentControllers = { initiatePayment, verifyStripePaymentSession };
