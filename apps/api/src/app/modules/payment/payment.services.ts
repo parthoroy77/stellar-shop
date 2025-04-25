@@ -65,7 +65,7 @@ const verifyStripPayment = async (sessionId: string) => {
 
   const payment = await prisma.payment.findFirst({
     where: { orderId: +orderId, id: +paymentId },
-    select: { id: true, status: true },
+    select: { id: true, uniqueId: true, order: { select: { uniqueId: true } }, status: true },
   });
 
   if (!payment) {
@@ -105,6 +105,10 @@ const verifyStripPayment = async (sessionId: string) => {
   });
 
   return {
+    data: {
+      orderId: payment.order.uniqueId,
+      paymentId: payment.uniqueId,
+    },
     statusCode: StatusCodes.OK,
     message: "Payment verified successfully",
     success: true,

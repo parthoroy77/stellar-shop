@@ -48,8 +48,8 @@ export const handleStripePayment = async (orderId: number) => {
     metadata: { orderId, paymentId: payment.id },
     success_url:
       config.buyer_origin_url +
-      `/payment-verify?provider=stripe&paymentId=${payment.uniqueId}&stripeSessionId={CHECKOUT_SESSION_ID}`,
-    cancel_url: config.buyer_origin_url + "/payment-cancel",
+      `/payment/verify?provider=stripe&paymentId=${payment.uniqueId}&stripeSessionId={CHECKOUT_SESSION_ID}`,
+    cancel_url: config.buyer_origin_url + "/payment/cancel",
   });
 
   await prisma.$transaction(async (tx) => {
