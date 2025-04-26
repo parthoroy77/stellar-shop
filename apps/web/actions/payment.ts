@@ -11,3 +11,10 @@ export const initiatePayment = async (orderId: string) => {
   const response = await serverFetcher<{ redirectUrl: string }>("/payments/order/" + orderId, { method: "POST" });
   return response;
 };
+
+export const verifyStripePayment = async (sessionId: string) => {
+  const response = await serverFetcher<{ orderId: string; paymentId: string }>("/payments/stripe/verify/" + sessionId, {
+    method: "POST",
+  });
+  return response;
+};

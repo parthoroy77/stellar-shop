@@ -28,10 +28,10 @@ const verifyStripePaymentSession = asyncHandler(async (req, res) => {
     throw new ApiError(StatusCodes.NOT_FOUND, "Stripe session Id not found");
   }
 
-  const { statusCode, success, message } = await PaymentServices.verifyStripPayment(sessionId);
+  const { statusCode, success, message, data } = await PaymentServices.verifyStripPayment(sessionId);
 
   ApiResponse(res, {
-    data: null,
+    data,
     statusCode,
     success,
     message,

@@ -9,8 +9,12 @@ import { stripeInstance } from "../../services/stripe";
 export const handleStripePayment = async (orderId: number) => {
   const payment = await prisma.payment.findFirst({ where: { orderId } });
 
-  if (payment?.status !== "PROCESSING") {
-    throw new ApiError(StatusCodes.NOT_FOUND, "Payment information not found");
+  if (!payment) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Payment record not found");
+  }
+
+  if (payment.status !== "PROCESSING" && payment.status !== "PENDING") {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Payment already processed");
   }
 
   if (payment.expiresAt && new Date() > new Date(payment.expiresAt)) {
