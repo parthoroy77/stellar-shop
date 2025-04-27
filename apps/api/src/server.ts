@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import prisma from "@repo/prisma/client";
-import { createRedisClient } from "@repo/redis-config";
+import { RedisClient } from "@repo/redis-config";
 import colors from "colors";
 import { Server } from "http";
 import { Redis } from "ioredis";
@@ -17,18 +17,24 @@ async function main() {
     // Connect to the database
     await prisma.$connect();
 
-    // TODO: Write proper redis config and uses (For current development it's fine.)
-    if (config.use_redis) {
-      // Initialize Redis
-      redisInstance = createRedisClient();
+    const redisWrapper = RedisClient.getInstance();
 
+    if (redisWrapper) {
+      redisInstance = redisWrapper.getClient();
+
+      let connected = false;
       redisInstance.on("connect", () => {
-        logger.info(colors.green.bold("Redis connected successfully ✔️"));
+        if (!connected) {
+          connected = true;
+          logger.info(colors.green.bold("Redis connected successfully ✔️"));
+        }
       });
 
       redisInstance.on("error", (err) => {
         logger.error(colors.red.bold("Redis connection error:"), err);
       });
+    } else {
+      logger.info(colors.yellow.bold("Redis is disabled via USE_REDIS=false"));
     }
 
     // Start the server
