@@ -1,22 +1,18 @@
-import Redis, { RedisOptions } from "ioredis";
+import Redis from "ioredis";
 
 export class RedisClient {
   private static instance: RedisClient | null = null;
   private client: Redis;
 
-  private constructor(config: RedisOptions) {
-    this.client = new Redis(config);
+  private constructor(redisUrl: string) {
+    this.client = new Redis(redisUrl);
   }
 
   public static getInstance(): RedisClient | null {
     if (process.env.USE_REDIS !== "true") return null;
 
     if (!this.instance) {
-      this.instance = new RedisClient({
-        host: process.env.REDIS_HOST,
-        port: parseInt(process.env.REDIS_PORT || "6379", 10),
-        password: process.env.REDIS_PASSWORD || undefined,
-      });
+      this.instance = new RedisClient(process.env.REDIS_URL as string);
     }
 
     return this.instance;

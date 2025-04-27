@@ -35,9 +35,7 @@ export default {
   cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET as string,
 
   // redis
-  redis_host: process.env.REDIS_HOST as string,
-  redis_port: process.env.REDIS_PORT as string,
-  redis_password: process.env.REDIS_PASSWORD as string,
+  redis_url: process.env.REDIS_URL as string,
   use_redis: (process.env.USE_REDIS === "true") as boolean,
 
   // stripe
