@@ -9,6 +9,7 @@ interface EmailServiceConfig {
   };
   appName: string;
   address: string;
+  port: number;
 }
 
 interface EmailOptions {
@@ -34,21 +35,18 @@ export class EmailService {
 
   constructor(config: EmailServiceConfig) {
     this.transporter = nodemailer.createTransport({
-      service: "gmail",
       host: config.host,
-      port: 587,
+      port: config.port,
       auth: {
         user: config.auth.user,
         pass: config.auth.pass,
       },
     });
-    this.defaultFrom = {
-      name: config.appName,
-      address: config.address,
-    };
+    this.defaultFrom = "Stellar Shop 🏪 <stellarshop@mail.parthoroy.com>";
   }
 
   async sendEmail({ to, subject, html, from = this.defaultFrom }: EmailOptions): Promise<nodemailer.SentMessageInfo> {
+    console.log({ to, from, subject, html });
     const mailOptions: SendMailOptions = {
       from,
       to,
@@ -61,6 +59,7 @@ export class EmailService {
       console.log("Email sent successfully To:", mailOptions.to, info.messageId);
       return info;
     } catch (error) {
+      console.log(error);
       console.error("Error sending email:", error);
       throw error;
     }

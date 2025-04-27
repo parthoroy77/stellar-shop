@@ -3,6 +3,7 @@ import config from "../config";
 
 const emailService = new EmailService({
   host: config.nodemailer_host as string,
+  port: Number(config.nodemailer_port),
   auth: {
     user: config.nodemailer_user as string,
     pass: config.nodemailer_password as string,
