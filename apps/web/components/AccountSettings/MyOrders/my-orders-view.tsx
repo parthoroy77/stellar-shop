@@ -17,10 +17,14 @@ const MyOrderView = () => {
     totalPages: 0,
   });
 
-  const { data, isFetching } = useQueryData(["my-orders", page], () => getMyOrders(`&page=${page}&limit=${limit}`), {
-    refetchOnWindowFocus: false,
-    staleTime: 5 * 60 * 1000, // 1 minute
-  });
+  const { data, isFetching } = useQueryData(
+    ["my-orders", page],
+    () => getMyOrders(`&page=${page}&limit=${limit}&sortOrder=DESC`),
+    {
+      refetchOnWindowFocus: false,
+      staleTime: 5 * 60 * 1000, // 1 minute
+    }
+  );
 
   // Memoized order data
   const orders = useMemo(() => data?.data || [], [data]);

@@ -51,7 +51,7 @@ const NewArrivals = () => {
         <SideBanner
           heading="Newly Arrived"
           subHeading="Free Shipping Over $50"
-          image="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/TSW-SNETTERTON-300x300.png"
+          className="text-accent-foreground bg-[url('/ui-images/sidebar-2.jpg')] bg-cover bg-left"
         />
       </div>
       <div className="w-full space-y-5 lg:w-[80%]">

@@ -9,7 +9,7 @@ const FeatureProducts = () => {
         <SideBanner
           heading="Featured Products"
           subHeading="Grab Before Stock Out"
-          image="https://ninetheme.com/themes/fitment/wp-content/uploads/2024/01/2-300x300.png"
+          className="text-accent-foreground bg-[url('/ui-images/sidebar-4.jpg')] bg-cover bg-left"
         />
       </div>
       <div className="w-full space-y-5 lg:w-[80%]">

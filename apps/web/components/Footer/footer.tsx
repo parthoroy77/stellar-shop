@@ -6,6 +6,7 @@ import { BsShop } from "react-icons/bs";
 import { FaFacebook, FaInstagram, FaTwitter, FaWhatsapp } from "react-icons/fa6";
 import { MdOutlineEmail } from "react-icons/md";
 import { PiTelegramLogo } from "react-icons/pi";
+import payments from "../../public/ui-images/payments.webp";
 import Logo from "../ui/logo";
 
 const Footer = () => {
@@ -88,13 +89,8 @@ const ListItem = ({ label, href }: { label: string; href: string }) => (
 
 const FooterBottom = () => (
   <div className="flex flex-col items-center justify-between gap-5 py-5 text-sm font-medium lg:flex-row">
-    <span>All Right Reserved. Copyright 2024</span>
-    <Image
-      width={300}
-      height={300}
-      src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/08/payment-300x26.webp"
-      alt="Payment Methods"
-    />
+    <span>All Right Reserved. Copyright {new Date().getFullYear()}</span>
+    <Image src={payments} alt="Payment Methods" />
     <div className="flex items-center gap-2">
       <span>Stay Connected:</span>
       <FaFacebook aria-label="Facebook" />

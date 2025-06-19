@@ -6,6 +6,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import img1 from "../../public/ui-images/slider-1.jpg";
+import img2 from "../../public/ui-images/slider-2.jpg";
+import img3 from "../../public/ui-images/slider-3.jpg";
 import "../../styles/slider.css";
 
 const banners = [
@@ -13,19 +16,19 @@ const banners = [
     heading: "Everyday Essentials, Exceptional Prices.",
     subHeading:
       "We have prepared the most special discounts for you on the most popular products you need. Don't miss these opportunities...",
-    img: "https://klbtheme.com/bevesi/wp-content/uploads/2024/04/slider-01.jpg",
+    img: img1,
   },
   {
     heading: "The most ingenious pet products on the planet!",
     subHeading:
       "We have prepared the most special discounts for you on the most popular products you need. Don't miss these opportunities...",
-    img: "https://klbtheme.com/bevesi/wp-content/uploads/2024/04/slider-02.jpg",
+    img: img2,
   },
   {
     heading: "Have your groceries delivered at any time.",
     subHeading:
       "We have prepared the most special discounts for you on the most popular products you need. Don't miss these opportunities...",
-    img: "https://klbtheme.com/bevesi/wp-content/uploads/2024/04/slider-03.jpg",
+    img: img3,
   },
 ];
 

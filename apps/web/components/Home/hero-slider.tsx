@@ -4,10 +4,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import img1 from "../../public/ui-images/hero-slider-1.png";
+import img2 from "../../public/ui-images/hero-slider-2.png";
 import "../../styles/slider.css";
+
 const sliderImg = [
-  { id: 1, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2024/01/vertical-banner-3.png" },
-  { id: 2, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2024/01/vertical-banner-2.png" },
+  { id: 1, image: img1 },
+  { id: 2, image: img2 },
 ];
 const HeroSlider = () => {
   return (

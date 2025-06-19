@@ -11,7 +11,7 @@ const PopularProducts = () => {
         <SideBanner
           heading="Customers Choice"
           subHeading="Grab Before Stock Out"
-          className="bg-[url('https://ninetheme.com/themes/fitment/wp-content/uploads/2023/08/blog-post-5.png')] text-white bg-blend-darken"
+          className="text-accent-foreground bg-[url('/ui-images/sidebar-5.jpg')] bg-cover bg-left"
         />
       </div>
       <div className="w-full space-y-5 lg:w-[80%]">

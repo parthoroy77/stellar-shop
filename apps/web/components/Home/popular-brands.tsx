@@ -6,6 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import img from "../../public/ui-images/wheel.png";
 import "../../styles/slider.css";
 
 const PopularBrands = () => {
@@ -59,11 +60,9 @@ const PopularBrands = () => {
               <SwiperSlide key={i}>
                 <div className="flex w-fit cursor-pointer flex-col items-center justify-center gap-2">
                   <Image
-                    width={180}
-                    height={100}
                     className="h-[80px] w-[180px] rounded-md border object-contain p-3"
-                    src={"https://ninetheme.com/themes/fitment/wp-content/uploads/2023/10/3.png"}
                     alt={"Brand Image"}
+                    src={img}
                   />
                   <h6 className="font-medium">Bashundhara</h6>
                 </div>

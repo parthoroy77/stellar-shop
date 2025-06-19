@@ -6,6 +6,7 @@ import { GoStarFill } from "react-icons/go";
 import { HiArrowPath, HiOutlineShoppingBag } from "react-icons/hi2";
 import { IoEyeOutline } from "react-icons/io5";
 import { toast } from "sonner";
+import demoProduct from "../../public/ui-images/demo-product.jpg";
 import TooltipComponent from "./tooltip-component";
 
 const DemoProductCard = () => {
@@ -17,7 +18,7 @@ const DemoProductCard = () => {
           width={100}
           height={100}
           className="size-[110px] lg:size-[150px]"
-          src="https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/product1-300x300.jpeg"
+          src={demoProduct}
           alt="Product Image"
         />
       </div>
@@ -53,7 +54,9 @@ const DemoProductCard = () => {
 
       {/* Product Information (Name, Stock, Rating, Sold count) */}
       <div className="space-y-2">
-        <h5 className="truncate text-xs font-medium lg:text-sm">DNA Motoring TOOLS-00266 Green</h5>
+        <h5 className="truncate text-xs font-medium lg:text-sm">
+          Ceramic Pots and Pans Cookware Set Detachable Handle
+        </h5>
 
         {/* Stock, Rating, and Sold Badges */}
         <div className="hidden flex-wrap justify-between gap-2 lg:flex">
@@ -85,8 +88,8 @@ const DemoProductCard = () => {
       <div className="flex flex-row items-center justify-between gap-2">
         {/* Price section */}
         <p className="flex items-end gap-1 border-b border-b-white text-xs font-medium">
-          <span className="text-primary p-0 text-base font-semibold !leading-[1rem] lg:text-xl">$9.00</span>
-          <span className="!leading-[0.65rem] text-gray-400 line-through">$12.59</span>
+          <span className="text-primary p-0 text-base font-semibold !leading-[1rem] lg:text-xl">$185</span>
+          <span className="!leading-[0.65rem] text-gray-400 line-through">$212.59</span>
         </p>
         {/* Add to Cart Button */}
         <Button

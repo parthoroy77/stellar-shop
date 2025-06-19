@@ -1,1 +1,1 @@
-export const PAGINATION_KEYS = ["limit", "page", "sortBy", "sortOption"];
+export const PAGINATION_KEYS = ["limit", "page", "sortBy", "sortOrder"];

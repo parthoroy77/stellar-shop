@@ -2,7 +2,6 @@ import { Separator } from "@repo/ui";
 import CustomPagination from "../ui/custom-pagination";
 import ProductShowcase from "./product-showcase";
 import SideBanner from "./side-banner";
-
 const TodayHotDeals = () => {
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
@@ -10,7 +9,7 @@ const TodayHotDeals = () => {
         <SideBanner
           heading="Grab Up Exciting Deals"
           subHeading="Free Shipping Over $50"
-          className="bg-[url('https://ninetheme.com/themes/fitment/wp-content/uploads/2024/01/vertical-banner-2.png')] text-white"
+          className="text-accent-foreground bg-[url('/ui-images/sidebar-3.jpg')] bg-cover bg-left"
         />
       </div>
       <div className="w-full space-y-4 overflow-hidden lg:w-[80%]">

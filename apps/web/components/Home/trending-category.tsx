@@ -7,19 +7,21 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { Autoplay, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import img from "../../public/ui-images/grocery.jpeg";
+
 const sliderImg = [
-  { id: 1, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/product2-300x300.jpg" },
-  { id: 2, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/product3-300x300.jpg" },
-  { id: 3, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/Nolathane-Sway-Bar-300x300.jpg" },
-  { id: 4, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/04-061-300x300.jpg" },
-  { id: 4, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/04-061-300x300.jpg" },
-  { id: 4, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/04-061-300x300.jpg" },
-  { id: 4, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/04-061-300x300.jpg" },
-  { id: 4, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/04-061-300x300.jpg" },
-  { id: 4, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/04-061-300x300.jpg" },
-  { id: 4, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/04-061-300x300.jpg" },
-  { id: 4, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/04-061-300x300.jpg" },
-  { id: 4, image: "https://ninetheme.com/themes/fitment/wp-content/uploads/2023/12/04-061-300x300.jpg" },
+  { id: 1, image: img },
+  { id: 2, image: img },
+  { id: 3, image: img },
+  { id: 4, image: img },
+  { id: 4, image: img },
+  { id: 4, image: img },
+  { id: 4, image: img },
+  { id: 4, image: img },
+  { id: 4, image: img },
+  { id: 4, image: img },
+  { id: 4, image: img },
+  { id: 4, image: img },
 ];
 const TrendingCategory = () => {
   return (
@@ -67,7 +69,7 @@ const TrendingCategory = () => {
               src={image}
               alt="Slider Image"
             />
-            <h6 className="text-center text-sm uppercase tracking-wide">Brake</h6>
+            <h6 className="text-center text-sm tracking-wide">Grocery</h6>
           </SwiperSlide>
         ))}
       </Swiper>
