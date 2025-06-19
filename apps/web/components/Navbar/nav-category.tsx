@@ -1,4 +1,4 @@
-import { collections } from "@/dummyData/nav-categories";
+import { getAllCategories } from "@/actions/category";
 import { TCategory } from "@repo/utils/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,15 +9,15 @@ import { RxHamburgerMenu } from "react-icons/rx";
 const SubcategoryItem = ({ subcategory }: { subcategory: TCategory }) => {
   return (
     <Link href={`/categories/${subcategory.urlSlug}`}>
-      <div className="flex flex-col items-center justify-center rounded-md border p-1">
+      <div className="flex items-center gap-2 py-2">
         <Image
-          width={50}
-          height={50}
-          className="size-12 rounded-full"
-          src="https://img.alicdn.com/imgextra/i1/O1CN01qAJb8h20ZJ5HJQ3S2_!!6000000006863-0-tps-240-240.jpg"
+          width={30}
+          height={30}
+          className="size-8 rounded-md"
+          src={subcategory.images[0]?.file.fileSecureUrl!}
           alt="Sub Category Images"
         />
-        <span className="text-center text-xs text-gray-500">{subcategory?.categoryName}</span>
+        <span className="line-clamp-1 text-center text-sm text-gray-500">{subcategory?.categoryName}</span>
       </div>
     </Link>
   );
@@ -27,20 +27,26 @@ const CategoryItem = ({ category }: { category: TCategory }) => {
   return (
     <div className="group/category relative">
       <Link href={`/categories/${category.urlSlug}`}>
-        <div className="text-accent-foreground flex cursor-pointer justify-between px-4 py-3 text-sm font-medium">
-          <span className="flex items-center gap-2">
-            <CiShoppingCart className="text-xl" />
-            {category.categoryName}
-          </span>
+        <div className="text-accent-foreground flex cursor-pointer items-center justify-between px-4 py-2 text-sm font-medium">
+          <div className="flex items-center gap-2">
+            <Image
+              width={30}
+              height={30}
+              className="size-8 rounded-md"
+              src={category.images[0]?.file.fileSecureUrl!}
+              alt={category.categoryName}
+            />
+            <span>{category.categoryName}</span>
+          </div>
           {category?.subCategories && <BiChevronRight className="duration-300 group-hover/category:rotate-90" />}
         </div>
       </Link>
-      {category.subCategories && (
+      {category.subCategories && category.subCategories.length > 0 && (
         <div
-          className={`invisible absolute left-[251px] top-0 min-w-[600px] rounded-md border bg-white p-4 opacity-0 shadow-md duration-300 group-hover/category:visible group-hover/category:opacity-100 ${category.subCategories && "space-y-3"}`}
+          className={`invisible absolute left-[251px] top-0 min-w-[250px] rounded-md border bg-white px-4 py-2 opacity-0 shadow-md duration-300 group-hover/category:visible group-hover/category:opacity-100 ${category.subCategories && "space-y-3"}`}
         >
           <span>{category.categoryName}</span>
-          <div className="grid grid-cols-5 gap-3">
+          <div className="flex list-disc flex-col divide-y">
             {category.subCategories.map((subcategory, index) => (
               <SubcategoryItem key={index} subcategory={subcategory} />
             ))}
@@ -55,15 +61,21 @@ const CollectionItem = ({ collection }: { collection: TCategory }) => {
   return (
     <div className="group/collection relative">
       <Link href={`/categories/${collection.urlSlug}`}>
-        <div className="text-accent-foreground flex cursor-pointer justify-between px-4 py-3 text-sm font-medium">
-          <span className="flex items-center gap-2">
-            <CiShoppingCart className="text-xl" />
-            {collection.categoryName}
-          </span>
+        <div className="text-accent-foreground flex cursor-pointer items-center justify-between px-4 py-2 text-sm font-medium">
+          <div className="flex items-center gap-2">
+            <Image
+              width={30}
+              height={30}
+              className="size-8 rounded-md"
+              src={collection.images[0]?.file.fileSecureUrl!}
+              alt={collection.categoryName}
+            />
+            <span>{collection.categoryName}</span>
+          </div>
           {collection.subCategories && <BiChevronRight className="duration-300 group-hover/collection:rotate-90" />}
         </div>
       </Link>
-      {collection.subCategories && (
+      {collection.subCategories && collection.subCategories.length > 0 && (
         <div className="invisible absolute left-[251px] top-0 min-w-[250px] divide-y rounded-md border bg-white opacity-0 shadow-md duration-300 group-hover/collection:visible group-hover/collection:opacity-100">
           {collection.subCategories.map((category, i) => (
             <CategoryItem key={i} category={category} />
@@ -74,7 +86,8 @@ const CollectionItem = ({ collection }: { collection: TCategory }) => {
   );
 };
 
-const NavCategory = () => {
+const NavCategory = async () => {
+  const collections = await getAllCategories();
   return (
     <div className="group/parent relative h-full w-[250px]">
       <div className="bg-primary flex cursor-pointer items-center justify-between rounded-md px-4 py-3 text-sm font-semibold uppercase text-white">
@@ -84,9 +97,9 @@ const NavCategory = () => {
       </div>
       <div className="invisible absolute top-12 z-20 h-fit w-full divide-y rounded-md border bg-white opacity-0 shadow-md duration-300 group-hover/parent:visible group-hover/parent:opacity-100">
         <Link href={`/categories/all-products`}>
-          <div className="text-accent-foreground flex cursor-pointer justify-between px-4 py-3 text-sm font-medium">
+          <div className="text-accent-foreground flex cursor-pointer justify-between px-4 py-2 text-sm font-medium">
             <span className="flex items-center gap-2">
-              <CiShoppingCart className="text-xl" />
+              <CiShoppingCart size={30} />
               All Products
             </span>
           </div>
