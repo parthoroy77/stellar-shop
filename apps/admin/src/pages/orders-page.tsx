@@ -1,22 +1,16 @@
 import { columns } from "@/components/data-tables/order/column";
 import OrdersDataTable from "@/components/data-tables/order/data-table";
 import OrderTabs from "@/components/orders/order-tabs";
+import { usePagination } from "@/hooks/usePagination";
 import { useGetOrdersQuery } from "@repo/redux";
 import { countOrderStatuses } from "@repo/utils/functions";
 import { TOrderStatus } from "@repo/utils/types";
 import { AppPagination, OrderMetrics } from "@ui/index";
-import { useCallback, useEffect, useMemo, useState } from "react";
-
-type TPagination = {
-  page: number;
-  limit: number;
-  total: number;
-  totalPages: number;
-};
+import { useEffect, useMemo, useState } from "react";
 
 const OrdersPage = () => {
   const [activeTab, setActiveTab] = useState<TOrderStatus | "default">("default");
-  const [pagination, setPagination] = useState<TPagination>({ page: 1, limit: 10, total: 0, totalPages: 1 });
+  const { pagination, handlePageChange, handleUpdatePagination } = usePagination({});
 
   const query = useMemo(() => {
     let queryStr = `status=${activeTab !== "default" ? activeTab.toUpperCase() : ""}`;
@@ -34,21 +28,9 @@ const OrdersPage = () => {
   // Update pagination details when new data is received
   useEffect(() => {
     if (data?.meta) {
-      const { limit, page, total } = data.meta;
-      const totalPages = Math.ceil(total / limit);
-      setPagination((prev) => ({
-        ...prev,
-        page,
-        limit,
-        total,
-        totalPages,
-      }));
+      handleUpdatePagination({ ...data.meta });
     }
   }, [data]);
-
-  const handlePageChange = useCallback((page: number) => {
-    setPagination((prev) => ({ ...prev, page }));
-  }, []);
 
   const counts = countOrderStatuses(orders.map((o) => o.status));
   return (

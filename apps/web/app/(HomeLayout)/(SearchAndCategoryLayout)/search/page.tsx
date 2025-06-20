@@ -44,7 +44,7 @@ const SearchPage = async ({ searchParams }: { searchParams: TProductFilters }) =
           {/* Right section */}
           <div className="w-full space-y-5 lg:w-[80%]">
             {/* Top Header section */}
-            <ProductHeaderSection />
+            <ProductHeaderSection totalResults={result.data?.length} />
             {/* Product Listings */}
             <ProductListing isDemo={false} products={result?.data || []} />
           </div>

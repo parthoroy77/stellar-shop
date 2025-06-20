@@ -13,7 +13,6 @@ import {
 import { CategoryLevels } from "@repo/utils/types";
 import TableSkeleton from "@ui/components/ui/table-skeleton";
 import {
-  Button,
   Input,
   Select,
   SelectContent,
@@ -63,8 +62,8 @@ const CategoryListTable = <TData, TValue>({ data, columns, isLoading }: Category
   });
 
   return (
-    <div className="w-full">
-      <div className="flex items-center justify-between gap-5 py-4">
+    <div className="w-full space-y-5">
+      <div className="flex items-center justify-between gap-5">
         <Input
           placeholder="Search categories..."
           className="max-w-[300px] text-xs lg:text-sm"
@@ -110,25 +109,6 @@ const CategoryListTable = <TData, TValue>({ data, columns, isLoading }: Category
             </TableBody>
           )}
         </ShadTable>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-accent-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
-          selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-            Next
-          </Button>
-        </div>
       </div>
     </div>
   );

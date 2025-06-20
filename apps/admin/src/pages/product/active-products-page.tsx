@@ -1,12 +1,12 @@
 import { columns } from "@/components/data-tables/product/products/column";
 import ProductDataTable from "@/components/data-tables/product/products/data-table";
+import { usePagination } from "@/hooks/usePagination";
 import { useGetAllProductsQuery } from "@repo/redux";
-import { TPaginationState } from "@repo/utils/types";
 import { AppPagination } from "@ui/index";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 const ActiveProductsPage = () => {
-  const [pagination, setPagination] = useState<TPaginationState>({ page: 1, limit: 10, total: 0, totalPages: 1 });
+  const { pagination, handlePageChange, handleUpdatePagination } = usePagination({});
 
   const query = useMemo(() => {
     let queryStr = `status=active`;
@@ -20,24 +20,11 @@ const ActiveProductsPage = () => {
 
   const products = data?.data || [];
 
-  // Update pagination details when new data is received
   useEffect(() => {
     if (data?.meta) {
-      const { limit, page, total } = data.meta;
-      const totalPages = Math.ceil(total / limit);
-      setPagination((prev) => ({
-        ...prev,
-        page,
-        limit,
-        total,
-        totalPages,
-      }));
+      handleUpdatePagination({ ...data.meta });
     }
   }, [data]);
-
-  const handlePageChange = useCallback((page: number) => {
-    setPagination((prev) => ({ ...prev, page }));
-  }, []);
 
   return (
     <div className="space-y-5">
