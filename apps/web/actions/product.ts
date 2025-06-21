@@ -1,6 +1,7 @@
 "use server";
 
 import { fetcher } from "@/lib/fetcher";
+import { getProductQueryStr } from "@repo/utils/functions";
 import { TProduct } from "@repo/utils/types";
 
 export type TProductFilters = {
@@ -31,13 +32,20 @@ export const getNewlyArrivedProducts = async (query?: string) => {
 };
 
 export const getProductBySearch = async (payload: TProductFilters) => {
-  const queryString = Object.entries(payload)
-    .filter(([_, value]) => value !== "")
-    .map(([key, value]) => `${encodeURIComponent(key === "q" ? "query" : key)}=${encodeURIComponent(value.toString())}`)
-    .join("&");
+  const queryString = getProductQueryStr(payload);
 
   const result = await fetcher<TProduct[]>(`/products/search?${queryString}`, {
     next: { revalidate: 300, tags: ["product-search", payload.q as string] },
   });
+  return { data: result.data, meta: result.meta };
+};
+
+export const getProductByCategory = async (slug: string, filters: TProductFilters) => {
+  const queryString = getProductQueryStr(filters);
+
+  const result = await fetcher<TProduct[]>(`/products/category/${slug}?${queryString}`, {
+    next: { revalidate: 300, tags: ["product-category", slug as string] },
+  });
+
   return { data: result.data, meta: result.meta };
 };

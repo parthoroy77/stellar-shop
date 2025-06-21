@@ -6,7 +6,9 @@ import { Checkbox, FormControl, FormField, FormItem, FormLabel, FormMessage, Inp
 import { cn } from "@ui/lib/utils";
 
 const ProductDeliveryInformation = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
-  const { data: shippingOptions = [], isFetching } = useQueryData(["shipping-options"], () => getAllShippingOptions());
+  const { data: shippingOptions = [], isFetching } = useQueryData(["shipping-options"], () => getAllShippingOptions(), {
+    staleTime: 1000 * 60 * 5,
+  });
   return (
     <div>
       <div className="space-y-1">

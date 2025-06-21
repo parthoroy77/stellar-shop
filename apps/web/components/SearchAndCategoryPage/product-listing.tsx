@@ -9,7 +9,7 @@ const ProductListing = ({ isDemo = true, products = [] }: { products: TProduct[]
         products.length ? (
           products.map((product) => <ProductCard key={product.id} product={product} />)
         ) : (
-          <div>
+          <div className="col-span-2 flex h-96 w-full items-center justify-center md:col-span-3 lg:col-span-4">
             <span>Not product found!</span>
           </div>
         )

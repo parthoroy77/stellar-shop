@@ -1,3 +1,4 @@
+import { getProductByCategory, TProductFilters } from "@/actions/product";
 import ProductHeaderSection from "@/components/SearchAndCategoryPage/product-header-section";
 import ProductListing from "@/components/SearchAndCategoryPage/product-listing";
 import SideFilters from "@/components/SearchAndCategoryPage/side-filters";
@@ -9,7 +10,32 @@ const items = [
   { href: "#", label: "Kids Accessories" },
 ];
 
-const CategoryPage = () => {
+const CategoryPage = async ({ searchParams, params }: { searchParams: TProductFilters; params: { slug: string } }) => {
+  const {
+    brands = "",
+    categories = "",
+    status = "",
+    limit = "10",
+    page = "1",
+    sortBy = "",
+    order = "",
+    min = "",
+    max = "",
+  } = searchParams;
+  const { slug } = params;
+
+  const result = await getProductByCategory(slug, {
+    brands,
+    categories,
+    status,
+    limit,
+    page,
+    sortBy,
+    order,
+    min,
+    max,
+  });
+
   return (
     <section className="space-y-5">
       <BreadcrumbMenu items={items} />
@@ -19,9 +45,9 @@ const CategoryPage = () => {
         {/* Right section */}
         <div className="w-full space-y-5 lg:w-[80%]">
           {/* Top Header section */}
-          <ProductHeaderSection />
+          <ProductHeaderSection totalResults={result.data?.length} />
           {/* Product Listings */}
-          <ProductListing isDemo products={[]} />
+          <ProductListing isDemo={false} products={result?.data || []} />
         </div>
       </div>
     </section>

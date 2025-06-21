@@ -9,3 +9,10 @@ export function getNameInitials(fullName: string): string {
 
   return initials;
 }
+
+export const getProductQueryStr = (filters: unknown) => {
+  return Object.entries(filters as Record<string, string>)
+    .filter(([_, value]) => value !== "")
+    .map(([key, value]) => `${encodeURIComponent(key === "q" ? "query" : key)}=${encodeURIComponent(value.toString())}`)
+    .join("&");
+};

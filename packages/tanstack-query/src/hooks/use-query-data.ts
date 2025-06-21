@@ -10,5 +10,6 @@ export const useQueryData = <TData, TError = IApiError, TQueryKey extends QueryK
     queryKey,
     queryFn,
     ...options,
+    refetchOnWindowFocus: false,
   });
 };
