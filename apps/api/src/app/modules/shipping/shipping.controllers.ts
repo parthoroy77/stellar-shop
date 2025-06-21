@@ -25,7 +25,7 @@ const getAllShippingOptions = asyncHandler(async (req, res) => {
   ApiResponse(res, {
     data: result,
     message: "Shipping option fetched successfully!",
-    statusCode: StatusCodes.CREATED,
+    statusCode: StatusCodes.OK,
     success: true,
   });
 });

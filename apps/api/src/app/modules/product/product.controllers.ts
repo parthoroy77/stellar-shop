@@ -138,6 +138,26 @@ const getAllProducts = asyncHandler(async (req, res) => {
   });
 });
 
+const getAllProductsByCategory = asyncHandler(async (req, res) => {
+  const { categorySlug } = req.params;
+  const filters = parseProductFilters(req.query);
+  const pagination = pick(req.query, PAGINATION_KEYS);
+
+  if (!categorySlug) {
+    throw new ApiError(StatusCodes.NOT_FOUND, "Category slug not found!");
+  }
+
+  const { result, meta } = await ProductServices.getAllByCategory(categorySlug, filters, pagination);
+
+  ApiResponse(res, {
+    data: result,
+    message: "Product retrieved successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+    meta,
+  });
+});
+
 export const ProductControllers = {
   createProduct,
   getAllPendingProducts,
@@ -148,4 +168,5 @@ export const ProductControllers = {
   getAllProductsByQuery,
   getAllSellerProducts,
   getAllProducts,
+  getAllProductsByCategory,
 };

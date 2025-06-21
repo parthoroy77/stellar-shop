@@ -270,7 +270,7 @@ export const getProductBaseQuery = ({
     whereConditions.push({
       AND: {
         price: {
-          gte: min,
+          gte: +min,
         },
       },
     });
@@ -281,7 +281,7 @@ export const getProductBaseQuery = ({
     whereConditions.push({
       AND: {
         price: {
-          lte: max,
+          lte: +max,
         },
       },
     });
