@@ -17,6 +17,33 @@ const create = async (payload: TAttributeInput) => {
   });
 };
 
+const createBulk = async (payload: TAttributeInput[]) => {
+  await prisma.$transaction(
+    async (tx) => {
+      await Promise.all(
+        payload.map((attr) =>
+          tx.attribute.create({
+            data: {
+              name: toTitleCase(attr.name),
+              attributeValues: {
+                createMany: {
+                  data: attr.values.map((value) => ({
+                    value: toTitleCase(value),
+                  })),
+                },
+              },
+            },
+          })
+        )
+      );
+    },
+    {
+      timeout: 30000,
+      maxWait: 5000,
+    }
+  );
+};
+
 const getAllWithValues = async () => {
   const result = await prisma.attribute.findMany({
     select: {
@@ -45,6 +72,7 @@ const getAllValuesByAttrId = async (id: number) => {
 
 export const AttributeServices = {
   create,
+  createBulk,
   getAll,
   getAllWithValues,
   getAllValuesByAttrId,

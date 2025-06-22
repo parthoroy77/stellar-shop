@@ -15,6 +15,17 @@ const createAttribute = asyncHandler(async (req, res) => {
   });
 });
 
+const createBulkAttribute = asyncHandler(async (req, res) => {
+  const payload = req.body;
+  await AttributeServices.createBulk(payload?.data);
+  ApiResponse(res, {
+    data: {},
+    message: "Attributes created successfully!",
+    statusCode: StatusCodes.CREATED,
+    success: true,
+  });
+});
+
 const getAttributesWithValues = asyncHandler(async (_, res) => {
   const result = await AttributeServices.getAllWithValues();
   ApiResponse(res, {
@@ -52,6 +63,7 @@ const getValuesByAttribute = asyncHandler(async (req, res) => {
 
 export const AttributeControllers = {
   createAttribute,
+  createBulkAttribute,
   getAllAttributes,
   getAttributesWithValues,
   getValuesByAttribute,

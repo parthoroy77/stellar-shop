@@ -25,6 +25,14 @@ export const sidebarItems: TSidebarItem[] = [
         label: "Attributes",
         href: "/attributes",
       },
+      {
+        label: "Shipping Options",
+        href: "/shipping-options",
+      },
+      {
+        label: "Tags",
+        href: "/product-tags",
+      },
     ],
   },
   {
