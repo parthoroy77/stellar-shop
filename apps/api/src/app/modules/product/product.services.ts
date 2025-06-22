@@ -192,7 +192,7 @@ const create = async (payload: TCreateProductValidation, userId: number) => {
         }
         await Promise.all(variantsData.map(async (data) => await tx.productVariant.create({ data })));
       },
-      { timeout: 15000 }
+      { timeout: 2 * 10 * 1000 } // 2 minutes
     );
   } catch (error) {
     console.log(error);

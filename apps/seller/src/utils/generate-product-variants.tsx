@@ -1,4 +1,4 @@
-import { cartesian, toKebabCase, toTitleCase } from "@repo/utils/functions";
+import { cartesian, generateUniqueId, toKebabCase, toTitleCase } from "@repo/utils/functions";
 
 interface Props {
   productName: string;
@@ -24,7 +24,7 @@ export const generateProductVariants = ({ productName, attributes }: Props) => {
     return {
       variantName: `${toTitleCase(toKebabCase(productName))}-${combination.join("-")}`,
       price: 0,
-      sku: "",
+      sku: generateUniqueId(),
       variantImage: null,
       variantAttributes, // Include only relevant attributes
       stock: 0,

@@ -24,11 +24,11 @@ const createBulk = async (payload: TAttributeInput[]) => {
         payload.map((attr) =>
           tx.attribute.create({
             data: {
-              name: toTitleCase(attr.name),
+              name: attr.name,
               attributeValues: {
                 createMany: {
                   data: attr.values.map((value) => ({
-                    value: toTitleCase(value),
+                    value: value,
                   })),
                 },
               },

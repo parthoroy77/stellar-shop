@@ -1,5 +1,6 @@
 "use client";
 import { uploadProduct } from "@/actions/product.action";
+import { generateUniqueId } from "@repo/utils/functions";
 import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { createProductValidationSchema, TCreateProductValidation } from "@repo/utils/validations";
 import { AppButton, Form } from "@ui/index";
@@ -15,60 +16,30 @@ import ProductMediaUpload from "./product-media-upload";
 import ProductVariant from "./product-variant";
 
 const defaultValues: TCreateProductValidation = {
-  productName: "T Shirt",
-  description: "description",
-  sku: "DVLDJF",
-  price: 30,
-  comparePrice: 35,
-  productImages: [
-    // Images max 3
-  ],
+  productName: "",
+  description: "",
+  sku: generateUniqueId("", 12),
+  price: 0,
+  comparePrice: 0,
+  productImages: [],
   category: {
-    collectionId: "9",
-    categoryId: "10",
-    subCategories: ["11"],
+    collectionId: "",
+    categoryId: "",
+    subCategories: [""],
   },
   brandId: "2",
-  variants: [
-    {
-      variantName: "T-Shirt-Red",
-      variantAttributes: [{ attributeId: "1", name: "Color", attributeValues: [{ name: "Red", id: "1" }] }],
-      price: 30,
-      sku: "DKJFDJF",
-      stock: 50,
-      isDefault: true,
-      // variantImage: max 1
-    },
-    {
-      variantName: "T-Shirt-ReBlue",
-      variantAttributes: [{ attributeId: "1", name: "Color", attributeValues: [{ name: "Blue", id: "1" }] }],
-      price: 30,
-      sku: "DKJFDJF",
-      stock: 50,
-      // variantImage: max 1
-      isDefault: false,
-    },
-  ],
-  attributes: [
-    {
-      attributeId: "1",
-      name: "Color",
-      attributeValues: [
-        { name: "Red", id: "1" },
-        { name: "Blue", id: "2" },
-      ],
-    },
-  ],
-  shippingOptions: ["1"],
+  variants: [],
+  attributes: [],
+  shippingOptions: [],
   deliveryInformation: {
     packageHeight: 50,
-    packageLength: 50,
-    packageWeight: 50,
-    packageWidth: 50,
+    packageLength: 350,
+    packageWeight: 0.5,
+    packageWidth: 350,
   },
   // if there no variant then stock field will be filed
   stock: 0,
-  tags: ["2", "3"],
+  tags: [],
 };
 
 const ProductUploadForm = () => {

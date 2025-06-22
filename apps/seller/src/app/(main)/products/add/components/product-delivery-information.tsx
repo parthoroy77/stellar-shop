@@ -8,6 +8,7 @@ import { cn } from "@ui/lib/utils";
 const ProductDeliveryInformation = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
   const { data: shippingOptions = [], isFetching } = useQueryData(["shipping-options"], () => getAllShippingOptions(), {
     staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
   });
   return (
     <div>

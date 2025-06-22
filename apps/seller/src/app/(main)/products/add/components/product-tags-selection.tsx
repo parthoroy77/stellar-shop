@@ -6,7 +6,10 @@ import { Badge, FormControl, FormField, FormItem, FormLabel, OptionSelect } from
 
 const ProductTagsSelection = ({ form }: { form: UseFormReturn<TCreateProductValidation> }) => {
   const selectedTags = form.getValues("tags") || [];
-  const { data: tags = [], isFetching } = useQueryData(["tags"], () => getAllTags());
+  const { data: tags = [], isFetching } = useQueryData(["tags"], () => getAllTags(), {
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <>
