@@ -6,7 +6,7 @@ const categoryApi = baseApi.injectEndpoints({
     // mutations
     createCategory: builder.mutation<IApiResponse<TCategory>, unknown>({
       query: (data) => ({
-        url: `/categories/create`,
+        url: `/categories/`,
         method: "POST",
         data,
         headers: {
@@ -17,7 +17,7 @@ const categoryApi = baseApi.injectEndpoints({
     }),
     deleteCategoryById: builder.mutation<IApiResponse<{}>, string>({
       query: (categoryId) => ({
-        url: `/categories/delete-category/${categoryId}`,
+        url: `/categories/delete/${categoryId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["categories"],
@@ -26,19 +26,19 @@ const categoryApi = baseApi.injectEndpoints({
     // queries
     getAllCategoryWithChildren: builder.query<IApiResponse<TCategory[]>, undefined>({
       query: () => ({
-        url: `/categories/get-all-with-children`,
+        url: `/categories/with-children`,
       }),
       providesTags: ["categories"],
     }),
     getAllCategories: builder.query<IApiResponse<TCategory[]>, unknown>({
       query: (query) => ({
-        url: `/categories/get-all?${query}`,
+        url: `/categories/?${query}`,
       }),
       providesTags: ["categories"],
     }),
     getAllParentCategories: builder.query<IApiResponse<TCategory[]>, string>({
       query: (query) => ({
-        url: `/categories/get-all-parents?${query}`,
+        url: `/categories/parents?${query}`,
       }),
       providesTags: ["categories"],
     }),

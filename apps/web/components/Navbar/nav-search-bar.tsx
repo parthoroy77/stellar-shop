@@ -71,7 +71,7 @@ const NavSearchBar = () => {
   }, [focusedIndex]);
 
   return (
-    <div className="relative flex h-[45px] items-center">
+    <div className="relative flex h-10 items-center">
       <Input
         type="search"
         onKeyDown={(e) => {

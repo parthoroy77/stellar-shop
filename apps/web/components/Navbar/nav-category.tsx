@@ -96,7 +96,7 @@ const NavCategory = async () => {
         <BiChevronDown />
       </div>
       <div className="invisible absolute top-12 z-20 h-fit w-full divide-y rounded-md border bg-white opacity-0 shadow-md duration-300 group-hover/parent:visible group-hover/parent:opacity-100">
-        <Link href={`/categories/all-products`}>
+        <Link href={`/search`}>
           <div className="text-accent-foreground flex cursor-pointer justify-between px-4 py-2 text-sm font-medium">
             <span className="flex items-center gap-2">
               <CiShoppingCart size={30} />

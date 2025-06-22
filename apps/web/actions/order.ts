@@ -2,7 +2,7 @@
 
 import { serverFetcher } from "@/lib/server-fetcher";
 import { TOrder } from "@repo/utils/types";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export const placeOrder = async () => {
   const result = await serverFetcher<{ redirectUrl: string }>("/orders/place", { method: "POST" });
@@ -10,6 +10,7 @@ export const placeOrder = async () => {
   if (result.success) {
     revalidateTag("my-cart");
     revalidateTag("my-orders");
+    revalidatePath("/my-orders");
   }
 
   return result;

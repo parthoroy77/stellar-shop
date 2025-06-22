@@ -9,18 +9,18 @@ import { CategoryControllers } from "./category.controller";
 const router = Router();
 
 router.post(
-  "/create",
+  "/",
   authMiddleware(UserRole.ADMIN),
   upload.single("attachment"),
   zodSafeParse(createCategoryValidationSchema.omit({ attachment: true })),
   CategoryControllers.createCategory
 );
 
-router.get("/get-all", CategoryControllers.getAllCategories);
+router.get("/", CategoryControllers.getAllCategories);
 
-router.get("/get-all-parents", CategoryControllers.getAllParentCategories);
+router.get("/parents", CategoryControllers.getAllParentCategories);
 
-router.get("/get-all-with-children", CategoryControllers.getCategoriesWithAllChildren);
+router.get("/with-children", CategoryControllers.getCategoriesWithAllChildren);
 
 router.patch(
   "/update/:categoryId",
@@ -29,7 +29,7 @@ router.patch(
   CategoryControllers.updateCategoryFields
 );
 
-router.delete("/delete-category/:categoryId", authMiddleware(UserRole.ADMIN), CategoryControllers.deleteCategoryById);
+router.delete("/delete/:categoryId", authMiddleware(UserRole.ADMIN), CategoryControllers.deleteCategoryById);
 
 const CategoryRoutes = router;
 

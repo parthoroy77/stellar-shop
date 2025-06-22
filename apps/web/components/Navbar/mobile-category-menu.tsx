@@ -47,9 +47,9 @@ const MobileCollectionMenu = memo(({ collection }: { collection: TCategory }) =>
 
 const MobileCategoryMenu = () => {
   const { data: collections = [], isFetching } = useQueryData(["categories"], () => getAllCategories(), {
-    refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5,
   });
+
   if (isFetching) {
     return (
       <div className="space-y-1 py-2">

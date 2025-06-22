@@ -32,6 +32,7 @@ interface OptionSelectProps<T> {
   // this will be the outside query search handler
   onSearch?: (term: string) => void;
   searchPlaceholder?: string;
+  side?: "top" | "bottom" | "left" | "right" | undefined;
 }
 
 function OptionSelect<T>({
@@ -48,6 +49,7 @@ function OptionSelect<T>({
   disabledWarning = "Please match criteria!",
   placeholder = "Select Item",
   customQuerySearch,
+  side = "bottom",
 }: OptionSelectProps<T>) {
   const [open, setOpen] = useState(false);
 
@@ -93,7 +95,7 @@ function OptionSelect<T>({
           <RxCaretSort className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="p-0">
+      <PopoverContent side={side} className="p-0">
         <Command>
           {customQuerySearch ? (
             <Input

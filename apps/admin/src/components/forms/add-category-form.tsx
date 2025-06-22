@@ -167,6 +167,7 @@ export default function AddCategoryForm({ close }: { close: () => void }) {
                   onSearch={setSearchTerms}
                   multiSelect={false}
                   getItemId={(cat) => cat.id}
+                  side="top"
                 />
                 <FormMessage />
               </FormItem>

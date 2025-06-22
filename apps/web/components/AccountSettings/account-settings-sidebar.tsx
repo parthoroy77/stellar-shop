@@ -12,15 +12,17 @@ const AccountSettingsSidebar = () => {
       <div className="space-y-3">
         {profileMenus.map((menu, idx) => (
           <Link href={menu.href} key={idx} className="block">
-            <div
+            <button
+              disabled={menu.href === "#"}
               className={cn(
-                "text-accent-foreground flex items-center gap-2 rounded-md px-4 py-1.5 text-base font-medium",
-                pathname.includes(menu.href) && "bg-accent/30 border text-black"
+                "text-accent-foreground flex w-full items-center gap-2 rounded-md px-4 py-1.5 text-base font-medium",
+                pathname.includes(menu.href) && "bg-accent/30 border text-black",
+                menu.href === "#" && "cursor-not-allowed opacity-50"
               )}
             >
               <menu.Icon size={20} />
               <span>{menu.label}</span>
-            </div>
+            </button>
           </Link>
         ))}
       </div>

@@ -22,11 +22,11 @@ export const profileMenus = [
   {
     label: "My Reviews",
     Icon: VscFeedback,
-    href: "/my-reviews",
+    href: "#",
   },
   {
     label: "Refund & Return",
     Icon: HiOutlineReceiptRefund,
-    href: "/refund-and-returns",
+    href: "#",
   },
 ];
