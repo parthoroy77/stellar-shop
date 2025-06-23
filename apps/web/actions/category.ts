@@ -10,3 +10,11 @@ export const getAllCategories = async () => {
   });
   return response.data || [];
 };
+
+export const getTrendingCategories = async () => {
+  const result = await fetcher<TCategory[]>("/categories/trending", {
+    method: "GET",
+    next: { tags: ["categories"], revalidate: 5 ^ 60 },
+  });
+  return result.data || [];
+};

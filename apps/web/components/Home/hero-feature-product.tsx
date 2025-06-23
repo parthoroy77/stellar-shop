@@ -4,7 +4,7 @@ import demoProduct from "../../public/ui-images/demo-product.jpg";
 
 const HeroFeatureProducts = () => {
   return (
-    <div className="border-primary flex h-full w-full flex-col items-center justify-between gap-3 space-y-3 rounded-lg border p-6 lg:w-[18%] lg:gap-0">
+    <div className="border-primary flex h-full w-full flex-col items-center justify-between gap-3 space-y-3 rounded-lg border p-6 lg:w-64 lg:gap-0">
       <div className="w-full space-y-3">
         <h4 className="font-semibold">Product of The Day</h4>
         <p className="text-accent-foreground text-xs">Special price only valid today! Visit every day, win!</p>

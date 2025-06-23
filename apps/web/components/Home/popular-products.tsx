@@ -7,7 +7,7 @@ import SideBanner from "./side-banner";
 const PopularProducts = () => {
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
-      <div className="w-full lg:w-[20%]">
+      <div className="w-full lg:w-72">
         <SideBanner
           heading="Customers Choice"
           subHeading="Grab Before Stock Out"

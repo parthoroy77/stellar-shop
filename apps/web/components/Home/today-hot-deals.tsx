@@ -1,18 +1,17 @@
 import { Separator } from "@repo/ui";
-import CustomPagination from "../ui/custom-pagination";
 import ProductShowcase from "./product-showcase";
 import SideBanner from "./side-banner";
 const TodayHotDeals = () => {
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
-      <div className="w-full lg:w-[20%]">
+      <div className="w-full lg:w-72">
         <SideBanner
           heading="Grab Up Exciting Deals"
           subHeading="Free Shipping Over $50"
           className="text-accent-foreground bg-[url('/ui-images/sidebar-3.jpg')] bg-cover bg-left"
         />
       </div>
-      <div className="w-full space-y-4 overflow-hidden lg:w-[80%]">
+      <div className="w-full space-y-4 overflow-hidden lg:w-[75%]">
         <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-col lg:flex-row lg:gap-2">
             <h3 className="text-xl font-medium">Deals of The Day</h3>
@@ -37,7 +36,6 @@ const TodayHotDeals = () => {
         </div>
         <div className="w-full space-y-5">
           <ProductShowcase isDemo products={[]} />
-          <CustomPagination />
         </div>
       </div>
     </div>

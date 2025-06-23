@@ -34,7 +34,7 @@ const banners = [
 
 const HeroBanner = () => {
   return (
-    <div className="h-[550px] w-full overflow-hidden rounded-md lg:w-[58%]">
+    <div className="h-[550px] flex-1 overflow-hidden rounded-md">
       <Swiper
         loop={true}
         autoplay={{

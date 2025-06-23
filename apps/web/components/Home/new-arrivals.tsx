@@ -47,7 +47,7 @@ const NewArrivals = () => {
 
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
-      <div className="w-full lg:w-[20%]">
+      <div className="w-full lg:w-72">
         <SideBanner
           heading="Newly Arrived"
           subHeading="Free Shipping Over $50"
