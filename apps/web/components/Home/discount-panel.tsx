@@ -1,4 +1,5 @@
 import { Badge, Button } from "@repo/ui";
+import Link from "next/link";
 import { BsArrowUpRight } from "react-icons/bs";
 
 const DiscountPanel = () => {
@@ -13,9 +14,11 @@ const DiscountPanel = () => {
           New generation Headphones are at Stellar Shop with limited stocks!
         </h4>
       </div>
-      <Button variant={"outline"} className="border-primary text-primary flex gap-5 rounded-full border px-10 py-4">
-        Check Products <BsArrowUpRight />{" "}
-      </Button>
+      <Link href={"/search"}>
+        <Button variant={"outline"} className="border-primary text-primary flex gap-5 rounded-full border px-10 py-4">
+          Check Products <BsArrowUpRight />{" "}
+        </Button>
+      </Link>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { Button } from "@repo/ui";
+import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
-import CustomPagination from "../ui/custom-pagination";
 import ProductShowcase from "./product-showcase";
 import SideBanner from "./side-banner";
 
@@ -17,12 +17,13 @@ const PopularProducts = () => {
       <div className="w-full space-y-5 lg:w-[80%]">
         <div className="flex items-center justify-between">
           <h5 className="text-sm font-medium lg:text-xl">Popular Products</h5>
-          <Button variant={"outline"} size={"sm"} className="flex gap-2 rounded-full text-xs">
-            Check All Products <BsArrowRight />
-          </Button>
+          <Link href={"/search"}>
+            <Button variant={"outline"} size={"sm"} className="flex gap-2 rounded-full text-xs">
+              Check All Products <BsArrowRight />
+            </Button>
+          </Link>
         </div>
         <ProductShowcase isDemo products={[]} />
-        <CustomPagination />
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-import CustomPagination from "../ui/custom-pagination";
 import ProductShowcase from "./product-showcase";
 import SideBanner from "./side-banner";
 
@@ -14,7 +13,6 @@ const FeatureProducts = () => {
       </div>
       <div className="w-full space-y-5 lg:w-[80%]">
         <ProductShowcase isDemo products={[]} />
-        <CustomPagination />
       </div>
     </div>
   );
