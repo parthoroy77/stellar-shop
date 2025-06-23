@@ -31,6 +31,8 @@ router.patch(
 
 router.delete("/delete/:categoryId", authMiddleware(UserRole.ADMIN), CategoryControllers.deleteCategoryById);
 
+router.get("/trending", CategoryControllers.getTrendingCategories);
+
 const CategoryRoutes = router;
 
 export default CategoryRoutes;

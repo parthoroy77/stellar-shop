@@ -5,7 +5,7 @@ import { ApiError } from "../../handlers/ApiError";
 import { ApiResponse } from "../../handlers/ApiResponse";
 import asyncHandler from "../../handlers/asyncHandler";
 import pick from "../../utils/pick";
-import { CATEGORY_FILTER_KEYS } from "./category.constant";
+import { CATEGORY_FILTER_KEYS, DEFAULT_TRENDING_CATEGORIES_LIMIT } from "./category.constant";
 import { CategoryServices } from "./category.services";
 import { TCategoryFilters } from "./category.types";
 
@@ -97,6 +97,21 @@ const updateCategoryFields = asyncHandler(async (req: Request, res: Response) =>
   });
 });
 
+const getTrendingCategories = asyncHandler(async (req: Request, res: Response) => {
+  const { limit } = pick(req.query, ["limit"]) as { limit?: string };
+
+  const parsedLimit = limit ? parseInt(limit, 10) : DEFAULT_TRENDING_CATEGORIES_LIMIT;
+
+  const result = await CategoryServices.getTopCategories(parsedLimit);
+
+  ApiResponse(res, {
+    data: result,
+    message: "Trending categories retrieved successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+  });
+});
+
 export const CategoryControllers = {
   createCategory,
   getAllCategories,
@@ -104,4 +119,5 @@ export const CategoryControllers = {
   getAllParentCategories,
   deleteCategoryById,
   updateCategoryFields,
+  getTrendingCategories,
 };

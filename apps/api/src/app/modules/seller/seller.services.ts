@@ -1,10 +1,12 @@
 import prisma, { Prisma, SellerStatus } from "@repo/prisma/client";
 import { StatusCodes } from "http-status-codes";
 import { ApiError } from "../../handlers/ApiError";
-import { uploadFileToCloudinaryAndCreateRecord } from "../../handlers/handleCloudUpload";
+import {
+  deleteFileFromCloudinaryAndRecord,
+  uploadFileToCloudinaryAndCreateRecord,
+} from "../../handlers/handleCloudUpload";
 import logger from "../../logger";
 import calculatePagination, { TPaginateOption } from "../../utils/calculatePagination";
-import { deleteFromCloudinary } from "../../utils/cloudinary";
 import { SELLER_SEARCHABLE_KEYS } from "./seller.constants";
 import { TOnboardingInput, TSellerFilters } from "./seller.types";
 
@@ -57,7 +59,7 @@ const onboarding = async (
   } catch (error) {
     logger.error(error);
     // Cleanup uploaded files in case of error
-    await Promise.all(uploadResults.map((publicId) => deleteFromCloudinary(publicId, "image")));
+    await Promise.all(uploadResults.map((publicId) => deleteFileFromCloudinaryAndRecord(publicId)));
     throw new ApiError(StatusCodes.INTERNAL_SERVER_ERROR, "An error occurred while onboarding!");
   }
 };

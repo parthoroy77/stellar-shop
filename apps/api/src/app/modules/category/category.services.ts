@@ -6,6 +6,7 @@ import logger from "../../logger";
 import { TPaginateOption } from "../../utils/calculatePagination";
 import { deleteFromCloudinary, uploadOnCloudinary } from "../../utils/cloudinary";
 import { generateUniqueSlug } from "../../utils/generateUniqueSlug";
+import { DEFAULT_TRENDING_CATEGORIES_LIMIT } from "./category.constant";
 import { TCategoryFilters, TCategoryInput, TCategoryUpdate } from "./category.types";
 import { CATEGORY_IMAGE_INCLUDE, getCategoryBaseQuery } from "./category.utils";
 
@@ -247,6 +248,25 @@ const updateACategory = async (updateData: TCategoryUpdate, filePath?: string) =
   return category;
 };
 
+const getTopCategories = async (limit: number) => {
+  const result = await prisma.category.findMany({
+    select: {
+      categoryName: true,
+      urlSlug: true,
+      id: true,
+      ...CATEGORY_IMAGE_INCLUDE,
+    },
+    orderBy: {
+      productCategories: {
+        _count: "asc",
+      },
+    },
+    take: limit || DEFAULT_TRENDING_CATEGORIES_LIMIT,
+  });
+
+  return result;
+};
+
 export const CategoryServices = {
   create,
   getAll,
@@ -255,4 +275,5 @@ export const CategoryServices = {
   deleteACategory,
   updateACategory,
   updateCategoryImage,
+  getTopCategories,
 };

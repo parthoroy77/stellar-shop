@@ -58,8 +58,10 @@ export const getCategoryBaseQuery = (filters: TCategoryFilters, options: TPagina
 
 export const CATEGORY_IMAGE_INCLUDE = {
   images: {
-    include: {
-      file: true,
+    select: {
+      file: {
+        select: { fileSecureUrl: true, fileUrl: true },
+      },
     },
   },
 };
