@@ -27,7 +27,7 @@ const calculatePagination = (options: TPaginateOption): TPaginateReturn => {
   const skip = (page - 1) * limit;
 
   // Determine the field to sort by, defaulting to 'createdAt'
-  const sortBy = options.sortBy || "createdAt";
+  const sortBy = options.sortBy === "date" ? "createdAt" : options.sortBy || "createdAt";
 
   // Determine the sorting order, defaulting to 'asc' (ascending)
   const sortOrder = (options.sortOrder?.toLowerCase() === "desc" ? "desc" : "asc") as "asc" | "desc";

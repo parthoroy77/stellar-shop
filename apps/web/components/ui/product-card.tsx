@@ -20,11 +20,11 @@ const ProductCard: FC<Props> = ({ product }) => {
     <Link href={`/products/${urlSlug}`}>
       <div className="group relative flex flex-col justify-between divide-y rounded-md border duration-300 *:p-2 md:*:p-3">
         {/* Product Image */}
-        <div className="relative flex justify-center">
+        <div className="relative flex w-full justify-center bg-white">
           <Image
             width={100}
             height={100}
-            className="size-[110px] lg:size-[150px]"
+            className="aspect-square h-[110px] w-full object-contain lg:h-[150px]"
             src={images[0]?.file.fileSecureUrl!}
             alt={productName + " " + "Image"}
           />

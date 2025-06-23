@@ -13,7 +13,7 @@ const SearchPage = async ({ searchParams }: { searchParams: TProductFilters }) =
     brands = "",
     categories = "",
     status = "",
-    limit = "10",
+    limit = "12",
     page = "1",
     sortBy = "",
     order = "",

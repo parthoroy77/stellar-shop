@@ -82,7 +82,7 @@ const ProductImageGallery: FC<Props> = ({ images, productName }) => {
                 height={400}
                 width={400}
                 src={image.fileSecureUrl}
-                className="aspect-auto h-[400px] w-full rounded-sm object-cover object-top"
+                className="aspect-auto h-[400px] w-full rounded-sm object-contain"
                 alt={`${productName} image ${index + 1}`}
               />
               <div
@@ -133,7 +133,7 @@ const ProductImageGallery: FC<Props> = ({ images, productName }) => {
                 width={90}
                 height={90}
                 src={image.fileSecureUrl}
-                className="h-full w-full rounded-sm object-fill object-center"
+                className="h-full w-full rounded-sm object-contain"
                 alt={`${productName} image ${index + 1}`}
               />
             </div>
