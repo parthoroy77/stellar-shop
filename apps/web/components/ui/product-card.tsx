@@ -24,65 +24,50 @@ const ProductCard: FC<Props> = ({ product }) => {
           <Image
             width={100}
             height={100}
-            className="aspect-square h-[110px] w-full object-contain lg:h-[150px]"
+            className="aspect-square h-[200px] w-full object-contain lg:h-[150px]"
             src={images[0]?.file.fileSecureUrl!}
             alt={productName + " " + "Image"}
           />
         </div>
-        <div className="visible absolute right-0 top-0 flex flex-col gap-1 text-xs opacity-100 duration-300 group-hover:visible group-hover:opacity-100 md:text-sm lg:invisible lg:text-xl lg:opacity-0">
+        <div className="absolute right-0 top-0 flex flex-col gap-1 text-xs opacity-100 duration-300 group-hover:visible group-hover:opacity-100 md:text-sm lg:invisible lg:text-xl lg:opacity-0">
           <ToggleWishlistButton productId={id} />
           <TooltipComponent tooltipContent="Add To Compare">
-            <span className="bg-muted-foreground flex size-5 items-center justify-center rounded-full md:size-6 lg:size-8">
+            <span className="bg-muted-foreground flex size-8 items-center justify-center rounded-full p-0 text-xl text-black">
               <HiArrowPath aria-label="Compare" />
             </span>
           </TooltipComponent>
           <TooltipComponent tooltipContent="Quick Overview">
-            <span className="bg-muted-foreground flex size-5 items-center justify-center rounded-full md:size-6 lg:size-8">
+            <span className="bg-muted-foreground flex size-8 items-center justify-center rounded-full p-0 text-xl text-black">
               <IoEyeOutline aria-label="Quick Overview" />
             </span>
           </TooltipComponent>
         </div>
-        {/* Quick action icons (Wishlist, Compare, Quick Overview) */}
-        {/* <div className="hidden items-center justify-center gap-5 text-lg *:cursor-pointer lg:flex">
-          <TooltipComponent tooltipContent="Add To Wishlist">
-            <SlHeart aria-label="Wishlist" />
-          </TooltipComponent>
-          <TooltipComponent tooltipContent="Add To Compare">
-            <HiArrowPath aria-label="Compare" />
-          </TooltipComponent>
-          <TooltipComponent tooltipContent="Quick Overview">
-            <IoEyeOutline aria-label="Quick Overview" />
-          </TooltipComponent>
-        </div> */}
 
         {/* Product Information (Name, Stock, Rating, Sold count) */}
-        <div className="space-y-2">
-          <h5 className="truncate text-xs font-medium lg:text-sm">{productName}</h5>
+        <div className="flex flex-col space-y-2 md:h-[120px]">
+          <h5 className="line-clamp-2 text-sm font-medium">{productName}</h5>
 
           {/* Stock, Rating, and Sold Badges */}
-          <div className="hidden flex-wrap justify-between gap-2 lg:flex">
+          <div className="flex flex-wrap gap-1 md:items-center md:gap-0">
+            <div className="flex items-center">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <GoStarFill key={index} className="inline-block text-yellow-500" />
+              ))}
+            </div>
+            <span className="text-xs">4.3 / (100)</span>
+          </div>
+
+          <div className="flex flex-wrap justify-between gap-2">
             {/* In Stock Badge */}
             <Badge variant={"success"} className="rounded-md text-xs uppercase">
               In Stock
             </Badge>
 
-            {/* Rating Badge */}
-            <Badge className="text-primary-foreground flex w-fit items-center justify-center gap-2 rounded-md border-yellow-500 bg-yellow-100 uppercase">
-              <GoStarFill className="text-yellow-500" />
-              <span>4.3 / (100)</span>
-            </Badge>
-
             {/* Sold Count Badge */}
-            <Badge variant={"accent"} className="hidden rounded-sm lg:block">
-              Sold: 200
+            <Badge variant={"accent"} className="rounded-sm">
+              200 Sold
             </Badge>
           </div>
-
-          {/* Mobile View Rating Badge (only visible on smaller screens) */}
-          <Badge className="text-primary-foreground flex w-fit items-center justify-center gap-2 rounded-md border-yellow-500 bg-yellow-100 uppercase lg:hidden">
-            <GoStarFill className="text-yellow-500" />
-            <span>4.3 / (100)</span>
-          </Badge>
         </div>
 
         {/* Price and Add to Cart Button */}

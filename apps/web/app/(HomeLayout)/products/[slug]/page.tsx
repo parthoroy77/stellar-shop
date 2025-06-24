@@ -14,8 +14,6 @@ import { formatProductBreadcrumb, processProductImages } from "@/utils/product-u
 import { TProduct, TProductShippingOption, TSeller } from "@repo/utils/types";
 import { notFound } from "next/navigation";
 
-/* TODO: Remove as unknown */
-
 const items = [
   { href: "#", label: "Fashion" },
   { href: "#", label: "Kids Clothings" },

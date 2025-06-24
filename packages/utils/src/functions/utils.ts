@@ -13,6 +13,9 @@ export function getNameInitials(fullName: string): string {
 export const getProductQueryStr = (filters: unknown) => {
   return Object.entries(filters as Record<string, string>)
     .filter(([_, value]) => value !== "")
-    .map(([key, value]) => `${encodeURIComponent(key === "q" ? "query" : key)}=${encodeURIComponent(value.toString())}`)
+    .map(
+      ([key, value]) =>
+        `${encodeURIComponent(key === "q" ? "query" : key === "order" ? "sortOrder" : key)}=${encodeURIComponent(value.toString())}`
+    )
     .join("&");
 };

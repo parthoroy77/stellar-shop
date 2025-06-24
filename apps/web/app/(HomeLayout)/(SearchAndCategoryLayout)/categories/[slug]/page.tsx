@@ -4,18 +4,14 @@ import ProductListing from "@/components/SearchAndCategoryPage/product-listing";
 import SideFilters from "@/components/SearchAndCategoryPage/side-filters";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 
-const items = [
-  { href: "#", label: "Fashion" },
-  { href: "#", label: "Kids Clothings" },
-  { href: "#", label: "Kids Accessories" },
-];
+const items = [{ href: "#", label: "Categories Result" }];
 
 const CategoryPage = async ({ searchParams, params }: { searchParams: TProductFilters; params: { slug: string } }) => {
   const {
     brands = "",
     categories = "",
     status = "",
-    limit = "10",
+    limit = "12",
     page = "1",
     sortBy = "",
     order = "",

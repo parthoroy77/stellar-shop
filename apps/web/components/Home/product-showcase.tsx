@@ -7,21 +7,17 @@ interface Props {
   demoItems?: number;
 }
 const ProductShowcase = ({ isDemo = false, demoItems = 4, products }: Props) => {
-  return (
+  return isDemo ? (
     <div className="grid grid-cols-2 gap-1 lg:grid-cols-4 lg:gap-3">
-      {isDemo ? (
-        <>
-          {Array.from({ length: demoItems ?? 4 }).map((_x, i) => (
-            <DemoProductCard key={i} />
-          ))}
-        </>
-      ) : (
-        <>
-          {products.map((product, i) => (
-            <ProductCard product={product} key={i} />
-          ))}
-        </>
-      )}
+      {Array.from({ length: demoItems ?? 4 }).map((_x, i) => (
+        <DemoProductCard key={i} />
+      ))}
+    </div>
+  ) : (
+    <div className="grid grid-cols-1 gap-1 lg:grid-cols-4 lg:gap-3">
+      {products.map((product, i) => (
+        <ProductCard product={product} key={i} />
+      ))}
     </div>
   );
 };

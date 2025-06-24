@@ -36,7 +36,7 @@ const BrandSlider = ({ brands }: { brands: TBrand[] }) => {
     >
       {brands.map(({ name, file }, index) => (
         <SwiperSlide key={index}>
-          <Link href={`/search?brand=${name.toLowerCase()}`}>
+          <Link href={`/search?brands=${name.toLowerCase()}`}>
             <div className="flex w-fit cursor-pointer flex-col items-center justify-center gap-2">
               <Image
                 width={180}

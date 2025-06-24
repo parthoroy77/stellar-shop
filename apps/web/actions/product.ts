@@ -19,7 +19,7 @@ export type TProductFilters = {
 
 export const getProductDetailBySlug = async (slug: string) => {
   const result = await fetcher<TProduct>("/products/slug/" + slug, {
-    next: { tags: ["product", slug], revalidate: 10 },
+    next: { tags: ["product", slug], revalidate: 60 * 60 },
   });
   return result.data;
 };

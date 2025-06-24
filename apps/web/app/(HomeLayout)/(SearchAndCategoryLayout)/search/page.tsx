@@ -36,7 +36,7 @@ const SearchPage = async ({ searchParams }: { searchParams: TProductFilters }) =
 
   return (
     <section className="space-y-5">
-      <BreadcrumbMenu items={items} />
+      <BreadcrumbMenu items={[...items]} />
       <Suspense fallback={<div>loading</div>}>
         <div className="flex gap-5">
           {/* Left Side Filters */}

@@ -50,17 +50,17 @@ const AddToCartButton: FC<Props> = ({ productId }) => {
       <AppButton
         size="sm"
         variant={inCart ? "success" : "accent"}
-        className="group/button flex h-fit w-fit items-center justify-center gap-2 rounded-full p-[5px] font-normal transition-all duration-300 lg:rounded-md lg:p-2"
+        className="group/button flex h-fit w-fit items-center justify-center gap-2 rounded-md p-2 font-normal transition-all duration-300"
       >
         {inCart ? (
           <>
             <BsCartCheck color="white" className="text-base lg:text-lg" />
-            <span className="hidden lg:block">View Cart</span>
+            <span className="">View Cart</span>
           </>
         ) : (
           <>
             <HiOutlineShoppingBag className="text-base lg:text-lg" />
-            <span className="hidden lg:block">Add To Cart</span>
+            <span className="">Add To Cart</span>
           </>
         )}
       </AppButton>

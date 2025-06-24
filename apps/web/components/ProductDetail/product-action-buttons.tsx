@@ -58,7 +58,7 @@ const ProductActionButtons: FC<Props> = ({ productId, quantity, productVariantId
 
   return (
     <div className="flex gap-5 *:w-full">
-      <AppButton disabled={outOfStock} loading={isPending} onClick={handleProductBuy}>
+      <AppButton disabled={outOfStock || isPending} loading={isPending} onClick={handleProductBuy}>
         {outOfStock ? "Out of stock" : "Buy now"}
       </AppButton>
       <Button onClick={handleAddToCart} disabled={inCart || outOfStock} variant={"secondary"}>

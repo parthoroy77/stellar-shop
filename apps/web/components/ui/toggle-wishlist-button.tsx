@@ -39,7 +39,7 @@ const ToggleWishlistButton = ({ productId, className }: { productId: number; cla
       <TooltipComponent tooltipContent="Add to wishlist">
         <AppButton
           className={cn(
-            "bg-muted-foreground flex size-5 items-center justify-center rounded-full p-0 text-black md:size-6 lg:size-8 lg:text-xl",
+            "bg-muted-foreground flex size-8 items-center justify-center rounded-full p-0 text-xl text-black",
             className
           )}
         >

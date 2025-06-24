@@ -1,12 +1,12 @@
 export const sortOptions = [
-  { id: 1, label: "Best Match", sortBy: "popularity", order: "dsc" },
-  { id: 2, label: "Top Sale", sortBy: "sale", order: "dsc" },
-  { id: 3, label: "Price: High to Low", sortBy: "price", order: "dsc" },
+  // { id: 1, label: "Best Match", sortBy: "popularity", order: "desc" },
+  // { id: 2, label: "Top Sale", sortBy: "sale", order: "desc" },
+  { id: 3, label: "Price: High to Low", sortBy: "price", order: "desc" },
   { id: 4, label: "Price: Low to High", sortBy: "price", order: "asc" },
-  { id: 5, label: "Newest", sortBy: "date", order: "dsc" },
+  { id: 5, label: "Newest", sortBy: "date", order: "desc" },
   { id: 6, label: "Oldest", sortBy: "date", order: "asc" },
-  { id: 7, label: "Rating", sortBy: "rating", order: "dsc" },
-  { id: 8, label: "Name: A to Z", sortBy: "name", order: "asc" },
+  // { id: 7, label: "Rating", sortBy: "rating", order: "desc" },
+  // // { id: 8, label: "Name: A to Z", sortBy: "name", order: "asc" },
 ];
 
 export const productsPerViewOptions = [

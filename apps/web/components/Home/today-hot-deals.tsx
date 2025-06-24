@@ -1,6 +1,7 @@
 import { Separator } from "@repo/ui";
 import ProductShowcase from "./product-showcase";
 import SideBanner from "./side-banner";
+
 const TodayHotDeals = () => {
   return (
     <div className="flex flex-col gap-5 lg:flex-row">
