@@ -16,6 +16,7 @@ router.get("/slug/:slug", ProductControllers.getProductBySlug);
 router.get("/seller/:sellerId", authMiddleware("ADMIN", "SELLER"), ProductControllers.getAllSellerProducts);
 router.get("/", authMiddleware("ADMIN"), ProductControllers.getAllProducts);
 router.get("/category/:categorySlug", ProductControllers.getAllProductsByCategory);
+router.get("/best-selling", ProductControllers.getBestSellingProducts);
 
 const ProductRoutes = router;
 

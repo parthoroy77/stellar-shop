@@ -158,6 +158,17 @@ const getAllProductsByCategory = asyncHandler(async (req, res) => {
   });
 });
 
+const getBestSellingProducts = asyncHandler(async (req, res) => {
+  const { limit, skip } = pick(req.query, ["limit", "skip"]);
+  const result = await ProductServices.getBestSelling({ limit: Number(limit) || 10, skip: Number(skip) || 0 });
+  ApiResponse(res, {
+    data: result,
+    message: "Best selling products retrieved successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+  });
+});
+
 export const ProductControllers = {
   createProduct,
   getAllPendingProducts,
@@ -169,4 +180,5 @@ export const ProductControllers = {
   getAllSellerProducts,
   getAllProducts,
   getAllProductsByCategory,
+  getBestSellingProducts,
 };

@@ -1,9 +1,11 @@
+import { getBestSellingProducts } from "@/actions/product";
 import { Button } from "@repo/ui";
 import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
-import DemoProductCard from "../ui/demo-product-card";
+import ProductCard from "../ui/product-card";
 
-const BestSellers = () => {
+const BestSellers = async () => {
+  const products = await getBestSellingProducts(10);
   return (
     <div className="space-y-5 border-b-2 pb-5">
       <div className="flex items-center justify-between">
@@ -15,9 +17,7 @@ const BestSellers = () => {
         </Link>
       </div>
       <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-5">
-        {Array.from({ length: 10 }).map((_x, index) => (
-          <DemoProductCard key={index} />
-        ))}
+        {products && products.map((product, i) => <ProductCard product={product} key={i} />)}
       </div>
     </div>
   );

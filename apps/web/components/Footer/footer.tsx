@@ -18,6 +18,10 @@ const Footer = () => {
           <LinksSection />
           <Separator className="bg-gray-300" />
           <FooterBottom />
+
+          <span className="pb-2 text-center text-xs font-normal">
+            This site is a personal project using product samples under fair use.
+          </span>
         </div>
       </Container>
     </div>
@@ -89,7 +93,9 @@ const ListItem = ({ label, href }: { label: string; href: string }) => (
 
 const FooterBottom = () => (
   <div className="flex flex-col items-center justify-between gap-5 py-5 text-sm font-medium lg:flex-row">
-    <span>All Right Reserved. Copyright {new Date().getFullYear()}</span>
+    <div className="flex flex-col">
+      <span>All Right Reserved. Copyright {new Date().getFullYear()}</span>
+    </div>
     <Image src={payments} alt="Payment Methods" />
     <div className="flex items-center gap-2">
       <span>Stay Connected:</span>

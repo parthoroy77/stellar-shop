@@ -11,7 +11,7 @@ import {
 } from "../../handlers/handleCloudUpload";
 import calculatePagination, { TPaginateOption } from "../../utils/calculatePagination";
 import { generateUniqueSlug } from "../../utils/generateUniqueSlug";
-import { NEWLY_ARRIVAL_TIME_PERIOD, NEWLY_ARRIVED_CACHE_TTL, PRODUCT_CACHE_BASE_KEY } from "./product.constants";
+import { NEWLY_ARRIVED_CACHE_TTL, PRODUCT_CACHE_BASE_KEY } from "./product.constants";
 import { TProductFilters } from "./product.types";
 import { getProductBaseQuery, getProductDetailSelectOptions, getProductsBaseSelectOption } from "./product.utils";
 
@@ -317,17 +317,17 @@ const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
   }
 
   // const cacheResult = await
-  const whereClause: Prisma.ProductWhereInput = { status: "ACTIVE", createdAt: { gte: NEWLY_ARRIVAL_TIME_PERIOD } };
+  const whereClause: Prisma.ProductWhereInput = { status: "ACTIVE" };
 
-  const [result, count] = await prisma.$transaction([
+  const [result] = await prisma.$transaction([
     prisma.product.findMany({
       where: whereClause,
       select: getProductsBaseSelectOption(),
       skip,
+      orderBy: {
+        createdAt: "desc",
+      },
       take: limit,
-    }),
-    prisma.product.count({
-      where: whereClause,
     }),
   ]);
 
@@ -337,7 +337,6 @@ const getNewlyArrived = async (paginateOptions: TPaginateOption) => {
       limit,
       skip,
       page,
-      total: count,
     },
   };
 
@@ -424,7 +423,6 @@ const getAllBySellerId = async (sellerId: number, options: TPaginateOption) => {
 const getAllByCategory = async (slug: string, filters: TProductFilters, paginateOptions: TPaginateOption) => {
   const { skip, limit, page, sortBy, sortOrder } = calculatePagination(paginateOptions);
   const baseQuery = getProductBaseQuery(filters);
-  console.log(filters);
 
   const finalQuery: Prisma.ProductWhereInput = {
     ...baseQuery,
@@ -438,7 +436,6 @@ const getAllByCategory = async (slug: string, filters: TProductFilters, paginate
     ],
   };
 
-  console.log(finalQuery);
   const result = await prisma.product.findMany({
     where: finalQuery,
     select: getProductsBaseSelectOption(),
@@ -459,6 +456,28 @@ const getAllByCategory = async (slug: string, filters: TProductFilters, paginate
   };
 };
 
+const getBestSelling = async ({ limit = 10, skip = 0 }: { limit: number; skip: number }) => {
+  const result = await prisma.orderItem.groupBy({
+    where: { order: { status: "DELIVERED" } },
+    by: ["productId"],
+    _sum: { quantity: true },
+    orderBy: { _sum: { quantity: "desc" } },
+    take: limit,
+    skip,
+  });
+
+  const productIds = result.map((item) => item.productId);
+
+  const products = await prisma.product.findMany({
+    where: { id: { in: productIds }, status: "ACTIVE" },
+    select: {
+      ...getProductsBaseSelectOption(),
+    },
+  });
+
+  return products;
+};
+
 export const ProductServices = {
   create,
   getPendingProducts,
@@ -469,4 +488,5 @@ export const ProductServices = {
   getAllBySellerId,
   getAll,
   getAllByCategory,
+  getBestSelling,
 };

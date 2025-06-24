@@ -49,3 +49,17 @@ export const getProductByCategory = async (slug: string, filters: TProductFilter
 
   return { data: result.data, meta: result.meta };
 };
+
+export const getBestSellingProducts = async (limit: number, skip?: number) => {
+  let query = `limit=${limit}`;
+
+  if (skip) {
+    query += `&skip=${skip}`;
+  }
+
+  const result = await fetcher<TProduct[]>(`/products/best-selling?${query}`, {
+    next: { revalidate: 60 * 60, tags: ["best-selling", limit.toString()] },
+  });
+
+  return result.data || [];
+};
