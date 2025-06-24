@@ -35,7 +35,7 @@ export const getProductBySearch = async (payload: TProductFilters) => {
   const queryString = getProductQueryStr(payload);
 
   const result = await fetcher<TProduct[]>(`/products/search?${queryString}`, {
-    next: { revalidate: 60, tags: ["product-search", payload.q as string] },
+    next: { revalidate: 60 * 60, tags: ["product-search", payload.q as string] },
   });
   return { data: result.data, meta: result.meta };
 };
@@ -44,7 +44,7 @@ export const getProductByCategory = async (slug: string, filters: TProductFilter
   const queryString = getProductQueryStr(filters);
 
   const result = await fetcher<TProduct[]>(`/products/category/${slug}?${queryString}`, {
-    next: { revalidate: 60, tags: ["product-category", slug as string] },
+    next: { revalidate: 60 * 60, tags: ["product-category", slug as string] },
   });
 
   return { data: result.data, meta: result.meta };

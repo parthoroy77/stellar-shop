@@ -43,11 +43,4 @@ yarn-error.log*
 test.prisma
 
 
-# files
-*.webp
-*.png
-*.jpg
-*.jpeg
-*.avif
-*.mp4
 
