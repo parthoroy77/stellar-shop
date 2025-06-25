@@ -1,6 +1,7 @@
 import { getProductBySearch, TProductFilters } from "@/actions/product";
 import ProductHeaderSection from "@/components/SearchAndCategoryPage/product-header-section";
 import ProductListing from "@/components/SearchAndCategoryPage/product-listing";
+import ProductResultSkeleton from "@/components/SearchAndCategoryPage/products-result-skeleton";
 import SideFilters from "@/components/SearchAndCategoryPage/side-filters";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 import { Suspense } from "react";
@@ -37,7 +38,7 @@ const SearchPage = async ({ searchParams }: { searchParams: TProductFilters }) =
   return (
     <section className="space-y-5">
       <BreadcrumbMenu items={[...items]} />
-      <Suspense fallback={<div>loading</div>}>
+      <Suspense fallback={<ProductResultSkeleton />}>
         <div className="flex gap-5">
           {/* Left Side Filters */}
           <SideFilters mobileView={false} />

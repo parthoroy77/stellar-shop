@@ -1,5 +1,5 @@
 "use client";
-import { fetcher } from "@/lib/fetcher";
+import { getProductBySearch } from "@/actions/product";
 import { useQueryData } from "@repo/tanstack-query";
 import { AppButton, Input } from "@repo/ui";
 import { debounce } from "@repo/utils/functions";
@@ -24,11 +24,9 @@ const NavSearchBar = () => {
     isError,
   } = useQueryData<TProduct[], Error>(
     ["search", query],
-    async ({ signal }) => {
-      if (query.length < 3) return [];
-      const response = await fetcher<TProduct[]>(`/products/search?query=${query}`, { signal });
-      if (!response.success) throw new Error("Search failed");
-      return response.data ?? [];
+    async () => {
+      const products = await getProductBySearch({ q: query });
+      return products.data || [];
     },
     {
       staleTime: 1000 * 60,
@@ -167,7 +165,7 @@ const NavSearchBar = () => {
         </div>
       )}
       {/* No results */}
-      {showResult && query.length >= 3 && searchResult.length === 0 && <NotFoundResult query={query} />}
+      {!loading && showResult && query.length >= 3 && searchResult.length === 0 && <NotFoundResult query={query} />}
     </div>
   );
 };

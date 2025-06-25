@@ -1,8 +1,10 @@
 import { getProductByCategory, TProductFilters } from "@/actions/product";
 import ProductHeaderSection from "@/components/SearchAndCategoryPage/product-header-section";
 import ProductListing from "@/components/SearchAndCategoryPage/product-listing";
+import ProductResultSkeleton from "@/components/SearchAndCategoryPage/products-result-skeleton";
 import SideFilters from "@/components/SearchAndCategoryPage/side-filters";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
+import { Suspense } from "react";
 
 const items = [{ href: "#", label: "Categories Result" }];
 
@@ -35,17 +37,19 @@ const CategoryPage = async ({ searchParams, params }: { searchParams: TProductFi
   return (
     <section className="space-y-5">
       <BreadcrumbMenu items={items} />
-      <div className="flex gap-5">
-        {/* Left Side Filters */}
-        <SideFilters mobileView={false} />
-        {/* Right section */}
-        <div className="w-full space-y-5 lg:w-[80%]">
-          {/* Top Header section */}
-          <ProductHeaderSection totalResults={result.data?.length} />
-          {/* Product Listings */}
-          <ProductListing isDemo={false} products={result?.data || []} />
+      <Suspense fallback={<ProductResultSkeleton />}>
+        <div className="flex gap-5">
+          {/* Left Side Filters */}
+          <SideFilters mobileView={false} />
+          {/* Right section */}
+          <div className="w-full space-y-5 lg:w-[80%]">
+            {/* Top Header section */}
+            <ProductHeaderSection totalResults={result.data?.length} />
+            {/* Product Listings */}
+            <ProductListing isDemo={false} products={result?.data || []} />
+          </div>
         </div>
-      </div>
+      </Suspense>
     </section>
   );
 };
