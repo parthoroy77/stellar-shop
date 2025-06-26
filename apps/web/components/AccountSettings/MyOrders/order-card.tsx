@@ -1,4 +1,3 @@
-import AddReviewModalForm from "@/components/Forms/add-review-modal-form";
 import { toNormalCase } from "@repo/utils/functions";
 import { TOrder } from "@repo/utils/types";
 import { Badge, Button } from "@ui/index";
@@ -35,7 +34,6 @@ const OrderCard = ({ order }: { order: TOrder }) => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          {order.status === "DELIVERED" && <AddReviewModalForm />}
           <Link href={"/my-orders/" + order.id}>
             <Button className="space-x-1 border" variant={"outline"}>
               <span>View Details</span>

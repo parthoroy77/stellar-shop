@@ -11,6 +11,7 @@ export * from "./components/order-item-summary";
 export * from "./components/order-metrics";
 export * from "./components/order-note";
 export * from "./components/order-shipping-address";
+export * from "./components/rating";
 export * from "./components/sub-order-summary";
 export * from "./components/ui/alert-dialog";
 export * from "./components/ui/app-button";
