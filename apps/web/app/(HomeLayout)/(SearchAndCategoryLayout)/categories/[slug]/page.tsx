@@ -2,6 +2,7 @@ import { getProductByCategory, TProductFilters } from "@/actions/product";
 import ProductHeaderSection from "@/components/SearchAndCategoryPage/product-header-section";
 import ProductListing from "@/components/SearchAndCategoryPage/product-listing";
 import ProductResultSkeleton from "@/components/SearchAndCategoryPage/products-result-skeleton";
+import SearchPagination from "@/components/SearchAndCategoryPage/search-pagination";
 import SideFilters from "@/components/SearchAndCategoryPage/side-filters";
 import BreadcrumbMenu from "@/components/ui/breadcrumb-menu";
 import { Suspense } from "react";
@@ -34,6 +35,8 @@ const CategoryPage = async ({ searchParams, params }: { searchParams: TProductFi
     max,
   });
 
+  const meta = result.meta;
+  const totalPages = meta ? Math.ceil(meta.total / meta.limit) : 0;
   return (
     <section className="space-y-5">
       <BreadcrumbMenu items={items} />
@@ -47,6 +50,8 @@ const CategoryPage = async ({ searchParams, params }: { searchParams: TProductFi
             <ProductHeaderSection totalResults={result.data?.length} />
             {/* Product Listings */}
             <ProductListing isDemo={false} products={result?.data || []} />
+            {/* Pagination */}
+            {meta && meta.total > +limit && <SearchPagination totalPages={totalPages} defaultPage={meta.page} />}
           </div>
         </div>
       </Suspense>
