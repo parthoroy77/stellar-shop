@@ -2,7 +2,7 @@ import { toNormalCase } from "@repo/utils/functions";
 import { TOrder } from "@repo/utils/types";
 import { Badge } from "@ui/index";
 
-const Summary = ({ order }: { order: TOrder }) => {
+const Summary = ({ order, totalItems }: { order: TOrder; totalItems: number }) => {
   const { totalAmount, shippingAmount, discountAmount, netAmount, orderItems } = order;
   return (
     <div className="h-fit w-full space-y-3">
@@ -20,7 +20,7 @@ const Summary = ({ order }: { order: TOrder }) => {
         <h5 className="text-sm font-medium uppercase">Order Summary</h5>
         <div className="text-accent-foreground divide-y text-sm font-medium *:py-3">
           <div className="flex items-center justify-between">
-            <span>Subtotal ({orderItems.length} items)</span>
+            <span>Subtotal ({totalItems} items)</span>
             <span className="text-black">${totalAmount}</span>
           </div>
           <div className="flex items-center justify-between">

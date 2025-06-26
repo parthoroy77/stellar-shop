@@ -601,22 +601,40 @@ const getDetailForBuyer = async (orderId: number, userId: number) => {
         },
       },
       orderStatusHistory: true,
-      orderItems: {
-        include: {
-          product: {
+      subOrders: {
+        select: {
+          id: true,
+          shippingOption: {
             select: {
-              uniqueId: true,
-              images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
+              name: true,
+              estimateDays: true,
             },
           },
-          productVariant: {
-            select: {
-              uniqueId: true,
-              images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
+          status: true,
+          seller: { select: { shopName: true, logo: { select: { fileSecureUrl: true } } } },
+          subOrderItems: {
+            include: {
+              product: {
+                select: {
+                  uniqueId: true,
+                  images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
+                },
+              },
+              productVariant: {
+                select: {
+                  uniqueId: true,
+                  images: { take: 1, select: { file: { select: { fileSecureUrl: true } } } },
+                },
+              },
+            },
+            omit: {
+              createdAt: true,
+              updatedAt: true,
+              subOrderId: true,
+              id: true,
             },
           },
         },
-        omit: { createdAt: true, updatedAt: true, productId: true, productVariantId: true, orderId: true, id: true },
       },
     },
   });

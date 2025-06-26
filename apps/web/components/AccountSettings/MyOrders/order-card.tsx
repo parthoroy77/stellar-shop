@@ -3,10 +3,10 @@ import { TOrder } from "@repo/utils/types";
 import { Badge, Button } from "@ui/index";
 import { cn } from "@ui/lib/utils";
 import moment from "moment";
-import Image from "next/image";
 import Link from "next/link";
 import { GoArrowUpRight } from "react-icons/go";
 import OrderItemCard from "./order-item-card";
+import OrderSellerInformation from "./order-seller-information";
 
 const OrderCard = ({ order }: { order: TOrder }) => {
   return (
@@ -49,26 +49,7 @@ const OrderCard = ({ order }: { order: TOrder }) => {
             className="space-y-1 rounded-xl border bg-white px-2 py-1.5 sm:space-y-3 sm:px-4 sm:py-3"
           >
             {/* Seller Information */}
-            <div className="flex flex-col items-start sm:flex-row lg:items-center lg:justify-between">
-              <span className="text-xs font-medium sm:text-base">Package {i + 1}</span>
-              <div className="flex cursor-pointer items-center justify-end gap-2">
-                <h6 className="text-accent-foreground text-xs font-medium">Seller & Shipped By</h6>
-                <div className="flex items-center gap-1">
-                  <Image
-                    width={20}
-                    height={20}
-                    alt={"groupedItem.seller.shopName"}
-                    src={
-                      subOrder.seller.logo.fileSecureUrl ||
-                      "https://res.cloudinary.com/dx0iiqjf4/image/upload/v1735808264/shopMedia/nrpn006yyxcdjm8skkzn.png"
-                    }
-                  />
-                  <span className="text-primary-foreground text-xs font-semibold sm:text-sm">
-                    {subOrder.seller.shopName}
-                  </span>
-                </div>
-              </div>
-            </div>
+            <OrderSellerInformation status={subOrder.status} seller={subOrder.seller} packageNumber={i + 1} />
             {/* Items from this seller */}
             <div className="grid gap-3 lg:grid-cols-2">
               {subOrder.subOrderItems.map((item, i) => (
