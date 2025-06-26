@@ -107,50 +107,60 @@ const updateStatus = async (subOrderId: number, status: SubOrderStatus, userId: 
 
   const timeStamp = new Date();
 
-  // Update sub-order status
-  await prisma.subOrder.update({
-    where: { id: subOrder.id },
-    data: { status },
-  });
+  await prisma.$transaction(async (tx) => {
+    // Update sub-order status
+    await tx.subOrder.update({
+      where: { id: subOrder.id },
+      data: { status },
+    });
 
-  // Check if all sub-orders for this order are updated
-  const subOrders = await prisma.subOrder.findMany({
-    where: { orderId: subOrder.orderId },
-    select: { status: true },
-  });
+    // Check if all sub-orders for this order are updated
+    const subOrders = await tx.subOrder.findMany({
+      where: { orderId: subOrder.orderId },
+      select: { status: true },
+    });
 
-  // Determine the new order status
-  const allStatuses = subOrders.map((s) => s.status);
-  let newOrderStatus: SubOrderStatus | null = null;
+    // Determine the parent order status
+    const statusHierarchy: Partial<SubOrderStatus[]> = [
+      SubOrderStatus.CONFIRMED,
+      SubOrderStatus.PACKED,
+      SubOrderStatus.SHIPPED,
+    ];
+    const allStatuses = subOrders.map((s) => s.status).filter((s) => s !== "CANCELED"); // Exclude canceled sub-orders
+    let parentOrderStatus: SubOrderStatus | null = null;
 
-  if (allStatuses.includes("PROCESSING")) {
-    newOrderStatus = "PROCESSING"; // Keep order processing if any subOrder is processing
-  } else if (allStatuses.every((s) => s === "CONFIRMED")) {
-    newOrderStatus = "CONFIRMED";
-  } else if (allStatuses.every((s) => s === "CANCELED")) {
-    newOrderStatus = "CANCELED";
-  } else if (allStatuses.every((s) => s === "PACKED")) {
-    newOrderStatus = "PACKED";
-  } else if (allStatuses.every((s) => s === "SHIPPED")) {
-    newOrderStatus = "SHIPPED";
-  }
+    for (const status of statusHierarchy) {
+      const statusIndex = statusHierarchy.indexOf(status);
+      const allReachedStatus = allStatuses.every((s) => {
+        const currentStatusIndex = statusHierarchy.indexOf(s as SubOrderStatus);
+        return currentStatusIndex >= statusIndex;
+      });
 
-  // Update order status only if needed
-  if (newOrderStatus) {
-    await prisma.order.update({
-      where: { id: subOrder.orderId },
-      data: {
-        status: newOrderStatus,
-        ...(transition.timestampField && { [transition.timestampField]: timeStamp }),
-        orderStatusHistory: {
-          create: {
-            status: newOrderStatus,
-            changedAt: timeStamp,
+      if (allReachedStatus) {
+        parentOrderStatus = status!;
+      } else {
+        break;
+      }
+    }
+
+    // Update order status only if needed
+    if (parentOrderStatus) {
+      await tx.order.update({
+        where: { id: subOrder.orderId },
+        data: {
+          status: parentOrderStatus,
+          ...(transition.timestampField && { [transition.timestampField]: timeStamp }),
+          orderStatusHistory: {
+            create: {
+              status: parentOrderStatus,
+              changedAt: timeStamp,
+            },
           },
         },
-      },
-    });
-  }
+      });
+    }
+    return;
+  });
 
   return {
     statusCode: StatusCodes.OK,

@@ -396,9 +396,16 @@ const updateOrderStatusForAdmin = async (orderId: number, status: OrderStatus) =
   }
 
   // Prepare update data
-  const updateData: Record<string, any> = { status };
+  const orderUpdateData: Record<string, any> = { status };
+  const subOrderUpdateData: Record<string, any> = { status };
   if (transition.timestampField) {
-    updateData[transition.timestampField] = new Date();
+    orderUpdateData[transition.timestampField] = new Date();
+    subOrderUpdateData[transition.timestampField] = new Date();
+  }
+
+  // If delivered mark payment as completed
+  if (status === "DELIVERED") {
+    orderUpdateData.paymentStatus = "PAID";
   }
 
   // Update order and related sub-orders in a transaction
@@ -407,7 +414,7 @@ const updateOrderStatusForAdmin = async (orderId: number, status: OrderStatus) =
     const order = await prisma.order.update({
       where: { id: orderId, status: transition.previous as OrderStatus },
       data: {
-        ...updateData,
+        ...orderUpdateData,
         orderStatusHistory: {
           create: { status, changedAt: new Date() },
         },
@@ -417,7 +424,7 @@ const updateOrderStatusForAdmin = async (orderId: number, status: OrderStatus) =
     // Update related SubOrders
     await prisma.subOrder.updateMany({
       where: { orderId, status: transition.previous as SubOrderStatus },
-      data: { ...updateData },
+      data: { ...subOrderUpdateData },
     });
 
     return order;
