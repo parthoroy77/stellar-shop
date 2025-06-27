@@ -3,7 +3,7 @@ import { TOrder } from "@repo/utils/types";
 import { Badge } from "@ui/index";
 
 const Summary = ({ order, totalItems }: { order: TOrder; totalItems: number }) => {
-  const { totalAmount, shippingAmount, discountAmount, netAmount, orderItems } = order;
+  const { totalAmount, shippingAmount, discountAmount, netAmount } = order;
   return (
     <div className="h-fit w-full space-y-3">
       <h5 className="flex justify-between text-sm font-medium uppercase">

@@ -7,11 +7,14 @@ import { ProductReviewController } from "./product-review.controllers";
 
 const router = Router();
 
+// Configure multer specifically for product reviews (max 2 images)
+const reviewUpload = upload.array("files", 2);
+
 router.post(
   "/",
   authMiddleware("BUYER"),
+  reviewUpload,
   zodSafeParse(addProductReviewSchema),
-  upload.array("files", 2),
   ProductReviewController.addReviewToProduct
 );
 

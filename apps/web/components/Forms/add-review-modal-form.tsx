@@ -1,4 +1,5 @@
 "use client";
+import { addProductReview } from "@/actions/product-review";
 import { useForm, zodResolver } from "@repo/utils/hook-form";
 import { addProductReviewSchema, TAddProductReviewValidation } from "@repo/utils/validations";
 import {
@@ -21,21 +22,20 @@ import {
 } from "@ui/index";
 import Image from "next/image";
 import type React from "react";
-import { useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
 import { IoMdClose, IoMdCloudUpload } from "react-icons/io";
 import { IoStarOutline } from "react-icons/io5";
 import { toast } from "sonner";
 
 const AddReviewModalForm = ({ productId }: { productId: number }) => {
   const [open, setOpen] = useState(false);
-  const [photos, setPhotos] = useState<string[]>([]);
+  const [photos, setPhotos] = useState<File[]>([]);
+  const [loading, startTransition] = useTransition();
   const form = useForm<TAddProductReviewValidation>({
     resolver: zodResolver(addProductReviewSchema),
     defaultValues: {
-      productId,
+      productId: String(productId),
       description: "",
-      rating: 0,
-      media: [],
     },
   });
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -51,15 +51,34 @@ const AddReviewModalForm = ({ productId }: { productId: number }) => {
     }
 
     const file = files[0];
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          setPhotos((prev) => [...prev, e.target!.result as string]);
-        }
-      };
-      reader.readAsDataURL(file);
+
+    if (!file) {
+      toast.info("No file selected");
+      return;
     }
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      toast.info("Please upload only image files");
+      return;
+    }
+
+    // Validate file size (5MB = 5 * 1024 * 1024 bytes)
+    const maxSize = 5 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast.info("File size must be less than 5MB");
+      return;
+    }
+
+    // Validate file extension
+    const allowedExtensions = [".jpg", ".jpeg", ".png", ".webp"];
+    const fileExtension = "." + file.name.split(".").pop()?.toLowerCase();
+    if (!allowedExtensions.includes(fileExtension)) {
+      toast.info("Only JPG, PNG, and WebP files are supported");
+      return;
+    }
+
+    setPhotos((prev) => [...prev, file]);
 
     // Reset file input
     if (fileInputRef.current) {
@@ -72,7 +91,29 @@ const AddReviewModalForm = ({ productId }: { productId: number }) => {
   };
 
   const handleSubmit = (data: TAddProductReviewValidation) => {
-    console.log(data, "Data");
+    const formData = new FormData();
+
+    // Append photos if they exist (up to 2 photos)
+    if (photos.length > 0) {
+      photos.forEach((photo) => {
+        formData.append("files", photo);
+      });
+    }
+
+    formData.append("rating", data.rating);
+    formData.append("description", data.description);
+    formData.append("productId", data.productId);
+
+    startTransition(async () => {
+      const response = await addProductReview(formData);
+      if (response.success) {
+        toast.success(response.message || "Review added successfully!");
+        setOpen(false);
+        form.reset();
+      } else {
+        toast.error(response.message || "Failed to add review!");
+      }
+    });
   };
 
   return (
@@ -105,7 +146,10 @@ const AddReviewModalForm = ({ productId }: { productId: number }) => {
                       Rate your experience <span className="text-red-500">*</span>
                     </FormLabel>
                     <FormControl>
-                      <Rating defaultValue={field.value.toString()} onChange={field.onChange} />
+                      <Rating
+                        defaultValue={field?.value?.toString() || "0"}
+                        onChange={(v) => field.onChange(String(v))}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -142,7 +186,7 @@ const AddReviewModalForm = ({ productId }: { productId: number }) => {
                   {photos.map((photo, index) => (
                     <div key={index} className="relative h-24 w-24 overflow-hidden rounded-md border">
                       <Image
-                        src={photo || "/placeholder.svg"}
+                        src={URL.createObjectURL(photo) || "/placeholder.svg"}
                         alt={`Review photo ${index + 1}`}
                         fill
                         className="object-cover"
@@ -183,7 +227,9 @@ const AddReviewModalForm = ({ productId }: { productId: number }) => {
               <Button variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit">Submit Review</Button>
+              <Button disabled={loading} type="submit">
+                Submit Review
+              </Button>
             </div>
           </form>
         </Form>

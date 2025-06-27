@@ -17,7 +17,7 @@ const OrderDetailPage = async ({ params }: { params: TParams }) => {
     notFound();
   }
 
-  const totalItems = order.subOrders.reduce((acc, curr) => acc + curr.subOrderItems.length, 0);
+  const totalItems = order?.subOrders?.reduce((acc, curr) => acc + curr.subOrderItems.length, 0) || 0;
   return (
     <div className="space-y-5">
       {/* Header */}

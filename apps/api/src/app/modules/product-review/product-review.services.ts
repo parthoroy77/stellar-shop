@@ -25,7 +25,7 @@ const create = async (
   // TODO: Remove this check when final launch of product
   if (config.NODE_ENV === "production") {
     const isAlreadyReviewAdded = await prisma.productReview.findFirst({
-      where: { userId, productId },
+      where: { userId, productId: +productId },
       select: { id: true },
     });
 
@@ -33,12 +33,13 @@ const create = async (
       throw new ApiError(StatusCodes.CONFLICT, "You already added review for this product!");
     }
   }
+
   try {
     let reviewImages;
-    if (imagesPaths?.length) {
+    if (imagesPaths && imagesPaths.length > 0) {
       // Upload file to cloudinary and create file record
       reviewImages = await Promise.all(
-        imagesPaths?.map((path) => uploadFileToCloudinaryAndCreateRecord(path, "product-review", userId))
+        imagesPaths.map((path) => uploadFileToCloudinaryAndCreateRecord(path, "product-review", userId))
       );
       // Store public ids to clear images if any error occurs
       publicIds.push(
@@ -49,19 +50,19 @@ const create = async (
     // Create entry of file record
     await prisma.productReview.create({
       data: {
-        productId,
-        rating,
+        productId: +productId,
+        rating: +rating,
         description,
         userId,
         images:
-          reviewImages && reviewImages?.length > 0
+          reviewImages && reviewImages.length > 0
             ? { createMany: { data: reviewImages.map((img) => ({ fileId: img.fileRecord.id })) } }
             : {},
       },
     });
   } catch (error) {
-    if (publicIds.length) {
-      cleanup();
+    if (publicIds.length > 0) {
+      await cleanup();
     }
     if (error instanceof ApiError) {
       throw error;
