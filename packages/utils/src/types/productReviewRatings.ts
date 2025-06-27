@@ -33,6 +33,7 @@ export type TProductReviewPayload = {
   productId: number;
   rating: number;
   description: string;
+  orderId: string;
 };
 
 // Product Rating Averages (Not added right now)

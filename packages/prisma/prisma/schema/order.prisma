@@ -34,6 +34,7 @@ model Order {
   paymentMethod        PaymentMethod          @relation(fields: [paymentMethodId], references: [id])
   subOrders            SubOrder[]
   orderStatusHistory   OrderStatusHistory[]
+  productReviews       ProductReview[]
 
   @@index([uniqueId, userId, id])
   @@map("Orders")

@@ -1,7 +1,6 @@
 import prisma from "@repo/prisma/client";
 import { TProductReviewPayload } from "@repo/utils/types";
 import { StatusCodes } from "http-status-codes";
-import config from "../../config";
 import { ApiError } from "../../handlers/ApiError";
 import {
   deleteFileFromCloudinaryAndRecord,
@@ -9,7 +8,7 @@ import {
 } from "../../handlers/handleCloudUpload";
 
 const create = async (
-  { productId, rating, description }: TProductReviewPayload,
+  { productId, rating, description, orderId }: TProductReviewPayload,
   userId: number,
   imagesPaths?: string[]
 ) => {
@@ -21,17 +20,25 @@ const create = async (
     }
   };
 
-  // For development purpose skip this process
-  // TODO: Remove this check when final launch of product
-  if (config.NODE_ENV === "production") {
-    const isAlreadyReviewAdded = await prisma.productReview.findFirst({
-      where: { userId, productId: +productId },
-      select: { id: true },
-    });
+  const order = await prisma.order.findFirst({
+    where: {
+      userId,
+      id: +orderId,
+      status: "DELIVERED",
+    },
+  });
 
-    if (isAlreadyReviewAdded) {
-      throw new ApiError(StatusCodes.CONFLICT, "You already added review for this product!");
-    }
+  if (!order) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "You can only review products you have purchased and received!");
+  }
+
+  const review = await prisma.productReview.findFirst({
+    where: { userId, productId: +productId, orderId: +orderId },
+    select: { id: true },
+  });
+
+  if (review) {
+    throw new ApiError(StatusCodes.CONFLICT, "You already added review for this product!");
   }
 
   try {
@@ -54,6 +61,7 @@ const create = async (
         rating: +rating,
         description,
         userId,
+        orderId: +orderId,
         images:
           reviewImages && reviewImages.length > 0
             ? { createMany: { data: reviewImages.map((img) => ({ fileId: img.fileRecord.id })) } }

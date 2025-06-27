@@ -27,7 +27,7 @@ import { IoMdClose, IoMdCloudUpload } from "react-icons/io";
 import { IoStarOutline } from "react-icons/io5";
 import { toast } from "sonner";
 
-const AddReviewModalForm = ({ productId }: { productId: number }) => {
+const AddReviewModalForm = ({ productId, orderId }: { productId: number; orderId: number }) => {
   const [open, setOpen] = useState(false);
   const [photos, setPhotos] = useState<File[]>([]);
   const [loading, startTransition] = useTransition();
@@ -35,6 +35,7 @@ const AddReviewModalForm = ({ productId }: { productId: number }) => {
     resolver: zodResolver(addProductReviewSchema),
     defaultValues: {
       productId: String(productId),
+      orderId: String(orderId),
       description: "",
     },
   });
@@ -103,6 +104,7 @@ const AddReviewModalForm = ({ productId }: { productId: number }) => {
     formData.append("rating", data.rating);
     formData.append("description", data.description);
     formData.append("productId", data.productId);
+    formData.append("orderId", data.orderId);
 
     startTransition(async () => {
       const response = await addProductReview(formData);

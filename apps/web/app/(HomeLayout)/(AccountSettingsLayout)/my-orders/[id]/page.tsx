@@ -31,7 +31,9 @@ const OrderDetailPage = async ({ params }: { params: TParams }) => {
               {subOrder.subOrderItems.map((item, i) => (
                 <div key={item.id} className="flex items-start gap-3">
                   <OrderItemCard item={item} key={i} />
-                  {subOrder.status === "DELIVERED" && <AddReviewModalForm productId={item.productId} />}
+                  {subOrder.status === "DELIVERED" && (
+                    <AddReviewModalForm productId={item.productId} orderId={orderId} />
+                  )}
                 </div>
               ))}
             </div>

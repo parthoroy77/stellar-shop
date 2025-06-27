@@ -1,5 +1,6 @@
 model ProductReview {
   id          Int    @id @default(autoincrement())
+  orderId     Int
   productId   Int
   userId      Int
   rating      Int
@@ -11,10 +12,11 @@ model ProductReview {
 
   // references
   user    User                @relation(fields: [userId], references: [id])
+  order   Order               @relation(fields: [orderId], references: [id])
   product Product             @relation(fields: [productId], references: [id])
   images  ProductReviewFile[]
 
-  @@index([productId, userId, rating])
+  @@index([productId, userId, rating, orderId])
   @@map("ProductReviews")
 }
 
