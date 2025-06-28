@@ -1,3 +1,4 @@
+import { getAnalytics } from "@/actions/analytics.action";
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from "@ui/index";
 import moment from "moment";
 import { BiDollar } from "react-icons/bi";
@@ -8,7 +9,10 @@ import RevenueSplit from "./components/revenue-split-chart";
 import SalesChart from "./components/sales-chart";
 import { TopProductsTable } from "./components/top-product-table";
 
-const DashboardPage = () => {
+const DashboardPage = async () => {
+  const analytics = await getAnalytics();
+
+  const { netEarning, platformFee } = analytics;
   return (
     <div>
       <div className="flex items-center justify-between px-5 py-3">
@@ -26,7 +30,7 @@ const DashboardPage = () => {
       </div>
       <hr />
       <div className="divide-y *:p-5">
-        <KeyMetrics />
+        <KeyMetrics {...analytics!} />
         {/* Sales Chart & Revenue Split Charts */}
         <div className="grid gap-5 md:grid-cols-3">
           <Card className="rounded-2xl border drop-shadow md:col-span-2">
@@ -54,7 +58,7 @@ const DashboardPage = () => {
               <CardDescription>Platform fee vs your earnings</CardDescription>
             </CardHeader>
             <CardContent>
-              <RevenueSplit />
+              <RevenueSplit netEarning={netEarning} platformFee={platformFee} />
             </CardContent>
           </Card>
         </div>

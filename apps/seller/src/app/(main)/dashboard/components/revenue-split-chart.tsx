@@ -1,5 +1,6 @@
 "use client";
 
+import { FC } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
 const data = [
@@ -28,7 +29,11 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
   );
 };
 
-const RevenueSplit = () => {
+interface Props {
+  netEarning: number;
+  platformFee: number;
+}
+const RevenueSplit: FC<Props> = ({ netEarning, platformFee }) => {
   return (
     <div className="space-y-6">
       <div className="h-[200px] w-full">
@@ -75,14 +80,14 @@ const RevenueSplit = () => {
             <div className="mr-2 h-3 w-3 rounded-full" style={{ backgroundColor: data[0]!.color }}></div>
             <span className="text-sm text-gray-700">Your Earnings</span>
           </div>
-          <span className="text-sm font-medium text-gray-900">$11,291.40 (90%)</span>
+          <span className="text-sm font-medium text-gray-900">${netEarning} (90%)</span>
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <div className="mr-2 h-3 w-3 rounded-full" style={{ backgroundColor: data[1]!.color }}></div>
             <span className="text-sm text-gray-700">Platform Fee</span>
           </div>
-          <span className="text-sm font-medium text-gray-900">$1,254.60 (10%)</span>
+          <span className="text-sm font-medium text-gray-900">${platformFee} (10%)</span>
         </div>
       </div>
     </div>
