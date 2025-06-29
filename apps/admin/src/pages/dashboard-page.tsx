@@ -1,13 +1,26 @@
 import FinancialOverviewGraph from "@/components/dashboard/financial-overview-graph";
-import KeyMetrics from "@/components/dashboard/key-metrics";
+import KeyMetrics, { summaryMetrics } from "@/components/dashboard/key-metrics";
 import OrderChart from "@/components/dashboard/order-chart";
 import RevenueGraph from "@/components/dashboard/revenue-graph";
 import SalesByCategoryChart from "@/components/dashboard/sales-by-category-chart";
+import { useGetPlatformInsightsQuery } from "@repo/redux";
+import { TPlatformInsights } from "@repo/utils/types";
 import { Button } from "@ui/index";
 import moment from "moment";
 import { PiInvoice } from "react-icons/pi";
 
 const DashboardPage = () => {
+  const { data } = useGetPlatformInsightsQuery();
+  const {
+    avgOrderValue = 0,
+    pendingOrders = 0,
+    totalActiveSellers = 0,
+    totalCustomers = 0,
+    totalOrders = 0,
+    totalPlatformCommission = 0,
+    totalProducts = 0,
+    totalSales = 0,
+  } = (data?.data as TPlatformInsights) || { ...summaryMetrics };
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -23,7 +36,16 @@ const DashboardPage = () => {
           </Button>
         </div>
       </div>
-      <KeyMetrics />
+      <KeyMetrics
+        avgOrderValue={avgOrderValue}
+        pendingOrders={pendingOrders}
+        totalActiveSellers={totalActiveSellers}
+        totalCustomers={totalCustomers}
+        totalOrders={totalOrders}
+        totalPlatformCommission={totalPlatformCommission}
+        totalProducts={totalProducts}
+        totalSales={totalSales}
+      />
       <div className="grid gap-5 lg:grid-cols-2">
         <RevenueGraph />
         <FinancialOverviewGraph />

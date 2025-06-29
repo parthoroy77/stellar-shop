@@ -1,39 +1,34 @@
+import { TPlatformInsights } from "@repo/utils/types";
 import { BarChart3, DollarSign, Package, ShoppingCart, Store, Tag, Users } from "lucide-react";
-import React from "react";
+import { FC } from "react";
 import MetricCard from "../ui/metric-card";
 
 export const summaryMetrics = {
-  totalSales: {
-    today: 12450,
-    month: 345670,
-    allTime: 4578900,
-  },
-  totalRevenue: {
-    today: 9850,
-    month: 278430,
-    allTime: 3654320,
-  },
-  totalOrders: {
-    today: 87,
-    month: 2436,
-    allTime: 32456,
-  },
-  activeVendors: 128,
-  newVendors7Days: 12,
+  totalSales: 12345,
+  totalRevenue: 9850,
+  totalOrders: 85,
+  totalActiveSellers: 128,
   totalCustomers: 8756,
   pendingOrders: 147,
-  returnedOrders: 41,
-  averageOrderValue: 142.5,
+  avgOrderValue: 142.5,
   totalProducts: 8765,
-  platformCommission: 72450,
+  totalPlatformCommission: 72450,
 };
-
-const KeyMetrics: React.FC = () => {
+const KeyMetrics: FC<TPlatformInsights> = ({
+  avgOrderValue = 0,
+  pendingOrders = 0,
+  totalActiveSellers = 0,
+  totalCustomers = 0,
+  totalOrders = 0,
+  totalPlatformCommission = 0,
+  totalProducts = 0,
+  totalSales = 0,
+}) => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       <MetricCard
         title="Total Sales (Today)"
-        value={`$${summaryMetrics.totalSales.today.toLocaleString()}`}
+        value={`$${totalSales.toLocaleString()}`}
         change="+12% from yesterday"
         trend="up"
         icon={<DollarSign size={23} />}
@@ -41,15 +36,15 @@ const KeyMetrics: React.FC = () => {
 
       <MetricCard
         title="Total Orders"
-        value={summaryMetrics.totalOrders.today.toLocaleString()}
+        value={totalOrders.toLocaleString()}
         change="+8% from yesterday"
         trend="up"
         icon={<ShoppingCart size={23} />}
       />
 
       <MetricCard
-        title="Active Vendors"
-        value={summaryMetrics.activeVendors.toLocaleString()}
+        title="Active Sellers"
+        value={totalActiveSellers.toLocaleString()}
         change="+3 this week"
         trend="up"
         icon={<Store size={23} />}
@@ -57,7 +52,7 @@ const KeyMetrics: React.FC = () => {
 
       <MetricCard
         title="Pending Orders"
-        value={summaryMetrics.pendingOrders.toLocaleString()}
+        value={pendingOrders.toLocaleString()}
         change="-5% from yesterday"
         trend="down"
         icon={<Package size={23} />}
@@ -65,7 +60,7 @@ const KeyMetrics: React.FC = () => {
 
       <MetricCard
         title="Total Customers"
-        value={summaryMetrics.totalCustomers.toLocaleString()}
+        value={totalCustomers.toLocaleString()}
         change="+24 today"
         trend="up"
         icon={<Users size={23} />}
@@ -73,7 +68,7 @@ const KeyMetrics: React.FC = () => {
 
       <MetricCard
         title="Average Order Value"
-        value={`$${summaryMetrics.averageOrderValue.toFixed(2)}`}
+        value={`$${avgOrderValue}`}
         change="+5% this month"
         trend="up"
         icon={<BarChart3 size={23} />}
@@ -81,7 +76,7 @@ const KeyMetrics: React.FC = () => {
 
       <MetricCard
         title="Total Products"
-        value={summaryMetrics.totalProducts.toLocaleString()}
+        value={totalProducts.toLocaleString()}
         change="+45 this week"
         trend="up"
         icon={<Tag size={23} />}
@@ -89,7 +84,7 @@ const KeyMetrics: React.FC = () => {
 
       <MetricCard
         title="Platform Commission"
-        value={`$${summaryMetrics.platformCommission.toLocaleString()}`}
+        value={`$${totalPlatformCommission.toLocaleString()}`}
         change="+15% this month"
         trend="up"
         icon={<DollarSign size={23} />}
