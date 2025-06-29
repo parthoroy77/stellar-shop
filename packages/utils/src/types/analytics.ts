@@ -5,3 +5,14 @@ export type TSellerAnalytics = {
   totalActiveProducts: number;
   platformFee: number;
 };
+
+export type TPlatformInsights = {
+  totalSales: number;
+  totalOrders: number;
+  totalActiveSellers: number;
+  pendingOrders: number;
+  totalCustomers: number;
+  avgOrderValue: number;
+  totalProducts: number;
+  totalPlatformCommission: number;
+};

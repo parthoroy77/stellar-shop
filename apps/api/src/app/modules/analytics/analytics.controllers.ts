@@ -13,4 +13,14 @@ const getSellerAnalytics = asyncHandler(async (req, res) => {
   });
 });
 
-export const AnalyticsControllers = { getSellerAnalytics };
+const getPlatformInsights = asyncHandler(async (_req, res) => {
+  const result = await AnalyticsServices.platformInsights();
+  ApiResponse(res, {
+    data: result,
+    message: "Platform insights retrieved successfully!",
+    statusCode: StatusCodes.OK,
+    success: true,
+  });
+});
+
+export const AnalyticsControllers = { getSellerAnalytics, getPlatformInsights };

@@ -59,4 +59,70 @@ const sellerAnalytics = async (userId: number) => {
   return { totalSales, totalOrders, netEarning, totalActiveProducts, platformFee };
 };
 
-export const AnalyticsServices = { sellerAnalytics };
+const platformInsights = async () => {
+  const cacheKey = ANALYTICS_BASE_CACHE_KEY + ":platform";
+
+  if (config.use_redis && redisInstance) {
+    const cacheResult = await redisInstance.get(cacheKey);
+    if (cacheResult) {
+      return JSON.parse(cacheResult);
+    }
+  }
+
+  // Get total active sellers
+  const totalActiveSellers = await prisma.seller.count({ where: { status: "ACTIVE" } });
+
+  // Get total products
+  const totalProducts = await prisma.product.count();
+
+  // Get total customers (buyers)
+  const totalCustomers = await prisma.user.count({ where: { role: "BUYER" } });
+
+  // Get total sales and orders from delivered orders
+  const deliveredOrders = await prisma.order.findMany({
+    where: {
+      status: "DELIVERED",
+    },
+    select: {
+      id: true,
+      netAmount: true,
+    },
+  });
+
+  const totalSales = deliveredOrders.reduce((acc, order) => acc + order.netAmount.toNumber(), 0);
+  const totalOrders = deliveredOrders.length;
+
+  // Calculate average order value
+  const avgOrderValue = totalOrders > 0 ? totalSales / totalOrders : 0;
+
+  // Get pending orders count
+  const pendingOrders = await prisma.order.count({
+    where: {
+      status: {
+        notIn: ["DELIVERED", "CANCELED"],
+      },
+    },
+  });
+
+  // Calculate total platform commission
+  const totalPlatformCommission = totalSales * (PLATFORM_FEE / 100);
+
+  const result = {
+    totalSales: totalSales.toFixed(2),
+    totalOrders,
+    totalActiveSellers,
+    pendingOrders,
+    totalCustomers,
+    avgOrderValue: avgOrderValue.toFixed(2),
+    totalProducts,
+    totalPlatformCommission: totalPlatformCommission.toFixed(2),
+  };
+
+  if (config.use_redis && redisInstance) {
+    await redisInstance.setex(cacheKey, ANALYTICS_SELLER_CACHE_TTL, JSON.stringify(result));
+  }
+
+  return result;
+};
+
+export const AnalyticsServices = { sellerAnalytics, platformInsights };
