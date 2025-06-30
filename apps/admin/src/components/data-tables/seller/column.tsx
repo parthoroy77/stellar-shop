@@ -54,9 +54,9 @@ export const columns: ColumnDef<TSeller>[] = [
           />
           <div className="flex flex-col">
             <span className="truncate text-xs font-medium lg:text-sm">{row.getValue("shopName")}</span>
-            <span className="text-accent-foreground truncate text-[10px] lg:text-xs">
+            <p className="text-accent-foreground w-28 truncate text-[10px] lg:text-xs">
               {row?.original?.shopDescription}
-            </span>
+            </p>
           </div>
         </div>
       );

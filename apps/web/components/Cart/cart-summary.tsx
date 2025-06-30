@@ -1,7 +1,7 @@
 import { getCartSummary } from "@/actions/cart";
 import { initiateCheckout } from "@/actions/checkout";
 import { useQueryData } from "@repo/tanstack-query";
-import { AppButton, Button, Input } from "@ui/index";
+import { AppButton } from "@ui/index";
 import { memo, useTransition } from "react";
 import { toast } from "sonner";
 
@@ -46,7 +46,7 @@ const CartSummary = ({ selectedItemIds }: { selectedItemIds: number[] }) => {
           <span>Subtotal ({totalItem} items)</span>
           <span className="text-black">${subTotal}</span>
         </div>
-        <div className="flex flex-col gap-3">
+        {/* <div className="flex flex-col gap-3">
           <span>Coupon</span>
           <div className="flex h-[35px] items-center gap-3 *:h-full">
             <Input placeholder="STELLAR304" className="text-xs" />
@@ -58,7 +58,8 @@ const CartSummary = ({ selectedItemIds }: { selectedItemIds: number[] }) => {
             <span>Discount</span>
             <span className="text-black">- $0.00</span>
           </div>
-        </div>
+        </div> */}
+
         <div className="flex items-center justify-between">
           <span>Shipping</span>
           <span className="text-black">+ ${shippingFee}</span>
